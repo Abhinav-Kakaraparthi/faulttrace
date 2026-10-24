@@ -78,8 +78,20 @@ prove diagnosis, vision capability, production readiness, eligibility,
 identity of equipment, or completed work. There is no website yet; browser
 testing is not applicable to FT-003.
 
-FT-003 remains PARTIAL: the earlier executable live attempt failed; its lost
-response cannot be reconstructed, and no corrected live request has been
-made. FT-003A is offline only. The next proposed verification is one explicitly
-authorized live text probe with the corrected code and persistent accounting;
-no retry or FT-004 work is part of this checkpoint.
+FT-003 standalone text-probe acceptance is now satisfied: the corrected
+request passed at implementation `c75a50be54ffb53fc728f6be0f14521e7b775bd1`.
+The earlier failed request and its lost response remain unknown; successful
+validation does not repair that accounting gap. The final evidence record
+is a later documentation change, not another inference run.
+
+The local ledger contains the corrected request once (79 input, 146 output,
+225 total) and one failed request with missing usage. A distinct external
+manual success used 155 input, 112 output, 267 total tokens. Cross-record
+known sums are 234 input, 258 output, 492 total, plus unknown failed usage.
+The manual success has no exact timestamp or application source revision.
+The importer requires a timestamp and cannot preserve external provenance;
+legacy import would also discard its known counts. It was not imported or
+attributed to code. Its separate historical accounting is documented in
+state.md. Neither ledger totals nor cross-record totals establish full
+consumption or billing. No further inference or FT-004 work occurs during
+evidence finalization; application integration and vision remain open gates.

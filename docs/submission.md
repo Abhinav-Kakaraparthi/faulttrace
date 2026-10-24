@@ -12,11 +12,16 @@ Official sources:
 Recheck official requirements before final submission.
 Check an item only after recording evidence or a verified link.
 
-FT-003 adds a standalone synthetic text probe only. Historical manual
-connectivity evidence is recorded in state.md separately from executable
-evidence. This does not verify application runtime integration or the full
-platform claims below; those checkboxes remain unchecked. No website exists
-yet, so browser verification is not applicable to this checkpoint.
+FT-003 standalone synthetic text-probe acceptance is satisfied by corrected
+live evidence at implementation c75a50be54ffb53fc728f6be0f14521e7b775bd1.
+State.md records the sanitized executable result and separate external
+manual evidence. Known cross-record usage is 234 input / 258 output / 492
+total tokens, plus one failed request with unknown usage. The local ledger
+covers only 79 / 146 / 225 known tokens plus that failed request; it excludes
+the manual record, whose timestamp/revision are unavailable. No complete
+consumption or cost claim follows. This does not verify application runtime
+integration or the full platform claims below; those checkboxes remain open.
+No website exists, so browser verification is not applicable to FT-003.
 
 ## Entry and eligibility
 
@@ -45,7 +50,7 @@ yet, so browser verification is not applicable to this checkpoint.
 ## Public source and reproducibility
 
 - [x] GitHub repository verified PUBLIC (repository API, October 24, 2026).
-- [x] MIT LICENSE present and detected by GitHub (SPDX MIT, same API check).
+- [x] MIT LICENSE present and automatically detected by GitHub (SPDX MIT; repository and license APIs rechecked October 24, 2026).
 - [ ] Necessary source and permitted assets included.
 - [ ] Clean setup and run instructions verified independently.
 - [ ] Configuration examples contain no secrets.

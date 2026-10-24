@@ -1,5 +1,101 @@
 # Checkpoint state
 
+## Current: FT-003 evidence finalized
+
+FT-003 standalone text-probe acceptance: PASS. Corrected live validation
+passed against implementation `c75a50be54ffb53fc728f6be0f14521e7b775bd1`.
+This later documentation commit records existing evidence; it does not
+represent another inference run or a new tested implementation. Earlier
+PARTIAL/blocked entries below are historical and superseded by this result.
+The pre-existing unstaged FT-003B blocker record is preserved below.
+
+Corrected receipt, verified read-only against the local sanitized ledger:
+
+```json
+{
+  "timestamp": "2026-10-24T17:46:10.340732+00:00",
+  "attempt_id": "a2029351-6ea4-481e-936e-9d8f20221177",
+  "response_id": "chatcmpl-bbb03982-9579-4717-a718-4231788cfbd8",
+  "endpoint": "https://api.tokenfactory.nebius.com/v1",
+  "requested_model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+  "returned_model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+  "source_revision": "c75a50be54ffb53fc728f6be0f14521e7b775bd1",
+  "latency_ms": 1609,
+  "token_usage": {"prompt_tokens": 79, "completion_tokens": 146, "total_tokens": 225},
+  "usage_status": "valid",
+  "transport_invoked": true,
+  "validation_result": "passed",
+  "diagnostics": []
+}
+```
+
+Exit code 0 and ledger_result recorded are supplied verified execution
+evidence; they are not fields retained in the ledger. The stored receipt
+above matches that evidence. The corrected attempt occurs exactly once;
+historical failed attempt `fccd017f-1be5-5f0d-af4b-f27b6b024260` also remains
+exactly once with unknown usage. No receipt was reimported in this checkpoint.
+
+### Accounting coverage
+
+| Record | Input tokens | Output tokens | Total tokens | Coverage |
+| --- | ---: | ---: | ---: | --- |
+| Corrected executable request, bbb03982 response above | 79 | 146 | 225 | Local ledger |
+| External manual request, aa8cb057 response below | 155 | 112 | 267 | Separate historical record |
+| Known across the two distinct successful requests | 234 | 258 | 492 | Cross-record sums |
+| Additional failed request | unknown | unknown | unknown | Local ledger, missing usage |
+
+Actual offline ledger summary: 2 attempts; known input 79, output 146,
+total 225, with 1 contributing attempt to each counter. Usage states:
+missing 1, partial 0, invalid 0, inconsistent 0. Transport invoked 1,
+transport unknown 1. All-recorded-usage-complete false. These ledger totals
+exclude the manual test and are not complete consumption or billing.
+The cross-record sums also exclude the failed request's unknown usage;
+no missing usage or dollar cost is estimated.
+
+Historical manual evidence is user-provided external evidence: response
+`chatcmpl-aa8cb057-06b7-4632-aacb-cdba63f1b76c`, same endpoint/model,
+latency 1029 ms, validation passed, finish reason stop; counts as above.
+Its exact timestamp and application source revision are unavailable. It is
+not attributed to an implementation commit. Reviewed import contract:
+`sanitized_receipt` requires a timestamp with timezone and has no external
+provenance field; legacy import also replaces usage with unknown. Therefore
+it cannot honestly import this evidence without code changes. No code was
+changed: this table and the original FT-002 record retain the ledger gap.
+
+### Verification and acceptance
+
+Repository, feature branch, expected implementation HEAD, staged/unstaged/
+untracked state inspected. Only the existing docs/state.md change was pending.
+Source/tests remain identical to the implementation commit; prior 22 passing
+offline tests still apply and were not rerun. Offline ledger-summary exit 0;
+read-only identity/accounting assertions passed for both records. Git ignore
+verification passed for `.local/nebius-usage.json`. Whitespace and staged
+secret checks passed before the documentation commit. No provider
+request, installation, feature implementation, UI, or merge in this checkpoint.
+
+GitHub read-only repository and license APIs on October 24, 2026 both report
+automatic SPDX MIT detection; repository public, detected path LICENSE.
+License unchanged. Branch Actions API reports 0 runs; CI is unverified.
+
+The bounded smoke-test requirements (strict contract, sanitized errors,
+offline validation, corrected committed live inference, and persistent
+receipt/accounting) are satisfied. Accounting completeness is separately
+INCOMPLETE due to the failed request and external manual coverage gap.
+Application runtime integration, vision, diagnosis, UI, deployment,
+production readiness, and full hackathon eligibility remain unverified.
+There is no website; browser testing is not applicable.
+
+Delivery scope: README.md, docs/founder-guide.md, docs/state.md, and
+docs/submission.md only. These are later documentation changes, not part of
+the live-tested implementation. The final documentation SHA and remote-match
+verification are reported from Git command results; they are not inferred
+from this file. Local ledgers, credentials, and temporary files stay excluded.
+
+Exact next action: review the pushed FT-003 evidence and separately authorize
+the scope of FT-004's bounded vision capability gate. Do not infer image
+support from this text result. No further probe or feature checkpoint is
+started by this evidence-finalization checkpoint.
+
 ## FT-001: foundation
 
 Scope: documentation, MIT license, and public GitHub repository creation.
@@ -127,7 +223,56 @@ The socket timeout remains per blocking operation, not a hard process deadline.
 No website exists; browser testing is not applicable. Application integration,
 diagnosis, vision, and production readiness remain unverified.
 
-## Next proposed verification (not performed in FT-003A)
+## FT-003B: corrected live verification blocked before inference
+
+Status: PARTIAL, October 24, 2026. Verified repository root and origin,
+branch `feat/ft-003-provider-probe`, and expected starting HEAD
+`468ad89b703dea4080e6c50371a35c839ff4a827`. The ten pending files matched
+the reviewed FT-003A implementation, tests, and documentation; no unrelated
+changes were present. The prior 22-test offline result still applies:
+no subsequent source changes invalidated it, so tests were not rerun.
+Staged whitespace and secret checks passed. Local ledger and temporary
+files were excluded from staging.
+
+Implementation commit: `c75a50be54ffb53fc728f6be0f14521e7b775bd1`.
+Commit message: `fix(provider): preserve usage and validate empty tool calls safely`.
+The committed checkout was clean before credential preflight.
+
+Credential preflight: NEBIUS_API_KEY unavailable in both the executing
+process environment and Windows user environment. No value was printed,
+saved, or embedded. Per the checkpoint stop condition, the live command
+was NOT RUN: no provider request, new attempt, live receipt, or inference
+exit code exists. This is a preflight blocker, not a new inference failure.
+No retries, additional probes, installs, pushes, merges, or FT-004 work.
+
+Offline `python -m faulttrace.probe --ledger-summary` completed with exit 0
+using Python 3.12.14. Verified the historical attempt
+`fccd017f-1be5-5f0d-af4b-f27b6b024260` remains exactly once with unknown
+usage. Ledger summary is unchanged: 1 recorded attempt; known input 0,
+output 0, total 0, each with 0 contributing attempts. Missing usage: 1;
+partial: 0; invalid: 0; inconsistent: 0; transport unknown: 1.
+All-recorded-usage-complete: false. These empty sums do not establish zero
+consumption. `.local/nebius-usage.json` remains ignored by Git.
+
+Inference validation: not performed. Accounting completeness: incomplete
+because historical usage remains unknown. FT-003's corrected executable
+live-verification acceptance criterion is not satisfied; FT-003 remains
+PARTIAL. Offline implementation checks remain verified. This standalone
+probe establishes no application runtime integration, diagnosis, vision,
+production readiness, or completed submission eligibility. No website exists.
+
+Post-implementation documentation change: only this FT-003B section in
+`docs/state.md`, left uncommitted. The tested source remains exactly the
+implementation commit above. No remote verification was performed because
+this checkpoint prohibits pushing.
+
+Exact next action: make NEBIUS_API_KEY available through the existing process
+or Windows user environment without recording its value, then authorize
+one corrected live text probe from the committed implementation. Capture
+the sanitized receipt, inspect the offline ledger summary, and do not retry
+automatically. Do not advance FT-004 on this blocked result.
+
+## Next proposed verification (not performed in FT-003A or FT-003B)
 
 After review and explicit authorization, run exactly one corrected live text
 probe with the environment credential and persistent local ledger:

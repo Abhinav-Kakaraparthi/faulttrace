@@ -83,8 +83,15 @@ Use `--ledger 'C:\path\to\usage.json'` to select another local file. Reimporting
 the same receipt is idempotent; conflicting attempt IDs fail. Legacy receipts
 get a stable import ID and unknown usage. Partial sums are not total consumption
 or billing. See the founder guide for accounting and persistence limitations.
-FT-003 remains PARTIAL: an earlier live attempt failed; no corrected live
-request has been made.
+FT-003 standalone text-probe acceptance is satisfied by corrected live
+evidence against `c75a50be54ffb53fc728f6be0f14521e7b775bd1`: validation passed,
+1609 ms, 79 input / 146 output / 225 total tokens. The local ledger also
+retains one failed attempt with unknown usage. A separate historical manual
+success used 155 / 112 / 267 tokens, giving cross-record known sums of
+234 / 258 / 492. These sums are incomplete consumption, not billing.
+The manual record lacks an exact timestamp and source revision and remains
+outside the ledger. See state.md for provenance and the sanitized live receipt.
+Application integration and all other unverified product gates remain open.
 
 See [founder guide](docs/founder-guide.md) for limits and trust boundaries,
 and [checkpoint state](docs/state.md) for separate historical and executable evidence.
