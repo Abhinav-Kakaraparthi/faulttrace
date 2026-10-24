@@ -1,0 +1,6 @@
+# Local FT-006 backend only; standalone probes remain standard-library.
+fastapi==0.162.0
+uvicorn==0.54.0
+Pillow==13.0.0
+# Offline ASGI API tests.
+httpx==0.28.1

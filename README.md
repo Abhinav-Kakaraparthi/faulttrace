@@ -9,10 +9,11 @@ investigate equipment anomalies.
 ## Status
 
 Standalone synthetic Nebius text probe, offline image-evidence preparation,
-and offline validation tests exist. Vision inference remains unverified.
-A local React interactive demo now exists. Live application AI integration,
-simulation, CI, and hosting are not implemented. Browser visual verification
-of the preview is pending because no browser surface was available to the agent.
+and offline validation tests exist. Two standalone vision fixtures have passed
+verified inference. A local FastAPI/SQLite workflow and React frontend now
+persist tasks/evidence across tabs and backend restart in offline tests.
+The new connected live journey and browser visuals remain unverified; inference
+is disabled by default. CI, hosting, and recovery verification remain open.
 
 ## Planned workflow
 
@@ -32,13 +33,42 @@ workspaces, hidden fault scenarios, evidence clarification, and refusal.
 React/TypeScript frontend; Python/FastAPI API and worker; PostgreSQL;
 private evidence storage; isolated simulator; Nebius model inference.
 
-React/TypeScript/Vite is implemented for the local-only preview. The API,
-worker, database, storage, and simulator are proposed choices.
+React/TypeScript/Vite and FastAPI are implemented locally. SQLite in ignored
+`.local/workflow/` explicitly replaces proposed PostgreSQL for portable,
+single-instance validation; hosted database work remains open. Task creation
+and telemetry are a fixed simulation, not model planning.
 Provider capabilities must be verified before selecting model identifiers.
 
-## FT-005 interactive preview
+## FT-006 server workflow
 
-Open **http://127.0.0.1:5173/** while the local server runs. Commander and
+See [server workflow guide](docs/evidence-workflow.md) for trust boundaries,
+restart/idempotency behavior, and the later one-call live procedure.
+
+Backend terminal (local-only, inference disabled):
+
+```powershell
+Set-Location 'C:\Users\surya\Projects\faulttrace'
+& 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m venv .venv
+& .venv\Scripts\python.exe -m pip install -r requirements-backend.txt
+$env:FAULTTRACE_ALLOW_INFERENCE = '0'
+& .venv\Scripts\python.exe -m uvicorn faulttrace.workflow.main:app --host 127.0.0.1 --port 8765 --workers 1 --no-access-log --log-level warning
+```
+
+Do not recreate an installed venv unnecessarily. Frontend terminal: use the
+npm commands below. Commander: http://127.0.0.1:5173/?mode=connected&view=commander;
+second-tab Operator: http://127.0.0.1:5173/?mode=connected&view=operator.
+Backend: http://127.0.0.1:8765/api/state. Vite proxies /api; keys stay backend-only.
+
+Full offline checks after backend setup:
+
+```powershell
+& .venv\Scripts\python.exe -m unittest discover -s tests -v
+& .venv\Scripts\python.exe -m pip check
+```
+
+## FT-005 separate sample preview
+
+Open **http://127.0.0.1:5173/?mode=sample** while Vite runs. Commander and
 Operator share deterministic sample state within one tab. Live AI is not
 connected; no provider requests or equipment control exist. Refresh/reset
 clears the demo. No cross-tab or cross-device synchronization is claimed.
@@ -81,7 +111,9 @@ From the repository root in PowerShell, select the available interpreter:
 ```powershell
 $py = 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
 & $py --version
-& $py -m unittest discover -s tests -v
+& $py -m unittest discover -s tests -p test_probe.py -v
+& $py -m unittest discover -s tests -p test_accounting.py -v
+& $py -m unittest discover -s tests -p test_image_evidence.py -v
 ```
 
 On other machines, set `$py` to your Python 3.12 executable. No installation
@@ -130,10 +162,11 @@ and [checkpoint state](docs/state.md) for separate historical and executable evi
 
 ## FT-004A image-evidence preparation
 
-The offline image probe has synthetic clear/obscured fixtures, a separate
-observation contract, and fake-transport tests. No real image inference or
-authenticated model discovery has run. The documented candidate is NVIDIA
-`nvidia/Nemotron-3.5-Super-VL`; availability for this account remains unknown.
+The image probe has synthetic clear/obscured fixtures, a separate observation
+contract, and fake-transport tests. Both supplied standalone fixture calls
+passed on `nvidia/Nemotron-3.5-Super-VL` at implementation
+`9f4544eed13bd09eeb37a8a9786555ff925fa1b0`; no calls were repeated in FT-006.
+The new connected application live path remains unverified.
 The existing Nano text model is not assumed to support images.
 
 See [image-probe guide](docs/vision-probe.md) for official discovery sources,

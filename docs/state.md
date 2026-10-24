@@ -1,5 +1,105 @@
 # Checkpoint state
 
+## Current checkpoint: FT-006 server-backed image evidence workflow
+
+Status: PARTIAL — server-backed implementation/offline verification complete;
+new connected live inference and actual two-tab/mobile browser review pending.
+Started clean on `feat/ft-005-visual-preview`, expected HEAD
+`9f4544eed13bd09eeb37a8a9786555ff925fa1b0`; created
+`feat/ft-006-evidence-workflow`. No unrelated changes were present.
+
+FastAPI now persists one simulated incident, a fixed F-17 observation task,
+revision-checked submissions, scoped private image metadata, analysis state,
+sanitized receipts/interpretations, idempotency records, and chronological
+events. Task creation is fixed simulation workflow, NOT AI planning.
+SQLite in ignored `.local/workflow/` is an explicit departure from proposed
+PostgreSQL for portable single-instance local validation; hosted database
+work, migrations, backups, and public-host hardening remain open.
+
+Connected Commander/Operator tabs read the same API state through Vite's
+loopback proxy. Bounded polling: one read at a time, 5-second timeout,
+2-second interval, 900 reads per refresh cycle, pause after 3 consecutive
+errors. No mutation retries. Sample preview stays explicitly separate and
+single-tab only. Both modes have truthful idle states; no plausible fault
+appears before start. Operator heading is compact. Simulated telemetry is
+separate from actual model interpretations and known per-call usage.
+
+PNG/JPEG uploads are bounded by bytes, dimensions, frame count, and real
+decode/format checks, normalized to RGB PNG, metadata stripped, alpha flattened
+onto white. Fixture-origin claims require matching committed bytes. Images
+stay in `.local/workflow/images/`, served only by database-scoped UUID, never
+filesystem input paths. Local users/processes are trusted; no authentication
+or user isolation exists. Do not expose these loopback dev servers publicly.
+
+Analyze image is explicit and additionally requires backend environment
+FAULTTRACE_ALLOW_INFERENCE=1 and NEBIUS_API_KEY. Defaults disable inference.
+The existing standalone probes/strict contract/transport remain unchanged.
+One worker serializes the application analysis/accounting path. Reservations
+are durable before inference; no SQLite transaction spans network activity.
+Duplicate clicks/keys and stale writes cannot create a second call for an
+evidence ID. A durable receipt outbox precedes the existing ledger write.
+Failed persistence retains the receipt; interruptions become uncertain on
+restart, reconcile accounting only, and NEVER replay inference. Available
+interpretations/usage are preserved without declaring diagnosis or recovery.
+
+Pinned backend dependency set is requirements-backend.txt (direct inputs .in),
+installed in this project's isolated .venv with Python 3.12.14. FastAPI 0.162.0,
+Uvicorn 0.54.0, Pillow 13.0.0, HTTPX 0.28.1; pip check passes. HTTPX's pinned
+TestClient adapter emits a deprecation warning, not a failure. No frontend
+dependency additions. All source files remain below 500 lines.
+
+Checks: 48 Python tests passed (35 existing + 13 new API/reliability tests);
+6 frontend state tests and production build/type check passed. Offline API
+tests use fake transport, temporary DB/images/ledger, two ASGI clients, and
+fresh application instances for restart checks. No real provider request
+was made. A Windows byte-lock read issue was caught and corrected. An initial
+all-socket test guard incorrectly blocked asyncio's internal socketpairs;
+the corrected guard permits only those loopback internals, blocks outbound
+network, and reports no forbidden outbound attempts. This is not a browser test.
+
+Windows denied backend bind on 8000 even after permission retry. The unused
+loopback port 8765 works. Existing FaultTrace Vite was safely identified and
+restarted to load its new proxy; JSON /api/state through 5173 was then verified
+with inference false and no incident. Vite denies filesystem access to private
+.local storage (HTTP 403 verified) while API-scoped access remains available.
+Both dev servers are left running where
+the environment permits. Actual persistent local data was not populated with
+canned model evidence. Full commands: [workflow guide](evidence-workflow.md).
+
+Browser inventory is empty; iab opening still returns "Browser is not
+available: iab". No actual desktop/mobile two-tab journey, keyboard/overflow
+review, or screenshot inspection occurred. Ignored verification results/source
+hashes are under `.local/visual/ft-006/verification.json`; no screenshots exist.
+The old sample-preview screenshot blockers remain historical, not new passes.
+
+### Supplied standalone vision evidence reconciled, not repeated
+
+Both records are already in the local ledger exactly once at source revision
+`9f4544eed13bd09eeb37a8a9786555ff925fa1b0`, endpoint
+https://api.tokenfactory.nebius.com/v1, model nvidia/Nemotron-3.5-Super-VL:
+
+| Fixture | Result | Latency | Input / output / total | Attempt |
+| --- | --- | ---: | --- | --- |
+| panel-a | readable, 180 kPa | 2031 ms | 428 / 403 / 831 | 6c9382df-c96a-4677-8f0d-3e0aadcf7756 |
+| panel-b | unreadable, null reading/unit | 1844 ms | 428 / 341 / 769 | 94ec5368-e5e3-4baf-a36f-53b6055371d1 |
+
+Ledger remains 4 attempts, known input 935 / output 890 / total 1825, with
+one historical failure missing usage; partial/invalid/inconsistent 0. Separate
+external manual success remains 155 / 112 / 267 (timestamp/revision unknown).
+Cross-record known sums are 1090 / 1002 / 2092 plus unknown failed consumption.
+Neither completeness nor billing is inferred. No duplicate import/generation.
+These two synthetic-fixture successes establish only that standalone capability;
+they do not verify the newly implemented connected runtime or arbitrary gauges.
+
+Exact next action: separately authorize the guide's one-call connected panel-a
+procedure, starting backend with inference enabled only in the founder's
+Windows terminal. Open two tabs, submit image without inference, click Analyze
+once, inspect actual result/accounting in both, then restart with inference
+disabled and verify retained IDs/receipt without another call. Stop on failure
+or ambiguity; panel-b connected verification would be a separate later call.
+No cloud resources, intervention, deployment, merge, or next feature checkpoint.
+Scoped commit/final SHA, remote match, and working status come from Git results.
+
 ## Current refinement: FT-005 task-first layout
 
 Bounded founder review refinement on existing `feat/ft-005-visual-preview`.

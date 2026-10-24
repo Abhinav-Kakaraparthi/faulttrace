@@ -12,6 +12,15 @@ Official sources:
 Recheck official requirements before final submission.
 Check an item only after recording evidence or a verified link.
 
+FT-006 current scope: server-backed local incident/task/evidence persistence,
+explicit image analysis path, and two-tab polling are implemented and tested
+offline with fake transport. SQLite is temporary local architecture, not hosted
+PostgreSQL. The new connected live inference/browser journey remains unverified;
+no production hosting, diagnosis, action authorization, or recovery is proven.
+The two supplied standalone vision successes are recorded in state.md without
+reimport/repeat calls. All full product, browser, runtime-integration, deployment,
+and eligibility claims below remain open. See [workflow guide](evidence-workflow.md).
+
 FT-003 standalone synthetic text-probe acceptance is satisfied by corrected
 live evidence at implementation c75a50be54ffb53fc728f6be0f14521e7b775bd1.
 State.md records the sanitized executable result and separate external

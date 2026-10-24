@@ -1,5 +1,12 @@
 # FT-004A: offline image-evidence probe
 
+Historical preparation record: the later supplied standalone panel-a/panel-b
+calls passed at revision 9f4544eed13bd09eeb37a8a9786555ff925fa1b0, with
+attempts 6c9382df-c96a-4677-8f0d-3e0aadcf7756 and
+94ec5368-e5e3-4baf-a36f-53b6055371d1. They are already in the ledger;
+do not repeat/reimport them to verify FT-006. Current connected application
+verification is separately scoped in [workflow guide](evidence-workflow.md).
+
 Offline preparation only; no account-model query or image inference was run
 by the agent. The NVIDIA text integration remains separate. A successful
 structured response does not grant equipment authority or establish accuracy.
@@ -68,7 +75,7 @@ From a clean committed checkout in the project root:
 Set-Location 'C:\Users\surya\Projects\faulttrace'
 $py = 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
 & $py --version
-& $py -m unittest discover -s tests -v
+& $py -m unittest discover -s tests -p test_image_evidence.py -v
 ```
 
 If needed in your Windows terminal, copy the existing Windows user environment

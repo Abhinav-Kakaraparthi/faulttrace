@@ -1,6 +1,8 @@
 # FT-005 local interactive preview
 
-Open **http://127.0.0.1:5173/** on this computer while the local server runs.
+Open **http://127.0.0.1:5173/?mode=sample** on this computer while Vite runs.
+The separate FT-006 server mode and backend commands are in the
+[workflow guide](evidence-workflow.md). Statements here describe sample mode only.
 This is a frontend preview, not deployed hosting. The persistent banner says
 "Interactive demo — sample data" and "Live AI not connected". No provider
 requests, credentials, cloud synchronization, equipment actions, or verified
@@ -35,7 +37,9 @@ Python probes and tests remain independent and unchanged:
 
 ```powershell
 Set-Location 'C:\Users\surya\Projects\faulttrace'
-& 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m unittest discover -s tests -v
+& 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m unittest discover -s tests -p test_probe.py -v
+& 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m unittest discover -s tests -p test_accounting.py -v
+& 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m unittest discover -s tests -p test_image_evidence.py -v
 ```
 
 ## What to review

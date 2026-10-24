@@ -3,6 +3,7 @@ import { Icon } from './Icon';
 
 export function Investigation({ demo }: { demo: Demo }) {
   const latest = demo.evidence.at(-1);
+  if (!demo.started) return <aside className="investigation section-surface connected-explanations"><h2>No active investigation</h2><p>Start a demo incident before considering competing explanations. No plausible fault is assigned while idle.</p></aside>;
   return <aside className="investigation section-surface" aria-labelledby="investigation-title">
     <div className="section-heading"><div><span className="eyebrow">INVESTIGATION</span><h2 id="investigation-title">Keep the alternatives open.</h2></div><span className="step-count">3 leads</span></div>
     <p className="muted">Sample explanations, not an AI diagnosis. Evidence narrows the next question.</p>

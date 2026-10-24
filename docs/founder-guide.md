@@ -1,5 +1,40 @@
 # Provider smoke test
 
+Current application status: FT-006 adds a local server-backed workflow and
+keeps the earlier sample preview separate. See [workflow guide](evidence-workflow.md)
+for exact setup/URLs and the later one-call verification procedure. Earlier
+no-backend/no-vision statements below describe their original checkpoints.
+The new connected application live path and browser journeys remain unverified.
+
+One fixed simulated incident/task persists in local SQLite, an explicit
+portable single-instance departure from planned PostgreSQL. Images are decoded,
+bounded, stripped of metadata, stored privately under ignored .local, and
+retrieved by scoped evidence UUID only. User uploads, verified fixture-origin
+bytes, human refusals, and model interpretations remain distinguishable.
+No asset identity, equipment authorization, diagnosis, or recovery follows.
+
+Commander and Operator poll the same local API in separate tabs. Upload is
+separate from Analyze image. Backend opt-in and an environment key are required
+for actual inference; both are never exposed to the frontend. Coding/test
+verification used fake provider transport only. Pending/accepted/unreadable/
+refused/failed/stale/uncertain states and known/unknown per-call usage are shown.
+
+Revision/idempotency checks and a durable reservation prevent duplicate calls.
+One worker serializes analysis/accounting without holding a SQLite transaction
+during network I/O. Interruption is uncertain, never automatically retried;
+receipt reconciliation can repeat accounting only. No auth, user isolation,
+public-host hardening, multi-instance queue, or recovery/maintenance engine
+exists. Trust only local users/processes; do not expose these dev servers.
+
+The supplied panel-a/panel-b vision successes were confirmed in the ledger,
+not repeated/imported. Known ledger totals: 935 input / 890 output / 1825 total;
+cross-record including the separate manual record: 1090 / 1002 / 2092, plus
+one failed request with unknown usage. Two digital fixtures cannot establish
+arbitrary gauge accuracy or verification of the new application runtime.
+
+Browser remains unavailable; no new desktop/mobile screenshots or visual pass
+is claimed. Offline tests and HTTP readiness do not replace that review.
+
 Transport sends one synthetic text request to the fixed Nebius endpoint and
 model. Validation independently checks the response envelope and exact
 observation-only proposal. A valid proposal grants no authority and executes
