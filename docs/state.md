@@ -1,5 +1,68 @@
 # Checkpoint state
 
+## Current checkpoint: FT-005 interactive website preview
+
+Status: PARTIAL — implementation and local launch complete, actual browser
+visual verification blocked. Started clean on `feat/ft-004-image-evidence`
+at `a1dd87ecb4ee67e6fc396c223f8cdaecf2544568`; created
+`feat/ft-005-visual-preview`. No unrelated work was present. Earlier
+no-website statements below describe earlier checkpoints, not current status.
+
+Implemented a local React/TypeScript/Vite frontend in frontend/: graphite
+workspace, teal controls, amber attention states; connected Commander and
+Operator views; sample metrics and SVG process selection; pressure chart;
+competing explanations/evidence gaps; task rationale; synthetic fixture
+selection; readable/unreadable/access-blocked/wrong-equipment responses;
+chronological evidence inspection; repeat observation and reset. Mobile layout
+uses a dedicated view switch and contained chart/schematic scroll areas.
+
+The persistent banner labels "Interactive demo — sample data". All sample
+results are deterministic; live AI is not connected. Single-tab in-memory
+state only, cleared on refresh/reset. No cross-tab/device/cloud sync,
+equipment action, diagnosis, verified recovery, backend, or provider call.
+Committed synthetic PNGs are reused directly; no personal uploads or model
+output are used. UI does not fabricate tokens, latency, or confidence scores.
+
+Tooling verified: Node 22.14.0 / npm 10.9.2. Added only pinned React/ReactDOM
+19.3.1, TypeScript 7.0.2, Vite 8.3.5, and React/ReactDOM types 19.3.0, with
+frontend/package-lock.json. Node >=22.12 is required for Vite and the test
+runner. Package metadata compatibility was checked against npm registry and
+the official Vite Node requirements. No additional UI/chart/icon libraries.
+
+Checks: npm build/type check passed; 6 Node state-transition tests passed
+(incident assignment, four evidence outcomes, duplicate submission guard,
+repeat observation preserving provenance, reset). All 35 existing Python
+offline tests passed with zero socket connection attempts. Python source
+is unchanged. Initial build caught a TypeScript action-narrowing error;
+corrected before the passing final checks. An initial install invocation
+resolved the wrong directory; rerun in frontend installed the pinned packages.
+
+Local server: http://127.0.0.1:5173/ (strict port, loopback only). HTTP readiness,
+served Operator module, and synthetic PNG each returned 200. Dev server is
+left running if the environment retains its process; exact restart/install/
+build commands are in README and [preview guide](preview.md).
+
+Browser limitation: inventory returned no browsers, and opening iab returned
+"Browser is not available: iab". Therefore no 1440x900 desktop or 390x844
+mobile journey was actually exercised. Keyboard navigation/focus, rendered
+contrast, overflow, modal behavior, fixture/error states, and visual polish
+remain unverified in a browser. No screenshots were captured or inspected;
+do not confuse build/state tests or HTTP 200 with browser testing.
+Ignored `.local/visual/ft-005/verification.json` records this limitation,
+check results, and source hashes tied to the tested code. Screenshot directory
+exists for later manual review, but contains no screenshot evidence.
+
+Source files stay below 500 lines. Dependencies/build output, local logs,
+ledger, and visual artifacts remain ignored. Scoped diff and staged secret
+review precede commit/push; delivery SHA, remote match, final status, and
+available CI are established by command results. No public deployment,
+merge, or inference in FT-005. Submission product/runtime gates stay open.
+
+Exact next action: founder opens the local URL and performs the desktop and
+phone manual-review sequence in docs/preview.md, then supplies visual feedback.
+Do not start backend integration, live AI, vision, or deployment from this
+partial preview checkpoint. Stop for founder feedback after delivery.
+
 ## Current checkpoint: FT-004A offline image-evidence preparation
 
 Scope: offline preparation only. Base was clean on

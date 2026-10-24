@@ -10,8 +10,9 @@ investigate equipment anomalies.
 
 Standalone synthetic Nebius text probe, offline image-evidence preparation,
 and offline validation tests exist. Vision inference remains unverified.
-Application runtime integration, simulation, CI, and hosting are not implemented.
-There is no website yet; browser testing is not applicable to these probes.
+A local React interactive demo now exists. Live application AI integration,
+simulation, CI, and hosting are not implemented. Browser visual verification
+of the preview is pending because no browser surface was available to the agent.
 
 ## Planned workflow
 
@@ -31,8 +32,38 @@ workspaces, hidden fault scenarios, evidence clarification, and refusal.
 React/TypeScript frontend; Python/FastAPI API and worker; PostgreSQL;
 private evidence storage; isolated simulator; Nebius model inference.
 
-These are proposed choices, not implemented capabilities.
+React/TypeScript/Vite is implemented for the local-only preview. The API,
+worker, database, storage, and simulator are proposed choices.
 Provider capabilities must be verified before selecting model identifiers.
+
+## FT-005 interactive preview
+
+Open **http://127.0.0.1:5173/** while the local server runs. Commander and
+Operator share deterministic sample state within one tab. Live AI is not
+connected; no provider requests or equipment control exist. Refresh/reset
+clears the demo. No cross-tab or cross-device synchronization is claimed.
+
+Exact PowerShell commands (Node 22.12+, verified with 22.14.0):
+
+```powershell
+Set-Location 'C:\Users\surya\Projects\faulttrace\frontend'
+npm.cmd ci
+npm.cmd run dev
+```
+
+Build/type check and offline state tests in another terminal:
+
+```powershell
+Set-Location 'C:\Users\surya\Projects\faulttrace\frontend'
+npm.cmd run test
+npm.cmd run typecheck
+npm.cmd run build
+```
+
+See [preview guide](docs/preview.md) for sample-data limits and the desktop/
+phone review checklist. Browser automation was unavailable; no screenshots
+or completed visual/accessibility checks are claimed. Python probe commands
+below remain separate and must not be run to review the website.
 
 ## Development and submission
 

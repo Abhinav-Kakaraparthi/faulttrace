@@ -30,6 +30,13 @@ application runtime claims remain unverified. Fixtures were visually inspected,
 but this is neither browser verification nor arbitrary analog-gauge accuracy.
 See [image-probe guide](vision-probe.md). No submission checkboxes change.
 
+FT-005 adds a local React/Vite interactive demo with sample Commander/Operator
+views in one browser tab. It has no backend/provider connection or cross-session
+sync. Browser access was unavailable to the agent, so desktop/mobile visual
+and accessibility verification is pending; no screenshots were taken.
+The checklist items below remain open. Local preview is not deployed hosting,
+a completed live application, or independent recovery verification.
+
 ## Entry and eligibility
 
 - [ ] Registration and eligibility confirmed.

@@ -123,3 +123,23 @@ The same ledger accepts the two exact allowlisted text/vision model IDs;
 accounting is extracted before evidence validation. No accounting infrastructure
 was expanded. Raw model responses/reasoning are never persisted or printed.
 No website exists; browser journeys are not applicable to this checkpoint.
+
+FT-005 now adds a local interactive website preview. This supersedes the
+earlier no-website statements for current UI status, without changing past
+checkpoint evidence. Open http://127.0.0.1:5173/ while its server is running.
+See [preview guide](preview.md) for exact npm install/start/build commands
+and the manual desktop/mobile review sequence.
+
+Commander and Operator share in-memory state in a single tab: incident start,
+equipment inspection, task rationale, fixture selection/submission, refusal,
+unreadable evidence, inspection dialog, repeat observation, and reset.
+Clear sample evidence and refusal/unreadable paths lead to distinct visible
+states. The clear result is a deterministic fixture transcription, not a
+vision-model result. No diagnosis, recovery, or equipment authorization is
+performed. All data is sample; no live AI, backend, telemetry, cloud sync,
+or inference billing is connected. Refresh loses local state.
+
+The agent could not access a browser surface: inventory empty, iab unavailable.
+Build/type checks and state tests pass, but actual desktop/mobile visuals,
+keyboard behavior, rendered contrast, overflow, and screenshots remain pending
+founder review. No visual-verification claim follows from successful builds.
