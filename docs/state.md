@@ -45,15 +45,34 @@ can return a plausible but invalid proposal; deterministic validation rejects it
 
 Initial offline run: 8 passed, 1 failed (whitespace credentials interacted
 with defensive redaction). Corrected before implementation commit.
-Implementation revision and final checks will be recorded in a separate
-evidence commit after the implementation is committed. Live inference has
-not yet been run by the new executable.
+Implementation revision: `092b77d3b7755598e369d26e857cfde445665d2d`.
+Final offline run: 9 tests passed (including parameterized invalid contracts,
+transport limits, no retries, and sentinel-key output checks); diff whitespace
+check passed. All source files are below 500 lines. Staged content was
+manually reviewed before commit. An additional automated secret scan failed
+to execute due to PowerShell quoting; the corrected implementation-commit
+scan passed afterward. No credentials were printed or committed.
+
+Committed CLI check: exit 1, missing_credentials; NEBIUS_API_KEY is unavailable.
+No provider request was sent and no automatic retry was attempted.
+Sanitized receipt: [missing credentials](evidence/ft-003-missing-credentials.json).
+This is executable failure evidence, not successful live inference evidence.
+Historical manual evidence above remains separate.
+
+Delivery: implementation and later evidence are separate commits. Remote
+branch SHA and available CI must be checked after push; command results,
+not this record, establish successful delivery. No UI or deployment exists.
 
 Prior license-detection issue resolved: read-only GitHub repository API
 reports visibility public and license SPDX MIT on October 24, 2026.
 GitHub Actions API reports zero runs; CI is not implemented.
 
 ## Next checkpoint (after FT-003 evidence)
+
+Immediate next action: provision NEBIUS_API_KEY through the environment and
+run exactly one `python -m faulttrace.probe --live` from this clean feature
+branch; preserve its sanitized receipt in a separate evidence commit.
+Do not automatically retry a failed request.
 
 FT-004: bounded Nebius vision capability gate, using synthetic evidence,
 explicit opt-in, sanitized receipts, and independent output validation.
