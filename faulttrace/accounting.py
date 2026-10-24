@@ -7,6 +7,8 @@ from .validation import SAFE_CODES
 
 ENDPOINT = "https://api.tokenfactory.nebius.com/v1"
 MODEL = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B"
+VISION_MODEL = "nvidia/Nemotron-3.5-Super-VL"
+SUPPORTED_MODELS = {MODEL, VISION_MODEL}
 COUNTS = ("prompt_tokens", "completion_tokens", "total_tokens")
 USAGE_STATES = {"missing", "partial", "valid", "invalid", "inconsistent"}
 
@@ -41,12 +43,12 @@ def usage_fields(usage):
     return counts, "partial" if any(v is not None for v in counts.values()) else "missing"
 
 
-def extract_accounting(envelope):
+def extract_accounting(envelope, expected_model=MODEL):
     """Return only validated fields; one bad field never erases another."""
     model, response_id = envelope.get("model"), envelope.get("id")
     usage, status = usage_fields(envelope.get("usage"))
     diagnostics = []
-    if model != MODEL:
+    if model != expected_model:
         model = None
         diagnostics.append("invalid_metadata_model")
     if not valid_id(response_id):
@@ -58,9 +60,9 @@ def extract_accounting(envelope):
             "token_usage": usage, "usage_status": status, "diagnostics": diagnostics}
 
 
-def new_receipt(revision):
+def new_receipt(revision, model=MODEL):
     return {"attempt_id": str(uuid.uuid4()), "timestamp": datetime.now(timezone.utc).isoformat(),
-            "endpoint": ENDPOINT, "requested_model": MODEL, "returned_model": None,
+            "endpoint": ENDPOINT, "requested_model": model, "returned_model": None,
             "response_id": None, "latency_ms": None, "transport_invoked": False,
             "token_usage": None, "usage_status": "missing", "diagnostics": [],
             "validation_result": "failed", "source_revision": revision if valid_revision(revision) else None}
@@ -79,9 +81,9 @@ def sanitized_receipt(value):
         raise ValueError()
     if datetime.fromisoformat(timestamp).tzinfo is None:
         raise ValueError()
-    if result["endpoint"] != ENDPOINT or result["requested_model"] != MODEL:
+    if result["endpoint"] != ENDPOINT or result["requested_model"] not in SUPPORTED_MODELS:
         raise ValueError()
-    if result["returned_model"] not in (None, MODEL):
+    if result["returned_model"] not in (None, result["requested_model"]):
         raise ValueError()
     if result["response_id"] is not None and not valid_id(result["response_id"]):
         raise ValueError()

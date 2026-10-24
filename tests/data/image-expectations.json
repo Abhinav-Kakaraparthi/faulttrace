@@ -1,0 +1,4 @@
+{
+  "panel-a": {"readability": "readable", "reading": 180, "unit": "kPa", "evidence_ref": "image-001"},
+  "panel-b": {"readability": "unreadable", "reading": null, "unit": null, "evidence_ref": "image-002"}
+}

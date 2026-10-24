@@ -5,7 +5,7 @@ import urllib.error
 import urllib.request
 
 from .validation import SAFE_CODES, ProbeError, parse_json, validate_completion
-from .accounting import ENDPOINT, MODEL, extract_accounting, new_receipt
+from .accounting import ENDPOINT, MODEL, SUPPORTED_MODELS, extract_accounting, new_receipt
 
 MAX_BODY = 262144
 PROMPT = ('Synthetic observation-only test. Return only this JSON object: '
@@ -34,16 +34,21 @@ def transport(key, payload):
     return body
 
 
-def run_probe(key, revision, send=transport):
-    receipt = new_receipt(revision)
+def run_probe(key, revision, send=transport, *, model=MODEL, payload=None,
+              validator=validate_completion):
+    receipt = new_receipt(revision, model)
     start = None
     try:
+        if model not in SUPPORTED_MODELS:
+            raise ProbeError("invalid_metadata_model")
         if not key or not key.strip():
             raise ProbeError("missing_credentials")
         start = time.monotonic()
         receipt["transport_invoked"] = True
-        body = send(key, {"model": MODEL, "max_tokens": 2048,
-                          "messages": [{"role": "user", "content": PROMPT}]})
+        request_payload = payload if payload is not None else {
+            "model": model, "max_tokens": 2048,
+            "messages": [{"role": "user", "content": PROMPT}]}
+        body = send(key, request_payload)
         if not isinstance(body, bytes) or len(body) > MAX_BODY:
             raise ProbeError("invalid_response_body")
         try:
@@ -52,8 +57,8 @@ def run_probe(key, revision, send=transport):
             raise ProbeError("response_decoding_error") from None
         if not isinstance(envelope, dict):
             raise ProbeError("invalid_envelope")
-        receipt.update(extract_accounting(envelope))
-        validate_completion(envelope)
+        receipt.update(extract_accounting(envelope, model))
+        validator(envelope)
         if receipt["diagnostics"]:
             raise ProbeError(receipt["diagnostics"][0])
         receipt["validation_result"] = "passed"

@@ -15,6 +15,7 @@ SAFE_CODES = frozenset({
     "invalid_proposal", "invalid_metadata_model", "invalid_metadata_id",
     "invalid_usage", "inconsistent_usage", "probe_failed", "live_opt_in_required",
     "invalid_or_refused_message",  # Historical sanitized receipts only.
+    "invalid_image_evidence", "invalid_fixture",
 })
 
 
@@ -35,7 +36,8 @@ def parse_json(value):
         raise ProbeError("invalid_json") from None
 
 
-def validate_completion(envelope):
+def completion_content(envelope):
+    """Shared strict completion envelope checks; never return reasoning."""
     if not isinstance(envelope, dict):
         raise ProbeError("invalid_envelope")
     choices = envelope.get("choices")
@@ -59,7 +61,11 @@ def validate_completion(envelope):
     content = message.get("content")
     if not isinstance(content, str) or not content.strip():
         raise ProbeError("empty_or_invalid_content")
-    proposal = parse_json(content)
+    return content
+
+
+def validate_completion(envelope):
+    proposal = parse_json(completion_content(envelope))
     expected = {"kind": "REQUEST_OBSERVATION", "asset_id": "F-17",
                 "capability": "READ_LOCAL_DP", "evidence_refs": ["telemetry-001"]}
     if (not isinstance(proposal, dict) or proposal != expected

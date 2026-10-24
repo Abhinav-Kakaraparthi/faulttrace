@@ -23,6 +23,13 @@ consumption or cost claim follows. This does not verify application runtime
 integration or the full platform claims below; those checkboxes remain open.
 No website exists, so browser verification is not applicable to FT-003.
 
+FT-004A prepares synthetic image fixtures and an offline evidence contract.
+No authenticated model discovery or real image call has run; NVIDIA
+`nvidia/Nemotron-3.5-Super-VL` is only a public-catalog candidate. Vision and
+application runtime claims remain unverified. Fixtures were visually inspected,
+but this is neither browser verification nor arbitrary analog-gauge accuracy.
+See [image-probe guide](vision-probe.md). No submission checkboxes change.
+
 ## Entry and eligibility
 
 - [ ] Registration and eligibility confirmed.

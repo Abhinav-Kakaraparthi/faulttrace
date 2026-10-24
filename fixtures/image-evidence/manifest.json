@@ -1,0 +1,10 @@
+{
+  "panel-a": {
+    "evidence_ref": "image-001",
+    "sha256": "865db39953a926433d00de7be42eedc07f5795940bc07d78dc5c44d90dd16da6"
+  },
+  "panel-b": {
+    "evidence_ref": "image-002",
+    "sha256": "0b787644c7315751357ed5e4bee087810d37d1ed1f976a264cd15505bad4547a"
+  }
+}

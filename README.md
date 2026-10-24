@@ -8,9 +8,10 @@ investigate equipment anomalies.
 
 ## Status
 
-Standalone synthetic Nebius text probe and offline validation tests exist.
+Standalone synthetic Nebius text probe, offline image-evidence preparation,
+and offline validation tests exist. Vision inference remains unverified.
 Application runtime integration, simulation, CI, and hosting are not implemented.
-There is no website yet; browser testing is not applicable to FT-003.
+There is no website yet; browser testing is not applicable to these probes.
 
 ## Planned workflow
 
@@ -95,3 +96,16 @@ Application integration and all other unverified product gates remain open.
 
 See [founder guide](docs/founder-guide.md) for limits and trust boundaries,
 and [checkpoint state](docs/state.md) for separate historical and executable evidence.
+
+## FT-004A image-evidence preparation
+
+The offline image probe has synthetic clear/obscured fixtures, a separate
+observation contract, and fake-transport tests. No real image inference or
+authenticated model discovery has run. The documented candidate is NVIDIA
+`nvidia/Nemotron-3.5-Super-VL`; availability for this account remains unknown.
+The existing Nano text model is not assumed to support images.
+
+See [image-probe guide](docs/vision-probe.md) for official discovery sources,
+exact PowerShell account-discovery, one-clear/one-obscured live commands,
+and offline ledger summary. All live commands require a later authorized
+checkpoint. Run the existing offline command above to test both probes.

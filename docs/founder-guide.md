@@ -95,3 +95,31 @@ attributed to code. Its separate historical accounting is documented in
 state.md. Neither ledger totals nor cross-record totals establish full
 consumption or billing. No further inference or FT-004 work occurs during
 evidence finalization; application integration and vision remain open gates.
+
+FT-004A adds offline image-evidence preparation, not live vision validation.
+The [image-probe guide](vision-probe.md) contains official model sources and
+exact later Windows-terminal commands. The candidate is NVIDIA
+`nvidia/Nemotron-3.5-Super-VL`, separately listed for image input; our existing
+Nano text model grants no image capability. Public listing is not account
+verification. No authenticated model/account query or inference ran in FT-004A.
+
+Image observations are separate from planner proposals: readability, nullable
+reading/unit, and a task-provided image reference only. The numeric range is
+a synthetic fixture constraint, never an equipment limit. No asset identity,
+diagnosis, authorization, or recovery claim comes from image output. The
+shared envelope checks remain strict, and the text validator still accepts
+only its original observation-only proposal. A valid image contract can still
+contain a wrong transcription, so fixture correctness must be checked separately.
+
+Both invented PNGs were visually inspected: the clear digital display and
+the same display fully replaced by opaque pixels. No expected answer enters
+the prompt, filename, metadata, or payload description. Existing Pillow was
+used only for offline generation; production probing requires no image library.
+Tests check opaque occlusion and regeneration as well as the contract.
+These fixtures cannot establish arbitrary analog-gauge accuracy.
+
+The transport retains its timeout, body bound, cap, and no-retry behavior.
+The same ledger accepts the two exact allowlisted text/vision model IDs;
+accounting is extracted before evidence validation. No accounting infrastructure
+was expanded. Raw model responses/reasoning are never persisted or printed.
+No website exists; browser journeys are not applicable to this checkpoint.

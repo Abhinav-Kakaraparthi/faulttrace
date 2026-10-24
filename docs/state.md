@@ -1,5 +1,81 @@
 # Checkpoint state
 
+## Current checkpoint: FT-004A offline image-evidence preparation
+
+Scope: offline preparation only. Base was clean on
+`feat/ft-003-provider-probe` at expected HEAD
+`19f9edc2e55c0ba39b61344038115becb27b14ef`. Created
+`feat/ft-004-image-evidence` from that verified revision. No unrelated work
+was present. No inference, authenticated account query, UI, deployment,
+merge, tooling installation, or accounting-infrastructure expansion.
+
+Candidate: `nvidia/Nemotron-3.5-Super-VL`, documented active/image2text in
+the [official public catalog](https://tokenfactory.nebius.com/api/public/models_info)
+on October 24, 2026. NVIDIA vision is preferred here because it is actually
+listed, not inferred from Nano. The catalog also labels a dedicated-endpoint
+use case; serverless/account access is NOT established. The
+[official vision example](https://docs.tokenfactory.nebius.com/api-reference/examples/vision-capabilities)
+documents inline base64 images and text/image_url message parts. Request:
+POST `https://api.tokenfactory.nebius.com/v1/chat/completions`; 2048 output
+tokens, 60-second socket timeout, 256 KiB response limit, one selected PNG,
+no redirects/retries/fallbacks. Compatibility with this candidate's returned
+metadata, reasoning budget, and the account remains unverified.
+
+The image evidence contract is separate from planner proposals. It allows
+only readability, reading, unit, evidence_ref; unreadable requires both
+reading/unit null. References are task-provided, not model-created asset
+identity. Readable values must be finite, nonnegative, and at most 1000;
+this is explicitly a synthetic fixture constraint, not an industrial limit.
+No diagnosis, recovery, equipment command, confidence percentage, or
+authorization. Shared completion-envelope checks remain strict. The existing
+text proposal contract is unchanged. Available usage survives evidence failure.
+
+Fixtures: invented RGB PNGs, 480x300, generated with already available Pillow
+12.3.0. No new dependencies; image library is offline-generation-only.
+Neutral filenames and manifest do not contain answers. Expected values stay
+in offline test/generator/docs material; runtime never loads the answer key.
+The image viewer was actually used to inspect both fixtures: panel-a clearly
+shows the digital reading and unit, panel-b completely covers both with opaque
+replacement pixels. Tests verify every covered pixel, identical outside scene,
+no alpha or ancillary metadata, manifest integrity, and byte reproducibility.
+
+- panel-a.png SHA-256: `865db39953a926433d00de7be42eedc07f5795940bc07d78dc5c44d90dd16da6`.
+- panel-b.png SHA-256: `0b787644c7315751357ed5e4bee087810d37d1ed1f976a264cd15505bad4547a`.
+
+Verification: full prior/affected offline tests passed (35 tests; Python
+3.12.14), including wrong references, extra/duplicate fields, nonfinite/bool/
+null/range errors, refusal/truncation, transport/accounting failures, missing
+credentials, secret non-disclosure, and preservation of the text validator.
+Tests use fake transport and temporary ledgers. The final network-guarded run
+passed all 35 tests with zero socket connection attempts. Whitespace check
+passed; all source files are below 500 lines (largest 250). Staged secret
+review and remote verification are reported with delivery command results.
+No fabricated model result is used as evidence.
+The existing local ledger remains ignored; no image attempts were recorded.
+
+See [image-probe guide](vision-probe.md) for exact PowerShell model/account
+discovery, one-clear and one-obscured opt-in request, and offline summary.
+The ledger now permits only the original text model and this exact candidate;
+its persistence, summary, and accounting schema are unchanged. Fixture ID/hash,
+reference, and normalized evidence appear in sanitized CLI output, not the
+accounting ledger. Preserve that output during later live verification.
+
+Offline preparation acceptance: PASS; live vision stays UNVERIFIED until
+actual image calls pass both contract validation and independent fixture
+expectations. Contract-valid but wrong readings still fail the capability gate.
+These synthetic digital fixtures do not prove arbitrary analog-gauge accuracy.
+Application integration, UI, deployment, and unverified submission gates remain
+open. There is no website, so browser journey testing is not applicable.
+
+Exact next action (not performed here): in the Windows terminal run the
+documented authenticated model-list discovery. If listed and a separate live
+checkpoint is authorized, run once:
+`& $py -m faulttrace.image_probe --live --fixture panel-a`.
+Review its receipt and independent expected reading before the separately
+selected panel-b invocation. Stop on failure without retry or fallback.
+The implementation/final SHA comes from the scoped commit and remote-match
+command results, not a guessed self-referential SHA in this file.
+
 ## Current: FT-003 evidence finalized
 
 FT-003 standalone text-probe acceptance: PASS. Corrected live validation
