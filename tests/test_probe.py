@@ -2,6 +2,8 @@ import contextlib
 import io
 import json
 import os
+from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 import urllib.error
@@ -25,6 +27,11 @@ def fake(value):
 
 
 class ProbeTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.ledger_args = ["--ledger", str(Path(self.temporary.name) / "usage.json")]
+
     def test_valid_and_request_bounds(self):
         calls = []
         def send(key, payload):
@@ -68,7 +75,7 @@ class ProbeTests(unittest.TestCase):
         variants.append(value)
         for field in ("tool_calls", "function_call"):
             value = envelope()
-            value["choices"][0]["message"][field] = []
+            value["choices"][0]["message"][field] = [{}]
             variants.append(value)
         for value in variants:
             with self.subTest(value=value):
@@ -102,13 +109,13 @@ class ProbeTests(unittest.TestCase):
         for send in values:
             output = io.StringIO()
             with patch.dict(os.environ, {"NEBIUS_API_KEY": sentinel}), contextlib.redirect_stdout(output):
-                self.assertEqual(probe.main(["--live"], send=send), 1)
+                self.assertEqual(probe.main(["--live"] + self.ledger_args, send=send), 1)
             self.assertNotIn(sentinel, output.getvalue())
             self.assertEqual(json.loads(output.getvalue())["validation_result"], "failed")
 
     def test_opt_in(self):
         with contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(probe.main([], send=lambda *args: self.fail("transport called")), 2)
+            self.assertEqual(probe.main(self.ledger_args, send=lambda *args: self.fail("transport called")), 2)
 
     def test_real_transport_sanitized_failures_and_limits(self):
         for error, expected in [

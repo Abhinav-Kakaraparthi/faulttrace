@@ -1,14 +1,12 @@
 """Bounded Nebius transport and sanitized receipt construction."""
-from datetime import datetime, timezone
 import json
 import time
 import urllib.error
 import urllib.request
 
-from .validation import ProbeError, parse_json, validate_completion
+from .validation import SAFE_CODES, ProbeError, parse_json, validate_completion
+from .accounting import ENDPOINT, MODEL, extract_accounting, new_receipt
 
-ENDPOINT = "https://api.tokenfactory.nebius.com/v1"
-MODEL = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B"
 MAX_BODY = 262144
 PROMPT = ('Synthetic observation-only test. Return only this JSON object: '
           '{"kind":"REQUEST_OBSERVATION","asset_id":"F-17",'
@@ -37,16 +35,13 @@ def transport(key, payload):
 
 
 def run_probe(key, revision, send=transport):
-    receipt = {"timestamp": datetime.now(timezone.utc).isoformat(),
-               "endpoint": ENDPOINT, "requested_model": MODEL,
-               "returned_model": None, "response_id": None, "latency_ms": None,
-               "token_usage": None, "validation_result": "failed",
-               "source_revision": revision}
+    receipt = new_receipt(revision)
     start = None
     try:
         if not key or not key.strip():
             raise ProbeError("missing_credentials")
         start = time.monotonic()
+        receipt["transport_invoked"] = True
         body = send(key, {"model": MODEL, "max_tokens": 2048,
                           "messages": [{"role": "user", "content": PROMPT}]})
         if not isinstance(body, bytes) or len(body) > MAX_BODY:
@@ -55,38 +50,22 @@ def run_probe(key, revision, send=transport):
             envelope = parse_json(body.decode("utf-8"))
         except UnicodeError:
             raise ProbeError("response_decoding_error") from None
+        if not isinstance(envelope, dict):
+            raise ProbeError("invalid_envelope")
+        receipt.update(extract_accounting(envelope))
         validate_completion(envelope)
-        # Provider metadata is untrusted too: accept only narrow identifiers.
-        model, response_id = envelope.get("model"), envelope.get("id")
-        if model != MODEL or not isinstance(response_id, str) or not response_id.startswith("chatcmpl-"):
-            raise ProbeError("invalid_metadata")
-        suffix = response_id[len("chatcmpl-"):]
-        if not suffix or len(suffix) > 80 or any(c not in "0123456789abcdef-" for c in suffix):
-            raise ProbeError("invalid_metadata")
-        receipt.update(returned_model=model, response_id=response_id)
-        usage = envelope.get("usage")
-        if usage is not None:
-            if not isinstance(usage, dict):
-                raise ProbeError("invalid_usage")
-            counts = {name: usage.get(name) for name in
-                      ("prompt_tokens", "completion_tokens", "total_tokens")}
-            if any(v is not None and (type(v) is not int or v < 0) for v in counts.values()):
-                raise ProbeError("invalid_usage")
-            receipt["token_usage"] = counts
+        if receipt["diagnostics"]:
+            raise ProbeError(receipt["diagnostics"][0])
         receipt["validation_result"] = "passed"
     except ProbeError as error:
-        allowed = {"missing_credentials", "provider_http_error", "provider_network_error",
-                   "response_too_large", "invalid_response_body", "response_decoding_error",
-                   "invalid_json", "duplicate_json_key", "invalid_envelope", "non_stop_completion",
-                   "invalid_or_refused_message", "empty_or_invalid_content", "invalid_proposal",
-                   "invalid_metadata", "invalid_usage"}
-        receipt["error"] = str(error) if str(error) in allowed else "probe_failed"
+        receipt["error"] = str(error) if str(error) in SAFE_CODES else "probe_failed"
     except Exception:
         receipt["error"] = "probe_failed"
     if start is not None:
         receipt["latency_ms"] = round((time.monotonic() - start) * 1000)
-    # Last defensive boundary: even malicious metadata cannot echo the secret.
-    if key and key.strip() and key in json.dumps(receipt):
-        receipt.update(returned_model=None, response_id=None, error="probe_failed",
-                       validation_result="failed")
+    # Redact even a syntactically valid identifier that contains the credential.
+    for name in ("returned_model", "response_id", "source_revision"):
+        if key and key.strip() and receipt[name] and key in receipt[name]:
+            receipt[name] = None
+            receipt.update(error="probe_failed", validation_result="failed")
     return receipt

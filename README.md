@@ -70,5 +70,21 @@ Run from a clean committed checkout so HEAD identifies the tested source.
 The endpoint is `https://api.tokenfactory.nebius.com/v1` and the exact model is
 `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`.
 
+Every probe invocation gets an attempt ID and records a sanitized receipt in
+the gitignored `.local/nebius-usage.json` ledger (including failures and runs
+without live opt-in). Inspect or import receipts without contacting a provider:
+
+```powershell
+& $py -m faulttrace.probe --ledger-summary
+& $py -m faulttrace.probe --import-receipt 'C:\path\to\sanitized-receipt.json'
+```
+
+Use `--ledger 'C:\path\to\usage.json'` to select another local file. Reimporting
+the same receipt is idempotent; conflicting attempt IDs fail. Legacy receipts
+get a stable import ID and unknown usage. Partial sums are not total consumption
+or billing. See the founder guide for accounting and persistence limitations.
+FT-003 remains PARTIAL: an earlier live attempt failed; no corrected live
+request has been made.
+
 See [founder guide](docs/founder-guide.md) for limits and trust boundaries,
 and [checkpoint state](docs/state.md) for separate historical and executable evidence.

@@ -67,7 +67,75 @@ Prior license-detection issue resolved: read-only GitHub repository API
 reports visibility public and license SPDX MIT on October 24, 2026.
 GitHub Actions API reports zero runs; CI is not implemented.
 
-## Next checkpoint (after FT-003 evidence)
+## FT-003A: response compatibility, diagnostics, and persistent accounting
+
+Status: offline checkpoint implemented; FT-003 remains PARTIAL. The earlier
+executable live attempt failed. No corrected live request has been made.
+This checkpoint sent no provider requests, installed no dependencies, and
+did not advance FT-004. No commits or pushes were authorized or performed.
+Base branch: `feat/ft-003-provider-probe`; unchanged base HEAD:
+`468ad89b703dea4080e6c50371a35c839ff4a827`. Starting tree was clean.
+Checks below apply to the uncommitted FT-003A source, not that base revision.
+
+Completion validation now accepts absent/null/empty-array tool_calls and
+rejects nonempty or malformed values. Fixed codes distinguish message shape,
+role, refusal, unexpected tool calls, and unexpected function calls. All
+observation-only contract checks and the no-equipment-authority boundary
+remain. Accounting/metadata are extracted independently before completion
+validation, so a rejected proposal no longer discards valid usage or IDs.
+Invalid fields are null, partial counters survive, booleans are rejected,
+and inconsistent triples receive an explicit diagnostic. Transport invocation
+is recorded separately and does not establish completed inference.
+
+Local ledger: `.local/nebius-usage.json`, verified ignored by Git. UUID attempt
+IDs, validated receipt allowlist, exclusive writer lock, flushed temporary
+file and atomic replacement provide idempotent recording. Conflicting
+duplicates and persistence failures fail with fixed codes. Known prompt,
+completion, and total counters are summed independently; contributor and
+missing/partial/invalid/inconsistent attempt counts expose incomplete totals.
+Inconsistent triples are preserved but excluded from sums; no billing estimate.
+
+Imported the user-specified temporary failed receipt read-only:
+`faulttrace-ft003-live-1b5344dbe17948818ac4075a9de70282.json`.
+Import attempt ID: `fccd017f-1be5-5f0d-af4b-f27b6b024260`.
+First import recorded; second returned duplicate without adding an attempt.
+Original SHA-256 before and after:
+`B15A3BA9E58AAFEF480E47494A8EFDD73B442A6507115CFC0076200F8DF51D4C`.
+Lost provider response was not reconstructed. Usage and transport invocation
+remain unknown for this legacy receipt. The original FT-003 missing-credential
+receipt and the historical manual FT-002 success remain separate evidence;
+they were not imported into this local ledger.
+
+Local ledger summary: 1 attempt; known prompt/input 0, completion/output 0,
+total 0, each with 0 contributing attempts. These empty sums do NOT mean zero
+consumption. Missing usage: 1; partial: 0; invalid: 0; inconsistent: 0;
+transport unknown: 1. All-recorded-usage-complete: false.
+
+Verification: Python 3.12.14; `python -m unittest discover -s tests -v`
+using the README bundled interpreter. Existing tests use temporary ledgers;
+new fake-transport tests cover compatibility, fixed diagnostics, retained
+accounting, invalid/partial/boolean/inconsistent usage, duplicates/conflicts,
+atomic replacement failure, missing credentials, and secret non-disclosure.
+Final result: all 22 tests passed, including the original 9 tests. Reviewed
+the tracked diff and new accounting/ledger/test files; `git diff --check`
+passed. Source files remain below 500 lines. No staged changes.
+
+Limitations: local accounting covers only recorded receipts, not account-wide
+consumption or billing. A failed persistence or process crash can lose an
+attempt; a stale lock requires manual recovery after confirming no writer.
+The socket timeout remains per blocking operation, not a hard process deadline.
+No website exists; browser testing is not applicable. Application integration,
+diagnosis, vision, and production readiness remain unverified.
+
+## Next proposed verification (not performed in FT-003A)
+
+After review and explicit authorization, run exactly one corrected live text
+probe with the environment credential and persistent local ledger:
+`python -m faulttrace.probe --live`. Inspect its sanitized receipt, metadata,
+usage status and ledger summary; do not automatically retry. No FT-004 work
+until the text compatibility/accounting result has been reviewed.
+
+## Earlier FT-003 next action (superseded by FT-003A above)
 
 Immediate next action: provision NEBIUS_API_KEY through the environment and
 run exactly one `python -m faulttrace.probe --live` from this clean feature
