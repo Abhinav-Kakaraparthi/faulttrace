@@ -12,6 +12,12 @@ Official sources:
 Recheck official requirements before final submission.
 Check an item only after recording evidence or a verified link.
 
+FT-003 adds a standalone synthetic text probe only. Historical manual
+connectivity evidence is recorded in state.md separately from executable
+evidence. This does not verify application runtime integration or the full
+platform claims below; those checkboxes remain unchecked. No website exists
+yet, so browser verification is not applicable to this checkpoint.
+
 ## Entry and eligibility
 
 - [ ] Registration and eligibility confirmed.
@@ -38,8 +44,8 @@ Check an item only after recording evidence or a verified link.
 
 ## Public source and reproducibility
 
-- [ ] GitHub repository verified PUBLIC.
-- [ ] MIT LICENSE present and detected by GitHub.
+- [x] GitHub repository verified PUBLIC (repository API, October 24, 2026).
+- [x] MIT LICENSE present and detected by GitHub (SPDX MIT, same API check).
 - [ ] Necessary source and permitted assets included.
 - [ ] Clean setup and run instructions verified independently.
 - [ ] Configuration examples contain no secrets.

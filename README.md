@@ -8,8 +8,9 @@ investigate equipment anomalies.
 
 ## Status
 
-Documentation foundation only. Application code, live inference,
-simulation, browser verification, CI, and hosting are not implemented.
+Standalone synthetic Nebius text probe and offline validation tests exist.
+Application runtime integration, simulation, CI, and hosting are not implemented.
+There is no website yet; browser testing is not applicable to FT-003.
 
 ## Planned workflow
 
@@ -40,4 +41,34 @@ Provider capabilities must be verified before selecting model identifiers.
 - [Checkpoint state](docs/state.md)
 - [Engineering instructions](AGENTS.md)
 
-Executable setup and run instructions will accompany application code.
+## FT-003 provider probe
+
+Requires Python 3.12 (verified: 3.12.14), Git, and no third-party dependencies.
+From the repository root in PowerShell, select the available interpreter:
+
+```powershell
+$py = 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
+& $py --version
+& $py -m unittest discover -s tests -v
+```
+
+On other machines, set `$py` to your Python 3.12 executable. No installation
+or package setup is needed. Offline tests never call Nebius.
+
+To run exactly one live synthetic request, provision `NEBIUS_API_KEY` in the
+process environment through your secret manager (never paste it into source
+or a recorded command). Then run:
+
+```powershell
+& $py -m faulttrace.probe --live
+```
+
+Without `--live`, the command refuses inference. Missing credentials produce
+a sanitized JSON error. Exit codes: 0 validated, 1 failed, 2 no live opt-in.
+The JSON receipt reports source HEAD, latency and usage; missing usage is null.
+Run from a clean committed checkout so HEAD identifies the tested source.
+The endpoint is `https://api.tokenfactory.nebius.com/v1` and the exact model is
+`nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`.
+
+See [founder guide](docs/founder-guide.md) for limits and trust boundaries,
+and [checkpoint state](docs/state.md) for separate historical and executable evidence.
