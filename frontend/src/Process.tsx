@@ -8,13 +8,13 @@ export function Process({ active, selected, onSelect }: { active: boolean; selec
     },
   });
   return <section className="process section-surface" aria-labelledby="process-title">
-    <div className="section-heading"><div><span className="eyebrow">PROCESS OVERVIEW</span><h2 id="process-title">One loop. Several possible causes.</h2></div><span className="quiet-label">Schematic · sample</span></div>
-    <div className="schematic-wrap"><svg className="schematic" viewBox="0 0 750 260" aria-label="Cooling return line from pump P-04 through filter F-17 and valve V-08">
+    <div className="section-heading"><div><h2 id="process-title">Process overview</h2></div><span className="quiet-label">Schematic · sample</span></div>
+    <div className="schematic-wrap"><svg className="schematic" viewBox="0 0 750 240" aria-label="Cooling return line from pump P-04 through filter F-17 and valve V-08">
       <defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#293438" /></pattern></defs>
       <rect width="750" height="260" fill="url(#dots)" />
-      <path d="M35 126H715 M75 126V214H680V126" fill="none" stroke="#425b5e" strokeWidth="4" />
+      <path d="M35 126H715 M75 126V205H680V126" fill="none" stroke="#425b5e" strokeWidth="4" />
       <path d="m56 121 9 5-9 5 m210-10 9 5-9 5 m210-10 9 5-9 5 m210-10 9 5-9 5" fill="none" stroke="#73c7bd" strokeWidth="2" />
-      <text x="33" y="74" className="svg-small">RETURN LINE</text><text x="540" y="240" className="svg-small">TO COOLING CIRCUIT →</text>
+      <text x="25" y="20" className="svg-small">RETURN LINE</text><text x="540" y="225" className="svg-small">TO COOLING CIRCUIT →</text>
       <g {...select('P-04')} className={`equipment ${selected === 'P-04' ? 'selected' : ''}`}>
         <rect className="equipment-hit" x="108" y="72" width="118" height="105" rx="12" />
         <circle cx="167" cy="126" r="29" className="equipment-body" /><path d="m152 110 33 16-33 16z" fill="#70beb4" />
@@ -37,13 +37,13 @@ export function Process({ active, selected, onSelect }: { active: boolean; selec
       </g>
     </svg></div>
     <div className="equipment-selector" aria-label="Select equipment">{(Object.keys(equipment) as Equipment[]).map(id => <button key={id} aria-pressed={selected === id} onClick={() => onSelect(id)}><strong>{id}</strong><span>{equipment[id].name}</span></button>)}</div>
-    <div className="equipment-detail"><span className="equipment-tag">{selected}</span><div><strong>{equipment[selected].name}</strong><p>{equipment[selected].detail}</p></div><span className="quiet-label">Observation only</span></div>
+    <div className="equipment-detail"><span className="equipment-tag">{selected}</span><div><strong>{equipment[selected].name}</strong><details className="equipment-context"><summary>Equipment details</summary><p>{equipment[selected].detail}</p></details></div><span className="quiet-label">Observation only</span></div>
   </section>;
 }
 
 export function Telemetry({ active }: { active: boolean }) {
   return <section className="telemetry section-surface" aria-labelledby="telemetry-title">
-    <div className="section-heading"><div><span className="eyebrow">SAMPLE TELEMETRY</span><h2 id="telemetry-title">The trend behind the incident</h2></div><span className="chart-legend"><i /> Differential pressure</span></div>
+    <div className="section-heading"><div><h2 id="telemetry-title">Differential-pressure trend</h2></div><span className="chart-legend"><i /> Differential pressure</span></div>
     <div className="chart-scroll"><svg className="chart" viewBox="0 0 740 205" role="img" aria-label={active ? 'Sample differential pressure rises from 62 to 184 kilopascals over 20 minutes.' : 'Baseline sample differential pressure stays near 62 kilopascals.'}>
       <text x="15" y="16" className="svg-small">kPa</text>
       {[40, 90, 140].map((y, i) => <g key={y}><path d={`M53 ${y}H715`} stroke="#2d393d" strokeDasharray="3 5" /><text x="12" y={y + 5} className="svg-small">{200 - i * 75}</text></g>)}

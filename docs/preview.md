@@ -57,8 +57,8 @@ photographic proof of identity or action. The inspector is a native modal
 dialog with Escape/close handling and focus restoration.
 
 Reset starts over. Request another observation preserves earlier evidence
-in the activity record. An already active incident disables the start button
-with a visible reset explanation. Submitting without a fixture/response shows
+in the activity record. An already active incident shows a noninteractive
+"Demo incident active" status instead of a disabled start button. Submitting without a fixture/response shows
 a validation message. Operator before an incident has a no-task state.
 
 All state is in React memory in this one tab, shared by the two views. Reload,
@@ -83,11 +83,34 @@ remain UNVERIFIED. Build and state tests do not establish visual correctness.
 No screenshots were taken or inspected. Ignored verification metadata and
 source hashes are saved under `.local/visual/ft-005/verification.json`.
 
+Founder refinement: the accepted graphite/teal palette is unchanged. The
+Commander header now reads "INC-0042 · Reduced return flow" with a short
+incident description and tighter spacing. A dedicated observation task sits
+beside the process overview on desktop, ahead of competing explanations.
+It shows assigned/planned equipment, requested evidence, task state, native
+"Why this task?" disclosure, Open operator task, and repeat observation after
+a response. Selected-equipment context remains accessible in Equipment details.
+The RETURN LINE label has its own upper-left row, separate from pump labels.
+Telemetry values and body text were not reduced to compact the layout.
+
+On narrow screens the task precedes the process and chart. The task action
+and view switch move focus into the destination workspace; native buttons,
+summary controls, and existing SVG Enter/Space handlers remain keyboard
+accessible in code. Real keyboard traversal and first-viewport fit at
+1440x900/390x844 are still unverified because browser access remains unavailable.
+No before/after screenshots could be taken; the founder's supplied screenshot
+review is the input evidence, not an agent visual-verification result. Source
+hashes and check results for the refinement are saved separately under
+`.local/visual/ft-005/refinement-verification.json`.
+
 Founder manual-review sequence:
 
 1. At 1440x900, check the no-incident/empty record and Operator no-task state.
-2. Start an incident; select P-04, F-17, V-08; inspect the chart and rationale.
-3. Switch views; submit with no selection to check the validation error.
+2. Start an incident; confirm the process, metrics, and task are prioritized
+   in the first viewport. Select P-04, F-17, V-08; expand Equipment details,
+   inspect the chart and task rationale, and check RETURN LINE label separation.
+3. Use Open operator task with the keyboard; check destination focus. Submit
+   with no selection to check the validation error.
 4. Select clear fixture; submit; return to Commander; open and close evidence.
 5. Request another observation; submit obscured fixture. Confirm unknown reading.
 6. Repeat with Cannot access, Wrong equipment, and Unreadable responses.

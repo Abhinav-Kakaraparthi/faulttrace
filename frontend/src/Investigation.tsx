@@ -1,7 +1,7 @@
 import { type Demo, type Evidence, outcomeLabels } from './demo';
 import { Icon } from './Icon';
 
-export function Investigation({ demo, goOperator, reopen }: { demo: Demo; goOperator: () => void; reopen: () => void }) {
+export function Investigation({ demo }: { demo: Demo }) {
   const latest = demo.evidence.at(-1);
   return <aside className="investigation section-surface" aria-labelledby="investigation-title">
     <div className="section-heading"><div><span className="eyebrow">INVESTIGATION</span><h2 id="investigation-title">Keep the alternatives open.</h2></div><span className="step-count">3 leads</span></div>
@@ -9,10 +9,6 @@ export function Investigation({ demo, goOperator, reopen }: { demo: Demo; goOper
     <div className="hypothesis"><div className="hypothesis-heading"><span className="number">01</span><strong>Filter restriction</strong><span className="pill amber">Plausible</span></div><p>Lower flow and rising differential pressure could indicate increased resistance.</p><span className="gap">{latest?.outcome === 'readable' ? 'Local sample reading supports elevated pressure; cause remains open.' : 'Gap: independent local pressure reading.'}</span></div>
     <div className="hypothesis"><div className="hypothesis-heading"><span className="number">02</span><strong>Sensor discrepancy</strong></div><p>Telemetry may not match the condition at the instrument.</p><span className="gap">Gap: inspect the indicator and confirm instrument identity.</span></div>
     <div className="hypothesis"><div className="hypothesis-heading"><span className="number">03</span><strong>Valve position mismatch</strong></div><p>Position feedback may differ from the physical position.</p><span className="gap">Gap: physical position has not been observed.</span></div>
-    <div className="next-question"><span className="eyebrow">NEXT OBSERVATION</span><h3>Read F-17 at the instrument.</h3>
-      <p>{!demo.started ? 'Start the sample incident to assign the operator task.' : demo.waiting ? 'An operator observation is needed before moving the investigation forward.' : latest?.outcome === 'readable' ? 'A sample reading is on record. No cause or recovery has been verified.' : latest?.outcome === 'wrong-equipment' ? 'Confirm the equipment location. Do not assign this evidence to F-17.' : latest?.outcome === 'cannot-access' ? 'Access is blocked. Agree on a safe alternative observation.' : 'The reading is unknown. Request another observation without guessing.'}</p>
-      {demo.waiting ? <button className="button primary wide" onClick={goOperator}>Open operator task <Icon name="arrow" /></button> : demo.started ? <button className="button secondary wide" onClick={reopen}>Request another observation <Icon name="arrow" /></button> : <span className="quiet-label">Waiting for a demo incident</span>}
-    </div>
     <div className="verification-note"><span className="status-dot" /> Recovery not assessed · No equipment actions</div>
   </aside>;
 }

@@ -143,3 +143,13 @@ The agent could not access a browser surface: inventory empty, iab unavailable.
 Build/type checks and state tests pass, but actual desktop/mobile visuals,
 keyboard behavior, rendered contrast, overflow, and screenshots remain pending
 founder review. No visual-verification claim follows from successful builds.
+
+The bounded FT-005 founder refinement keeps the accepted palette, replaces
+the slogan with a compact incident title, and prioritizes the observation
+task beside the process. Explanations remain below the task. The task shows
+equipment, requested evidence, state, rationale, and an operator action with
+destination focus. Active incident is status rather than a disabled action;
+schematic labels are separated and equipment details remain expandable.
+Browser access is still unavailable, so before/after screenshots and actual
+desktop/mobile/keyboard verification remain pending founder review. See
+the updated preview guide; no backend or inference was introduced.

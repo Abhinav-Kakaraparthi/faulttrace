@@ -1,5 +1,49 @@
 # Checkpoint state
 
+## Current refinement: FT-005 task-first layout
+
+Bounded founder review refinement on existing `feat/ft-005-visual-preview`.
+Verified clean expected HEAD `aa5710d20132e1125e19deaebc2bcfc6ffc88b55`.
+No unrelated work, branch change, dependencies, backend, inference, or deployment.
+The graphite/teal direction is preserved. Founder-reported issues were excess
+header height, an off-screen task, and colliding schematic labels.
+
+Replaced the oversized Commander slogan with "INC-0042 · Reduced return flow"
+and a useful incident description. Reduced framing/metric spacing without
+reducing telemetry/body text sizes. The planned/active observation task is
+now a dedicated top-right panel beside the process, with equipment, requested
+evidence, task state, rationale, Open operator task, and retained repeat action.
+Competing explanations remain beneath it. The separate lower duplicate task
+strip was removed. Active incident is a status, not a disabled primary action.
+
+RETURN LINE moved to a separate upper-left label row; bypass/return labels
+are separated. Selected equipment and full details remain available via native
+Equipment details disclosure. On narrow layouts the task comes first, with
+contained chart/schematic scrolling. DOM order prioritizes the task action;
+view navigation now focuses the destination main region. Native button/details
+and SVG Enter/Space handlers were reviewed in source, not exercised in a browser.
+Sample-data banner, all four response outcomes, chronology, inspector, reset,
+and local-tab/no-AI limits remain in place. State reducer is unchanged.
+
+Verification: frontend state tests and build/type checks pass. Python probes
+and tests are unchanged, so the prior 35-test offline result still applies;
+they were not rerun for this UI-only refinement. Local preview remains
+http://127.0.0.1:5173/; HTTP readiness is checked during delivery.
+
+Browser inventory was again empty and opening iab again failed with "Browser
+is not available: iab". No desktop/mobile screenshots were captured, preserved,
+or inspected. No actual 1440x900/390x844 fit, overflow, focus/keyboard traversal,
+or navigation-action browser pass is claimed. The founder screenshot review
+guided this change, but the screenshot file was not attached to this checkpoint.
+Ignored `.local/visual/ft-005/refinement-verification.json` records source hashes
+and the browser blocker separately from the earlier verification record.
+
+Status remains PARTIAL pending founder visual review. Scoped source/docs,
+secret/diff checks, commit/push, and remote SHA verification complete delivery;
+Git command results identify the final revision. Exact next action: refresh
+the local preview and review the task placement, label separation, keyboard
+task action, and mobile overflow using docs/preview.md. Stop for visual feedback.
+
 ## Current checkpoint: FT-005 interactive website preview
 
 Status: PARTIAL — implementation and local launch complete, actual browser
