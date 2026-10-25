@@ -1,6 +1,7 @@
 import { useId } from 'react';
 import { type ServerState } from './api';
 import { planningBlocker } from './planningPolicy';
+import { HTTPDiagnostics } from './HTTPDiagnostics';
 
 export function PlannerPanel({ state, disabled, choose, open }: {
   state: ServerState; disabled: boolean; choose: () => void; open: () => void;
@@ -23,6 +24,7 @@ export function PlannerPanel({ state, disabled, choose, open }: {
       <strong>{item.status === 'escalated' ? 'Human investigation requested' : item.status} · context {item.context_revision}</strong>
       {item.proposal && <p>{item.proposal.kind} / {item.proposal.asset_id}<br />{item.explanation}<br />References: {item.proposal.evidence_refs.join(', ')}</p>}
       {item.error && <p>Diagnostic: {item.error}</p>}
+      {item.receipt && <HTTPDiagnostics receipt={item.receipt} />}
       {item.receipt && <p>Known input / output / total: {item.receipt.token_usage?.prompt_tokens ?? 'unknown'} / {item.receipt.token_usage?.completion_tokens ?? 'unknown'} / {item.receipt.token_usage?.total_tokens ?? 'unknown'}. Usage {item.receipt.usage_status}; ledger {item.accounting}.</p>}
       <span className="caption">Attempt {item.id}{item.task_id ? ` · Task ${item.task_id}` : ''}</span>
     </li>)}</ol></details>}

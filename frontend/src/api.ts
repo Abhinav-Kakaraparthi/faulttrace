@@ -2,9 +2,14 @@ export type Receipt = {
   attempt_id: string; requested_model: string; returned_model: string | null;
   validation_result: string; timestamp: string; latency_ms: number | null;
   source_revision: string | null; usage_status: string;
+  error?: string; http_status?: number | null; http_error_category?: string | null;
   token_usage: { prompt_tokens: number | null; completion_tokens: number | null; total_tokens: number | null } | null;
 };
 export type Interpretation = { readability: 'readable' | 'unreadable'; reading: number | null; unit: string | null; evidence_ref: string };
+export function httpDiagnosticSummary(receipt: Pick<Receipt, 'error' | 'http_status' | 'http_error_category'>): string | null {
+  if (receipt.error !== 'provider_http_error') return null;
+  return `Provider HTTP status: ${receipt.http_status ?? 'unknown'} · Category: ${receipt.http_error_category ?? 'unknown'}. Status category only; provider cause is not established. Error body and headers are not retained.`;
+}
 export type ServerEvidence = {
   id: string; task_id: string; asset_id: string; kind: 'image' | 'report'; origin: string; fixture_id: string | null;
   sha256: string | null; width: number | null; height: number | null; status: string; report: string | null;

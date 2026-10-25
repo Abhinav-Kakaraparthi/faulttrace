@@ -6,6 +6,7 @@ import urllib.request
 
 from .validation import SAFE_CODES, ProbeError, parse_json, validate_completion
 from .accounting import ENDPOINT, MODEL, SUPPORTED_MODELS, extract_accounting, new_receipt
+from .http_diagnostics import ProviderHTTPError
 
 MAX_BODY = 262144
 PROMPT = ('Synthetic observation-only test. Return only this JSON object: '
@@ -25,8 +26,14 @@ def transport(key, payload):
     try:
         with urllib.request.build_opener(NoRedirect).open(request, timeout=60) as response:
             body = response.read(MAX_BODY + 1)
-    except urllib.error.HTTPError:
-        raise ProbeError("provider_http_error") from None
+    except urllib.error.HTTPError as error:
+        failure = ProviderHTTPError(error.code)
+        # Do not read even a bounded error body: status does not establish its cause.
+        try:
+            error.close()
+        except Exception:
+            pass
+        raise failure from None
     except Exception:
         raise ProbeError("provider_network_error") from None
     if len(body) > MAX_BODY:
@@ -64,6 +71,8 @@ def run_probe(key, revision, send=transport, *, model=MODEL, payload=None,
         receipt["validation_result"] = "passed"
     except ProbeError as error:
         receipt["error"] = str(error) if str(error) in SAFE_CODES else "probe_failed"
+        if isinstance(error, ProviderHTTPError):
+            receipt.update(http_status=error.status, http_error_category=error.category)
     except Exception:
         receipt["error"] = "probe_failed"
     if start is not None:

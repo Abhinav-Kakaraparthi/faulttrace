@@ -138,8 +138,8 @@ and a fresh application instance verify shared state/restart persistence,
 not an actual two-tab browser journey. Standalone probes are unchanged.
 Browser inventory was empty; iab opening failed in FT-006, FT-007 and FT-007A. No
 agent desktop/mobile screenshots were captured or inspected. Ignored
-`.local/visual/ft-007a/verification.json` records the latest blocker/code hashes.
-No real inference ran in either FT-007 or FT-007A coding checkpoints.
+`.local/visual/ft-007b/verification.json` records the latest blocker/code hashes.
+No real inference ran in FT-007, FT-007A or FT-007B coding checkpoints.
 
 ## FT-007 / FT-007A planner contract and bounded verification
 
@@ -290,3 +290,72 @@ planner_duplicate_reference, planner_invalid_combination,
 planner_explanation_unsupported. Existing JSON/envelope/refusal/truncation
 codes remain separate; stale completion still uses stale_context. Historical
 invalid_proposal remains readable and is never retrospectively relabeled.
+
+## FT-007B: safe HTTP diagnostics and proposed isolated test
+
+New receipts contain nullable http_status and http_error_category. Categories
+describe status, not provider cause: 400 http_bad_request; 401 http_unauthorized;
+402 http_payment_required; 403 http_forbidden; 404 http_not_found;
+422 http_unprocessable_entity; 429 http_rate_limited; 5xx http_server_error.
+Redirects use http_redirect (never followed); other valid statuses use
+http_other_error; unavailable/invalid status uses http_unknown. No retry follows
+any category. Historical absent fields stay absent in storage and unknown in UI,
+preserving old duplicate identity. Error bodies and headers are not read at all,
+including malformed/oversized bodies; no parameter name or body usage is inferred.
+Parsed normal-response usage still survives completion/proposal rejection.
+
+Schema review against the [official structured output guide](https://docs.tokenfactory.nebius.com/ai-models-inference/json)
+and [chat API reference](https://docs.tokenfactory.nebius.com/api-reference/inference/create-chat-completion):
+no confirmed incompatibility found. The named strict wrapper matches the guide.
+Exact Nano support and anyOf/uniqueItems/array-bound support remain unverified;
+unsupported subset, authentication, account, route and service failures are
+possible explanations, not historical findings. The discarded HTTP status/body
+cannot distinguish them. Model, schema, prompt, output cap, retry policy,
+context history and per-incident budget are unchanged by FT-007B.
+
+**Exact proposed next diagnostic test, NOT RUN:** one planning call in a new
+independent empty simulation, only after separate live approval. Do not reuse
+or reset the existing isolated directory, primary incident or their attempted
+revision 1. Their three remaining turns and all records stay intact. This test
+checks unchanged request compatibility/status capture, not adaptive reasoning.
+
+In a separate Windows terminal, choose an unused port and a never-existing
+UUID directory. These future commands start a separate server; they do not
+stop/restart either of your existing servers. Keep the clean committed checkout:
+
+```powershell
+Set-Location 'C:/Users/surya/Projects/faulttrace'
+if (git status --porcelain) { throw 'dirty_checkout; stop' }
+if (Get-NetTCPConnection -LocalPort 8877 -State Listen -ErrorAction SilentlyContinue) { throw 'port_in_use; stop' }
+$env:FAULTTRACE_VERIFICATION_DIR = Join-Path (Get-Location) ('.local/verification/ft007b-' + [guid]::NewGuid().ToString('N'))
+if (Test-Path -LiteralPath $env:FAULTTRACE_VERIFICATION_DIR) { throw 'directory_exists; stop' }
+if ([string]::IsNullOrWhiteSpace($env:NEBIUS_API_KEY)) { $env:NEBIUS_API_KEY = [Environment]::GetEnvironmentVariable('NEBIUS_API_KEY', 'User') }
+if ([string]::IsNullOrWhiteSpace($env:NEBIUS_API_KEY)) { throw 'missing_credentials; stop' }
+$env:FAULTTRACE_ALLOW_INFERENCE = '1'
+& ./.venv/Scripts/python.exe -c "import os, uvicorn; from faulttrace.workflow.api import create_app; uvicorn.run(create_app(directory=os.environ['FAULTTRACE_VERIFICATION_DIR']), host='127.0.0.1', port=8877, access_log=False, log_level='warning')"
+```
+
+In a second terminal, create the incident (no inference), then issue exactly
+one planning POST. Poll only GET state; never resend the planning POST:
+
+```powershell
+$base = 'http://127.0.0.1:8877'
+function New-LocalHeaders { @{ 'X-FaultTrace-Local' = '1'; 'Idempotency-Key' = [guid]::NewGuid().ToString() } }
+Invoke-RestMethod "$base/api/incidents" -Method Post -ContentType 'application/json' -Body '{}' -Headers (New-LocalHeaders)
+$state = Invoke-RestMethod "$base/api/state"
+Invoke-RestMethod "$base/api/planning" -Method Post -ContentType 'application/json' -Body (@{revision=$state.incident.revision} | ConvertTo-Json -Compress) -Headers (New-LocalHeaders)
+for ($poll=0; $poll -lt 45; $poll++) {
+    $state = Invoke-RestMethod "$base/api/state"
+    if ($state.planning[0].status -ne 'pending') { break }
+    Start-Sleep -Seconds 2
+}
+$state.planning | Select-Object id,status,error,receipt,accounting,task_id | ConvertTo-Json -Depth 8
+```
+
+Stop after this one call, including on HTTP failure or pending timeout. Save
+only the sanitized receipt; check status/category and known/unknown usage
+separately. Confirm one attempt, no task on failure, three turns left, and one
+new ledger UUID. Use the offline ledger summary command above without imports.
+Do not downgrade/experiment with schema or infer root cause from a category.
+Manually stop only this new diagnostic server in its own terminal; leave prior
+servers and all simulation directories/receipts intact.

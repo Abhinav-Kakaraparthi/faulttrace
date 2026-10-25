@@ -1,6 +1,58 @@
 # Checkpoint state
 
-## Current: FT-007A reliability fix; FT-007 remains PARTIAL
+## Current: FT-007B safe HTTP diagnostics; FT-007 remains PARTIAL
+
+Started clean on feat/ft-007-observation-planner at
+`c571bb85773f0dda5936102587481ad122da704d`. This scoped fix preserves
+numeric http_status and fixed status-derived http_error_category through
+transport, sanitized receipts, the existing ledger and both UI evidence paths.
+Error bodies and headers are never read or saved, so parameter names and provider
+causes remain unknown. No inference, server restart, import, record rewrite,
+request-contract change, budget change, deployment or merge occurred.
+
+Read-only SQLite (mode=ro/query_only) and one shared-ledger load confirmed
+isolated attempt `76a24b31-3b2e-4954-9954-dee9749ce7fa` exactly once in each,
+with identical receipt, provider_http_error, missing usage, accounting recorded,
+no task, and three turns remaining. Directory:
+`.local/verification/ft007a-c3e18fe3026e4c87a4214bb2eda40983`.
+Receipt: timestamp 2026-10-25T01:30:32.073521+00:00, 843 ms, transport invoked,
+source c571bb85773f0dda5936102587481ad122da704d; returned model/response ID
+unknown. Context/current revision both 1. Historical HTTP status/body cannot
+be recovered and are not relabeled. No historical HTTP root cause is proven.
+
+Actual ledger: 7 attempts, 5 complete known contributors, known
+1937 input / 2712 output / 4649 total. TWO attempts now have missing usage:
+the older failed probe and the new isolated HTTP failure. Partial/invalid/
+inconsistent counts all zero. Separate historical manual success 155/112/267;
+cross-record known 2092/2824/4916. No missing tokens or billing estimated.
+Historical absent HTTP fields remain absent, avoiding rewritten receipts and
+changed duplicate fingerprints. The UI reports unknown for those fields.
+
+Schema review: named strict json_schema wrapper matches official Nebius guide;
+no confirmed incompatibility found. Exact Nano support and anyOf/uniqueItems/
+array-bound support remain unverified suspicions, not causes established by
+this historical failure. Model/schema/prompt/token cap/retry policy unchanged.
+See [workflow guide](evidence-workflow.md) for sources and exact proposed test.
+
+Checks: 78 backend offline tests (7 new HTTP tests), 10 frontend tests,
+TypeScript/Vite build and pip check. Fake HTTP opener only; malformed/oversized
+bodies are not read, secret text never emitted, no task on HTTP failure,
+known parsed-completion usage still survives validation rejection. Sources
+and request-contract diff checks passed. The full suite also passed with
+external sockets blocked (zero forbidden attempts; Windows asyncio internal
+loopback socket-pair setup only allowed). All source files remain
+below 500 lines. Browser inventory empty; iab unavailable. No visual pass or
+screenshots; ignored `.local/visual/ft-007b/verification.json` records hashes/blocker.
+
+Next diagnostic test, NOT RUN: after separate approval, use one fresh, empty,
+UUID-named isolated simulation on a verified-free port, sharing the existing
+ledger. Create one incident and issue exactly one planning request, unchanged
+payload. Read status/category and usage independently; stop without retry or
+schema experiment. Never reuse/reset either attempted revision-1 run, copy
+historical context, or consume their remaining three turns. This tests transport
+compatibility only, not live adaptive reasoning or prior-incident recovery.
+
+## Prior: FT-007A reliability fix; FT-007 remains PARTIAL
 
 Started clean on feat/ft-007-observation-planner at
 `8ce8172ed587c3c124467329926d0ac1742f3100`. The scoped FT-007A commit

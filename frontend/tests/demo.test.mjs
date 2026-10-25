@@ -2,6 +2,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { initial, reduceDemo } from '../src/demo.ts';
 import { planningBlocker } from '../src/planningPolicy.ts';
+import { httpDiagnosticSummary } from '../src/api.ts';
+
+test('HTTP diagnostics display safe status categories and retain historical unknowns', () => {
+  assert.equal(httpDiagnosticSummary({ error: 'provider_network_error' }), null);
+  assert.match(httpDiagnosticSummary({ error: 'provider_http_error' }), /HTTP status: unknown.*Category: unknown/);
+  assert.match(httpDiagnosticSummary({ error: 'provider_http_error', http_status: null, http_error_category: null }), /HTTP status: unknown.*Category: unknown/);
+  assert.match(httpDiagnosticSummary({ error: 'provider_http_error', http_status: 401, http_error_category: 'http_unauthorized' }), /HTTP status: 401.*Category: http_unauthorized.*cause is not established/);
+});
 
 const planningReady = { task: null, planning: [], incident: { revision: 2 }, planning_remaining: 4, inference_enabled: true };
 test('connected planner is available only after explicit incident creation and no blocking task', () => {

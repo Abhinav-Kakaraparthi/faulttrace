@@ -23,6 +23,8 @@ default; CI, hosting, and recovery verification stay open.
 FT-007A adds strict structured-output requests and precise sanitized diagnostics.
 The existing rejected live attempt remains preserved; a corrected call is
 blocked on its already-attempted context. See the workflow guide before testing.
+FT-007B preserves safe HTTP status/categories for future failures; historical
+status remains unknown. Error bodies/headers are never retained.
 
 ## Planned workflow
 

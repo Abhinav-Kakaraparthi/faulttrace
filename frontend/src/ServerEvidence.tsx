@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { type ServerEvidence as Evidence, type ServerState } from './api';
+import { HTTPDiagnostics } from './HTTPDiagnostics';
 
 export const statusLabel: Record<string, string> = {
   pending: 'Image accepted · not analyzed', accepted: 'Accepted model interpretation',
@@ -26,6 +27,7 @@ export function ServerEvidenceList({ state, inspect, analyze, disabled }: {
       <p>Source: {item.origin}{item.fixture_id ? ` / ${item.fixture_id}` : ''} · Task revision {item.submitted_revision}</p>
       {item.analysis?.interpretation && <p className="model-reading">Model interpretation: {item.analysis.interpretation.readability === 'readable' ? `${item.analysis.interpretation.reading} ${item.analysis.interpretation.unit}` : 'unreadable — reading and unit unknown'}</p>}
       {item.analysis?.status === 'uncertain' && <p className="amber-text">Interrupted analysis is not retried. Any retained interpretation requires review.</p>}
+      {item.analysis?.receipt && <HTTPDiagnostics receipt={item.analysis.receipt} />}
       {item.analysis?.receipt && <p>Known tokens: input {item.analysis.receipt.token_usage?.prompt_tokens ?? 'unknown'} / output {item.analysis.receipt.token_usage?.completion_tokens ?? 'unknown'} / total {item.analysis.receipt.token_usage?.total_tokens ?? 'unknown'} · Usage {item.analysis.receipt.usage_status} · Ledger {item.analysis.accounting}</p>}
       <div className="server-evidence-actions"><button className="button secondary" onClick={() => inspect(item)}>Inspect evidence</button>
         {item.id === latest && item.status === 'pending' && !item.analysis && <button className="button primary" disabled={disabled || !state.inference_enabled} onClick={() => analyze(item)}>Analyze image</button>}
@@ -49,6 +51,6 @@ export function ServerEvidenceDetails({ evidence }: { evidence: Evidence }) {
       <div><dt>Reading</dt><dd>{evidence.analysis?.interpretation?.reading ?? 'unknown'} {evidence.analysis?.interpretation?.unit}</dd></div>
       {receipt && <><div><dt>Model</dt><dd>{receipt.returned_model ?? 'unknown'} · validation {receipt.validation_result}</dd></div><div><dt>Attempt</dt><dd>{receipt.attempt_id}</dd></div><div><dt>Latency</dt><dd>{receipt.latency_ms === null ? 'unknown' : `${receipt.latency_ms} ms measured`}</dd></div><div><dt>Revision</dt><dd>{receipt.source_revision ?? 'unknown / dirty checkout'}</dd></div></>}
       {evidence.analysis?.error && <div><dt>Diagnostic</dt><dd>{evidence.analysis.error}</dd></div>}
-    </dl><p className="notice">Validated output is a model interpretation, not equipment identity, diagnosis, authorization, or verified recovery. Upload metadata was stripped; private image bytes stay outside the frontend.</p>
+    </dl>{receipt && <HTTPDiagnostics receipt={receipt} />}<p className="notice">Validated output is a model interpretation, not equipment identity, diagnosis, authorization, or verified recovery. Upload metadata was stripped; private image bytes stay outside the frontend.</p>
   </>;
 }

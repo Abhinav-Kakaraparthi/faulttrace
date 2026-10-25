@@ -4,6 +4,7 @@ import re
 import uuid
 
 from .validation import SAFE_CODES
+from .http_diagnostics import HTTP_FIELDS, receipt_fields
 
 ENDPOINT = "https://api.tokenfactory.nebius.com/v1"
 MODEL = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B"
@@ -65,6 +66,7 @@ def new_receipt(revision, model=MODEL):
             "endpoint": ENDPOINT, "requested_model": model, "returned_model": None,
             "response_id": None, "latency_ms": None, "transport_invoked": False,
             "token_usage": None, "usage_status": "missing", "diagnostics": [],
+            "http_status": None, "http_error_category": None,
             "validation_result": "failed", "source_revision": revision if valid_revision(revision) else None}
 
 
@@ -72,7 +74,7 @@ def sanitized_receipt(value):
     """Validate a receipt allowlist for persistence; never copy arbitrary text."""
     if not isinstance(value, dict):
         raise ValueError()
-    result = {name: value.get(name) for name in new_receipt(None)}
+    result = {name: value.get(name) for name in new_receipt(None) if name not in HTTP_FIELDS}
     attempt = result["attempt_id"]
     if not isinstance(attempt, str) or str(uuid.UUID(attempt)) != attempt:
         raise ValueError()
@@ -111,4 +113,5 @@ def sanitized_receipt(value):
         if not isinstance(error, str) or error not in SAFE_CODES:
             raise ValueError()
         result["error"] = error
+    result.update(receipt_fields(value))
     return result

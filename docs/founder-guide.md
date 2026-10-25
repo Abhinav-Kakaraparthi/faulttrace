@@ -16,6 +16,16 @@ endpoint/schema compatibility still needs live verification; application policy
 remains mandatory. No inference or server restart was performed in FT-007A.
 Live adaptive reasoning remains unverified.
 
+FT-007B adds numeric HTTP status and a fixed status-derived category to new
+failure receipts, ledger records and the UI. Bodies/headers are never read or
+retained; status is not a proven provider cause. Historical missing fields stay
+unknown without rewriting records. The isolated HTTP-failed attempt
+76a24b31-3b2e-4954-9954-dee9749ce7fa was verified once in SQLite/ledger, with
+missing usage, no task and three turns left. No status/root cause is recoverable.
+The existing schema was reviewed but not changed: no confirmed incompatibility;
+exact model/schema support remains unverified. See the workflow guide for a
+proposed single-call fresh isolated diagnostic case, not run in this checkpoint.
+
 The workflow keeps the earlier sample preview separate. See the workflow guide
 for exact setup/URLs and the completed FT-006 clear-image evidence. Earlier
 no-backend/no-vision statements below describe their original checkpoints.
@@ -52,10 +62,11 @@ context includes only public telemetry and recent observations, not fixture
 answers, hidden simulator labels or raw notes. Conflicting observations remain
 in the evidence history. Trust only local users/processes; do not expose these dev servers.
 
-FT-007A read-only accounting found 6 ledger attempts, 5 with complete known
+FT-007B read-only accounting found 7 ledger attempts, 5 with complete known
 usage: 1937 input / 2712 output / 4649 total. Separate historical manual success
 155 / 112 / 267 gives cross-record known 2092 / 2824 / 4916. One historical
-failed request still has unknown usage; no imports or record changes occurred.
+failed request and the isolated HTTP-failed request have unknown usage (2 total);
+no imports or record changes occurred. Partial/invalid/inconsistent counts are zero.
 Two digital fixtures cannot establish arbitrary gauge accuracy or broad
 application runtime coverage.
 
@@ -80,7 +91,7 @@ action authorization, or recovery. See state.md for the sanitized receipt.
 Agent browser access remains unavailable; no agent-operated visual pass or
 screenshot inspection is claimed. User observations are attributed explicitly.
 Mobile, connected unreadable/refusal, adaptive planning, recovery, CI, and
-hosting remain open. FT-007A has 71 passing offline backend tests, 9 frontend
+hosting remain open. FT-007B has 78 passing offline backend tests, 10 frontend
 tests and a passing type/build check. Browser surfaces remain unavailable;
 these checks do not establish a visual pass or live adaptive reasoning.
 
