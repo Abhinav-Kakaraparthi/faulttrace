@@ -89,8 +89,6 @@ def supported_explanations(context):
 
 def response_format(context):
     """Nebius-documented strict schema wrapper; exact-model acceptance awaits live verification."""
-    triples = [('REQUEST_OBSERVATION', asset, capability) for asset, capability in TEMPLATES]
-    triples.append(('ESCALATE', 'HUMAN', 'HUMAN_INVESTIGATION'))
     properties = {
         'kind': {'type': 'string', 'enum': ['REQUEST_OBSERVATION', 'ESCALATE']},
         'asset_id': {'type': 'string', 'enum': ['F-17', 'V-08', 'HUMAN']},
@@ -101,9 +99,7 @@ def response_format(context):
         'explanation_code': {'type': 'string', 'enum': supported_explanations(context)},
     }
     schema = {'type': 'object', 'properties': properties, 'required': list(properties),
-              'additionalProperties': False,
-              'anyOf': [{'properties': {name: {'enum': [v]} for name, v in zip(
-                  ('kind', 'asset_id', 'capability'), triple)}} for triple in triples]}
+              'additionalProperties': False}
     return {'type': 'json_schema', 'json_schema': {'name': 'observation_plan', 'strict': True, 'schema': schema}}
 
 

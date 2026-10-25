@@ -16,6 +16,15 @@ endpoint/schema compatibility still needs live verification; application policy
 remains mandatory. No inference or server restart was performed in FT-007A.
 Live adaptive reasoning remains unverified.
 
+Latest structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 returned
+only kind/asset_id/capability, matching the old partial anyOf branch properties.
+Application rejection and 328/1125/1453 usage are recorded once. This implicates
+composition compatibility, not a proven provider bug. Only provider root anyOf
+and its unused branch construction were removed: the schema is flat with six
+required fields; application combination/reference/shape/revision/explanation
+checks remain strict. Eight focused tests and 81 backend tests pass offline;
+no inference ran and live flat-schema compatibility remains unverified.
+
 The user's diagnostic reproduction 17da531f-147f-4dc6-bf49-19c5580d739f
 returned HTTP 400 / BadRequestError, with redacted message
 "[redacted] error [redacted] uniqueItems" and unknown usage recorded in the
@@ -71,11 +80,12 @@ context includes only public telemetry and recent observations, not fixture
 answers, hidden simulator labels or raw notes. Conflicting observations remain
 in the evidence history. Trust only local users/processes; do not expose these dev servers.
 
-FT-007B read-only accounting found 7 ledger attempts, 5 with complete known
-usage: 1937 input / 2712 output / 4649 total. Separate historical manual success
-155 / 112 / 267 gives cross-record known 2092 / 2824 / 4916. One historical
-failed request and the isolated HTTP-failed request have unknown usage (2 total);
-no imports or record changes occurred. Partial/invalid/inconsistent counts are zero.
+Latest read-only accounting found 12 ledger attempts, 8 with complete known
+usage: 2921 input / 5906 output / 8827 total. Separate historical manual success
+155 / 112 / 267 gives cross-record known 3076 / 6018 / 9094. Four attempts have
+unknown usage; partial/invalid/inconsistent counts are zero. These known sums
+exceed the supplied expectation 2420 / 5083 / 7503; state.md identifies the
+other distinct same-revision receipts. No records were imported or changed.
 Two digital fixtures cannot establish arbitrary gauge accuracy or broad
 application runtime coverage.
 

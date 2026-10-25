@@ -151,11 +151,18 @@ separate. Both operations use the same existing opt-in, worker and ledger.
 
 FT-007A adds `response_format` with type `json_schema` and a `json_schema`
 wrapper containing name, strict=true and schema. Constraints include required
-fields, additionalProperties=false, typed/enumerated fields, anyOf for the
-three permitted combinations, exact context revision, min/max evidence
+fields, additionalProperties=false, typed/enumerated fields,
+exact context revision, min/max evidence
 references drawn from this context, and context-supported explanation codes.
 Following the user diagnostic below, uniqueItems is omitted only from the
 provider schema; duplicate references remain rejected by application validation.
+Following structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211,
+root anyOf is also removed. The provider schema is one flat six-required-field
+object; allowed kind/asset/capability combinations remain enforced by application
+validation. Its three-field response was rejected without filling fields;
+328/1125/1453 usage was retained. Matching partial branch keys implicate
+composition compatibility, not a proven provider bug. Other schema support
+remains unverified until a separately authorized live checkpoint.
 Application-side validation remains independent and mandatory.
 
 Official sources checked for FT-007A:
@@ -363,6 +370,9 @@ Manually stop only this new diagnostic server in its own terminal; leave prior
 servers and all simulation directories/receipts intact.
 
 ## Single reserved verification after the uniqueItems correction
+
+Historical procedure only: later user diagnostics have occurred. Do not rerun
+the earlier terminal command or a live request in the flat-schema checkpoint.
 
 User diagnostic attempt 17da531f-147f-4dc6-bf49-19c5580d739f returned HTTP 400 /
 BadRequestError with message "[redacted] error [redacted] uniqueItems"; usage

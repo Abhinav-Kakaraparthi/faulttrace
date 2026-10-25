@@ -109,10 +109,14 @@ class PlannerContractTests(unittest.TestCase):
         self.assertNotIn('uniqueItems', schema['properties']['evidence_refs'])
         self.assertEqual(schema['properties']['evidence_refs'], {'type': 'array', 'minItems': 1, 'maxItems': 8,
             'items': {'type': 'string', 'enum': ['telemetry-001', 'evidence-known']}})
-        combinations = {tuple(branch['properties'][key]['enum'][0] for key in ('kind', 'asset_id', 'capability'))
-                        for branch in schema['anyOf']}
-        self.assertEqual(combinations, {('REQUEST_OBSERVATION', 'F-17', 'READ_LOCAL_DP'),
-            ('REQUEST_OBSERVATION', 'V-08', 'OBSERVE_POSITION'), ('ESCALATE', 'HUMAN', 'HUMAN_INVESTIGATION')})
+        self.assertEqual(set(schema), {'type', 'properties', 'required', 'additionalProperties'})
+        self.assertEqual(schema['type'], 'object')
+        self.assertEqual(len(schema['required']), 6)
+        self.assertNotIn('anyOf', json.dumps(schema))
+        for field, choices in [('kind', ['REQUEST_OBSERVATION', 'ESCALATE']),
+                ('asset_id', ['F-17', 'V-08', 'HUMAN']),
+                ('capability', ['READ_LOCAL_DP', 'OBSERVE_POSITION', 'HUMAN_INVESTIGATION'])]:
+            self.assertEqual(schema['properties'][field], {'type': 'string', 'enum': choices})
         self.assertNotIn('SECRET_SENTINEL', json.dumps(payload))
         for code in ('clarify_conflict', 'unreadable_evidence'):
             value = dict(self.proposal, explanation_code=code, evidence_refs=['evidence-known'])
@@ -130,3 +134,29 @@ class PlannerContractTests(unittest.TestCase):
         duplicate = dict(self.proposal, evidence_refs=['telemetry-001', 'telemetry-001'])
         with self.assertRaisesRegex(ProbeError, '^planner_duplicate_reference$'):
             validate_plan(self.envelope(duplicate), self.context)
+
+    def test_observed_three_field_response_is_rejected_without_filling_fields(self):
+        # Representative valid triple: the diagnostic established field shape, not values.
+        observed = {'kind': 'REQUEST_OBSERVATION', 'asset_id': 'F-17', 'capability': 'READ_LOCAL_DP'}
+        before = deepcopy(observed)
+        with self.assertRaisesRegex(ProbeError, '^planner_field_shape$'):
+            validate_plan(self.envelope(observed), self.context)
+        self.assertEqual(observed, before)
+        value = self.envelope(observed)
+        value['usage'] = {'prompt_tokens': 328, 'completion_tokens': 1125, 'total_tokens': 1453}
+        receipt = run_probe('SECRET_SENTINEL', None, lambda *_: json.dumps(value).encode(),
+                            payload=planner_payload(self.context),
+                            validator=lambda envelope: validate_plan(envelope, self.context))
+        self.assertEqual(receipt['error'], 'planner_field_shape')
+        self.assertEqual(receipt['token_usage'], value['usage'])
+        self.assertEqual(receipt['usage_status'], 'valid')
+
+    def test_flat_schema_does_not_authorize_invalid_combinations_or_references(self):
+        self.assertNotIn('anyOf', planner_payload(self.context)['response_format']['json_schema']['schema'])
+        for change, code in [({'asset_id': 'V-08'}, 'planner_invalid_combination'),
+                ({'kind': 'ESCALATE'}, 'planner_invalid_combination'),
+                ({'capability': 'MOVE_VALVE'}, 'planner_invalid_combination'),
+                ({'evidence_refs': ['telemetry-001', 'telemetry-001']}, 'planner_duplicate_reference'),
+                ({'evidence_refs': ['invented']}, 'planner_unknown_reference')]:
+            with self.subTest(code=code), self.assertRaisesRegex(ProbeError, '^' + code + '$'):
+                validate_plan(self.envelope(dict(self.proposal, **change)), self.context)

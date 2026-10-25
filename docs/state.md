@@ -1,36 +1,48 @@
 # Checkpoint state
 
-## Current: FT-007 narrow uniqueItems correction; live verification pending
+## Current: FT-007 flat provider schema; live verification pending
 
 Started clean on feat/ft-007-observation-planner at
-60842d6e350827b0f4f16d1c39d049afcea80033. User-performed diagnostic
-reproduction attempt 17da531f-147f-4dc6-bf49-19c5580d739f returned HTTP 400,
-code BadRequestError, redacted message "[redacted] error [redacted] uniqueItems";
-user reports ledger recorded and usage unknown. This implicates uniqueItems
-in the current request. No discarded historical error body was recovered,
-and this does not establish that no other schema incompatibility exists.
+4f1e78dfbdbe11de23d192789dad58f1dc3f8174. User structural diagnostic
+81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 returned only kind, asset_id and
+capability, omitting context_revision, evidence_refs and explanation_code.
+Those keys match the partial anyOf branch properties. This implicates schema
+composition compatibility; it is not proof of a provider implementation bug.
+Read-only ledger inspection corroborates one receipt for this attempt:
+planner_field_shape, valid 328 input / 1125 output / 1453 total, 4484 ms,
+source 4f1e78dfbdbe11de23d192789dad58f1dc3f8174. Returned content shape is
+user-reported; no discarded raw output was recovered.
 
-Smallest correction: remove uniqueItems only from the provider-facing
-evidence_refs schema. Strict application duplicate rejection remains unchanged
-(planner_duplicate_reference), as do all other schema/request constraints,
-model, prompt, token cap, idempotency, context/revision/budget and authorization.
-No JSON-object workaround. Six focused contract tests and all 79 backend
-offline tests pass. No frontend changes; prior frontend checks remain applicable.
-The guarded backend run recorded zero forbidden network attempts (only Windows
-asyncio internal loopback socket-pair setup allowed). Comparing two request
-contexts against the starting commit found only the removed uniqueItems key.
-No inference, database reset/write, receipt import, or server restart occurred
-in this coding step; previous accounting sections are dated snapshots, not a
-fresh ledger audit after the user's additional diagnostic calls.
+Correction removes only root anyOf and unused triples construction from the
+provider schema. It is now one flat object, all six fields required, no extra
+fields, same types/enums/revision/reference bounds/explanation constraints.
+uniqueItems stays absent. Application validation is unchanged: invalid
+combinations, duplicate/invented references, missing/extra fields, stale
+revisions and unsupported explanations fail; nothing is filled or unwrapped.
+All other request/context/prompt/model/cap/retry/budget/authorization behavior
+is unchanged. Eight focused contract tests and 81 backend offline tests pass.
+The full suite ran under a socket guard: zero forbidden network attempts,
+allowing only Windows asyncio internal loopback socket-pair setup. Request
+comparison against the starting commit differed only by root anyOf; AST checks
+confirmed validator/context builder/prompt builder unchanged. No frontend change.
 
-Next: reserve the second authorized provider call for exactly one standalone
-verification against this committed correction, reconstructed from the saved
-context for 91e991ab-d9eb-4519-9a52-c2ac3e8ff17b. It records a new sanitized
-receipt through the existing ledger, creates no workflow task and consumes no
-incident turn. See the [single verification command](evidence-workflow.md#single-reserved-verification-after-the-uniqueitems-correction).
-Do not run earlier fresh-simulation proposals or repeat reproduction. Stop on
-any result, without retries/fallbacks/schema experimentation. FT-007 remains
-PARTIAL until real verification; live adaptive reasoning and broader gates stay open.
+Accounting audit is read-only; no imports or record changes: ledger 12 attempts,
+8 complete known contributors = 2921 input / 5906 output / 8827 total. Four
+attempts have missing usage; partial/invalid/inconsistent counts all zero.
+Separate historical manual success = 155/112/267. Actual cross-record known =
+3076/6018/9094, NOT expected 2420/5083/7503 (difference +656/+935/+1591).
+Two other same-revision receipts are present, each once and planner_field_shape:
+851351c3-e4c2-4a70-8ad3-b025d2b0c9e1 = 328/806/1134;
+bb2018c9-b4af-4844-b2a8-1f74ffebf10d = 328/1263/1591.
+All distinct evidenced requests are counted; none were removed to match the
+expected figures. Unknown consumption is not zero; no billing estimate.
+
+No inference, workflow database write/reset, receipt import or server restart
+occurred. Next action is offline review of this commit; any live verification
+requires a separately authorized checkpoint. Earlier terminal verification
+commands are historical, not instructions to execute now. FT-007 remains
+PARTIAL; flat-schema live compatibility, adaptive reasoning, broader browser,
+recovery, CI and hosting gates remain unverified. Then stop for review.
 
 ## Prior: FT-007B safe HTTP diagnostics; FT-007 remains PARTIAL
 

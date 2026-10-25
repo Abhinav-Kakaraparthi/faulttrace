@@ -36,6 +36,14 @@ rejection remains strict. All 79 backend tests pass. Corrected live compatibilit
 is pending the reserved single verification call; FT-007 remains PARTIAL and no
 submission gate changes. This does not recover an earlier discarded response.
 
+Latest user structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211
+returned three fields matching partial anyOf properties; application rejected
+planner_field_shape and retained 328/1125/1453 usage. Provider schema is now
+flat with all six required fields and no anyOf/uniqueItems; application policy
+is unchanged. Eight focused tests and 81 backend tests pass offline. This
+implicates composition compatibility, not a proven provider bug; no live
+verification or inference occurred in this correction. FT-007 stays PARTIAL.
+
 FT-006 current scope: server-backed local incident/task/evidence persistence,
 explicit image analysis path, and two-tab polling are implemented and tested
 offline with fake transport. SQLite is temporary local architecture, not hosted
@@ -57,10 +65,11 @@ See [workflow guide](evidence-workflow.md).
 - [ ] Connected unreadable/refusal paths verified in the browser.
 - [ ] Mobile/accessibility/overflow review completed.
 
-FT-007B read-only known ledger: 1937 input / 2712 output / 4649 total across 7
-attempts (5 complete contributors). Separate historical manual record:
-155 / 112 / 267. Cross-record known: 2092 / 2824 / 4916 plus TWO failed
+Latest read-only known ledger: 2921 input / 5906 output / 8827 total across 12
+attempts (8 complete contributors). Separate historical manual record:
+155 / 112 / 267. Cross-record known: 3076 / 6018 / 9094 plus FOUR failed
 requests with unknown consumption. No billing or complete-consumption claim.
+Known sums differ from the supplied 2420 / 5083 / 7503; records remain unchanged.
 Full checklist gates remain unchecked unless their whole claim is verified.
 
 FT-003 standalone synthetic text-probe acceptance is satisfied by corrected
