@@ -3,8 +3,9 @@
 ## Current: FT-008 simulated restriction-to-recovery journey
 
 Started clean at 5bd6116fe12d9360e3859082c62ccc0ff2b18bf1; branch
-feat/ft-008-simulated-recovery. The scoped commit includes implementation/tests
-and these records; resolve it with git log -1. Existing servers and historical
+feat/ft-008-simulated-recovery. Core implementation: b76d2ef16360ced944dfec33b63bc7652060dcf0, with a
+subsequent UI-copy encoding repair and preview-evidence documentation.
+Existing servers and historical
 runs are untouched. No provider request, receipt import/replay, dependency
 installation, deployment or merge.
 
@@ -37,7 +38,12 @@ four missing-usage attempts; separate historical 155/112/267.
 
 Browser blocker: inventory apps=[]/browsers=[]; in-app tab creation returned
 Browser is not available: iab. No desktop/mobile/keyboard visual acceptance or
-screenshots claimed. Offline/API preparation passes; FT-008 visual acceptance
+screenshots claimed. An isolated inference-disabled preview was launched at
+http://127.0.0.1:5180/?mode=connected with a fresh private data directory;
+backend 8780, frontend/proxy and JourneyPanel module HTTP checks returned 200.
+No incident was created there; it is ready for founder review. Ignored browser
+blocker/hash record: .local/visual/ft-008/verification.json. These HTTP checks
+are not browser verification. Offline/API preparation passes; FT-008 visual acceptance
 remains PARTIAL. FT-007 remains PARTIAL; CI/hosting and broad AI/recovery claims
 remain open. Next action: founder review of the isolated localhost journey at
 1440x900 and 390x844, including keyboard, evidence blockers, approval, progress

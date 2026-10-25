@@ -62,9 +62,9 @@ The simulator advances by ten seconds per explicit request, at most 360 steps.
 
 Before approval and execution, deterministic policy requires a current sample,
 a provenance-bearing F-17 local report and a V-08 intermediate-position report.
-Freshness is at most 120 simulated seconds; local pressure must be 170?195 kPa
-and agree with telemetry within 8 kPa; flow 80?95 m?/h and valve feedback
-65?80%. Wrong equipment, unreadable/inaccessible/indeterminate reports, unknown
+Freshness is at most 120 simulated seconds; local pressure must be 170-195 kPa
+and agree with telemetry within 8 kPa; flow 80-95 m3/h and valve feedback
+65-80%. Wrong equipment, unreadable/inaccessible/indeterminate reports, unknown
 provenance, inconsistent values, missing evidence or active observation/planning
 block correction. Historical conflicting/refused reports are retained and block
 approval; this checkpoint adds no conflict-clearance workflow. At most 32 local
@@ -80,7 +80,7 @@ not production authentication or real equipment authorization.
 The recovery verifier receives measured samples and the execution boundary,
 never private simulator outcome or model declarations. It requires at least
 five consecutive, fresh post-action samples spanning forty seconds: flow
-115?125 m?/h, pressure 25?40 kPa, valve feedback 65?80%, no active alarm. Gaps,
+115-125 m3/h, pressure 25-40 kPa, valve feedback 65-80%, no active alarm. Gaps,
 stale samples and out-of-band/alarmed samples cannot establish recovery. A later
 relapse changes verified to failed; failure stays visible. Maintenance completion
 remains recorded independently. These numbers are synthetic fixture constraints,
@@ -104,7 +104,11 @@ provider calls. A socket guard verifies zero forbidden external connections.
 Browser verification is blocked: computer-use inventory returned no apps or
 browsers; in-app browser creation returned `Browser is not available: iab`.
 No desktop/mobile, keyboard, contrast, overflow, loading/error visual pass or
-screenshots are claimed. Inspect 1440?900 and 390?844, keyboard focus/actions,
+screenshots are claimed. An isolated inference-disabled preview was launched
+on 8780/5180 from the tested implementation; API, proxy, page and transformed
+JourneyPanel module returned HTTP 200, with no incident yet created. Ignored
+`.local/visual/ft-008/verification.json` records the browser blocker and source
+hashes. HTTP checks do not establish browser rendering or interaction. Inspect 1440x900 and 390x844, keyboard focus/actions,
 blocked/approved/observing/failed states and cross-tab updates before calling
 this visually accepted. Build and API success are not browser verification.
 No deployment, hosting, production control, paid inference or historical replay.
