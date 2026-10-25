@@ -1,8 +1,91 @@
 # Checkpoint state
 
+## Current: FT-006 connected clear-image evidence finalized
+
+Bounded acceptance: PASS for connected clear synthetic image submission/
+interpretation and user-reported restart persistence only. Broader FT-006
+coverage remains PARTIAL. This documentation-only checkpoint started clean
+on `feat/ft-006-evidence-workflow` at implementation
+`4b15365e20ea0b7cacf1ad2d695163bf439690ec`. No source/dependency changes,
+inference, server restart, analysis replay, receipt import, or data writes.
+
+The USER uploaded synthetic panel-a through connected Operator, observed an
+actual NVIDIA interpretation of readable 180 kPa with valid usage/ledger
+recorded, then restarted with FAULTTRACE_ALLOW_INFERENCE=0. The USER confirmed
+identical evidence, attempt, interpretation, and usage in both Commander and
+Operator. These are user observations, not agent-operated browser testing.
+No screenshot was attached or inspected by the agent in this finalization.
+
+Agent corroboration was read-only: SQLite URI mode=ro, PRAGMA query_only=ON,
+and existing ledger load only. SQLite has 1 incident, 1 F-17 task (observed,
+revision 4), 1 evidence record, and 1 accepted analysis with accounting recorded.
+Events contain one explicit analysis request and one accepted analysis. Ledger
+has exactly the prior four attempts plus the new attempt once. No additional
+recorded attempt appeared during the reported restart; this does not audit
+unrecorded requests outside these stores.
+
+Evidence: `a757eca7-445b-4d0c-b2ae-c70980b3f20d`. Stored origin stays
+`user-upload`, fixture_id null, 480x300. Its recorded original SHA-256 matches
+committed panel-a (`865db39953a926433d00de7be42eedc07f5795940bc07d78dc5c44d90dd16da6`).
+No provenance was rewritten to claim fixture-picker submission or image-proven
+asset identity. Private image bytes remain outside Git and were not inspected.
+
+Validated interpretation:
+`{"readability":"readable","reading":180,"unit":"kPa","evidence_ref":"evidence-a757eca7-445b-4d0c-b2ae-c70980b3f20d"}`.
+Sanitized receipt is identical in SQLite and the ledger:
+
+```json
+{
+  "attempt_id": "1b6b653c-abc9-4ec2-a9be-96d24aba38cc",
+  "timestamp": "2026-10-25T00:04:59.173746+00:00",
+  "endpoint": "https://api.tokenfactory.nebius.com/v1",
+  "requested_model": "nvidia/Nemotron-3.5-Super-VL",
+  "returned_model": "nvidia/Nemotron-3.5-Super-VL",
+  "response_id": "chatcmpl-f7947eb50a4d5f42d8147c26e317a604",
+  "source_revision": "4b15365e20ea0b7cacf1ad2d695163bf439690ec",
+  "latency_ms": 1938,
+  "transport_invoked": true,
+  "validation_result": "passed",
+  "token_usage": {"prompt_tokens": 438, "completion_tokens": 339, "total_tokens": 777},
+  "usage_status": "valid",
+  "diagnostics": []
+}
+```
+
+Timestamp is the stored UTC attempt/reservation time (October 24 evening in
+America/New_York). Inference-disabled startup and browser continuity are
+user-reported, not reenacted by the agent.
+
+| Actual accounting coverage | Known input | Known output | Known total |
+| --- | ---: | ---: | ---: |
+| Ledger: 5 attempts, 4 known contributors | 1373 | 1229 | 2602 |
+| Separate historical manual success | 155 | 112 | 267 |
+| Cross-record known sums | 1528 | 1341 | 2869 |
+
+Actual totals match expectations; no discrepancy. One historical failed
+attempt still has missing usage: missing 1, partial 0, invalid 0, inconsistent 0;
+its transport completion remains unknown. These are incomplete consumption,
+not zero usage or estimated billing. The manual record stays outside the
+ledger because its exact timestamp/application revision are unavailable.
+
+Source/test inputs are unchanged; reuse the still-valid 48 Python tests,
+6 frontend tests, build/type and dependency checks. No tests rerun for docs.
+Documentation diff/whitespace and staged secret review precede scoped commit;
+final documentation SHA and remote match are reported from Git results and
+must be distinguished from the live-tested implementation above.
+
+Still OPEN: mobile/accessibility/overflow review, agent-operated browser
+verification, connected unreadable/refusal paths, adaptive planning/hidden
+fault investigations, recovery verification, CI, hosting, public-host security,
+and full submission eligibility. Standalone unreadable success does not prove
+the connected path. Fixed simulation/SQLite/local-trust/no-authority limits
+are unchanged. Exact next action: review this evidence and separately scope
+the next bounded verification; do not repeat this analysis or start another
+checkpoint from this documentation finalization.
+
 ## Current checkpoint: FT-006 server-backed image evidence workflow
 
-Status: PARTIAL — server-backed implementation/offline verification complete;
+Historical implementation handoff: PARTIAL — server-backed implementation/offline verification complete;
 new connected live inference and actual two-tab/mobile browser review pending.
 Started clean on `feat/ft-005-visual-preview`, expected HEAD
 `9f4544eed13bd09eeb37a8a9786555ff925fa1b0`; created

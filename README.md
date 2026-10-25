@@ -12,8 +12,10 @@ Standalone synthetic Nebius text probe, offline image-evidence preparation,
 and offline validation tests exist. Two standalone vision fixtures have passed
 verified inference. A local FastAPI/SQLite workflow and React frontend now
 persist tasks/evidence across tabs and backend restart in offline tests.
-The new connected live journey and browser visuals remain unverified; inference
-is disabled by default. CI, hosting, and recovery verification remain open.
+Connected clear-image submission and inference-disabled restart persistence
+are user-verified, corroborated by read-only SQLite/ledger checks. Mobile,
+connected unreadable/refusal paths, and broad browser coverage remain open.
+Inference is disabled by default; CI, hosting, and recovery verification stay open.
 
 ## Planned workflow
 

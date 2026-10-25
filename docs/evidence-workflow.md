@@ -5,6 +5,14 @@ replaces proposed PostgreSQL **for this checkpoint only**: portable,
 single-instance local persistence now; hosted database/migration work stays
 open. No autonomous intervention, diagnosis, equipment control, or recovery.
 
+Current evidence: the user completed connected clear panel-a analysis at
+implementation 4b15365e20ea0b7cacf1ad2d695163bf439690ec, then reported identical
+evidence/attempt/interpretation/usage in both tabs after restarting inference-disabled.
+Read-only SQLite/ledger checks corroborate readable 180 kPa, 1938 ms,
+438/339/777 tokens, recorded once. See state.md for the sanitized receipt.
+This is user browser evidence, not agent-operated testing; mobile and connected
+unreadable/refusal paths remain open. Do not repeat the completed analysis.
+
 ## Exact setup and startup (PowerShell)
 
 From the clean committed project root, install into this project's environment
@@ -129,7 +137,7 @@ Browser inventory was empty; iab opening failed. No desktop/mobile screenshots
 were captured or inspected. Ignored `.local/visual/ft-006/verification.json`
 records that blocker. No real inference ran in this coding checkpoint.
 
-## Later bounded one-call live verification
+## Reference one-call procedure (clear panel-a completed; do not repeat automatically)
 
 Stop the disabled backend. From a clean committed checkout, in your Windows
 terminal only, copy an existing environment key without printing/pasting it:

@@ -2,9 +2,15 @@
 
 Current application status: FT-006 adds a local server-backed workflow and
 keeps the earlier sample preview separate. See [workflow guide](evidence-workflow.md)
-for exact setup/URLs and the later one-call verification procedure. Earlier
+for exact setup/URLs and the reference one-call procedure (clear-image test completed). Earlier
 no-backend/no-vision statements below describe their original checkpoints.
-The new connected application live path and browser journeys remain unverified.
+Connected clear-image submission/interpretation and user-reported restart
+persistence are now narrowly verified at implementation
+4b15365e20ea0b7cacf1ad2d695163bf439690ec. The user performed browser actions
+and confirmed identical evidence/attempt/interpretation/usage in both tabs
+after restarting inference-disabled. The agent corroborated SQLite/ledger
+records read-only; it did not operate a browser, replay/import analysis, or
+inspect private images. Mobile and connected unreadable/refusal paths remain open.
 
 One fixed simulated incident/task persists in local SQLite, an explicit
 portable single-instance departure from planned PostgreSQL. Images are decoded,
@@ -27,13 +33,24 @@ public-host hardening, multi-instance queue, or recovery/maintenance engine
 exists. Trust only local users/processes; do not expose these dev servers.
 
 The supplied panel-a/panel-b vision successes were confirmed in the ledger,
-not repeated/imported. Known ledger totals: 935 input / 890 output / 1825 total;
-cross-record including the separate manual record: 1090 / 1002 / 2092, plus
+not repeated/imported. After the new connected attempt, actual known ledger
+totals are 1373 input / 1229 output / 2602 total across 5 attempts (4 known).
+Cross-record including the separate manual record: 1528 / 1341 / 2869, plus
 one failed request with unknown usage. Two digital fixtures cannot establish
-arbitrary gauge accuracy or verification of the new application runtime.
+arbitrary gauge accuracy or broad application runtime coverage.
 
-Browser remains unavailable; no new desktop/mobile screenshots or visual pass
-is claimed. Offline tests and HTTP readiness do not replace that review.
+The connected record is evidence a757eca7-445b-4d0c-b2ae-c70980b3f20d,
+attempt 1b6b653c-abc9-4ec2-a9be-96d24aba38cc: readable 180 kPa, 1938 ms,
+438 input / 339 output / 777 total tokens. SQLite/ledger receipts match exactly
+and the attempt occurs once; no additional recorded attempt appeared during
+restart. Origin stays user-upload, with original hash matching panel-a; no
+metadata was rewritten. The interpretation proves no asset identity, diagnosis,
+action authorization, or recovery. See state.md for the sanitized receipt.
+
+Agent browser access remains unavailable; no agent-operated visual pass or
+screenshot inspection is claimed. User observations are attributed explicitly.
+Mobile, connected unreadable/refusal, adaptive planning, recovery, CI, and
+hosting remain open. Source is unchanged, so prior test evidence still applies.
 
 Transport sends one synthetic text request to the fixed Nebius endpoint and
 model. Validation independently checks the response envelope and exact

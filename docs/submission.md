@@ -15,11 +15,28 @@ Check an item only after recording evidence or a verified link.
 FT-006 current scope: server-backed local incident/task/evidence persistence,
 explicit image analysis path, and two-tab polling are implemented and tested
 offline with fake transport. SQLite is temporary local architecture, not hosted
-PostgreSQL. The new connected live inference/browser journey remains unverified;
-no production hosting, diagnosis, action authorization, or recovery is proven.
+PostgreSQL. Connected clear-image submission/interpretation and user-reported
+restart persistence are narrowly verified at implementation
+4b15365e20ea0b7cacf1ad2d695163bf439690ec, with read-only SQLite/ledger
+corroboration. Browser observations belong to the user, not agent automation.
+No mobile/broad browser coverage, hosting, diagnosis, authorization, or recovery
+is proven.
 The two supplied standalone vision successes are recorded in state.md without
-reimport/repeat calls. All full product, browser, runtime-integration, deployment,
-and eligibility claims below remain open. See [workflow guide](evidence-workflow.md).
+reimport/repeat calls. Full product/browser/runtime/deployment/eligibility gates
+below remain open beyond the two bounded checks that follow.
+See [workflow guide](evidence-workflow.md).
+
+## FT-006 bounded verification evidence
+
+- [x] Connected clear synthetic panel-a upload and actual NVIDIA interpretation: readable 180 kPa; user-performed browser verification, evidence a757eca7-445b-4d0c-b2ae-c70980b3f20d, attempt 1b6b653c-abc9-4ec2-a9be-96d24aba38cc. SQLite/ledger match, recorded once.
+- [x] User-reported inference-disabled restart retained identical evidence, attempt, interpretation, and usage in Commander/Operator; no additional recorded analysis/ledger attempt.
+- [ ] Connected unreadable/refusal paths verified in the browser.
+- [ ] Mobile/accessibility/overflow review completed.
+
+Known ledger: 1373 input / 1229 output / 2602 total. Separate historical manual
+record: 155 / 112 / 267. Cross-record known: 1528 / 1341 / 2869 plus one failed
+request with unknown consumption. No billing or complete-consumption claim.
+Full checklist gates remain unchecked unless their whole claim is verified.
 
 FT-003 standalone synthetic text-probe acceptance is satisfied by corrected
 live evidence at implementation c75a50be54ffb53fc728f6be0f14521e7b775bd1.
