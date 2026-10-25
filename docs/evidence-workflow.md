@@ -322,77 +322,143 @@ possible explanations, not historical findings. The discarded HTTP status/body
 cannot distinguish them. Model, schema, prompt, output cap, retry policy,
 context history and per-incident budget are unchanged by FT-007B.
 
-**Exact proposed next diagnostic test, NOT RUN:** one planning call in a new
-independent empty simulation, only after separate live approval. Do not reuse
-or reset the existing isolated directory, primary incident or their attempted
-revision 1. Their three remaining turns and all records stay intact. This test
-checks unchanged request compatibility/status capture, not adaptive reasoning.
+## Standalone flat-schema compatibility evidence
 
-In a separate Windows terminal, choose an unused port and a never-existing
-UUID directory. These future commands start a separate server; they do not
-stop/restart either of your existing servers. Keep the clean committed checkout:
+Implementation cdb9f4277127feb983eb246dad3190d13ca2cdee passed standalone
+verification for one saved context: ledger contains attempt
+87f5704f-d2ca-46ba-9967-7334363ac419 exactly once, timestamp
+2026-10-25T18:53:19.337482+00:00, response
+chatcmpl-fd86af00-2a1a-4da7-9ef6-134fb58b0778, exact Nano model, 3375 ms,
+valid 328/618/946 usage, validation passed with no diagnostics. The user supplied
+the six-field/no-extra F-17/READ_LOCAL_DP proposal, context revision 1,
+evidence_refs [telemetry-001], explanation_code evidence_gap. This standalone
+call created no workflow task. Connected task creation and evidence-dependent
+replanning remain unverified; FT-007 remains PARTIAL.
+
+Failures stay intact: the uniqueItems diagnostic implicated that keyword;
+the later three-field response matched partial anyOf branch keys and implicated
+composition compatibility. Neither establishes a provider implementation bug
+or recovers older discarded output. Current flat schema keeps all six fields
+required and independent application policy remains strict.
+
+Accounting checked read-only: 13 ledger attempts, 9 complete known contributors,
+3249 input / 6524 output / 9773 total, four missing-usage attempts and zero
+partial/invalid/inconsistent. Separate manual success 155/112/267; cross-record
+known 3404/6636/10040, matching expectations. No import or replay.
+
+## Next connected API test (prepared, not executed)
+
+Run only in a later authorized execution step. This is a new isolated simulation,
+not a retry/reset of prior incidents. At most TWO explicit planning POSTs,
+separated by a simulated operator access refusal. No image upload/analysis or
+replay. Stop after a failed, uncertain, escalated or accounting-failed first
+result; never create a fake response just to force the second call. A repeated
+model choice is possible and must be reported honestly. The API test does not
+prove the two-tab browser journey or that the new evidence caused a model choice.
+
+**Server terminal:** existing environment/dependencies only. Use a verified-free
+8877 and never-existing UUID directory; leave your 8765/5173 servers untouched.
+The existing default ledger is shared. No key is printed or passed in argv.
 
 ```powershell
+$ErrorActionPreference = 'Stop'
 Set-Location 'C:/Users/surya/Projects/faulttrace'
 if (git status --porcelain) { throw 'dirty_checkout; stop' }
+git diff --quiet cdb9f4277127feb983eb246dad3190d13ca2cdee -- faulttrace
+if ($LASTEXITCODE -ne 0) { throw 'unexpected_implementation; stop' }
 if (Get-NetTCPConnection -LocalPort 8877 -State Listen -ErrorAction SilentlyContinue) { throw 'port_in_use; stop' }
-$env:FAULTTRACE_VERIFICATION_DIR = Join-Path (Get-Location) ('.local/verification/ft007b-' + [guid]::NewGuid().ToString('N'))
+$env:FAULTTRACE_VERIFICATION_DIR = Join-Path (Get-Location) ('.local/verification/ft007-connected-' + [guid]::NewGuid().ToString('N'))
 if (Test-Path -LiteralPath $env:FAULTTRACE_VERIFICATION_DIR) { throw 'directory_exists; stop' }
 if ([string]::IsNullOrWhiteSpace($env:NEBIUS_API_KEY)) { $env:NEBIUS_API_KEY = [Environment]::GetEnvironmentVariable('NEBIUS_API_KEY', 'User') }
 if ([string]::IsNullOrWhiteSpace($env:NEBIUS_API_KEY)) { throw 'missing_credentials; stop' }
 $env:FAULTTRACE_ALLOW_INFERENCE = '1'
+Write-Output "NEW ISOLATED SIMULATION: $env:FAULTTRACE_VERIFICATION_DIR"
 & ./.venv/Scripts/python.exe -c "import os, uvicorn; from faulttrace.workflow.api import create_app; uvicorn.run(create_app(directory=os.environ['FAULTTRACE_VERIFICATION_DIR']), host='127.0.0.1', port=8877, access_log=False, log_level='warning')"
 ```
 
-In a second terminal, create the incident (no inference), then issue exactly
-one planning POST. Poll only GET state; never resend the planning POST:
+**Client terminal:** paste ONCE. This contains exactly two planning POSTs and
+only GET polling. A timeout may have committed: stop without resending.
+The refusal is explicitly simulated, not a real plant observation. The API
+stores origin human-report within this simulated incident; no unsupported
+notes/provenance fields are added. Keep that distinction in the evidence record.
 
 ```powershell
+$ErrorActionPreference = 'Stop'
+Set-Location 'C:/Users/surya/Projects/faulttrace'
 $base = 'http://127.0.0.1:8877'
-function New-LocalHeaders { @{ 'X-FaultTrace-Local' = '1'; 'Idempotency-Key' = [guid]::NewGuid().ToString() } }
-Invoke-RestMethod "$base/api/incidents" -Method Post -ContentType 'application/json' -Body '{}' -Headers (New-LocalHeaders)
-$state = Invoke-RestMethod "$base/api/state"
-Invoke-RestMethod "$base/api/planning" -Method Post -ContentType 'application/json' -Body (@{revision=$state.incident.revision} | ConvertTo-Json -Compress) -Headers (New-LocalHeaders)
-for ($poll=0; $poll -lt 45; $poll++) {
-    $state = Invoke-RestMethod "$base/api/state"
-    if ($state.planning[0].status -ne 'pending') { break }
-    Start-Sleep -Seconds 2
+function New-LocalHeaders { @{ 'X-FaultTrace-Local'='1'; 'Idempotency-Key'=[guid]::NewGuid().ToString() } }
+function Get-State { Invoke-RestMethod "$base/api/state" -TimeoutSec 10 }
+function Wait-Plan([string]$id) {
+    for ($poll=0; $poll -lt 45; $poll++) {
+        $s = Get-State
+        $p = @($s.planning | Where-Object { $_.id -eq $id })
+        if ($p.Count -eq 1 -and $p[0].status -ne 'pending') { return $s }
+        Start-Sleep -Seconds 2
+    }
+    throw 'pending_or_missing_reservation; stop without retry'
 }
-$state.planning | Select-Object id,status,error,receipt,accounting,task_id | ConvertTo-Json -Depth 8
+$s = Get-State
+if ($s.incident -or @($s.planning).Count -or @($s.tasks).Count -or @($s.evidence).Count) { throw 'not_a_fresh_run; stop' }
+Invoke-RestMethod "$base/api/incidents" -Method Post -ContentType 'application/json' -Body '{}' -Headers (New-LocalHeaders) -TimeoutSec 10
+$s = Get-State
+if ($s.task -or $s.planning_remaining -ne 4) { throw 'unexpected_initial_state; stop' }
+# Explicit planning call 1.
+$first = Invoke-RestMethod "$base/api/planning" -Method Post -ContentType 'application/json' -Body (@{revision=$s.incident.revision} | ConvertTo-Json -Compress) -Headers (New-LocalHeaders) -TimeoutSec 10
+$s = Wait-Plan $first.attempt_id
+$p1 = @($s.planning | Where-Object { $_.id -eq $first.attempt_id })[0]
+$p1 | Select-Object id,status,task_id,proposal,receipt,error,accounting | ConvertTo-Json -Depth 8
+if ($p1.status -ne 'accepted' -or $p1.accounting -notin @('recorded','duplicate') -or -not $s.task -or $p1.task_id -ne $s.task.id) { throw 'stop_after_first_result; no second call' }
+if (@($s.planning).Count -ne 1 -or $s.planning_remaining -ne 3 -or $s.task.status -ne 'awaiting') { throw 'unexpected_first_state; stop' }
+$task = $s.task
+$revisionBeforeReport = $s.incident.revision
+Write-Output "SIMULATED OPERATOR REFUSAL for $($task.asset_id): access unavailable in this test scenario; NOT a real field observation."
+$submitted = Invoke-RestMethod "$base/api/tasks/$($task.id)/reports" -Method Post -ContentType 'application/json' -Body (@{revision=$task.revision;report='cannot-access'} | ConvertTo-Json -Compress) -Headers (New-LocalHeaders) -TimeoutSec 10
+$s = Get-State
+$e = @($s.evidence | Where-Object { $_.id -eq $submitted.evidence_id })
+if ($e.Count -ne 1 -or $e[0].origin -ne 'human-report' -or $e[0].status -ne 'refused' -or $e[0].report -ne 'cannot-access') { throw 'unexpected_report; stop' }
+if ($s.incident.revision -le $revisionBeforeReport -or @($s.planning).Count -ne 1 -or $s.planning_remaining -ne 3) { throw 'unexpected_context_or_budget; stop' }
+# Explicit planning call 2; updated context, never replay call 1.
+$second = Invoke-RestMethod "$base/api/planning" -Method Post -ContentType 'application/json' -Body (@{revision=$s.incident.revision} | ConvertTo-Json -Compress) -Headers (New-LocalHeaders) -TimeoutSec 10
+$s = Wait-Plan $second.attempt_id
+$p2 = @($s.planning | Where-Object { $_.id -eq $second.attempt_id })[0]
+$p2 | Select-Object id,status,task_id,proposal,receipt,error,accounting | ConvertTo-Json -Depth 8
+if (@($s.planning).Count -ne 2 -or $s.planning_remaining -ne 2) { throw 'unexpected_final_budget; stop' }
+Write-Output 'STOP: no third planning call, retries, or image-analysis requests.'
+& ./.venv/Scripts/python.exe -m faulttrace.probe --ledger-summary
 ```
 
-Stop after this one call, including on HTTP failure or pending timeout. Save
-only the sanitized receipt; check status/category and known/unknown usage
-separately. Confirm one attempt, no task on failure, three turns left, and one
-new ledger UUID. Use the offline ledger summary command above without imports.
-Do not downgrade/experiment with schema or infer root cause from a category.
-Manually stop only this new diagnostic server in its own terminal; leave prior
-servers and all simulation directories/receipts intact.
+After the client finishes (or stops early), stop only this new server with Ctrl+C
+in its own terminal. Preserve its directory and all prior runs. In that server
+terminal, the directory environment variable remains available for this optional
+read-only context/ledger audit, which makes no provider call:
 
-## Single reserved verification after the uniqueItems correction
+```powershell
+@'
+from contextlib import closing
+from pathlib import Path
+import json, os, sqlite3
+from faulttrace.ledger import DEFAULT_LEDGER, load
+path = Path(os.environ['FAULTTRACE_VERIFICATION_DIR']) / 'workflow.sqlite3'
+with closing(sqlite3.connect(path.resolve().as_uri() + '?mode=ro', uri=True)) as db:
+    db.row_factory = sqlite3.Row
+    db.execute('PRAGMA query_only=ON')
+    rows = list(db.execute('SELECT id,status,context,task_id FROM planning ORDER BY rowid'))
+receipts = load(DEFAULT_LEDGER)
+out = []
+for row in rows:
+    context = json.loads(row['context'])
+    out.append({'attempt_id': row['id'], 'status': row['status'], 'task_id': row['task_id'],
+                'context_revision': context['context_revision'],
+                'remaining_at_reservation': context['remaining_planning_calls'],
+                'observations': [{k: o[k] for k in ('evidence_ref','origin','status','report')} for o in context['observations']],
+                'ledger_occurrences': sum(r['attempt_id'] == row['id'] for r in receipts)})
+print(json.dumps(out, indent=2))
+'@ | & ./.venv/Scripts/python.exe -
+```
 
-Historical procedure only: later user diagnostics have occurred. Do not rerun
-the earlier terminal command or a live request in the flat-schema checkpoint.
-
-User diagnostic attempt 17da531f-147f-4dc6-bf49-19c5580d739f returned HTTP 400 /
-BadRequestError with message "[redacted] error [redacted] uniqueItems"; usage
-unknown, ledger recorded as reported by the user. This implicates uniqueItems,
-not every remaining schema feature. Only that provider-facing keyword was
-removed. No earlier discarded body was recovered. The application still rejects
-duplicates. Six focused contract tests and all 79 backend tests pass offline.
-
-The SECOND and final authorized request must use the committed correction and
-the original saved context, outside the workflow. Do not use either earlier
-new-simulation procedure or repeat the diagnostic reproduction. Use the single
-paste-ready command supplied with this correction's delivery (it pins the final
-commit SHA), in the existing credential-bearing terminal. It reads SQLite with
-mode=ro/query_only and calls run_probe once with planner_payload(context), then
-records only the sanitized receipt using the existing ledger. No workflow task,
-incident reservation, context change or server restart is involved.
-
-Source: saved attempt 91e991ab-d9eb-4519-9a52-c2ac3e8ff17b in
-`.local/verification/ft007b-5a415bc1c70849ac9815f114cd2fdcab/workflow.sqlite3`.
-Keep the exact Nano model, strict json_schema format and 2048 output-token cap.
-Print only receipt/accounting status; missing usage remains unknown. Stop after
-one call on success, rejection or transport failure; do not retry or downgrade
-schema. Other incompatibilities remain possible until actual verification.
+If two calls occurred, independently check first context had no observations,
+second context contained the simulated refusal/reference, remaining budget went
+4 -> 3 -> 2, and each attempt appears once in the ledger. Record actual choices,
+task IDs, policy result, usage completeness and persistence separately; do not
+substitute expected choices or claim causation/adaptive reasoning from context
+inclusion alone. No existing run is reset or resumed by this procedure.

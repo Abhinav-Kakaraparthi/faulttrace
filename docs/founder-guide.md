@@ -9,12 +9,24 @@ application templates generate instructions and short explanation text.
 No output grants equipment authority, diagnostic certainty or recovery.
 V-08 position reports are explicitly human-reported, not image-verified.
 See [workflow guide](evidence-workflow.md) for exact manual restart commands
-and the blocked, proposed one-planner-call verification after genuine new evidence.
+and the prepared two-call connected API test in a new isolated simulation.
 FT-007A adds a documented strict JSON-schema request and precise sanitized
 shape/type/revision/reference/combination/explanation diagnostics. Exact Nano
-endpoint/schema compatibility still needs live verification; application policy
+connected runtime compatibility still needs live verification; application policy
 remains mandatory. No inference or server restart was performed in FT-007A.
 Live adaptive reasoning remains unverified.
+
+Standalone flat-schema compatibility passed at implementation
+cdb9f4277127feb983eb246dad3190d13ca2cdee for the saved context. Ledger confirms
+87f5704f-d2ca-46ba-9967-7334363ac419 once: 2026-10-25T18:53:19.337482+00:00,
+response chatcmpl-fd86af00-2a1a-4da7-9ef6-134fb58b0778, exact Nano model,
+3375 ms, valid 328/618/946 usage, validation passed. The user reports all six
+fields/no extras and the F-17/READ_LOCAL_DP proposal with revision 1,
+telemetry-001 reference and evidence_gap explanation. No workflow task was
+created by this standalone call. FT-007 remains PARTIAL: connected task creation
+and evidence-dependent replanning still need verification. The workflow guide
+contains the next prepared, unexecuted API test: new isolated simulation,
+up to two planning calls separated by a labeled simulated operator refusal.
 
 Latest structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 returned
 only kind/asset_id/capability, matching the old partial anyOf branch properties.
@@ -23,7 +35,8 @@ composition compatibility, not a proven provider bug. Only provider root anyOf
 and its unused branch construction were removed: the schema is flat with six
 required fields; application combination/reference/shape/revision/explanation
 checks remain strict. Eight focused tests and 81 backend tests pass offline;
-no inference ran and live flat-schema compatibility remains unverified.
+no inference ran in that coding step. The later standalone compatibility success
+above applies only to its saved context, not the full connected journey.
 
 The user's diagnostic reproduction 17da531f-147f-4dc6-bf49-19c5580d739f
 returned HTTP 400 / BadRequestError, with redacted message
@@ -31,8 +44,8 @@ returned HTTP 400 / BadRequestError, with redacted message
 ledger. The narrow correction removes only provider-facing uniqueItems;
 application-side duplicate rejection remains strict. Other schema support is
 still unverified. No historical body was recovered. All 79 backend tests pass;
-the second authorized live call is reserved for the committed correction,
-using the standalone saved-context command in the workflow guide. No call ran here.
+the later flat-schema success above is separate evidence, not recovery of the
+discarded HTTP body. No call ran in that coding step.
 
 FT-007B adds numeric HTTP status and a fixed status-derived category to new
 failure receipts, ledger records and the UI. Bodies/headers are never read or
@@ -80,12 +93,11 @@ context includes only public telemetry and recent observations, not fixture
 answers, hidden simulator labels or raw notes. Conflicting observations remain
 in the evidence history. Trust only local users/processes; do not expose these dev servers.
 
-Latest read-only accounting found 12 ledger attempts, 8 with complete known
-usage: 2921 input / 5906 output / 8827 total. Separate historical manual success
-155 / 112 / 267 gives cross-record known 3076 / 6018 / 9094. Four attempts have
-unknown usage; partial/invalid/inconsistent counts are zero. These known sums
-exceed the supplied expectation 2420 / 5083 / 7503; state.md identifies the
-other distinct same-revision receipts. No records were imported or changed.
+Latest read-only accounting found 13 ledger attempts, 9 with complete known
+usage: 3249 input / 6524 output / 9773 total. Separate historical manual success
+155 / 112 / 267 gives cross-record known 3404 / 6636 / 10040. Four attempts have
+unknown usage; partial/invalid/inconsistent counts are zero. Expectations match;
+no records were imported or changed. Historical failures remain preserved.
 Two digital fixtures cannot establish arbitrary gauge accuracy or broad
 application runtime coverage.
 

@@ -24,10 +24,19 @@ tokens, recorded once); its discarded output cannot establish the exact cause.
 An isolated live request subsequently failed with provider_http_error and missing
 usage (attempt 76a24b31-3b2e-4954-9954-dee9749ce7fa, recorded once); historical
 HTTP status/cause are unrecoverable. No inference ran in FT-007B coding and no
-successful live planner or agent-operated browser review occurred; adaptive reasoning, mobile,
+successful connected planner or agent-operated browser review occurred; adaptive reasoning, mobile,
 connected unreadable/refusal browser journeys, CI and hosting remain unverified.
 No broad submission gate is checked by this checkpoint. Existing FT-006 user
 browser evidence below remains attributed to that earlier implementation.
+
+Standalone flat-schema provider compatibility is now verified for one saved
+context at cdb9f4277127feb983eb246dad3190d13ca2cdee: attempt
+87f5704f-d2ca-46ba-9967-7334363ac419 occurs once, validation passed with all six
+fields/no extras (user-supplied proposal), 3375 ms and valid 328/618/946 usage.
+This standalone call created no workflow task. Connected planner task creation
+and evidence-dependent replanning remain unverified; FT-007 remains PARTIAL.
+The proposed new-isolated-simulation two-call connected API test is prepared,
+not executed. No broad platform or browser gate is checked by this evidence.
 
 Subsequent user diagnostic 17da531f-147f-4dc6-bf49-19c5580d739f implicated
 uniqueItems (HTTP 400, BadRequestError; unknown usage, user reports ledger
@@ -65,11 +74,11 @@ See [workflow guide](evidence-workflow.md).
 - [ ] Connected unreadable/refusal paths verified in the browser.
 - [ ] Mobile/accessibility/overflow review completed.
 
-Latest read-only known ledger: 2921 input / 5906 output / 8827 total across 12
-attempts (8 complete contributors). Separate historical manual record:
-155 / 112 / 267. Cross-record known: 3076 / 6018 / 9094 plus FOUR failed
+Latest read-only known ledger: 3249 input / 6524 output / 9773 total across 13
+attempts (9 complete contributors). Separate historical manual record:
+155 / 112 / 267. Cross-record known: 3404 / 6636 / 10040 plus FOUR failed
 requests with unknown consumption. No billing or complete-consumption claim.
-Known sums differ from the supplied 2420 / 5083 / 7503; records remain unchanged.
+Known sums match the latest expectations; records remain unchanged.
 Full checklist gates remain unchecked unless their whole claim is verified.
 
 FT-003 standalone synthetic text-probe acceptance is satisfied by corrected

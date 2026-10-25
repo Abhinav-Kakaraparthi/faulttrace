@@ -1,48 +1,54 @@
 # Checkpoint state
 
-## Current: FT-007 flat provider schema; live verification pending
+## Current: FT-007 standalone provider compatibility finalized; connected flow pending
 
-Started clean on feat/ft-007-observation-planner at
-4f1e78dfbdbe11de23d192789dad58f1dc3f8174. User structural diagnostic
-81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 returned only kind, asset_id and
-capability, omitting context_revision, evidence_refs and explanation_code.
-Those keys match the partial anyOf branch properties. This implicates schema
-composition compatibility; it is not proof of a provider implementation bug.
-Read-only ledger inspection corroborates one receipt for this attempt:
-planner_field_shape, valid 328 input / 1125 output / 1453 total, 4484 ms,
-source 4f1e78dfbdbe11de23d192789dad58f1dc3f8174. Returned content shape is
-user-reported; no discarded raw output was recovered.
+Documentation-only checkpoint started clean on feat/ft-007-observation-planner
+at tested implementation cdb9f4277127feb983eb246dad3190d13ca2cdee. No source
+or dependency change, inference, server operation, receipt import/replay or
+workflow/ledger write. This later documentation commit is distinct from the
+implementation; its SHA is available from git log -1. Existing 81 backend
+tests (8 focused), guarded zero-forbidden-network result and unchanged frontend
+check evidence remain valid; no tests were rerun for documentation only.
 
-Correction removes only root anyOf and unused triples construction from the
-provider schema. It is now one flat object, all six fields required, no extra
-fields, same types/enums/revision/reference bounds/explanation constraints.
-uniqueItems stays absent. Application validation is unchanged: invalid
-combinations, duplicate/invented references, missing/extra fields, stale
-revisions and unsupported explanations fail; nothing is filled or unwrapped.
-All other request/context/prompt/model/cap/retry/budget/authorization behavior
-is unchanged. Eight focused contract tests and 81 backend offline tests pass.
-The full suite ran under a socket guard: zero forbidden network attempts,
-allowing only Windows asyncio internal loopback socket-pair setup. Request
-comparison against the starting commit differed only by root anyOf; AST checks
-confirmed validator/context builder/prompt builder unchanged. No frontend change.
+Read-only ledger load confirms attempt 87f5704f-d2ca-46ba-9967-7334363ac419
+EXACTLY ONCE: timestamp 2026-10-25T18:53:19.337482+00:00, response
+chatcmpl-fd86af00-2a1a-4da7-9ef6-134fb58b0778, requested/returned model
+nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B, source cdb9f4277127feb983eb246dad3190d13ca2cdee,
+3375 ms, transport invoked, validation passed, diagnostics empty, valid usage
+328 input / 618 output / 946 total. The user supplied this validated proposal
+(the receipt itself contains no raw model output):
+`{"kind":"REQUEST_OBSERVATION","asset_id":"F-17","capability":"READ_LOCAL_DP","context_revision":1,"evidence_refs":["telemetry-001"],"explanation_code":"evidence_gap"}`.
+All six fields were present with no extras. This standalone provider/validator
+call created no workflow task and consumed no incident planning turn.
 
-Accounting audit is read-only; no imports or record changes: ledger 12 attempts,
-8 complete known contributors = 2921 input / 5906 output / 8827 total. Four
-attempts have missing usage; partial/invalid/inconsistent counts all zero.
-Separate historical manual success = 155/112/267. Actual cross-record known =
-3076/6018/9094, NOT expected 2420/5083/7503 (difference +656/+935/+1591).
-Two other same-revision receipts are present, each once and planner_field_shape:
-851351c3-e4c2-4a70-8ad3-b025d2b0c9e1 = 328/806/1134;
-bb2018c9-b4af-4844-b2a8-1f74ffebf10d = 328/1263/1591.
-All distinct evidenced requests are counted; none were removed to match the
-expected figures. Unknown consumption is not zero; no billing estimate.
+Flat-schema provider compatibility PASSED for this saved context, not arbitrary
+contexts or connected runtime flow. Connected planner task creation and
+evidence-dependent replanning remain unverified: FT-007 remains PARTIAL.
+No image-analysis replay or recovery/diagnostic certainty is implied.
 
-No inference, workflow database write/reset, receipt import or server restart
-occurred. Next action is offline review of this commit; any live verification
-requires a separately authorized checkpoint. Earlier terminal verification
-commands are historical, not instructions to execute now. FT-007 remains
-PARTIAL; flat-schema live compatibility, adaptive reasoning, broader browser,
-recovery, CI and hosting gates remain unverified. Then stop for review.
+Original failures remain intact: 17da531f-147f-4dc6-bf49-19c5580d739f implicated
+uniqueItems through the user's HTTP 400 / BadRequestError diagnostic. The
+three-field result reported for 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 matched
+partial anyOf properties and implicated composition compatibility, not a proven
+provider implementation bug. Removing uniqueItems and then root anyOf left
+application combination/reference/shape/revision/explanation checks strict.
+No discarded historical body or output was recovered or retrospectively relabeled.
+
+Actual accounting matches expectations: ledger 13 attempts, 9 complete known
+contributors = 3249 input / 6524 output / 9773 total. Four attempts retain
+missing usage; partial/invalid/inconsistent counts all zero. Separate historical
+manual success = 155/112/267; cross-record known = 3404/6636/10040. No discrepancy,
+missing-token inference, imports, billing estimate or complete-consumption claim.
+Previous accounting snapshots below predate these records.
+
+Next proposed test, PREPARED NOT EXECUTED: [connected two-call API procedure](evidence-workflow.md#next-connected-api-test-prepared-not-executed).
+New UUID-named isolated simulation, existing shared ledger, verified-free port,
+at most two explicit planning calls separated by a clearly labeled simulated
+operator access refusal. Stop after a failed/uncertain/escalated first result;
+no second call then. No image analysis, automatic retry, historical reset or
+budget reuse. Preserve every prior run. API connected-flow results will not
+establish a two-tab browser journey. Await the next authorized execution step;
+no connected live verification occurred during this finalization.
 
 ## Prior: FT-007B safe HTTP diagnostics; FT-007 remains PARTIAL
 
