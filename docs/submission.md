@@ -18,9 +18,12 @@ mapping preserves the strict six-field internal policy; four required wire field
 flat schema, no anyOf/uniqueItems. All 94 backend tests, 10 frontend tests and
 type/build checks pass. Attempt d4430228-f580-4175-94ca-09fc667f0707 is present
 once in the ledger, planner_invalid_combination, valid 578/956/1534 usage;
-discarded fields remain unknown. No inference or server operations here. New
-wire compatibility, useful refusal-aware decisions and browser journeys remain
-unverified; FT-007 stays PARTIAL. No submission checkbox is newly satisfied.
+discarded fields remain unknown. No inference or server operations in this finalization.
+Subsequent standalone action-ID verification at c4eb08d passed for one saved
+refusal context: user-reported validated human escalation, no task or browser
+journey. Ledger confirms attempt 1fbccbe3-a77d-4ddc-bea5-3bd2aa194e16 once,
+valid 620/933/1553 usage. General planning reliability remains unverified;
+FT-007 stays PARTIAL. No submission checkbox is newly satisfied.
 
 Earlier implementation evidence: FT-007 ships offline-tested explicit text planning: bounded public evidence
 context, strict observation/escalation policy, durable four-turn reservations,

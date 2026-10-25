@@ -526,7 +526,11 @@ above describe prior executions, not authorization to replay them.
 Read-only ledger audit confirmed failed attempt
 d4430228-f580-4175-94ca-09fc667f0707 once, planner_invalid_combination,
 valid 578/956/1534 usage. Its discarded fields are unknown. No response was
-recovered, imported or replayed. New contract compatibility and useful
-refusal-aware live choices remain unverified. All 94 backend tests and 10
-frontend tests pass; type/build passes. No live call or server operations.
-FT-007 remains PARTIAL; see state.md for current accounting and next action.
+recovered, imported or replayed. A later standalone action-ID call at c4eb08d
+passed for the saved revision-3 refusal context: user-reported validated human
+escalation. Ledger contains attempt 1fbccbe3-a77d-4ddc-bea5-3bd2aa194e16 once,
+validation passed, valid 620/933/1553 usage. No task or browser behavior was
+verified by that call; general reliability remains open. Existing 94 backend
+and 10 frontend tests plus type/build evidence remains valid. No inference or
+server operations in this documentation finalization. FT-007 remains PARTIAL;
+see state.md for current accounting and next proposed checkpoint.

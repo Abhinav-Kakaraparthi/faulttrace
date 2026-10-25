@@ -24,8 +24,9 @@ task creation and replanning with a simulated access refusal in the updated
 context, but repeated the inaccessible task. Refusal-aware application policy
 now blocks that asset (offline-tested, not live-verified). Provider selection now
 uses one permitted action_id, derived from application templates plus escalation,
-then maps to the strict internal proposal. Its four-field flat wire contract has
-not been live-verified; earlier compatibility evidence used six provider fields.
+then maps to the strict internal proposal. Its four-field flat wire contract passed one standalone
+saved-refusal-context test, producing user-reported validated human escalation.
+No task or browser journey was verified by that call; general reliability is open.
 FT-007 stays PARTIAL;
 browser verification and useful adaptive decisions remain open. Inference is disabled by
 default; CI, hosting, and recovery verification stay open.

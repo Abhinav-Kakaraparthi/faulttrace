@@ -9,9 +9,12 @@ The provider now chooses one action_id from registered, currently available
 observations or human escalation; application code maps it to the existing
 internal fields. Output must contain exactly action_id, context_revision,
 evidence_refs and explanation_code. Inaccessible observations are omitted from
-the enum/catalog and independently rejected. The four-field flat contract is
-offline-tested, not live-verified; historical six-field successes below do not
-verify it. No retry, historical rewrite or additional provider request occurred.
+the enum/catalog and independently rejected. The four-field flat contract passed
+one standalone saved-refusal-context test at c4eb08d: the user reports validated
+human escalation. Attempt 1fbccbe3-a77d-4ddc-bea5-3bd2aa194e16 is recorded once,
+validation passed, valid 620/933/1553 usage. No task was created or browser
+behavior verified; general planning reliability remains open. No inference,
+server operations or history changes occurred in this documentation finalization.
 Application templates generate instructions and short explanation text.
 No output grants equipment authority, diagnostic certainty or recovery.
 V-08 position reports are explicitly human-reported, not image-verified.

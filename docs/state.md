@@ -1,54 +1,39 @@
 # Checkpoint state
 
-## Current: FT-007 registered action selection; offline correction
+## Current: FT-007 action-ID standalone verification finalized
 
-Started clean on feat/ft-007-observation-planner at
-6c00fb1239ca4c7fa5c1fa947a5d5b3de1840b3b. This checkpoint changes only the
-provider selection contract and its validation adapter, tests and documentation.
-No inference, server operations, receipt imports/replays, or workflow/ledger
-writes occurred. Identify the scoped implementation/documentation revision with
-`git log -1`; the starting revision is not the corrected implementation.
+Implementation c4eb08db60c7facddbfe9eeaf5084820bfafb5e3; documentation-only
+finalization started clean at that SHA. Read-only existing-ledger load found
+attempt 1fbccbe3-a77d-4ddc-bea5-3bd2aa194e16 exactly once, timestamp
+2026-10-25T20:47:43.877892+00:00, response
+chatcmpl-40a9c201-db70-4113-b74c-b764c719b71b, exact Nano text model,
+3641 ms, transport invoked, validation passed, diagnostics empty, valid usage
+620 input / 933 output / 1553 total; source revision matches the implementation.
 
-Read-only ledger inspection found attempt d4430228-f580-4175-94ca-09fc667f0707
-exactly once: 2026-10-25T19:57:01.794269+00:00, response
-chatcmpl-0e0b9c86-2792-44dd-94f4-4056b759f01e, exact Nano text model,
-4781 ms, transport invoked, validation failed with planner_invalid_combination,
-valid usage 578 input / 956 output / 1534 total. Source revision is the starting
-SHA above. Discarded fields were not recovered or inferred; which combination
-failed remains unknown. No new attempt was created.
+The user reports validated human escalation from the saved revision-3 F-17
+refusal context using the action_id contract. Prior offline preflight confirmed
+F-17 unavailable and absent from the enum, with V-08 and human escalation
+selectable. The ledger corroborates receipt/usage, but does not store proposal
+fields. This standalone call created no workflow task and proves neither
+browser behavior nor general planning reliability. FT-007 remains PARTIAL.
+Earlier failures, including d4430228-f580-4175-94ca-09fc667f0707
+(planner_invalid_combination, 578/956/1534), remain untouched; no discarded
+fields were recovered. The application still owns action mapping and policy.
 
-Provider output now has exactly four required fields: action_id,
-context_revision, evidence_refs, explanation_code. Observation IDs derive from
-the existing application templates; human escalation is always registered.
-The enum and prompt catalog exclude observations for inaccessible assets.
-Application code validates the selected ID, maps it to the existing six-field
-internal proposal, then applies strict revision/reference/explanation and
-asset/capability policy. Unknown IDs and old six-field provider output fail;
-no missing fields are filled or arbitrary triples accepted. The flat schema
-retains additionalProperties=false and excludes anyOf/uniqueItems. Model,
-2048-token cap, transport, reservations, budgets, stale-result protection and
-existing history remain unchanged. No frontend API/state-shape change.
+Actual ledger: 17 attempts, 13 complete known contributors, known
+5283 / 10559 / 15842 tokens (input/output/total); four missing-usage attempts,
+zero partial/invalid/inconsistent. Separate historical manual success
+155/112/267 gives cross-record known 5438/10671/16109. No discrepancy;
+unknown consumption stays unknown, with no billing estimate.
 
-Checks: all 94 backend tests pass; six new action-selection tests cover mapping,
-refusals/alternatives/escalation, invented IDs, stale revisions, references,
-usage retention, no task on rejection and duplicate-request reuse. Existing
-policy/reservation regressions remain intact. The full suite also passed with
-external sockets blocked: zero forbidden attempts; only Windows asyncio
-internal loopback socket-pair setup was allowed. Ten frontend tests and the
-TypeScript/Vite build pass. No UI source change or browser verification.
-
-Actual ledger: 16 attempts, 12 complete known contributors, known
-4663 input / 9626 output / 14289 total; four missing-usage attempts and zero
-partial/invalid/inconsistent. Separate historical success 155/112/267;
-cross-record known 4818/9738/14556. Unknown consumption is not zero or included
-in these known sums; no billing estimate, import or accounting discrepancy.
-
-FT-007 remains PARTIAL. Earlier six-field provider compatibility and connected
-API evidence below remain historical evidence, not verification of this new
-four-field wire contract. Useful refusal-aware live choices and browser journeys
-remain open, as do recovery, CI and hosting. Next action: review this offline
-correction, then separately authorize one bounded standalone action-ID check
-against a saved refusal-bearing context; no live call is authorized here.
+No inference, server operations, imports/replays, database/ledger writes or
+source changes in this finalization. Existing 94 backend tests, 10 frontend
+tests and TypeScript/Vite build evidence at c4eb08d remains applicable; no
+rerun required for documentation. No new browser evidence or submission gate.
+Next proposed checkpoint: FT-008, one simulation-only F-17 restriction journey
+with evidence-backed working diagnosis, explicit human approval of a registered
+simulated correction, and independent sustained recovery checks. Proposal only:
+no implementation, new model authority or live request authorized here.
 
 ## Prior: FT-007 connected API evidence finalized; refusal-aware policy added offline
 
