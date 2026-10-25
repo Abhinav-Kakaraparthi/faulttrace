@@ -116,6 +116,12 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         evidence_id = await run_in_threadpool(app.state.workflow.submit, task_id, revision, key(request), image=image)
         return {"evidence_id": evidence_id}
 
+    @app.post('/api/planning', status_code=202)
+    async def plan(request: Request):
+        body = await fields(request, ['revision'])
+        attempt_id = await run_in_threadpool(app.state.engine.planner.choose, body['revision'], key(request))
+        return {'attempt_id': attempt_id}
+
     @app.post("/api/tasks/{task_id}/reports")
     async def report(task_id: str, request: Request):
         body = await fields(request, ["revision", "report"])

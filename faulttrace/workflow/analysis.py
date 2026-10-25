@@ -45,6 +45,8 @@ class AnalysisEngine:
         self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="faulttrace-analysis")
         self.futures = []
         self.recover()
+        from .planning import Planner
+        self.planner = Planner(self)
 
     def close(self):
         self.executor.shutdown(wait=True)

@@ -56,6 +56,13 @@ class WorkflowCase(unittest.TestCase):
 
     def start(self, client):
         self.assertEqual(self.post(client, "/api/incidents", {}).status_code, 200)
+        # Image-workflow regression fixture, not a planner choice or inference.
+        store = Store(self.data)
+        with store.connection(write=True) as db:
+            incident = db.execute('SELECT id FROM incidents').fetchone()
+            if not db.execute('SELECT id FROM tasks').fetchone():
+                db.execute("INSERT INTO tasks(id,incident_id,revision,status,created_at) VALUES(?,?,1,'awaiting','offline-test')",
+                           (key(), incident['id']))
         return client.get("/api/state").json()["task"]
 
     def upload(self, client, task, data=None, request_key=None, fixture="panel-a", mime="image/png"):

@@ -18,6 +18,7 @@
 .connected-events strong{display:block;font-weight:500}.connected-events time{display:block;font-size:11px;color:#a1b9b0;margin-top:4px}
 .file-label{display:block;font-size:14px;margin-top:14px}.file-label input{display:block;max-width:100%;font-size:13px;margin:12px 0}
 .connected-shell fieldset:disabled{opacity:.65}.connected-shell .fixture-option img{min-height:0}
+.planner-panel .planning-history{padding-left:20px;font-size:14px}.planning-history li{padding:12px 0;border-bottom:1px solid #3b5049;overflow-wrap:anywhere}.planning-history p{margin:9px 0}.connected-operator>.planner-panel{margin-bottom:20px}.planner-panel .caption{font-size:13px;line-height:1.6;overflow-wrap:anywhere}
 .connected-shell .page-heading .button{white-space:normal}.connected-shell .page-heading h1{overflow-wrap:anywhere}
 @media(max-width:1220px){.mode-bar{margin-left:190px}}
 @media(max-width:760px){.mode-bar{margin-left:0;padding:10px 18px;gap:7px}.mode-bar>strong{display:none}.mode-bar>span{width:100%;margin-left:0}.connection-warning{margin:12px 18px}.connected-evidence,.connected-events,.connected-empty,.connected-explanations{padding:18px}.connected-operator{padding:22px 18px}.connected-shell .task-equipment{align-items:flex-start}.connected-shell .task-equipment h2{font-size:18px}.connected-shell .task-equipment .eyebrow{font-size:9px}.server-evidence-actions .button{width:100%}.connected-events li{padding-inline:0}}

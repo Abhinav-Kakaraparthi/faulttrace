@@ -19,6 +19,10 @@ export function useWorkflow() {
       const timeout = setTimeout(() => controller.abort(), 5000);
       try {
         const value: ServerState = await apiResponse(await fetch('/api/state', { cache: 'no-store', signal: controller.signal }));
+        if (!Array.isArray(value.planning) || typeof value.planning_remaining !== 'number') {
+          if (!stopped) { setState(null); setError('Backend is running the earlier workflow version. Restart it manually using the FT-007 guide; the agent has left it untouched.'); }
+          throw new Error('incompatible_backend');
+        }
         if (!stopped) { setState(value); setConnection('online'); }
         failures = 0;
       } catch {

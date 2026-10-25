@@ -1,4 +1,4 @@
-# FT-006 local server-backed image evidence
+# Local observation planning and server-backed image evidence
 
 This is a single-computer validation workflow, not public hosting. SQLite
 replaces proposed PostgreSQL **for this checkpoint only**: portable,
@@ -50,14 +50,16 @@ npm.cmd run dev
 - Operator in a second tab: http://127.0.0.1:5173/?mode=connected&view=operator
 - Separate sample preview: http://127.0.0.1:5173/?mode=sample
 
-Restart an existing Vite server to load the new /api proxy to loopback 8765.
+The /api proxy to loopback 8765 is unchanged. No Vite restart is required by FT-007.
 No key enters the frontend. Both servers are loopback-only; mobile testing
 means a phone-sized viewport on this computer, not access from another device.
 
 ## Evidence and local trust
 
-Start creates one persisted simulated incident and fixed F-17 task: **not AI
-planning**. Telemetry is simulated. Submit an image/report in Operator; both
+Start creates one persisted simulated incident without assigning a task.
+Choose next observation explicitly requests a validated text proposal; see
+FT-007 below. Legacy FT-006 fixed tasks retain their original provenance.
+Telemetry is simulated. Submit an image/report in Operator; both
 views load the same server state. Upload alone never invokes a provider.
 Analyze image is separate and disabled unless the backend opt-in is enabled.
 Readings are validated model interpretations, not asset identity, diagnosis,
@@ -108,8 +110,9 @@ records unknown usage/transport completion. Reconciliation can retry recording
 only, never inference. The same evidence cannot be analyzed again after
 failure/interruption. Review before requesting another observation.
 
-Limitations: no watchdog, multi-instance queue, quota, orphan-image cleanup,
-backup, or database migrations. Image-file/SQLite power-failure atomicity is
+Limitations: no watchdog, multi-instance queue, account-wide quota, orphan-image cleanup,
+backup, or hosted migration framework. FT-007 has additive local schema updates.
+Image-file/SQLite power-failure atomicity is
 not guaranteed; a missing image can coexist with metadata and is shown as
 unavailable. Unknown usage is not zero, and totals are not billing.
 
@@ -133,14 +136,88 @@ npm.cmd run build
 API tests use fake transport and temporary data/images/ledger. Two ASGI clients
 and a fresh application instance verify shared state/restart persistence,
 not an actual two-tab browser journey. Standalone probes are unchanged.
-Browser inventory was empty; iab opening failed. No desktop/mobile screenshots
-were captured or inspected. Ignored `.local/visual/ft-006/verification.json`
-records that blocker. No real inference ran in this coding checkpoint.
+Browser inventory was empty; iab opening failed in FT-006 and FT-007. No
+agent desktop/mobile screenshots were captured or inspected. Ignored
+`.local/visual/ft-007/verification.json` records the latest blocker/code hashes.
+No real inference ran in the FT-007 coding checkpoint.
 
-## Reference one-call procedure (clear panel-a completed; do not repeat automatically)
+## FT-007 planner contract and later bounded verification
 
-Stop the disabled backend. From a clean committed checkout, in your Windows
-terminal only, copy an existing environment key without printing/pasting it:
+Model: `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`; endpoint:
+`https://api.tokenfactory.nebius.com/v1/chat/completions`. Existing bounded
+transport: 2048 output tokens, 256 KiB response, 60-second socket-operation
+timeout, no retries, fallback generations or redirects. Image inference is
+separate. Both operations use the same existing opt-in, worker and ledger.
+
+`POST /api/planning` accepts exactly `{ "revision": <incident revision> }`,
+local-client header and UUID Idempotency-Key. Context is snapshotted before
+reserving/queuing; its revision follows every task/evidence transition. Budget
+is four reserved calls per single persisted incident, including failed and
+interrupted turns. One attempt per context revision is intentional: repeated
+clicks reuse even failed results, not another request. New evidence/context is
+required; no automatic retry or reset exists. Pending uploaded images block
+planning until explicitly analyzed or an operator report supersedes them.
+
+Model JSON fields are exactly `kind`, `asset_id`, `capability`,
+`context_revision`, `evidence_refs`, `explanation_code`. Allowed triples:
+- REQUEST_OBSERVATION / F-17 / READ_LOCAL_DP
+- REQUEST_OBSERVATION / V-08 / OBSERVE_POSITION
+- ESCALATE / HUMAN / HUMAN_INVESTIGATION
+
+References are 1..8 distinct existing references in the bounded context.
+Explanation codes select short application text: evidence_gap,
+unreadable_evidence, clarify_conflict, human_review. Codes referring to
+unreadability or conflicts require corresponding context; no free-form model instructions or
+reasoning is persisted. Strict original smoke-test validation is unchanged.
+Raw uploaded notes are not supported by this API and extra fields fail.
+
+Context contains simulated 86 m3/h flow, 184 kPa DP and 72% feedback, at most
+4 recent task records and 16 recent observations, provenance, readability,
+conflicts and omitted-record count. Full evidence history remains persisted.
+Fixture filenames/answer keys, hidden fault labels and private images never
+enter the text payload. Synthetic-fixture provenance labels are retained. Image-derived readings enter only as recorded interpretations,
+not ground truth or asset identity. V-08 reports accept open / intermediate /
+closed / cannot determine, plus access/equipment refusal; they remain human
+reports. There is no valve movement, diagnosis, closure or recovery engine.
+
+SQLite stores the bounded context, sanitized receipts, validated proposals,
+fixed failure codes and resulting task IDs. Rejected raw output is discarded.
+No transaction spans provider I/O. Available usage survives rejected/stale
+proposals. Ledger persistence failure prevents task creation and retains the
+receipt outbox. Restart marks unfinished planning uncertain, reconciles receipts
+idempotently and never creates a task from an interrupted attempt or replays
+inference. No hard overall deadline/watchdog is implemented.
+
+**Manual restart after review, inference disabled first.** The coding agent did
+not stop or restart your servers or mutate your actual workflow database. When
+ready, use Ctrl+C in YOUR existing backend terminal; do not terminate arbitrary
+Python processes. Then run (no installs needed for an existing environment):
+
+```powershell
+Set-Location 'C:\Users\surya\Projects\faulttrace'
+$env:FAULTTRACE_ALLOW_INFERENCE = '0'
+& .venv\Scripts\python.exe -m uvicorn faulttrace.workflow.main:app --host 127.0.0.1 --port 8765 --workers 1 --no-access-log --log-level warning
+```
+
+This startup applies additive schema changes; it retains your existing
+incident, fixed-task origin, private evidence and accounting. The earlier
+backend is incompatible with the new frontend; a clear message asks for your
+manual restart. Keep the already running frontend on 5173. If not running:
+
+```powershell
+Set-Location 'C:\Users\surya\Projects\faulttrace\frontend'
+npm.cmd run dev
+```
+
+Open Commander/Operator URLs above. Inspect 1440x900 and 390x844, keyboard focus,
+view switching, disabled explanations, task access and history. No mock planner
+is substituted when inference is disabled. Screenshots/visual approval remain
+pending because the agent has no browser surface.
+
+**Proposed later live verification: at most TWO text calls, no image calls.**
+Only after separate authorization and clean committed checkout, manually stop
+your disabled backend, ensure its process environment has the key (never paste
+it into the UI), then run:
 
 ```powershell
 Set-Location 'C:\Users\surya\Projects\faulttrace'
@@ -152,23 +229,27 @@ $env:FAULTTRACE_ALLOW_INFERENCE = '1'
 & .venv\Scripts\python.exe -m uvicorn faulttrace.workflow.main:app --host 127.0.0.1 --port 8765 --workers 1 --no-access-log --log-level warning
 ```
 
-1. Open the Commander and Operator URLs in two tabs. Start one simulated
-   incident. Verify matching task ID/revision via /api/state in both tabs.
-2. Submit committed panel-a in Operator. Confirm both views show the same
-   evidence ID, with no analysis yet.
-3. After separate live authorization, click Analyze image **once**. Review
-   the actual interpretation/receipt and known usage in both tabs. Independently
-   expect readable 180 kPa for this fixture; never substitute that expectation
-   for the returned result. If failed/uncertain, stop without an extra call.
-4. Stop the backend; set `$env:FAULTTRACE_ALLOW_INFERENCE = '0'`; run the
-   same uvicorn command. Verify the same incident/task/evidence/attempt ID
-   survives without another provider request. Check offline ledger:
+1. Use the retained incident/evidence (do not repeat its clear-image analysis).
+   On a fresh store only, start an incident and verify no automatic task.
+   Confirm at least two remaining turns and no blocking task.
+2. Click Choose next observation ONCE. Inspect the real proposal, context
+   revision, task template or escalation, receipt/usage and matching second-tab
+   state. If rejected, failed, uncertain or escalated, stop; no retry.
+3. If a task exists, submit one honest simulated observation/refusal. For F-17,
+   use Report unreadable/cannot access, with no new image analysis. For V-08,
+   submit a human position report or cannot determine. No equipment operation.
+   Confirm the new evidence/provenance and revision in both tabs.
+4. Click Choose next observation ONCE more, then stop regardless of result.
+   Verify the second context includes that evidence and the remaining budget
+   decreased by two overall. A repeated choice is possible and must be reported
+   honestly, not replaced with an expected adaptive result. Check inference
+   validation separately from accounting completeness. Save sanitized evidence.
+5. Manually restart inference-disabled with the earlier command. Read offline
+   accounting without importing/replaying anything:
 
 ```powershell
 & .venv\Scripts\python.exe -m faulttrace.probe --ledger-summary
 ```
 
-5. Save sanitized receipts and actual desktop/mobile screenshots under ignored
-   `.local/visual/ft-006/`. Inspect token completeness separately. A panel-b
-   connected test is a later separately scoped call; do not repeat/import the
-   existing standalone vision successes as part of this procedure.
+No further provider calls follow from this procedure. The application hard cap
+is four planning turns, but this proposed verification is limited to two.

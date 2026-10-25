@@ -1,0 +1,11 @@
+import type { ServerState } from './api';
+
+/** Presentation guard only; the backend independently enforces all policy. */
+export function planningBlocker(state: Pick<ServerState, 'task' | 'planning' | 'incident' | 'planning_remaining' | 'inference_enabled'>): string | null {
+  if (!state.inference_enabled) return 'Inference disabled. See the startup guide; no model choice is substituted.';
+  if (state.planning.some(item => item.status === 'pending')) return 'Planning is pending. No additional call will be made.';
+  if (state.task && ['awaiting', 'submitted', 'analyzing'].includes(state.task.status)) return 'Finish or report the current task first. An uploaded image requires explicit analysis.';
+  if (!state.planning_remaining) return 'Budget exhausted. Human investigation is required.';
+  if (state.planning.some(item => item.context_revision === state.incident?.revision)) return 'This context already has an attempt. It will not be retried; new evidence is required.';
+  return null;
+}

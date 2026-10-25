@@ -12,6 +12,15 @@ Official sources:
 Recheck official requirements before final submission.
 Check an item only after recording evidence or a verified link.
 
+FT-007 ships offline-tested explicit text planning: bounded public evidence
+context, strict observation/escalation policy, durable four-turn reservations,
+stale/duplicate rejection and V-08 human reports. 66 backend tests, 8 frontend
+tests and type/build checks pass with fake transport only. No live planning
+request or agent-operated browser review occurred; adaptive reasoning, mobile,
+connected unreadable/refusal browser journeys, CI and hosting remain unverified.
+No broad submission gate is checked by this checkpoint. Existing FT-006 user
+browser evidence below remains attributed to that earlier implementation.
+
 FT-006 current scope: server-backed local incident/task/evidence persistence,
 explicit image analysis path, and two-tab polling are implemented and tested
 offline with fake transport. SQLite is temporary local architecture, not hosted

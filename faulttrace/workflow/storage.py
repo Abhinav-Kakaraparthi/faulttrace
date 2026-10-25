@@ -81,6 +81,27 @@ class Store:
               CREATE TABLE IF NOT EXISTS events (
                 sequence INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT, evidence_id TEXT, created_at TEXT);
             ''')
+            # Additive migration preserves existing FT-006 evidence and task provenance.
+            for table, column, definition in (
+                ('incidents', 'revision', 'INTEGER NOT NULL DEFAULT 1'),
+                ('tasks', 'asset_id', "TEXT NOT NULL DEFAULT 'F-17'"),
+                ('tasks', 'capability', "TEXT NOT NULL DEFAULT 'READ_LOCAL_DP'"),
+                ('tasks', 'creation_source', "TEXT NOT NULL DEFAULT 'fixed simulation workflow'"),
+                ('tasks', 'explanation', "TEXT NOT NULL DEFAULT 'Legacy fixed simulation observation.'"),
+            ):
+                if column not in {r['name'] for r in db.execute(f'PRAGMA table_info({table})')}:
+                    db.execute(f'ALTER TABLE {table} ADD COLUMN {column} {definition}')
+            db.executescript('''
+              CREATE TABLE IF NOT EXISTS planning (
+                id TEXT PRIMARY KEY, incident_id TEXT, context_revision INTEGER,
+                status TEXT, created_at TEXT, context TEXT, proposal TEXT,
+                receipt TEXT, error TEXT, accounting TEXT, task_id TEXT, explanation TEXT,
+                UNIQUE(incident_id, context_revision));
+              CREATE TRIGGER IF NOT EXISTS task_context_insert AFTER INSERT ON tasks BEGIN
+                UPDATE incidents SET revision=revision+1 WHERE id=NEW.incident_id; END;
+              CREATE TRIGGER IF NOT EXISTS task_context_update AFTER UPDATE ON tasks BEGIN
+                UPDATE incidents SET revision=revision+1 WHERE id=NEW.incident_id; END;
+            ''')
 
     @contextmanager
     def connection(self, write=False):
@@ -126,11 +147,16 @@ class Store:
         return row
 
     def snapshot(self):
+        from .planner_contract import TEMPLATES
         with self.connection() as db:
-            incident = db.execute("SELECT * FROM incidents").fetchone()
-            task = db.execute("SELECT * FROM tasks").fetchone()
+            incident = db.execute("SELECT id,created_at,revision FROM incidents").fetchone()
+            tasks = [dict(r) for r in db.execute("SELECT * FROM tasks ORDER BY rowid")]
+            for item in tasks:
+                item['instruction'] = TEMPLATES[(item['asset_id'], item['capability'])]
+            task = tasks[-1] if tasks else None
             evidence = [dict(r) for r in db.execute("SELECT * FROM evidence ORDER BY rowid")]
             for item in evidence:
+                item['asset_id'] = next(t['asset_id'] for t in tasks if t['id'] == item['task_id'])
                 analysis = db.execute("SELECT * FROM analyses WHERE evidence_id=?", (item["id"],)).fetchone()
                 item["analysis"] = dict(analysis) if analysis else None
                 if analysis:
@@ -138,6 +164,12 @@ class Store:
                         item["analysis"][key] = json.loads(analysis[key]) if analysis[key] else None
                 item["image_url"] = f'/api/evidence/{item["id"]}/image' if item["kind"] == "image" else None
             events = [dict(r) for r in db.execute("SELECT * FROM events ORDER BY sequence")]
+            planning = [dict(r) for r in db.execute("SELECT * FROM planning ORDER BY rowid")]
+            for attempt in planning:
+                attempt.pop('context')  # Internal bounded input; never expose a raw provider response.
+                for field in ('proposal', 'receipt'):
+                    attempt[field] = json.loads(attempt[field]) if attempt[field] else None
         return {"incident": dict(incident) if incident else None,
-                "task": dict(task, asset_id="F-17", creation_source="fixed simulation workflow") if task else None,
+                "task": task, "tasks": tasks, "planning": planning,
+                "planning_remaining": max(0, 4-len(planning)),
                 "evidence": evidence, "events": events}

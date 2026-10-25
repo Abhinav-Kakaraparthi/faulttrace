@@ -6,19 +6,25 @@ export type Receipt = {
 };
 export type Interpretation = { readability: 'readable' | 'unreadable'; reading: number | null; unit: string | null; evidence_ref: string };
 export type ServerEvidence = {
-  id: string; task_id: string; kind: 'image' | 'report'; origin: string; fixture_id: string | null;
+  id: string; task_id: string; asset_id: string; kind: 'image' | 'report'; origin: string; fixture_id: string | null;
   sha256: string | null; width: number | null; height: number | null; status: string; report: string | null;
   created_at: string; image_url: string | null; submitted_revision: number;
   analysis: { id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
-  incident: { id: string; created_at: string } | null;
-  task: { id: string; revision: number; status: string; asset_id: string; creation_source: string } | null;
+  incident: { id: string; created_at: string; revision: number } | null;
+  task: { id: string; revision: number; status: string; asset_id: string; capability: string; creation_source: string; explanation: string; instruction: string } | null;
+  planning_remaining: number;
+  planning: { id: string; context_revision: number; status: string; error: string | null; explanation: string | null; accounting: string; task_id: string | null; receipt: Receipt | null; proposal: { kind: string; asset_id: string; capability: string; explanation_code: string; evidence_refs: string[] } | null }[];
   evidence: ServerEvidence[];
   events: { sequence: number; kind: string; evidence_id: string | null; created_at: string }[];
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  stale_context: 'Investigation changed. Refresh; the old planner result cannot create a task.',
+  active_task_conflict: 'Complete or report the current blocking task before choosing another observation.',
+  planning_in_progress: 'A planning request is pending. No additional call was made.',
+  planning_budget_exhausted: 'All four planning turns are reserved. Continue with human investigation.',
   stale_task: 'Task changed in another tab. Refresh the task before submitting again.',
   stale_or_unanalyzable_evidence: 'This evidence is stale or cannot be analyzed. Load the current task.',
   inference_disabled: 'Inference is disabled on this server. See the local startup guide.',

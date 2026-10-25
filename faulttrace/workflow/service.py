@@ -1,4 +1,4 @@
-"""Revision checks, durable submissions and idempotency; no model planning."""
+"""Revision checks, durable submissions and idempotency; no equipment actions."""
 import os
 import threading
 import uuid
@@ -19,10 +19,8 @@ class Workflow:
             incident = db.execute("SELECT id FROM incidents").fetchone()
             incident_id = incident["id"] if incident else str(uuid.uuid4())
             if not incident:
-                db.execute("INSERT INTO incidents VALUES(?,1,?)", (incident_id, now()))
-                db.execute("INSERT INTO tasks VALUES(?,?,1,'awaiting',?)", (str(uuid.uuid4()), incident_id, now()))
+                db.execute("INSERT INTO incidents(id,singleton,created_at) VALUES(?,1,?)", (incident_id, now()))
                 self.store.event(db, "simulated_incident_started")
-                self.store.event(db, "fixed_observation_task_created")
             self.store.remember(db, key, fingerprint, incident_id)
         return incident_id
 
@@ -35,12 +33,22 @@ class Workflow:
             if existing:
                 return existing
             task = self.store.task(db, task_id, revision)
+            latest = db.execute('SELECT id FROM tasks ORDER BY rowid DESC LIMIT 1').fetchone()
+            if latest['id'] != task_id:
+                raise WorkflowError('stale_task', 409)
             if task["status"] not in ("awaiting", "needs_evidence"):
                 raise WorkflowError("task_not_accepting_evidence", 409)
-            if not image and report not in ("cannot-access", "wrong-equipment", "unreadable"):
-                raise WorkflowError("invalid_report", 400)
+            if not image:
+                allowed = (('cannot-access', 'wrong-equipment', 'unreadable') if task['asset_id'] == 'F-17'
+                           else ('open', 'intermediate', 'closed', 'cannot determine', 'cannot-access', 'wrong-equipment'))
+                if type(report) is not str or report not in allowed:
+                    raise WorkflowError("invalid_report", 400)
+            if image and task['asset_id'] != 'F-17':
+                raise WorkflowError('invalid_report', 400)
             evidence_id = str(uuid.uuid4())
-            status = "pending" if image else "unreadable" if report == "unreadable" else "refused"
+            status = ("pending" if image else "unreadable" if report == "unreadable"
+                      else "accepted" if task['asset_id'] == 'V-08' and report in ('open', 'intermediate', 'closed')
+                      else "refused")
             if image:
                 temporary = self.store.images / (evidence_id + ".tmp")
                 with temporary.open("wb") as stream:
@@ -55,7 +63,7 @@ class Workflow:
                 image["sha256"] if image else None, image["width"] if image else None,
                 image["height"] if image else None, report, now(), status, revision))
             db.execute("UPDATE tasks SET revision=revision+1,status=? WHERE id=?",
-                       ("submitted" if image else "needs_evidence", task_id))
+                       ("submitted" if image else "observed" if status == 'accepted' else "needs_evidence", task_id))
             self.store.event(db, "image_submitted" if image else "operator_reported_" + report, evidence_id)
             self.store.remember(db, key, fingerprint, evidence_id)
         return evidence_id
@@ -68,6 +76,11 @@ class Workflow:
             task = self.store.task(db, task_id, revision)
             if task["status"] == "analyzing":
                 raise WorkflowError("analysis_in_progress", 409)
+            if db.execute('SELECT id FROM tasks ORDER BY rowid DESC LIMIT 1').fetchone()['id'] != task_id:
+                raise WorkflowError('stale_task', 409)
+            other = db.execute("SELECT id FROM tasks WHERE id<>? AND status IN ('awaiting','submitted','analyzing')", (task_id,)).fetchone()
+            if other:
+                raise WorkflowError('active_task_conflict', 409)
             db.execute("UPDATE evidence SET status='stale' WHERE task_id=? AND status='pending'", (task_id,))
             db.execute("UPDATE tasks SET revision=revision+1,status='awaiting' WHERE id=?", (task_id,))
             self.store.event(db, "observation_reissued")

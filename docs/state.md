@@ -1,6 +1,54 @@
 # Checkpoint state
 
-## Current: FT-006 connected clear-image evidence finalized
+## Current: FT-007 observation planner shipped; live/browser verification pending
+
+Implementation acceptance: PASS offline; overall PARTIAL. Started clean from
+`00d2beeb669be3e970eda34c7344d402fa0cd14c`, created
+`feat/ft-007-observation-planner`. This checkpoint's scoped implementation/docs
+commit is identified by `git log -1` on that branch; no later source edits are
+part of the test evidence. Existing servers were not stopped or restarted.
+
+Incident creation no longer assigns F-17 automatically. Choose next observation
+explicitly reserves one NVIDIA Nano text call. Policy accepts only F-17 local
+DP observation, V-08 position observation, or human escalation. Application
+templates supply instructions and brief explanations. V-08 reports remain
+human-reported, never image-verified. Both views poll the same persisted state.
+
+Bounded context includes public simulated telemetry, up to 4 task records and
+the latest 16 observations with provenance/readability, omitted-record count,
+conflicts and remaining budget. No fixture answers, private image bytes, raw
+notes or hidden fault fields enter it. Duplicate context/click reuses its
+reservation; at most one blocking task; stale completions cannot create tasks.
+Four reserved turns maximum, shared serialized worker, no transaction during
+network I/O, no retry/fallback. Rejected proposals retain available usage;
+interrupted turns remain uncertain and consumed. Additive schema changes preserve
+legacy fixed-task provenance; migration was tested only on temporary data.
+
+Checks: 66 Python offline tests (18 planner + 48 regression), 8 frontend tests,
+TypeScript/Vite build and pip check; sources below 500 lines. The full suite
+also passed with external socket connections blocked (zero forbidden attempts;
+Windows asyncio internal loopback socket-pair setup only was allowed).
+One initial full-suite failure
+was a Windows test-fixture SQLite handle left open; explicitly closing it fixed
+cleanup, then all tests passed. Existing TestClient/Node deprecation/experimental
+warnings remain. No dependencies added. Mock choices prove policy, not live
+adaptive reasoning. Actual workflow data/ledger were not opened or changed;
+prior accounting below is historical evidence, not a fresh account audit.
+
+Browser blocker: enabled-surface inventory empty; local iab opening returned
+`Browser is not available: iab`. No screenshot or actual desktop/mobile,
+keyboard, focus/overflow visual pass. Blocker/hash record is ignored at
+`.local/visual/ft-007/verification.json`. An older running backend now produces
+an explicit compatibility message until the user manually restarts it.
+
+Exact next action: follow the FT-007 section of [workflow guide](evidence-workflow.md),
+first restart manually inference-disabled and review desktop/mobile; then,
+under separate live authorization, at most two explicit text-planning calls
+separated by one honest simulated observation/refusal. No image analysis replay,
+automatic calls, intervention, recovery, deployment or merge. Live planner,
+connected unreadable/refusal browser coverage, mobile, CI and hosting remain open.
+
+## Prior verified evidence: FT-006 connected clear-image finalization
 
 Bounded acceptance: PASS for connected clear synthetic image submission/
 interpretation and user-reported restart persistence only. Broader FT-006

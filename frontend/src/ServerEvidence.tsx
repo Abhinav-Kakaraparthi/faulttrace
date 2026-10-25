@@ -8,6 +8,11 @@ export const statusLabel: Record<string, string> = {
   uncertain: 'Uncertain · analysis interrupted',
 };
 
+function evidenceStatus(item: Evidence) {
+  if (item.kind === 'report' && item.status === 'accepted') return 'Accepted human report · not image-verified';
+  return item.analysis?.status === 'pending' ? 'Analysis pending · no reading yet' : statusLabel[item.status] ?? item.status;
+}
+
 export function ServerEvidenceList({ state, inspect, analyze, disabled }: {
   state: ServerState; inspect: (item: Evidence) => void; analyze: (item: Evidence) => void; disabled: boolean;
 }) {
@@ -16,7 +21,7 @@ export function ServerEvidenceList({ state, inspect, analyze, disabled }: {
     {!state.evidence.length && <p className="muted">No evidence submitted. Both tabs read the same server task.</p>}
     {state.evidence.map(item => <article key={item.id} className="server-evidence-item">
       <span className={`pill ${item.status === 'accepted' ? 'teal' : 'amber'}`}>
-        {item.analysis?.status === 'pending' ? 'Analysis pending · no reading yet' : statusLabel[item.status] ?? item.status}
+        {evidenceStatus(item)}
       </span><h3>{item.kind === 'image' ? 'Image observation' : `Human report: ${item.report}`}</h3>
       <p>Source: {item.origin}{item.fixture_id ? ` / ${item.fixture_id}` : ''} · Task revision {item.submitted_revision}</p>
       {item.analysis?.interpretation && <p className="model-reading">Model interpretation: {item.analysis.interpretation.readability === 'readable' ? `${item.analysis.interpretation.reading} ${item.analysis.interpretation.unit}` : 'unreadable — reading and unit unknown'}</p>}
@@ -34,12 +39,12 @@ export function ServerEvidenceDetails({ evidence }: { evidence: Evidence }) {
   const [imageFailed, setImageFailed] = useState(false);
   useEffect(() => setImageFailed(false), [evidence.id]);
   const receipt = evidence.analysis?.receipt;
-  return <><span className="pill amber">{evidence.analysis?.status === 'pending' ? 'Analysis pending · no reading yet' : statusLabel[evidence.status] ?? evidence.status}</span>
-    {evidence.image_url ? imageFailed ? <p className="notice">Stored image unavailable. Metadata may remain, but image availability is not established.</p> : <img className="evidence-image" src={evidence.image_url} onError={() => setImageFailed(true)} alt="Privately stored submitted evidence; asset identity is not verified by this image" /> : <p>No image supplied. Human report only.</p>}
+  return <><span className="pill amber">{evidenceStatus(evidence)}</span>
+    {evidence.image_url ? imageFailed ? <p className="notice">Stored image unavailable. Metadata may remain, but image availability is not established.</p> : <img className="evidence-image" src={evidence.image_url} onError={() => setImageFailed(true)} alt="Privately stored submitted evidence; asset identity is not verified by this image" /> : <p>No image supplied. Human report only: {evidence.report}. Position reports are not image-verified.</p>}
     <dl className="evidence-facts">
       <div><dt>Origin</dt><dd>{evidence.origin} {evidence.fixture_id}</dd></div>
       <div><dt>Evidence ID</dt><dd>{evidence.id}</dd></div>
-      <div><dt>Task</dt><dd>F-17 · application-assigned, not image-verified</dd></div>
+      <div><dt>Task</dt><dd>{evidence.asset_id} · application-assigned, not image-verified</dd></div>
       <div><dt>Readability</dt><dd>{evidence.analysis?.interpretation?.readability ?? (evidence.report === 'unreadable' ? 'human-reported unreadable' : 'not established')}</dd></div>
       <div><dt>Reading</dt><dd>{evidence.analysis?.interpretation?.reading ?? 'unknown'} {evidence.analysis?.interpretation?.unit}</dd></div>
       {receipt && <><div><dt>Model</dt><dd>{receipt.returned_model ?? 'unknown'} · validation {receipt.validation_result}</dd></div><div><dt>Attempt</dt><dd>{receipt.attempt_id}</dd></div><div><dt>Latency</dt><dd>{receipt.latency_ms === null ? 'unknown' : `${receipt.latency_ms} ms measured`}</dd></div><div><dt>Revision</dt><dd>{receipt.source_revision ?? 'unknown / dirty checkout'}</dd></div></>}

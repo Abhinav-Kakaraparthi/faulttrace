@@ -1,8 +1,19 @@
 # Provider smoke test
 
-Current application status: FT-006 adds a local server-backed workflow and
-keeps the earlier sample preview separate. See [workflow guide](evidence-workflow.md)
-for exact setup/URLs and the reference one-call procedure (clear-image test completed). Earlier
+Current application status: FT-007 adds explicit observation planning to the
+local server-backed workflow. Start incident creates no automatic task;
+Choose next observation proposes F-17 local DP, V-08 position-only, or human
+escalation using NVIDIA Nano. Strict application validation checks registered
+asset/capability combinations, existing references and context revision;
+application templates generate instructions and short explanation text.
+No output grants equipment authority, diagnostic certainty or recovery.
+V-08 position reports are explicitly human-reported, not image-verified.
+See [workflow guide](evidence-workflow.md) for exact manual restart commands
+and the proposed maximum-two-call live check. No inference or server restart
+was performed in this checkpoint. Live adaptive reasoning remains unverified.
+
+The workflow keeps the earlier sample preview separate. See the workflow guide
+for exact setup/URLs and the completed FT-006 clear-image evidence. Earlier
 no-backend/no-vision statements below describe their original checkpoints.
 Connected clear-image submission/interpretation and user-reported restart
 persistence are now narrowly verified at implementation
@@ -12,7 +23,7 @@ after restarting inference-disabled. The agent corroborated SQLite/ledger
 records read-only; it did not operate a browser, replay/import analysis, or
 inspect private images. Mobile and connected unreadable/refusal paths remain open.
 
-One fixed simulated incident/task persists in local SQLite, an explicit
+One simulated incident and its task/evidence history persist in local SQLite, an explicit
 portable single-instance departure from planned PostgreSQL. Images are decoded,
 bounded, stripped of metadata, stored privately under ignored .local, and
 retrieved by scoped evidence UUID only. User uploads, verified fixture-origin
@@ -26,11 +37,16 @@ verification used fake provider transport only. Pending/accepted/unreadable/
 refused/failed/stale/uncertain states and known/unknown per-call usage are shown.
 
 Revision/idempotency checks and a durable reservation prevent duplicate calls.
-One worker serializes analysis/accounting without holding a SQLite transaction
+One worker serializes planning, image analysis and accounting without holding a SQLite transaction
 during network I/O. Interruption is uncertain, never automatically retried;
 receipt reconciliation can repeat accounting only. No auth, user isolation,
 public-host hardening, multi-instance queue, or recovery/maintenance engine
-exists. Trust only local users/processes; do not expose these dev servers.
+exists. Planning is limited to four reserved turns per incident, with duplicate
+context/click reuse and stale-result rejection. Interrupted turns stay uncertain
+and consume budget; known/partial usage survives rejected proposals. The bounded
+context includes only public telemetry and recent observations, not fixture
+answers, hidden simulator labels or raw notes. Conflicting observations remain
+in the evidence history. Trust only local users/processes; do not expose these dev servers.
 
 The supplied panel-a/panel-b vision successes were confirmed in the ledger,
 not repeated/imported. After the new connected attempt, actual known ledger
@@ -50,12 +66,15 @@ action authorization, or recovery. See state.md for the sanitized receipt.
 Agent browser access remains unavailable; no agent-operated visual pass or
 screenshot inspection is claimed. User observations are attributed explicitly.
 Mobile, connected unreadable/refusal, adaptive planning, recovery, CI, and
-hosting remain open. Source is unchanged, so prior test evidence still applies.
+hosting remain open. FT-007 has 66 passing offline backend tests, 8 frontend
+tests and a passing type/build check. Browser surfaces remain unavailable;
+these checks do not establish a visual pass or live adaptive reasoning.
 
 Transport sends one synthetic text request to the fixed Nebius endpoint and
 model. Validation independently checks the response envelope and exact
 observation-only proposal. A valid proposal grants no authority and executes
-no equipment action. There is no application runtime integration yet.
+no equipment action. This paragraph describes the original standalone FT-003
+probe; the separately validated application planner now exists but awaits live verification.
 
 The transport uses a 60-second socket timeout, no retries, no redirects, a
 2048 output-token cap, and a 256 KiB response-body limit. A socket timeout

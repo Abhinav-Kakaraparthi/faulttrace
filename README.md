@@ -15,7 +15,11 @@ persist tasks/evidence across tabs and backend restart in offline tests.
 Connected clear-image submission and inference-disabled restart persistence
 are user-verified, corroborated by read-only SQLite/ledger checks. Mobile,
 connected unreadable/refusal paths, and broad browser coverage remain open.
-Inference is disabled by default; CI, hosting, and recovery verification stay open.
+FT-007 adds explicit NVIDIA text planning with validated F-17/V-08 observation
+tasks or human escalation, four reserved turns per incident, and structured
+V-08 human reports. Offline policy tests pass; live adaptive planning and
+desktop/mobile browser review remain unverified. Inference is disabled by
+default; CI, hosting, and recovery verification stay open.
 
 ## Planned workflow
 
@@ -37,14 +41,14 @@ private evidence storage; isolated simulator; Nebius model inference.
 
 React/TypeScript/Vite and FastAPI are implemented locally. SQLite in ignored
 `.local/workflow/` explicitly replaces proposed PostgreSQL for portable,
-single-instance validation; hosted database work remains open. Task creation
-and telemetry are a fixed simulation, not model planning.
+single-instance validation; hosted database work remains open. Telemetry is
+simulated. Explicit model proposals pass deterministic policy before task creation.
 Provider capabilities must be verified before selecting model identifiers.
 
-## FT-006 server workflow
+## FT-007 observation planning / server workflow
 
 See [server workflow guide](docs/evidence-workflow.md) for trust boundaries,
-restart/idempotency behavior, and the later one-call live procedure.
+restart/idempotency behavior, planner contract, and bounded later live procedure.
 
 Backend terminal (local-only, inference disabled):
 
