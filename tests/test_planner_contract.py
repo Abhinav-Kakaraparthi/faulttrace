@@ -106,8 +106,9 @@ class PlannerContractTests(unittest.TestCase):
         self.assertEqual(set(schema['required']), {'kind', 'asset_id', 'capability', 'context_revision', 'evidence_refs', 'explanation_code'})
         self.assertEqual(set(schema['properties']), set(schema['required']))
         self.assertEqual(schema['properties']['context_revision'], {'type': 'integer', 'enum': [7]})
+        self.assertNotIn('uniqueItems', schema['properties']['evidence_refs'])
         self.assertEqual(schema['properties']['evidence_refs'], {'type': 'array', 'minItems': 1, 'maxItems': 8,
-            'uniqueItems': True, 'items': {'type': 'string', 'enum': ['telemetry-001', 'evidence-known']}})
+            'items': {'type': 'string', 'enum': ['telemetry-001', 'evidence-known']}})
         combinations = {tuple(branch['properties'][key]['enum'][0] for key in ('kind', 'asset_id', 'capability'))
                         for branch in schema['anyOf']}
         self.assertEqual(combinations, {('REQUEST_OBSERVATION', 'F-17', 'READ_LOCAL_DP'),
@@ -122,3 +123,10 @@ class PlannerContractTests(unittest.TestCase):
         schema = planner_payload(self.context)['response_format']['json_schema']['schema']
         self.assertEqual(set(schema['properties']['explanation_code']['enum']), {'evidence_gap', 'human_review'})
         self.assertEqual(self.context, before)
+
+    def test_provider_uniqueness_keyword_omitted_but_duplicate_references_still_rejected(self):
+        payload = planner_payload(self.context)
+        self.assertNotIn('uniqueItems', json.dumps(payload['response_format']))
+        duplicate = dict(self.proposal, evidence_refs=['telemetry-001', 'telemetry-001'])
+        with self.assertRaisesRegex(ProbeError, '^planner_duplicate_reference$'):
+            validate_plan(self.envelope(duplicate), self.context)

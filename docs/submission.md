@@ -29,6 +29,13 @@ connected unreadable/refusal browser journeys, CI and hosting remain unverified.
 No broad submission gate is checked by this checkpoint. Existing FT-006 user
 browser evidence below remains attributed to that earlier implementation.
 
+Subsequent user diagnostic 17da531f-147f-4dc6-bf49-19c5580d739f implicated
+uniqueItems (HTTP 400, BadRequestError; unknown usage, user reports ledger
+recorded). Only that provider schema keyword was removed; application duplicate
+rejection remains strict. All 79 backend tests pass. Corrected live compatibility
+is pending the reserved single verification call; FT-007 remains PARTIAL and no
+submission gate changes. This does not recover an earlier discarded response.
+
 FT-006 current scope: server-backed local incident/task/evidence persistence,
 explicit image analysis path, and two-tab polling are implemented and tested
 offline with fake transport. SQLite is temporary local architecture, not hosted

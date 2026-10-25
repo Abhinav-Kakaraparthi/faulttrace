@@ -16,6 +16,15 @@ endpoint/schema compatibility still needs live verification; application policy
 remains mandatory. No inference or server restart was performed in FT-007A.
 Live adaptive reasoning remains unverified.
 
+The user's diagnostic reproduction 17da531f-147f-4dc6-bf49-19c5580d739f
+returned HTTP 400 / BadRequestError, with redacted message
+"[redacted] error [redacted] uniqueItems" and unknown usage recorded in the
+ledger. The narrow correction removes only provider-facing uniqueItems;
+application-side duplicate rejection remains strict. Other schema support is
+still unverified. No historical body was recovered. All 79 backend tests pass;
+the second authorized live call is reserved for the committed correction,
+using the standalone saved-context command in the workflow guide. No call ran here.
+
 FT-007B adds numeric HTTP status and a fixed status-derived category to new
 failure receipts, ledger records and the UI. Bodies/headers are never read or
 retained; status is not a proven provider cause. Historical missing fields stay

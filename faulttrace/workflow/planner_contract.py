@@ -96,7 +96,7 @@ def response_format(context):
         'asset_id': {'type': 'string', 'enum': ['F-17', 'V-08', 'HUMAN']},
         'capability': {'type': 'string', 'enum': ['READ_LOCAL_DP', 'OBSERVE_POSITION', 'HUMAN_INVESTIGATION']},
         'context_revision': {'type': 'integer', 'enum': [context['context_revision']]},
-        'evidence_refs': {'type': 'array', 'minItems': 1, 'maxItems': 8, 'uniqueItems': True,
+        'evidence_refs': {'type': 'array', 'minItems': 1, 'maxItems': 8,
                           'items': {'type': 'string', 'enum': ['telemetry-001'] + [o['evidence_ref'] for o in context['observations']]}},
         'explanation_code': {'type': 'string', 'enum': supported_explanations(context)},
     }

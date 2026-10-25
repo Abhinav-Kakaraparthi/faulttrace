@@ -1,6 +1,38 @@
 # Checkpoint state
 
-## Current: FT-007B safe HTTP diagnostics; FT-007 remains PARTIAL
+## Current: FT-007 narrow uniqueItems correction; live verification pending
+
+Started clean on feat/ft-007-observation-planner at
+60842d6e350827b0f4f16d1c39d049afcea80033. User-performed diagnostic
+reproduction attempt 17da531f-147f-4dc6-bf49-19c5580d739f returned HTTP 400,
+code BadRequestError, redacted message "[redacted] error [redacted] uniqueItems";
+user reports ledger recorded and usage unknown. This implicates uniqueItems
+in the current request. No discarded historical error body was recovered,
+and this does not establish that no other schema incompatibility exists.
+
+Smallest correction: remove uniqueItems only from the provider-facing
+evidence_refs schema. Strict application duplicate rejection remains unchanged
+(planner_duplicate_reference), as do all other schema/request constraints,
+model, prompt, token cap, idempotency, context/revision/budget and authorization.
+No JSON-object workaround. Six focused contract tests and all 79 backend
+offline tests pass. No frontend changes; prior frontend checks remain applicable.
+The guarded backend run recorded zero forbidden network attempts (only Windows
+asyncio internal loopback socket-pair setup allowed). Comparing two request
+contexts against the starting commit found only the removed uniqueItems key.
+No inference, database reset/write, receipt import, or server restart occurred
+in this coding step; previous accounting sections are dated snapshots, not a
+fresh ledger audit after the user's additional diagnostic calls.
+
+Next: reserve the second authorized provider call for exactly one standalone
+verification against this committed correction, reconstructed from the saved
+context for 91e991ab-d9eb-4519-9a52-c2ac3e8ff17b. It records a new sanitized
+receipt through the existing ledger, creates no workflow task and consumes no
+incident turn. See the [single verification command](evidence-workflow.md#single-reserved-verification-after-the-uniqueitems-correction).
+Do not run earlier fresh-simulation proposals or repeat reproduction. Stop on
+any result, without retries/fallbacks/schema experimentation. FT-007 remains
+PARTIAL until real verification; live adaptive reasoning and broader gates stay open.
+
+## Prior: FT-007B safe HTTP diagnostics; FT-007 remains PARTIAL
 
 Started clean on feat/ft-007-observation-planner at
 `c571bb85773f0dda5936102587481ad122da704d`. This scoped fix preserves

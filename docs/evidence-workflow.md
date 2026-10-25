@@ -152,8 +152,10 @@ separate. Both operations use the same existing opt-in, worker and ledger.
 FT-007A adds `response_format` with type `json_schema` and a `json_schema`
 wrapper containing name, strict=true and schema. Constraints include required
 fields, additionalProperties=false, typed/enumerated fields, anyOf for the
-three permitted combinations, exact context revision, min/max/unique evidence
+three permitted combinations, exact context revision, min/max evidence
 references drawn from this context, and context-supported explanation codes.
+Following the user diagnostic below, uniqueItems is omitted only from the
+provider schema; duplicate references remain rejected by application validation.
 Application-side validation remains independent and mandatory.
 
 Official sources checked for FT-007A:
@@ -307,7 +309,7 @@ Parsed normal-response usage still survives completion/proposal rejection.
 Schema review against the [official structured output guide](https://docs.tokenfactory.nebius.com/ai-models-inference/json)
 and [chat API reference](https://docs.tokenfactory.nebius.com/api-reference/inference/create-chat-completion):
 no confirmed incompatibility found. The named strict wrapper matches the guide.
-Exact Nano support and anyOf/uniqueItems/array-bound support remain unverified;
+At the FT-007B review, exact Nano support and anyOf/uniqueItems/array-bound support were unverified;
 unsupported subset, authentication, account, route and service failures are
 possible explanations, not historical findings. The discarded HTTP status/body
 cannot distinguish them. Model, schema, prompt, output cap, retry policy,
@@ -359,3 +361,28 @@ new ledger UUID. Use the offline ledger summary command above without imports.
 Do not downgrade/experiment with schema or infer root cause from a category.
 Manually stop only this new diagnostic server in its own terminal; leave prior
 servers and all simulation directories/receipts intact.
+
+## Single reserved verification after the uniqueItems correction
+
+User diagnostic attempt 17da531f-147f-4dc6-bf49-19c5580d739f returned HTTP 400 /
+BadRequestError with message "[redacted] error [redacted] uniqueItems"; usage
+unknown, ledger recorded as reported by the user. This implicates uniqueItems,
+not every remaining schema feature. Only that provider-facing keyword was
+removed. No earlier discarded body was recovered. The application still rejects
+duplicates. Six focused contract tests and all 79 backend tests pass offline.
+
+The SECOND and final authorized request must use the committed correction and
+the original saved context, outside the workflow. Do not use either earlier
+new-simulation procedure or repeat the diagnostic reproduction. Use the single
+paste-ready command supplied with this correction's delivery (it pins the final
+commit SHA), in the existing credential-bearing terminal. It reads SQLite with
+mode=ro/query_only and calls run_probe once with planner_payload(context), then
+records only the sanitized receipt using the existing ledger. No workflow task,
+incident reservation, context change or server restart is involved.
+
+Source: saved attempt 91e991ab-d9eb-4519-9a52-c2ac3e8ff17b in
+`.local/verification/ft007b-5a415bc1c70849ac9815f114cd2fdcab/workflow.sqlite3`.
+Keep the exact Nano model, strict json_schema format and 2048 output-token cap.
+Print only receipt/accounting status; missing usage remains unknown. Stop after
+one call on success, rejection or transport failure; do not retry or downgrade
+schema. Other incompatibilities remain possible until actual verification.
