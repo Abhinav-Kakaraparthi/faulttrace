@@ -19,8 +19,11 @@ FT-007 adds explicit NVIDIA text planning with validated F-17/V-08 observation
 tasks or human escalation, four reserved turns per incident, and structured
 V-08 human reports. Offline policy tests pass; live adaptive planning and
 desktop/mobile browser review remain unverified. Standalone flat-schema provider
-compatibility passed for one saved context; connected planner task creation and
-evidence-dependent replanning remain unverified (FT-007 PARTIAL). Inference is disabled by
+compatibility passed for one saved context. A narrow connected API run verified
+task creation and replanning with a simulated access refusal in the updated
+context, but repeated the inaccessible task. Refusal-aware application policy
+now blocks that asset (offline-tested, not live-verified). FT-007 stays PARTIAL;
+browser verification and useful adaptive decisions remain open. Inference is disabled by
 default; CI, hosting, and recovery verification stay open.
 FT-007A adds strict structured-output requests and precise sanitized diagnostics.
 The existing rejected live attempt remains preserved; a corrected call is

@@ -14,7 +14,7 @@ from faulttrace.workflow.planner_contract import build_context, validate_plan
 from test_workflow_api import WorkflowCase, key
 
 
-class PlanningTests(WorkflowCase):
+class PlanningCase(WorkflowCase):
     def setUp(self):
         super().setUp()
         self.choice = ('REQUEST_OBSERVATION', 'F-17', 'READ_LOCAL_DP')
@@ -65,6 +65,13 @@ class PlanningTests(WorkflowCase):
         task = self.state(client)['task']
         return self.post(client, f'/api/tasks/{task["id"]}/reports', {'revision': task['revision'], 'report': value})
 
+    @staticmethod
+    def envelope(value):
+        return {'choices': [{'finish_reason': 'stop', 'message': {'role': 'assistant',
+                'content': value if isinstance(value, str) else json.dumps(value)}}]}
+
+
+class PlanningTests(PlanningCase):
     def test_initial_action_no_automatic_task_and_template_authority(self):
         client = self.setup_client()
         self.assertIsNone(self.state(client)['task'])
@@ -161,11 +168,6 @@ class PlanningTests(WorkflowCase):
         envelope['choices'][0]['finish_reason'] = 'length'
         with self.assertRaises(ProbeError):
             validate_plan(envelope, context)
-
-    @staticmethod
-    def envelope(value):
-        return {'choices': [{'finish_reason': 'stop', 'message': {'role': 'assistant',
-                'content': value if isinstance(value, str) else json.dumps(value)}}]}
 
     def test_rejected_proposal_retains_usage_without_raw_output(self):
         client = self.setup_client()

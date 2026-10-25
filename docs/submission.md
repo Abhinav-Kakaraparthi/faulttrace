@@ -33,10 +33,17 @@ Standalone flat-schema provider compatibility is now verified for one saved
 context at cdb9f4277127feb983eb246dad3190d13ca2cdee: attempt
 87f5704f-d2ca-46ba-9967-7334363ac419 occurs once, validation passed with all six
 fields/no extras (user-supplied proposal), 3375 ms and valid 328/618/946 usage.
-This standalone call created no workflow task. Connected planner task creation
-and evidence-dependent replanning remain unverified; FT-007 remains PARTIAL.
-The proposed new-isolated-simulation two-call connected API test is prepared,
-not executed. No broad platform or browser gate is checked by this evidence.
+This standalone call created no workflow task. A later read-only connected API
+audit verified incident 8654a8a2-ff58-4344-a1c5-bd9d60c05a2c: attempts
+5cb5ee1d-1845-47cf-a8b9-01714c6d9b47 and 75d1d983-4afb-4b98-ad75-8dedab22cae6
+each occur once with matching SQLite/ledger receipts and created two F-17 tasks.
+The simulated cannot-access report was included/cited in the second context,
+but F-17 was repeated. Updated-context delivery and task creation are narrowly
+verified, not useful adaptation or browser behavior. Refusal-aware validation
+now blocks that asset and allows alternatives/escalation; seven focused tests
+and all 88 backend tests pass offline with zero forbidden network attempts.
+Historical accepted records remain unchanged. FT-007 remains PARTIAL; no broad
+platform, browser or recovery checkbox is checked by this checkpoint.
 
 Subsequent user diagnostic 17da531f-147f-4dc6-bf49-19c5580d739f implicated
 uniqueItems (HTTP 400, BadRequestError; unknown usage, user reports ledger
@@ -74,9 +81,10 @@ See [workflow guide](evidence-workflow.md).
 - [ ] Connected unreadable/refusal paths verified in the browser.
 - [ ] Mobile/accessibility/overflow review completed.
 
-Latest read-only known ledger: 3249 input / 6524 output / 9773 total across 13
-attempts (9 complete contributors). Separate historical manual record:
-155 / 112 / 267. Cross-record known: 3404 / 6636 / 10040 plus FOUR failed
+Latest read-only known ledger: 4085 input / 8670 output / 12755 total across 15
+attempts (11 complete contributors). Connected pair: 836/2146/2982.
+Separate historical manual record: 155 / 112 / 267.
+Cross-record known: 4240 / 8782 / 13022 plus FOUR failed
 requests with unknown consumption. No billing or complete-consumption claim.
 Known sums match the latest expectations; records remain unchanged.
 Full checklist gates remain unchecked unless their whole claim is verified.

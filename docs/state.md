@@ -1,54 +1,76 @@
 # Checkpoint state
 
-## Current: FT-007 standalone provider compatibility finalized; connected flow pending
+## Current: FT-007 connected API evidence finalized; refusal-aware policy added offline
 
-Documentation-only checkpoint started clean on feat/ft-007-observation-planner
-at tested implementation cdb9f4277127feb983eb246dad3190d13ca2cdee. No source
-or dependency change, inference, server operation, receipt import/replay or
-workflow/ledger write. This later documentation commit is distinct from the
-implementation; its SHA is available from git log -1. Existing 81 backend
-tests (8 focused), guarded zero-forbidden-network result and unchanged frontend
-check evidence remain valid; no tests were rerun for documentation only.
+Started clean on feat/ft-007-observation-planner at
+2bb97c6248450a9814cc9e503d57398e10a004ad. No inference, server restart,
+receipt import/replay, actual workflow database or ledger write in this checkpoint.
+The audited run remains unchanged; the new policy is prospective, not a rewrite
+of earlier accepted proposals, tasks, contexts or receipts.
 
-Read-only ledger load confirms attempt 87f5704f-d2ca-46ba-9967-7334363ac419
-EXACTLY ONCE: timestamp 2026-10-25T18:53:19.337482+00:00, response
-chatcmpl-fd86af00-2a1a-4da7-9ef6-134fb58b0778, requested/returned model
-nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B, source cdb9f4277127feb983eb246dad3190d13ca2cdee,
-3375 ms, transport invoked, validation passed, diagnostics empty, valid usage
-328 input / 618 output / 946 total. The user supplied this validated proposal
-(the receipt itself contains no raw model output):
-`{"kind":"REQUEST_OBSERVATION","asset_id":"F-17","capability":"READ_LOCAL_DP","context_revision":1,"evidence_refs":["telemetry-001"],"explanation_code":"evidence_gap"}`.
-All six fields were present with no extras. This standalone provider/validator
-call created no workflow task and consumed no incident planning turn.
+Read-only SQLite URI mode=ro/query_only plus existing ledger load audited incident
+8654a8a2-ff58-4344-a1c5-bd9d60c05a2c in
+`.local/verification/ft007-connected-8f8673e87da9431cb3f9fce92908529e`:
 
-Flat-schema provider compatibility PASSED for this saved context, not arbitrary
-contexts or connected runtime flow. Connected planner task creation and
-evidence-dependent replanning remain unverified: FT-007 remains PARTIAL.
-No image-analysis replay or recovery/diagnostic certainty is implied.
+- Attempt 5cb5ee1d-1845-47cf-a8b9-01714c6d9b47 occurs once in SQLite and ledger;
+  receipts match exactly. Context revision 1, no observations, accepted F-17 /
+  READ_LOCAL_DP proposal, created task 45a54498-2c17-463a-bc27-b996381b8e85.
+  Response chatcmpl-336a3652-56a1-4676-adbb-e6f0391a0ad5; 10390 ms;
+  valid 328 input / 866 output / 1194 total; ledger recorded.
+- Simulated cannot-access report bcd5802e-15ed-49e7-af24-14617ee637ff belongs to
+  that task/asset; kind report, origin human-report, status refused. It is not
+  real field evidence or an image interpretation.
+- Attempt 75d1d983-4afb-4b98-ad75-8dedab22cae6 occurs once in both stores;
+  receipts match exactly. Saved context revision 3 includes that same refused
+  report/reference. Proposal cites it and telemetry-001, but requests F-17
+  again, creating task 8db8b2c2-fbd9-42a1-8d7f-48a256e9e105.
+  Response chatcmpl-aec7a419-d89d-4e19-9ada-67addc11eff1; 10110 ms;
+  valid 508 / 1280 / 1788 usage; ledger recorded.
 
-Original failures remain intact: 17da531f-147f-4dc6-bf49-19c5580d739f implicated
-uniqueItems through the user's HTTP 400 / BadRequestError diagnostic. The
-three-field result reported for 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 matched
-partial anyOf properties and implicated composition compatibility, not a proven
-provider implementation bug. Removing uniqueItems and then root anyOf left
-application combination/reference/shape/revision/explanation checks strict.
-No discarded historical body or output was recovered or retrospectively relabeled.
+Both receipts validate passed with exact Nano model and source revision 2bb97c6
+(full SHA above). Two accepted attempts, two tasks, one refused report, current
+incident revision 4, two planning turns left. Current task remains awaiting;
+no task was cancelled/replaced by this audit or fix. This verifies connected
+provider -> validator -> task persistence and updated-evidence context/replanning
+through the API. It does NOT prove useful adaptation: the repeated inaccessible
+F-17 task exposed a missing application policy. No agent-operated browser test,
+real equipment observation, operating recovery or diagnosis is established.
 
-Actual accounting matches expectations: ledger 13 attempts, 9 complete known
-contributors = 3249 input / 6524 output / 9773 total. Four attempts retain
-missing usage; partial/invalid/inconsistent counts all zero. Separate historical
-manual success = 155/112/267; cross-record known = 3404/6636/10040. No discrepancy,
-missing-token inference, imports, billing estimate or complete-consumption claim.
-Previous accounting snapshots below predate these records.
+New refusal-aware policy: unresolved cannot-access blocks observation requests
+for the same asset, independent of model explanation/reference choice. Full
+incident history supplies bounded unavailable_assets even when older reports
+fall outside the recent 16 observations. Prompt instructs an available alternative
+or escalation; application rejects violations with planner_asset_unavailable.
+There is no access-clearance workflow: blocks persist for the incident and are
+not silently cleared by reopening, later reports or image interpretations.
+Existing tasks/history remain intact; no automatic repair, rewrite or retry.
+All other combination/reference/shape/revision/active-task/budget guards remain.
 
-Next proposed test, PREPARED NOT EXECUTED: [connected two-call API procedure](evidence-workflow.md#next-connected-api-test-prepared-not-executed).
-New UUID-named isolated simulation, existing shared ledger, verified-free port,
-at most two explicit planning calls separated by a clearly labeled simulated
-operator access refusal. Stop after a failed/uncertain/escalated first result;
-no second call then. No image analysis, automatic retry, historical reset or
-budget reuse. Preserve every prior run. API connected-flow results will not
-establish a two-tab browser journey. Await the next authorized execution step;
-no connected live verification occurred during this finalization.
+Accounting checked read-only: connected pair known sum 836 input / 2146 output /
+2982 total. Ledger 15 attempts, 11 complete known contributors =
+4085 / 8670 / 12755; four missing-usage attempts, zero partial/invalid/inconsistent.
+Separate historical manual success 155/112/267; cross-record known
+4240 / 8782 / 13022. These reconcile exactly to prior totals plus the connected
+pair; no discrepancy, imports, missing-token inference or billing estimate.
+
+Offline verification: seven focused refusal-policy tests and all 88 backend
+tests pass with fake transport/temporary stores. Full suite socket guard recorded
+zero forbidden network attempts (Windows asyncio internal loopback socket-pair
+setup only allowed). Provider response schema, explanation constraints, transport,
+accounting, reservations, task service and frontend are otherwise unchanged;
+AST/diff checks passed. Sources remain below 500 lines (maximum 374).
+The fix has not been live-verified.
+FT-007 remains PARTIAL: connected API mechanism narrowly verified, browser,
+useful evidence-dependent decisions, recovery, CI and hosting remain open.
+Next action is review of this commit and a separately authorized future test;
+do not rerun or reset the existing two-call run. No live verification now.
+
+Prior standalone compatibility remains valid: attempt
+87f5704f-d2ca-46ba-9967-7334363ac419 at cdb9f4277127feb983eb246dad3190d13ca2cdee,
+3375 ms, valid 328/618/946 usage, all six fields/no extras, no workflow task.
+Original uniqueItems and partial-anyOf failures remain preserved, with their
+narrow causal conclusions; no provider implementation bug or discarded output
+recovery is claimed.
 
 ## Prior: FT-007B safe HTTP diagnostics; FT-007 remains PARTIAL
 

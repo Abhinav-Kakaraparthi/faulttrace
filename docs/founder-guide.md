@@ -9,12 +9,28 @@ application templates generate instructions and short explanation text.
 No output grants equipment authority, diagnostic certainty or recovery.
 V-08 position reports are explicitly human-reported, not image-verified.
 See [workflow guide](evidence-workflow.md) for exact manual restart commands
-and the prepared two-call connected API test in a new isolated simulation.
+and the audited two-call connected API record and refusal-aware policy.
 FT-007A adds a documented strict JSON-schema request and precise sanitized
 shape/type/revision/reference/combination/explanation diagnostics. Exact Nano
 connected runtime compatibility still needs live verification; application policy
 remains mandatory. No inference or server restart was performed in FT-007A.
-Live adaptive reasoning remains unverified.
+Useful live adaptive reasoning remains unverified. A read-only audit of incident
+8654a8a2-ff58-4344-a1c5-bd9d60c05a2c verified the connected API pipeline:
+two accepted planning attempts, each once with SQLite/ledger receipts matching,
+created two F-17 tasks. The simulated cannot-access report after the first task
+was present and cited in the second context/proposal, but F-17 was requested
+again. This proves updated-context delivery/task persistence, not a useful
+response to refusal, real field evidence, or an agent-operated browser journey.
+
+New policy blocks another observation request for an asset with unresolved
+cannot-access. Context lists unavailable_assets from full history; instructions
+require an available alternative or escalation, and deterministic validation
+rejects a violation with planner_asset_unavailable. Existing tasks/history are
+not rewritten, cancelled or retried. There is no access-clearance workflow;
+reopening or later observations do not silently restore availability. The fix
+has offline evidence only: seven focused tests and all 88 backend tests pass,
+with zero forbidden network attempts under the socket guard. FT-007 remains
+PARTIAL and browser review is open.
 
 Standalone flat-schema compatibility passed at implementation
 cdb9f4277127feb983eb246dad3190d13ca2cdee for the saved context. Ledger confirms
@@ -23,10 +39,8 @@ response chatcmpl-fd86af00-2a1a-4da7-9ef6-134fb58b0778, exact Nano model,
 3375 ms, valid 328/618/946 usage, validation passed. The user reports all six
 fields/no extras and the F-17/READ_LOCAL_DP proposal with revision 1,
 telemetry-001 reference and evidence_gap explanation. No workflow task was
-created by this standalone call. FT-007 remains PARTIAL: connected task creation
-and evidence-dependent replanning still need verification. The workflow guide
-contains the next prepared, unexecuted API test: new isolated simulation,
-up to two planning calls separated by a labeled simulated operator refusal.
+created by this standalone call. The later connected API evidence is described
+above; its repeated inaccessible-task limitation remains part of the record.
 
 Latest structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 returned
 only kind/asset_id/capability, matching the old partial anyOf branch properties.
@@ -93,9 +107,10 @@ context includes only public telemetry and recent observations, not fixture
 answers, hidden simulator labels or raw notes. Conflicting observations remain
 in the evidence history. Trust only local users/processes; do not expose these dev servers.
 
-Latest read-only accounting found 13 ledger attempts, 9 with complete known
-usage: 3249 input / 6524 output / 9773 total. Separate historical manual success
-155 / 112 / 267 gives cross-record known 3404 / 6636 / 10040. Four attempts have
+Latest read-only accounting found 15 ledger attempts, 11 with complete known
+usage: 4085 input / 8670 output / 12755 total. The connected pair contributes
+836/2146/2982. Separate historical manual success
+155 / 112 / 267 gives cross-record known 4240 / 8782 / 13022. Four attempts have
 unknown usage; partial/invalid/inconsistent counts are zero. Expectations match;
 no records were imported or changed. Historical failures remain preserved.
 Two digital fixtures cannot establish arbitrary gauge accuracy or broad

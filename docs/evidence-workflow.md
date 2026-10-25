@@ -192,6 +192,14 @@ Model JSON fields are exactly `kind`, `asset_id`, `capability`,
 - ESCALATE / HUMAN / HUMAN_INVESTIGATION
 
 References are 1..8 distinct existing references in the bounded context.
+An unresolved cannot-access human report now blocks further observation requests
+for that asset. The bounded unavailable_assets context summary is derived from
+full incident history, so reports outside the recent 16 are not forgotten.
+Instructions require an available alternative or escalation; application code
+rejects a violation with planner_asset_unavailable, preserving available usage
+and creating no task. No automatic repair/retry. There is no access-clearance
+workflow: reopening, later reports or images do not silently clear the block.
+This prospective rule does not cancel/relabel existing tasks or accepted attempts.
 Explanation codes select short application text: evidence_gap,
 unreadable_evidence, clarify_conflict, human_review. Codes referring to
 unreadability or conflicts require corresponding context; no free-form model instructions or
@@ -332,8 +340,9 @@ chatcmpl-fd86af00-2a1a-4da7-9ef6-134fb58b0778, exact Nano model, 3375 ms,
 valid 328/618/946 usage, validation passed with no diagnostics. The user supplied
 the six-field/no-extra F-17/READ_LOCAL_DP proposal, context revision 1,
 evidence_refs [telemetry-001], explanation_code evidence_gap. This standalone
-call created no workflow task. Connected task creation and evidence-dependent
-replanning remain unverified; FT-007 remains PARTIAL.
+call created no workflow task. The later connected API audit below verifies
+task creation and updated context delivery, but not useful adaptive decisions;
+FT-007 remains PARTIAL.
 
 Failures stay intact: the uniqueItems diagnostic implicated that keyword;
 the later three-field response matched partial anyOf branch keys and implicated
@@ -346,9 +355,13 @@ Accounting checked read-only: 13 ledger attempts, 9 complete known contributors,
 partial/invalid/inconsistent. Separate manual success 155/112/267; cross-record
 known 3404/6636/10040, matching expectations. No import or replay.
 
-## Next connected API test (prepared, not executed)
+## Historical connected API procedure (executed by user)
 
-Run only in a later authorized execution step. This is a new isolated simulation,
+The user executed this procedure against 2bb97c6248450a9814cc9e503d57398e10a004ad;
+read-only audit results follow. Commands are historical: DO NOT rerun them in
+this checkpoint. Their implementation guard deliberately pins the earlier
+provider-compatible code, not the new refusal-aware policy. No new live test
+is authorized here. This procedure used a new isolated simulation,
 not a retry/reset of prior incidents. At most TWO explicit planning POSTs,
 separated by a simulated operator access refusal. No image upload/analysis or
 replay. Stop after a failed, uncertain, escalated or accounting-failed first
@@ -462,3 +475,29 @@ second context contained the simulated refusal/reference, remaining budget went
 task IDs, policy result, usage completeness and persistence separately; do not
 substitute expected choices or claim causation/adaptive reasoning from context
 inclusion alone. No existing run is reset or resumed by this procedure.
+
+## Connected evidence and refusal-aware limitation
+
+Read-only audit of incident 8654a8a2-ff58-4344-a1c5-bd9d60c05a2c in
+`.local/verification/ft007-connected-8f8673e87da9431cb3f9fce92908529e` found
+two accepted planning attempts, each exactly once in SQLite and the ledger;
+both receipts match, validate passed and report valid usage/ledger recorded.
+
+| Attempt | Created task | Context revision | Input/output/total | Latency |
+| --- | --- | ---: | --- | ---: |
+| 5cb5ee1d-1845-47cf-a8b9-01714c6d9b47 | 45a54498-2c17-463a-bc27-b996381b8e85 | 1 | 328/866/1194 | 10390 ms |
+| 75d1d983-4afb-4b98-ad75-8dedab22cae6 | 8db8b2c2-fbd9-42a1-8d7f-48a256e9e105 | 3 | 508/1280/1788 | 10110 ms |
+
+Both requested F-17/READ_LOCAL_DP. The first context had no observations. The
+simulated cannot-access human report bcd5802e-15ed-49e7-af24-14617ee637ff was
+stored as refused for the first task and included in the second context. The
+second proposal cited that reference but still repeated F-17. This verifies
+provider/validator/task persistence and context update through the API, not
+useful handling of refusal, a real field observation or browser verification.
+Current incident revision is 4, first task needs_evidence, second awaiting,
+two turns left. The fix preserves those historical records and pending task.
+
+The new offline-tested policy described above rejects a future same-asset
+request while cannot-access is unresolved, allowing V-08 or human escalation.
+It is not live-verified. FT-007 remains PARTIAL. No inference, replay/import,
+database reset, existing-server restart or new live test occurred here.
