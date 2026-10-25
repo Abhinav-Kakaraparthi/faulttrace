@@ -6,6 +6,7 @@ import { PlannerPanel } from './PlannerPanel';
 import { ServerTask } from './ServerTask';
 import { ServerEvidenceDetails, ServerEvidenceList } from './ServerEvidence';
 import { Process, Telemetry } from './Process';
+import { JourneyPanel } from './JourneyPanel';
 import { Icon } from './Icon';
 
 export function Connected() {
@@ -39,17 +40,22 @@ export function Connected() {
       {server.error && <p className="connection-warning" role="alert">{server.error}</p>}
       <main id="main-content" tabIndex={-1} className={view === 'operator' ? 'operator-layout connected-operator' : 'commander'}>
         <div className="page-heading"><div><h1>{!state ? 'Connecting to local workflow' : !state.incident ? 'No active incident' : view === 'operator' ? `${task?.asset_id ?? 'Operator'} · Observation task` : 'Simulated incident · Reduced return flow'}</h1><p>{!state ? 'No server data is available yet; sample results are never substituted here.' : state.incident ? 'Simulated telemetry. Model proposals require application validation; observations never prove recovery.' : 'Start a simulated incident, then explicitly choose an observation.'}</p></div>
+          {view === 'commander' && state && !state.incident && <button className="button primary" disabled={disabled} onClick={() => void server.mutate('/api/simulation/start', {}, 'start-synthetic-journey')}>Start restriction-to-recovery simulation</button>}
           {view === 'commander' && !state?.incident && <button className="button primary" disabled={disabled || !state} onClick={() => void server.mutate('/api/incidents', {}, 'start-incident')}>Start simulated incident</button>}
           {view === 'commander' && state?.incident && <a className="button secondary" href="/?mode=connected&view=operator" target="_blank" rel="noreferrer">Open operator tab ↗</a>}
         </div>
         {!state && <section className="section-surface connected-empty"><h2>{server.connection === 'loading' ? 'Loading server state…' : 'Backend is not available'}</h2><p>Start the local backend using the startup guide. Sample preview remains a separate mode; no results are substituted here.</p></section>}
         {state && !state.incident && <section className="section-surface connected-empty"><h2>{view === 'operator' ? 'No observation task assigned' : 'Ready for a simulated investigation'}</h2><p>No fault explanation or model reading exists before the incident starts. Open this server workflow in a second tab to share the same task.</p></section>}
         {state?.incident && <>
+          {state.journey && <JourneyPanel state={state} view={view} mutate={server.mutate} disabled={disabled} />}
+          {!state.journey && <>
           {view === 'operator' ? <><PlannerPanel state={state} disabled={disabled} choose={() => void server.mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => document.getElementById('operator-assignment')?.focus()} /><div id="operator-assignment" tabIndex={-1}><ServerTask key={task ? `${task.id}-${task.revision}` : 'no-task'} state={state} mutate={server.mutate} disabled={disabled} /></div></> : <>
             <div className="readings"><div><span className="metric-label">SIMULATED RETURN FLOW</span><strong>86 <small>m³/h</small></strong><span className="metric-note">Fixed simulation sample</span></div><div><span className="metric-label">SIMULATED DIFFERENTIAL PRESSURE</span><strong>184 <small>kPa</small></strong><span className="metric-note">Not live telemetry</span></div><div><span className="metric-label">SIMULATED VALVE FEEDBACK</span><strong>72 <small>%</small></strong><span className="metric-note">Physical position unverified</span></div></div>
             <div className="workspace-grid"><PlannerPanel state={state} disabled={disabled} choose={() => void server.mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => switchView('operator')} />
               <div className="main-column"><Process active selected={equipment} onSelect={setEquipment} /><Telemetry active /></div><section className="investigation section-surface connected-explanations"><h2>Keep the investigation open</h2><p>Restriction, sensor discrepancy, and valve mismatch remain untested alternatives. No provider output selects a diagnosis or declares recovery.</p></section></div>
           </>}
+          </>}
+          {state.journey && <details className="section-surface journey-planner"><summary>Optional NVIDIA observation planner (separate from correction policy)</summary><p>No inference is needed for the simulated journey. Existing opt-in and four-turn budget apply.</p><PlannerPanel state={state} disabled={disabled} choose={() => void server.mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => switchView('operator')} />{state.task && <ServerTask key={`${state.task.id}-${state.task.revision}`} state={state} mutate={server.mutate} disabled={disabled} />}</details>}
           <ServerEvidenceList state={state} inspect={open} analyze={analyze} disabled={disabled} />
           <section className="section-surface connected-events"><h2>Server activity</h2><ol>{state.events.map(event => <li key={event.sequence}><strong>{event.kind.replaceAll('_', ' ')}</strong><time dateTime={event.created_at}>{new Date(event.created_at).toLocaleString()}</time></li>)}</ol></section>
         </>}

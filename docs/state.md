@@ -1,6 +1,49 @@
 # Checkpoint state
 
-## Current: FT-007 action-ID standalone verification finalized
+## Current: FT-008 simulated restriction-to-recovery journey
+
+Started clean at 5bd6116fe12d9360e3859082c62ccc0ff2b18bf1; branch
+feat/ft-008-simulated-recovery. The scoped commit includes implementation/tests
+and these records; resolve it with git log -1. Existing servers and historical
+runs are untouched. No provider request, receipt import/replay, dependency
+installation, deployment or merge.
+
+A fresh opt-in synthetic run persists explicit ten-second telemetry steps,
+provenance-bearing local pressure and V-08 human reports, evidence-linked
+working diagnosis/alternatives, revision-bound human approval, registered
+simulated filter replacement and independent sample-based recovery. It uses
+additive local tables in the existing architecture. Existing incidents cannot
+be converted/reset. Simulator outcome/answer controls are excluded from public
+state and actual planner contexts; observed simulated telemetry/reports are
+included with current references and revision. Observation-only planner policy,
+opt-in, budgets, stale-result protection and ledger are preserved.
+
+Deterministic correction gates reject stale/missing/unreadable/inaccessible/
+conflicting evidence and active observation/planning tasks. Approval/execution
+are idempotent and revalidate revision/policy. Decline revokes approval and
+advances revision. Operator completion records simulated maintenance separately
+from recovery. Verifier requires five fresh consecutive post-action samples
+spanning forty simulated seconds within fixture bands with no active alarms;
+ineffective corrections and later relapse fail. No model recovery declaration,
+real control instructions or industrial limits are introduced. Thresholds,
+clock semantics and exact startup/journey steps: [guide](recovery-journey.md).
+
+Checks: 104 backend tests including 10 new independent journey tests; 12 frontend
+tests; TypeScript/Vite production build; pip check; AST/source lengths under 500
+lines. Full backend regression uses temporary stores/fake transport and a socket
+guard (zero forbidden external attempts). No existing ledger/database writes;
+no new inference usage. Prior ledger evidence stays 5283/10559/15842 known,
+four missing-usage attempts; separate historical 155/112/267.
+
+Browser blocker: inventory apps=[]/browsers=[]; in-app tab creation returned
+Browser is not available: iab. No desktop/mobile/keyboard visual acceptance or
+screenshots claimed. Offline/API preparation passes; FT-008 visual acceptance
+remains PARTIAL. FT-007 remains PARTIAL; CI/hosting and broad AI/recovery claims
+remain open. Next action: founder review of the isolated localhost journey at
+1440x900 and 390x844, including keyboard, evidence blockers, approval, progress
+and verified/failed states. No paid live test is proposed by this checkpoint.
+
+## Prior: FT-007 action-ID standalone verification finalized
 
 Implementation c4eb08db60c7facddbfe9eeaf5084820bfafb5e3; documentation-only
 finalization started clean at that SHA. Read-only existing-ledger load found

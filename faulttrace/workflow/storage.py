@@ -81,6 +81,8 @@ class Store:
               CREATE TABLE IF NOT EXISTS events (
                 sequence INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT, evidence_id TEXT, created_at TEXT);
             ''')
+            from .simulation import initialize
+            initialize(db)
             # Additive migration preserves existing FT-006 evidence and task provenance.
             for table, column, definition in (
                 ('incidents', 'revision', 'INTEGER NOT NULL DEFAULT 1'),

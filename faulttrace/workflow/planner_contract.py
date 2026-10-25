@@ -45,7 +45,7 @@ def build_context(db):
         FROM evidence e JOIN tasks t ON t.id=e.task_id
         WHERE t.incident_id=? AND e.kind='report' AND e.origin='human-report'
         AND e.report='cannot-access' ORDER BY t.asset_id''', (incident['id'],))]
-    return {'context_revision': incident['revision'], 'telemetry': {
+    context = {'context_revision': incident['revision'], 'telemetry': {
                 'evidence_ref': 'telemetry-001', 'provenance': 'fixed simulated telemetry',
                 'return_flow': {'value': 86, 'unit': 'm3/h'},
                 'differential_pressure': {'value': 184, 'unit': 'kPa'},
@@ -54,6 +54,8 @@ def build_context(db):
             'omitted_observations': db.execute('SELECT COUNT(*) FROM evidence').fetchone()[0] - len(rows),
             'unresolved_conflicts': conflicts, 'unavailable_assets': unavailable,
             'remaining_planning_calls': max(0, 4-count)}
+    from .simulation import augment_context
+    return augment_context(db, context)
 
 
 def unavailable_assets(context):
@@ -111,7 +113,7 @@ def validate_proposal(value, context):
         raise ProbeError('planner_field_shape')
     revision = value['context_revision']
     refs = value['evidence_refs']
-    known = {'telemetry-001'} | {o['evidence_ref'] for o in context['observations']}
+    known = {context.get('telemetry', {}).get('evidence_ref', 'telemetry-001')} | {o['evidence_ref'] for o in context['observations']}
     if (type(revision) is not int or type(refs) is not list
             or any(type(value[k]) is not str for k in ('kind', 'asset_id', 'capability', 'explanation_code'))
             or any(type(r) is not str for r in refs)):
@@ -150,7 +152,7 @@ def response_format(context):
         'action_id': {'type': 'string', 'enum': list(permitted_actions(context))},
         'context_revision': {'type': 'integer', 'enum': [context['context_revision']]},
         'evidence_refs': {'type': 'array', 'minItems': 1, 'maxItems': 8,
-                          'items': {'type': 'string', 'enum': ['telemetry-001'] + [o['evidence_ref'] for o in context['observations']]}},
+                          'items': {'type': 'string', 'enum': [context.get('telemetry', {}).get('evidence_ref', 'telemetry-001')] + [o['evidence_ref'] for o in context['observations']]}},
         'explanation_code': {'type': 'string', 'enum': supported_explanations(context)},
     }
     schema = {'type': 'object', 'properties': properties, 'required': list(properties),

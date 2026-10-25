@@ -9,6 +9,14 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+FT-008 ships an offline-tested simulated evidence/working-diagnosis/human-approval/
+correction/recovery journey. Independent measurement checks reject ineffective
+correction and relapse; maintenance completion stays separate. 104 backend tests,
+12 frontend tests and type/build checks pass. No paid inference, real equipment
+control, browser visual pass, hosting or general AI reliability is established.
+Existing broad submission gates stay unchecked pending their whole claims.
+See [scope and inspection steps](recovery-journey.md).
+
 Recheck official requirements before final submission.
 Check an item only after recording evidence or a verified link.
 

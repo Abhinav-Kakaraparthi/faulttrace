@@ -75,3 +75,26 @@ test('reset removes the sample journey; repeat observation preserves earlier evi
   assert.deepEqual(reduceDemo(second, { type: 'reset' }), initial);
   assert.equal(reduceDemo(initial, { type: 'submit', outcome: 'readable', note: '' }), initial);
 });
+
+
+// Policy examples use independently stated expected outcomes; no provider or backend.
+const { canApprove, canExecute, recoveryLabel } = await import('../src/journeyState.ts');
+const readyJourney = { maintenance_status: 'not_completed', approval_current: false,
+  assessment: { eligible: true }, recovery: { status: 'not_started' } };
+test('simulated correction requires explicit consent for the exact displayed revision', () => {
+  assert.equal(canApprove(readyJourney, 7, null), false);
+  assert.equal(canApprove(readyJourney, 7, 6), false);
+  assert.equal(canApprove(readyJourney, 7, 7), true);
+  assert.equal(canApprove({ ...readyJourney, assessment: { eligible: false } }, 7, 7), false);
+  assert.equal(canApprove({ ...readyJourney, approval_current: true }, 7, 7), false);
+  assert.equal(canApprove({ ...readyJourney, maintenance_status: 'simulated_replacement_completed' }, 7, 7), false);
+});
+test('operator execution requires current approval and corroborated evidence; completion cannot imply recovery', () => {
+  assert.equal(canExecute(readyJourney), false);
+  assert.equal(canExecute({ ...readyJourney, approval_current: true }), true);
+  assert.equal(canExecute({ ...readyJourney, approval_current: true, assessment: { eligible: false } }), false);
+  assert.equal(canExecute({ ...readyJourney, approval_current: true, maintenance_status: 'simulated_replacement_completed' }), false);
+  assert.equal(recoveryLabel('observing'), 'Observing post-correction samples');
+  assert.equal(recoveryLabel('failed'), 'Recovery verification failed');
+  assert.equal(recoveryLabel('verified'), 'Simulated operating recovery verified');
+});

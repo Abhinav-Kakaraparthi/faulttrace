@@ -1,5 +1,13 @@
 # Provider smoke test
 
+FT-008 now offers a separate, explicitly simulated restriction-to-recovery
+journey in both connected views. Deterministic evidence assessment permits only
+a registered, human-approved simulation action; five fresh post-action samples
+span a forty-second simulated recovery window. Completion alone never proves
+recovery. See [the inspection guide](recovery-journey.md) for isolated startup,
+fixture-only thresholds, preserved history and browser-verification limitations.
+No inference was run for FT-008, and no real equipment action is available.
+
 Current application status: FT-007 adds explicit observation planning to the
 local server-backed workflow. Start incident creates no automatic task;
 Choose next observation proposes F-17 local DP, V-08 position-only, or human

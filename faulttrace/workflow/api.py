@@ -13,6 +13,7 @@ from faulttrace.ledger import DEFAULT_LEDGER
 from faulttrace.provider import transport
 from faulttrace.validation import parse_json
 
+from .journey import Journey
 from .analysis import AnalysisEngine, source_revision
 from .service import Workflow
 from .storage import DEFAULT_DATA, InstanceLock, Store, WorkflowError, identifier
@@ -43,7 +44,7 @@ async def fields(request, expected):
 
 
 def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transport,
-               enabled=None, key_source=None):
+               enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective"):
     inference_enabled = (os.environ.get("FAULTTRACE_ALLOW_INFERENCE") == "1") if enabled is None else enabled
 
     @asynccontextmanager
@@ -57,6 +58,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
             workflow = Workflow(store)
             engine = AnalysisEngine(workflow, ledger_path, send, inference_enabled, revision=source_revision(), **kwargs)
             app.state.workflow, app.state.engine = workflow, engine
+            app.state.journey = Journey(workflow, simulation_clock, simulation_outcome)
             yield
         finally:
             if engine:
@@ -69,7 +71,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     @app.middleware("http")
     async def local_boundary(request, call_next):
         if request.method not in ("GET", "HEAD"):
-            if request.headers.get("origin") not in (None, "http://127.0.0.1:5173", "http://localhost:5173"):
+            if request.headers.get("origin") not in (None, "http://127.0.0.1:5173", "http://localhost:5173", "http://127.0.0.1:5180", "http://localhost:5180"):
                 return JSONResponse({"error": "origin_not_allowed"}, 403)
             if request.headers.get("x-faulttrace-local") != "1":
                 return JSONResponse({"error": "local_client_header_required"}, 403)
@@ -91,9 +93,10 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
 
     @app.get("/api/state")
     def state():
-        snapshot = app.state.workflow.store.snapshot()
-        return dict(snapshot, inference_enabled=inference_enabled,
-                    mode="local server / simulated incident / real inference only on explicit action")
+        with app.state.workflow.write_lock:
+            snapshot = app.state.workflow.store.snapshot()
+            return dict(snapshot, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
+                        mode="local server / simulated incident / real inference only on explicit action")
 
     def key(request):
         return identifier(request.headers.get("idempotency-key"))
@@ -103,6 +106,37 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         await fields(request, [])
         incident_id = await run_in_threadpool(app.state.workflow.start, key(request))
         return {"incident_id": incident_id}
+
+    @app.post('/api/simulation/start')
+    async def simulation_start(request: Request):
+        await fields(request, [])
+        result = await run_in_threadpool(app.state.journey.start, key(request))
+        return {'incident_id': result}
+
+    @app.post('/api/simulation/advance')
+    async def simulation_advance(request: Request):
+        body = await fields(request, ['revision'])
+        result = await run_in_threadpool(app.state.journey.advance, body['revision'], key(request))
+        return {'tick': result}
+
+    @app.post('/api/simulation/observe')
+    async def simulation_observe(request: Request):
+        body = await fields(request, ['revision', 'asset_id', 'status', 'reading'])
+        result = await run_in_threadpool(app.state.journey.observe, body['revision'], body['asset_id'],
+                                         body['status'], body['reading'], key(request))
+        return {'evidence_id': result}
+
+    @app.post('/api/simulation/approve')
+    async def simulation_approve(request: Request):
+        body = await fields(request, ['revision', 'action_id', 'decision'])
+        result = await run_in_threadpool(app.state.journey.approve, body['revision'], body['action_id'], body['decision'], key(request))
+        return {'approval_id': result}
+
+    @app.post('/api/simulation/execute')
+    async def simulation_execute(request: Request):
+        body = await fields(request, ['revision', 'approval_id'])
+        result = await run_in_threadpool(app.state.journey.execute, body['revision'], body['approval_id'], key(request))
+        return {'execution_id': result}
 
     @app.post("/api/tasks/{task_id}/images")
     async def image(task_id: str, request: Request):

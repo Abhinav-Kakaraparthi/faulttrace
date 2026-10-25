@@ -3,7 +3,9 @@
 This is a single-computer validation workflow, not public hosting. SQLite
 replaces proposed PostgreSQL **for this checkpoint only**: portable,
 single-instance local persistence now; hosted database/migration work stays
-open. No autonomous intervention, diagnosis, equipment control, or recovery.
+open. FT-008 adds only a human-approved simulated correction and deterministic
+working diagnosis/recovery policy in a fresh opt-in run; no real equipment
+control. See [the isolated recovery journey](recovery-journey.md).
 
 Current evidence: the user completed connected clear panel-a analysis at
 implementation 4b15365e20ea0b7cacf1ad2d695163bf439690ec, then reported identical

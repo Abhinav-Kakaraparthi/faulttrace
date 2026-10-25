@@ -8,6 +8,12 @@ investigate equipment anomalies.
 
 ## Status
 
+FT-008 adds a complete **simulation-only** evidence ? working diagnosis ? human
+approval ? simulated filter replacement ? independent recovery journey. No paid
+inference is needed; fresh isolated data preserves existing runs. See
+[exact startup and inspection steps](docs/recovery-journey.md). Offline checks
+pass; desktop/mobile browser acceptance is blocked by unavailable browser access.
+
 Standalone synthetic Nebius text probe, offline image-evidence preparation,
 and offline validation tests exist. Two standalone vision fixtures have passed
 verified inference. A local FastAPI/SQLite workflow and React frontend now

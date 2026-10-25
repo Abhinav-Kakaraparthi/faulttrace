@@ -1,3 +1,4 @@
+import type { JourneyState } from './journeyState';
 export type Receipt = {
   attempt_id: string; requested_model: string; returned_model: string | null;
   validation_result: string; timestamp: string; latency_ms: number | null;
@@ -17,6 +18,7 @@ export type ServerEvidence = {
   analysis: { id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
+  journey?: JourneyState | null;
   incident: { id: string; created_at: string; revision: number } | null;
   task: { id: string; revision: number; status: string; asset_id: string; capability: string; creation_source: string; explanation: string; instruction: string } | null;
   planning_remaining: number;
@@ -26,6 +28,13 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  simulation_requires_fresh_run: 'Start FT-008 in a fresh isolated data directory. Existing incidents are preserved.',
+  correction_evidence_blocked: 'Required evidence is missing, stale or disputed. Review the deterministic assessment.',
+  stale_or_missing_approval: 'Approval is missing or stale. Commander must review the current evidence revision.',
+  simulation_observations_closed: 'This correction has executed. Its pre-action evidence remains preserved.',
+  simulation_already_executed: 'The simulated replacement has already executed. Refresh to inspect recovery.',
+  simulation_step_budget_exhausted: 'This fixture run has reached its 360-step limit.',
+  invalid_simulated_observation: 'Choose a registered report and a finite reading in the synthetic range.',
   stale_context: 'Investigation changed. Refresh; the old planner result cannot create a task.',
   active_task_conflict: 'Complete or report the current blocking task before choosing another observation.',
   planning_in_progress: 'A planning request is pending. No additional call was made.',
