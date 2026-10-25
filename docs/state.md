@@ -1,6 +1,49 @@
 # Checkpoint state
 
-## Current: FT-008 simulated restriction-to-recovery journey
+## Current: FT-008A coherent outcome and evidence presentation
+
+Started clean at 55c1d592402556b5a6b84f13f4556f3b4e3bb2f6 on
+feat/ft-008-simulated-recovery. Presentation/tests/docs only: no backend,
+recovery-policy, database/history migration, inference or server restart.
+The completed local run is preserved; no simulation action was invoked.
+
+User-reported walkthrough in both views: 180 kPa + V-08 intermediate -> explicit
+approval -> simulated replacement -> five qualifying post-action samples ->
+recovery verified. Read-only localhost state corroborates incident
+2a9ab9ea-0b2f-400a-946b-72dde56313b2 revision 9, two simulated observations,
+three populated approval references, six populated telemetry rows, five recovery
+samples spanning forty simulated seconds and completed simulated maintenance.
+This is user browser evidence, not agent-operated browser verification.
+
+Finding: image/planner-task evidence is a separate empty collection, so its old
+unscoped empty-state message was misleading. Journey observations now form the
+primary coherent evidence record; separate workflow evidence is explicitly scoped
+and expandable. No links were invented and no records migrated. Pre-change API
+values and React static markup contained all references and rows, with zero
+empty bullets/cells. A browser/CSS/capture cause for the pasted blanks remains
+unproven; data was not rewritten to guess at one. Visible unknown fallbacks and
+explicit table/reference colors make missing values distinguishable.
+
+Role-specific next actions and the completed recovery/audit summary lead the
+journey. Completed-run planning is history-only; fixture rules, technical source
+metadata, optional clock controls and detailed audit history are expandable.
+Simulated UTC measurement timestamps and wall-clock UTC audit times are labeled
+separately; no recovery audit event or verification timestamp was invented.
+
+Checks: 18 frontend tests, including six static React markup regressions for
+both views, exact stored references/rows, zero/unknown values, evidence scope,
+clock labels, history-only planning and pre-action/failed states. TypeScript and
+production build pass. Backend unchanged: prior 104-test evidence remains valid.
+Static markup is not browser verification. Browser inventory apps=[]/browsers=[];
+in-app browser attempt returned Browser is not available: iab. Desktop/mobile,
+keyboard, CSS layout and visual acceptance remain open; no screenshots claimed.
+Ignored before/after markup and source-hash/blocker records live under
+.local/visual/ft-008a/. Next action: refresh the existing 5180 preview and review
+the preserved outcome in both views at 1440x900 and 390x844, checking keyboard,
+expanded references, every telemetry cell and timestamp scope. Do not restart,
+reset or repeat the completed correction. FT-008 visual acceptance remains PARTIAL.
+
+## Prior: FT-008 simulated restriction-to-recovery journey
 
 Started clean at 5bd6116fe12d9360e3859082c62ccc0ff2b18bf1; branch
 feat/ft-008-simulated-recovery. Core implementation: b76d2ef16360ced944dfec33b63bc7652060dcf0, with a

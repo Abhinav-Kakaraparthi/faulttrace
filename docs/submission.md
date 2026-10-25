@@ -9,6 +9,14 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+FT-008A records a user-reported completed two-view simulated recovery walkthrough,
+corroborated by read-only API state. Presentation now scopes evidence clearly,
+shows a recovery/audit summary and separates simulated measurement from wall-clock
+audit time. 18 frontend tests and type/build checks pass; source data/static
+markup did not reproduce the pasted empty references/cells. Agent browser,
+mobile/keyboard/visual acceptance and broad integration claims remain unverified.
+No recovery policy, history, inference or submission checkbox changed.
+
 FT-008 ships an offline-tested simulated evidence/working-diagnosis/human-approval/
 correction/recovery journey. Independent measurement checks reject ineffective
 correction and relapse; maintenance completion stays separate. 104 backend tests,

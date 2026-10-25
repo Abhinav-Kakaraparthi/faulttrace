@@ -18,8 +18,8 @@ export function ServerEvidenceList({ state, inspect, analyze, disabled }: {
   state: ServerState; inspect: (item: Evidence) => void; analyze: (item: Evidence) => void; disabled: boolean;
 }) {
   const latest = state.evidence.at(-1)?.id;
-  return <section className="section-surface connected-evidence"><h2>Server evidence record</h2>
-    {!state.evidence.length && <p className="muted">No evidence submitted. Both tabs read the same server task.</p>}
+  return <section className="section-surface connected-evidence"><h2>{state.journey ? 'Image and planner-task evidence' : 'Server evidence record'}</h2>
+    {!state.evidence.length && <p className="muted">{state.journey ? `No image or planner-task submissions in this run. The ${state.journey.observations.length} simulated journey observations are recorded in Journey evidence record.` : 'No evidence submitted for the observation task. Both tabs read the same server task.'}</p>}
     {state.evidence.map(item => <article key={item.id} className="server-evidence-item">
       <span className={`pill ${item.status === 'accepted' ? 'teal' : 'amber'}`}>
         {evidenceStatus(item)}

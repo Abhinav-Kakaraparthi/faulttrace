@@ -1,5 +1,13 @@
 # Provider smoke test
 
+FT-008A presents the existing completed simulation as one outcome/evidence
+record, with separate scoped image/planner evidence and history-only completed
+planning. The user reports the successful two-view walkthrough; read-only API
+state corroborates it. This is not agent browser verification. Refresh the
+existing preview without restarting or repeating the correction. Fixture rules,
+provenance and references remain expandable; measurement time is simulated and
+audit time is wall-clock UTC. See [the review guide](recovery-journey.md).
+
 FT-008 now offers a separate, explicitly simulated restriction-to-recovery
 journey in both connected views. Deterministic evidence assessment permits only
 a registered, human-approved simulation action; five fresh post-action samples

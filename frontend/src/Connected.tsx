@@ -6,6 +6,7 @@ import { PlannerPanel } from './PlannerPanel';
 import { ServerTask } from './ServerTask';
 import { ServerEvidenceDetails, ServerEvidenceList } from './ServerEvidence';
 import { Process, Telemetry } from './Process';
+import { AuditHistory } from './AuditHistory';
 import { JourneyPanel } from './JourneyPanel';
 import { Icon } from './Icon';
 
@@ -28,6 +29,7 @@ export function Connected() {
   const state = server.state;
   const disabled = server.busy || server.connection !== 'online';
   const task = state?.task;
+  const journeyTerminal = state?.journey?.recovery.status === 'verified' || state?.journey?.recovery.status === 'failed';
   const analyze = (item: ServerEvidence) => {
     if (task) void server.mutate(`/api/evidence/${item.id}/analyze`, { revision: task.revision }, `analysis-${item.id}-${task.revision}`);
   };
@@ -39,7 +41,7 @@ export function Connected() {
       {server.connection === 'paused' && <p className="connection-warning" role="status">Connection interrupted. Displayed data may be stale; writes are disabled. Refresh to reconnect. No analysis will be retried automatically.</p>}
       {server.error && <p className="connection-warning" role="alert">{server.error}</p>}
       <main id="main-content" tabIndex={-1} className={view === 'operator' ? 'operator-layout connected-operator' : 'commander'}>
-        <div className="page-heading"><div><h1>{!state ? 'Connecting to local workflow' : !state.incident ? 'No active incident' : view === 'operator' ? `${task?.asset_id ?? 'Operator'} · Observation task` : 'Simulated incident · Reduced return flow'}</h1><p>{!state ? 'No server data is available yet; sample results are never substituted here.' : state.incident ? 'Simulated telemetry. Model proposals require application validation; observations never prove recovery.' : 'Start a simulated incident, then explicitly choose an observation.'}</p></div>
+        <div className="page-heading"><div><h1>{!state ? 'Connecting to local workflow' : !state.incident ? 'No active incident' : state.journey ? (journeyTerminal ? 'Simulated recovery / outcome review' : view === 'operator' ? 'Operator / simulated journey' : 'Commander / simulated investigation') : view === 'operator' ? `${task?.asset_id ?? 'Operator'} · Observation task` : 'Simulated incident · Reduced return flow'}</h1><p>{!state ? 'No server data is available yet; sample results are never substituted here.' : state.journey ? 'Local simulation only. Measurements, operator reports and the audit record remain available in both views.' : state.incident ? 'Simulated telemetry. Model proposals require application validation; observations never prove recovery.' : 'Start a simulated incident, then explicitly choose an observation.'}</p></div>
           {view === 'commander' && state && !state.incident && <button className="button primary" disabled={disabled} onClick={() => void server.mutate('/api/simulation/start', {}, 'start-synthetic-journey')}>Start restriction-to-recovery simulation</button>}
           {view === 'commander' && !state?.incident && <button className="button primary" disabled={disabled || !state} onClick={() => void server.mutate('/api/incidents', {}, 'start-incident')}>Start simulated incident</button>}
           {view === 'commander' && state?.incident && <a className="button secondary" href="/?mode=connected&view=operator" target="_blank" rel="noreferrer">Open operator tab ↗</a>}
@@ -55,9 +57,9 @@ export function Connected() {
               <div className="main-column"><Process active selected={equipment} onSelect={setEquipment} /><Telemetry active /></div><section className="investigation section-surface connected-explanations"><h2>Keep the investigation open</h2><p>Restriction, sensor discrepancy, and valve mismatch remain untested alternatives. No provider output selects a diagnosis or declares recovery.</p></section></div>
           </>}
           </>}
-          {state.journey && <details className="section-surface journey-planner"><summary>Optional NVIDIA observation planner (separate from correction policy)</summary><p>No inference is needed for the simulated journey. Existing opt-in and four-turn budget apply.</p><PlannerPanel state={state} disabled={disabled} choose={() => void server.mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => switchView('operator')} />{state.task && <ServerTask key={`${state.task.id}-${state.task.revision}`} state={state} mutate={server.mutate} disabled={disabled} />}</details>}
-          <ServerEvidenceList state={state} inspect={open} analyze={analyze} disabled={disabled} />
-          <section className="section-surface connected-events"><h2>Server activity</h2><ol>{state.events.map(event => <li key={event.sequence}><strong>{event.kind.replaceAll('_', ' ')}</strong><time dateTime={event.created_at}>{new Date(event.created_at).toLocaleString()}</time></li>)}</ol></section>
+          {state.journey && <details className="section-surface journey-planner"><summary>{journeyTerminal ? 'Observation planning history (separate workflow)' : 'Optional NVIDIA observation planner (separate from correction policy)'}</summary><p>No inference is needed for the simulated journey. Existing opt-in and four-turn budget apply.</p><PlannerPanel historyOnly={journeyTerminal} state={state} disabled={disabled} choose={() => void server.mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => switchView('operator')} />{!journeyTerminal && state.task && <ServerTask key={`${state.task.id}-${state.task.revision}`} state={state} mutate={server.mutate} disabled={disabled} />}</details>}
+          {state.journey ? <details className="section-surface journey-other-evidence"><summary>Image and planner-task evidence ({state.evidence.length})</summary><ServerEvidenceList state={state} inspect={open} analyze={analyze} disabled={disabled} /></details> : <ServerEvidenceList state={state} inspect={open} analyze={analyze} disabled={disabled} />}
+          <AuditHistory state={state} />
         </>}
       </main>
     </div><dialog ref={dialog} className="evidence-dialog" aria-label="Server evidence inspection" onCancel={event => { event.preventDefault(); close(); }} onClose={() => inspect(null)}><div className="dialog-heading"><h2>Server evidence</h2><button className="icon-button" aria-label="Close evidence inspection" onClick={close}><Icon name="close" /></button></div>{inspected && <ServerEvidenceDetails evidence={state?.evidence.find(item => item.id === inspected.id) ?? inspected} />}</dialog>

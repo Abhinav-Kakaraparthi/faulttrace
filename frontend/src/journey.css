@@ -19,3 +19,17 @@
 .journey .button:disabled { color: #b7c7cd; border: 1px dashed #72868e; background: #29363e; opacity: 1; cursor: not-allowed; }.journey :focus-visible { outline: 3px solid #a1f4e4; outline-offset: 4px; }.journey-hint { border-left: 3px solid #65c6b3; padding: 12px 18px; }
 @media(max-width:900px) { .journey-grid { grid-template-columns: minmax(0, 1fr); }.journey-heading { flex-direction: column; }.journey-clock { min-width: 0; }.journey-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }.journey .section-surface { padding: 20px; } }
 @media(max-width:480px) { .journey-stages { gap: 12px; }.journey-stages li { font-size: 13px; }.journey .button { width: 100%; }.journey h3 { font-size: 20px; }.journey-action dl div { display: block; }.journey-action dd { text-align: left; margin-top: 6px; } }
+
+/* Outcome and decision first; the detailed record stays accessible by keyboard. */
+.journey-outcome { border-left: 4px solid #749da5; background: #1a2a31; padding: 20px 24px; margin: 12px 0 20px; }
+.journey-outcome.verified { border-color: #72d9ba; background: #18322f; }.journey-outcome.failed { border-color: #e7bb79; }
+.journey .journey-next-action { font-size: 17px; color: #e2eeee; max-width: 75ch; }
+.journey-outcome-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; margin: 20px 0 8px; }.journey-outcome-facts dt { color: #a9c5c9; }.journey-outcome-facts dd { margin: 6px 0 0; color: #eff7f6; }
+.journey-record .journey-refs li { display: block; padding: 8px 0; }.journey-refs code { display: block; color: #dcefeb; }.journey-refs span { display: block; }
+.journey-rules, .journey-clock-details, .journey-other-evidence { margin-top: 20px; }.journey-table { color: #dfebec; background: #19272e; border: 1px solid #425a64; border-radius: 6px; }
+.journey-table td, .journey-table th { color: #dfebec; }.journey-table th { color: #a8e4dc; }.journey-table code { color: inherit; }.journey-table:focus-visible { outline: 3px solid #a1f4e4; outline-offset: 4px; }
+.journey-table caption { padding: 12px; white-space: normal; }.journey-other-evidence>summary, .journey-planner>summary, .connected-events summary { color: #a4e6db; cursor: pointer; font-size: 16px; line-height: 1.6; padding: 10px 0; }
+.journey-other-evidence .connected-evidence { margin-top: 0; border: 0; padding-inline: 0; }.connected-events time { overflow-wrap: anywhere; }
+@media(max-width:900px) { .journey-outcome-facts { grid-template-columns: minmax(0,1fr); gap: 12px; }.journey-outcome { padding: 18px; } }
+
+.journey time, .journey-outcome dd { overflow-wrap: anywhere; }

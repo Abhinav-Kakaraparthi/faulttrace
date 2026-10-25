@@ -7,7 +7,30 @@ repurposed. No provider call is needed. The optional NVIDIA observation planner
 retains its original opt-in, reservations, validation, accounting and four turns;
 it cannot propose or authorize the separate correction action.
 
-## Inspect without disturbing existing servers (PowerShell)
+## FT-008A review of the preserved completed run
+
+The user reports completing the journey in both views (180 kPa, V-08 intermediate,
+approval, simulated replacement, five qualifying samples, recovery verified).
+Read-only API state corroborates the stored outcome; this is not agent browser
+verification. Refresh the existing http://127.0.0.1:5180/?mode=connected preview;
+do not create a new run or repeat the correction to inspect FT-008A.
+
+The outcome leads both views. Journey evidence includes the two human reports
+and stored simulator samples; image/planner-task evidence is a separate scoped
+record, not missing journey evidence. Approval references, telemetry rows,
+fixture rules, provenance and wall-clock audit history remain expandable.
+Completed-run planning is history-only. Measurement timestamps use the stepped
+simulation clock; audit times are wall-clock UTC. A later optional simulation
+step can change recovery status, so leave the completed run unchanged for review.
+
+The pasted blanks were not reproduced in source data or pre-change static React
+markup: all three approval references and six rows were populated. No browser
+rendering claim or root cause for the paste is established. Six new static
+markup regressions bring frontend tests to 18; type/build pass. Actual desktop,
+mobile, keyboard and expanded-table/reference visibility still require browser
+review: no browser surfaces are available, and in-app browser creation failed.
+
+## Start a different isolated run only when needed (PowerShell)
 
 Use the installed environments; no new dependencies. Check that 8780 and 5180
 are free. If occupied, leave their processes alone. These commands start an
