@@ -22,7 +22,11 @@ desktop/mobile browser review remain unverified. Standalone flat-schema provider
 compatibility passed for one saved context. A narrow connected API run verified
 task creation and replanning with a simulated access refusal in the updated
 context, but repeated the inaccessible task. Refusal-aware application policy
-now blocks that asset (offline-tested, not live-verified). FT-007 stays PARTIAL;
+now blocks that asset (offline-tested, not live-verified). Provider selection now
+uses one permitted action_id, derived from application templates plus escalation,
+then maps to the strict internal proposal. Its four-field flat wire contract has
+not been live-verified; earlier compatibility evidence used six provider fields.
+FT-007 stays PARTIAL;
 browser verification and useful adaptive decisions remain open. Inference is disabled by
 default; CI, hosting, and recovery verification stay open.
 FT-007A adds strict structured-output requests and precise sanitized diagnostics.

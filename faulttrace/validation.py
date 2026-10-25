@@ -20,6 +20,7 @@ SAFE_CODES = frozenset({
     "planner_reference_count", "planner_unknown_reference", "planner_duplicate_reference",
     "planner_invalid_combination", "planner_explanation_unsupported",
     "planner_asset_unavailable",
+    "planner_unknown_action",
 })
 
 

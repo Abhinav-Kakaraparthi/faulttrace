@@ -12,7 +12,17 @@ Official sources:
 Recheck official requirements before final submission.
 Check an item only after recording evidence or a verified link.
 
-FT-007 ships offline-tested explicit text planning: bounded public evidence
+Current offline correction: provider selects one action_id from application
+observations filtered by asset availability, plus human escalation. Deterministic
+mapping preserves the strict six-field internal policy; four required wire fields,
+flat schema, no anyOf/uniqueItems. All 94 backend tests, 10 frontend tests and
+type/build checks pass. Attempt d4430228-f580-4175-94ca-09fc667f0707 is present
+once in the ledger, planner_invalid_combination, valid 578/956/1534 usage;
+discarded fields remain unknown. No inference or server operations here. New
+wire compatibility, useful refusal-aware decisions and browser journeys remain
+unverified; FT-007 stays PARTIAL. No submission checkbox is newly satisfied.
+
+Earlier implementation evidence: FT-007 ships offline-tested explicit text planning: bounded public evidence
 context, strict observation/escalation policy, durable four-turn reservations,
 stale/duplicate rejection and V-08 human reports. FT-007A adds strict schema
 requests, fixed precise diagnostics and an accessible disabled-state treatment.
@@ -54,7 +64,7 @@ submission gate changes. This does not recover an earlier discarded response.
 
 Latest user structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211
 returned three fields matching partial anyOf properties; application rejected
-planner_field_shape and retained 328/1125/1453 usage. Provider schema is now
+planner_field_shape and retained 328/1125/1453 usage. That revision used a provider schema
 flat with all six required fields and no anyOf/uniqueItems; application policy
 is unchanged. Eight focused tests and 81 backend tests pass offline. This
 implicates composition compatibility, not a proven provider bug; no live

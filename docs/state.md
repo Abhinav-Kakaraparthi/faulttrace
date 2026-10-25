@@ -1,6 +1,56 @@
 # Checkpoint state
 
-## Current: FT-007 connected API evidence finalized; refusal-aware policy added offline
+## Current: FT-007 registered action selection; offline correction
+
+Started clean on feat/ft-007-observation-planner at
+6c00fb1239ca4c7fa5c1fa947a5d5b3de1840b3b. This checkpoint changes only the
+provider selection contract and its validation adapter, tests and documentation.
+No inference, server operations, receipt imports/replays, or workflow/ledger
+writes occurred. Identify the scoped implementation/documentation revision with
+`git log -1`; the starting revision is not the corrected implementation.
+
+Read-only ledger inspection found attempt d4430228-f580-4175-94ca-09fc667f0707
+exactly once: 2026-10-25T19:57:01.794269+00:00, response
+chatcmpl-0e0b9c86-2792-44dd-94f4-4056b759f01e, exact Nano text model,
+4781 ms, transport invoked, validation failed with planner_invalid_combination,
+valid usage 578 input / 956 output / 1534 total. Source revision is the starting
+SHA above. Discarded fields were not recovered or inferred; which combination
+failed remains unknown. No new attempt was created.
+
+Provider output now has exactly four required fields: action_id,
+context_revision, evidence_refs, explanation_code. Observation IDs derive from
+the existing application templates; human escalation is always registered.
+The enum and prompt catalog exclude observations for inaccessible assets.
+Application code validates the selected ID, maps it to the existing six-field
+internal proposal, then applies strict revision/reference/explanation and
+asset/capability policy. Unknown IDs and old six-field provider output fail;
+no missing fields are filled or arbitrary triples accepted. The flat schema
+retains additionalProperties=false and excludes anyOf/uniqueItems. Model,
+2048-token cap, transport, reservations, budgets, stale-result protection and
+existing history remain unchanged. No frontend API/state-shape change.
+
+Checks: all 94 backend tests pass; six new action-selection tests cover mapping,
+refusals/alternatives/escalation, invented IDs, stale revisions, references,
+usage retention, no task on rejection and duplicate-request reuse. Existing
+policy/reservation regressions remain intact. The full suite also passed with
+external sockets blocked: zero forbidden attempts; only Windows asyncio
+internal loopback socket-pair setup was allowed. Ten frontend tests and the
+TypeScript/Vite build pass. No UI source change or browser verification.
+
+Actual ledger: 16 attempts, 12 complete known contributors, known
+4663 input / 9626 output / 14289 total; four missing-usage attempts and zero
+partial/invalid/inconsistent. Separate historical success 155/112/267;
+cross-record known 4818/9738/14556. Unknown consumption is not zero or included
+in these known sums; no billing estimate, import or accounting discrepancy.
+
+FT-007 remains PARTIAL. Earlier six-field provider compatibility and connected
+API evidence below remain historical evidence, not verification of this new
+four-field wire contract. Useful refusal-aware live choices and browser journeys
+remain open, as do recovery, CI and hosting. Next action: review this offline
+correction, then separately authorize one bounded standalone action-ID check
+against a saved refusal-bearing context; no live call is authorized here.
+
+## Prior: FT-007 connected API evidence finalized; refusal-aware policy added offline
 
 Started clean on feat/ft-007-observation-planner at
 2bb97c6248450a9814cc9e503d57398e10a004ad. No inference, server restart,

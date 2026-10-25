@@ -6,7 +6,7 @@ import unittest
 from faulttrace.accounting import MODEL, sanitized_receipt
 from faulttrace.provider import run_probe
 from faulttrace.validation import ProbeError
-from faulttrace.workflow.planner_contract import planner_payload, validate_plan
+from faulttrace.workflow.planner_contract import planner_payload, validate_plan, validate_action_plan
 
 
 class PlannerContractTests(unittest.TestCase):
@@ -85,9 +85,11 @@ class PlannerContractTests(unittest.TestCase):
         captured = []
         def send(secret, payload):
             captured.append(json.loads(json.dumps(payload)))
-            return json.dumps(self.envelope(self.proposal)).encode()
+            wire = {'action_id': 'OBSERVE_F-17_READ_LOCAL_DP', 'context_revision': 7,
+                    'evidence_refs': ['telemetry-001'], 'explanation_code': 'evidence_gap'}
+            return json.dumps(self.envelope(wire)).encode()
         receipt = run_probe('SECRET_SENTINEL', None, send, payload=planner_payload(self.context),
-                            validator=lambda envelope: validate_plan(envelope, self.context))
+                            validator=lambda envelope: validate_action_plan(envelope, self.context))
         self.assertEqual(receipt['validation_result'], 'passed')
         self.assertEqual(len(captured), 1)
         payload = captured[0]
@@ -103,7 +105,7 @@ class PlannerContractTests(unittest.TestCase):
         self.assertIs(wrapper['strict'], True)
         schema = wrapper['schema']
         self.assertIs(schema['additionalProperties'], False)
-        self.assertEqual(set(schema['required']), {'kind', 'asset_id', 'capability', 'context_revision', 'evidence_refs', 'explanation_code'})
+        self.assertEqual(set(schema['required']), {'action_id', 'context_revision', 'evidence_refs', 'explanation_code'})
         self.assertEqual(set(schema['properties']), set(schema['required']))
         self.assertEqual(schema['properties']['context_revision'], {'type': 'integer', 'enum': [7]})
         self.assertNotIn('uniqueItems', schema['properties']['evidence_refs'])
@@ -111,12 +113,11 @@ class PlannerContractTests(unittest.TestCase):
             'items': {'type': 'string', 'enum': ['telemetry-001', 'evidence-known']}})
         self.assertEqual(set(schema), {'type', 'properties', 'required', 'additionalProperties'})
         self.assertEqual(schema['type'], 'object')
-        self.assertEqual(len(schema['required']), 6)
+        self.assertEqual(len(schema['required']), 4)
         self.assertNotIn('anyOf', json.dumps(schema))
-        for field, choices in [('kind', ['REQUEST_OBSERVATION', 'ESCALATE']),
-                ('asset_id', ['F-17', 'V-08', 'HUMAN']),
-                ('capability', ['READ_LOCAL_DP', 'OBSERVE_POSITION', 'HUMAN_INVESTIGATION'])]:
-            self.assertEqual(schema['properties'][field], {'type': 'string', 'enum': choices})
+        self.assertEqual(schema['properties']['action_id'], {'type': 'string', 'enum':
+            ['OBSERVE_F-17_READ_LOCAL_DP', 'OBSERVE_V-08_OBSERVE_POSITION', 'ESCALATE_HUMAN_INVESTIGATION']})
+        self.assertTrue({'kind', 'asset_id', 'capability'}.isdisjoint(schema['properties']))
         self.assertNotIn('SECRET_SENTINEL', json.dumps(payload))
         for code in ('clarify_conflict', 'unreadable_evidence'):
             value = dict(self.proposal, explanation_code=code, evidence_refs=['evidence-known'])

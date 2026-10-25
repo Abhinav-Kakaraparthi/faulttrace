@@ -157,7 +157,7 @@ references drawn from this context, and context-supported explanation codes.
 Following the user diagnostic below, uniqueItems is omitted only from the
 provider schema; duplicate references remain rejected by application validation.
 Following structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211,
-root anyOf is also removed. The provider schema is one flat six-required-field
+root anyOf was also removed. That revision used one flat six-required-field
 object; allowed kind/asset/capability combinations remain enforced by application
 validation. Its three-field response was rejected without filling fields;
 328/1125/1453 usage was retained. Matching partial branch keys implicate
@@ -347,8 +347,9 @@ FT-007 remains PARTIAL.
 Failures stay intact: the uniqueItems diagnostic implicated that keyword;
 the later three-field response matched partial anyOf branch keys and implicated
 composition compatibility. Neither establishes a provider implementation bug
-or recovers older discarded output. Current flat schema keeps all six fields
-required and independent application policy remains strict.
+or recovers older discarded output. That historical flat schema required six
+provider fields. Current action-ID selection below uses four wire fields and
+retains six internal fields; independent application policy remains strict.
 
 Accounting checked read-only: 13 ledger attempts, 9 complete known contributors,
 3249 input / 6524 output / 9773 total, four missing-usage attempts and zero
@@ -501,3 +502,31 @@ The new offline-tested policy described above rejects a future same-asset
 request while cannot-access is unresolved, allowing V-08 or human escalation.
 It is not live-verified. FT-007 remains PARTIAL. No inference, replay/import,
 database reset, existing-server restart or new live test occurred here.
+
+## Current offline correction: registered action selection
+
+The provider no longer independently selects kind, asset_id and capability.
+Its flat JSON schema requires exactly action_id, context_revision, evidence_refs
+and explanation_code, with additionalProperties=false, no anyOf/uniqueItems.
+The action enum and prompt catalog derive from application observation templates
+and availability policy, with human escalation always retained:
+
+- OBSERVE_F-17_READ_LOCAL_DP -> REQUEST_OBSERVATION / F-17 / READ_LOCAL_DP.
+- OBSERVE_V-08_OBSERVE_POSITION -> REQUEST_OBSERVATION / V-08 / OBSERVE_POSITION.
+- ESCALATE_HUMAN_INVESTIGATION -> ESCALATE / HUMAN / HUMAN_INVESTIGATION.
+
+Inaccessible observations are omitted; selecting a registered but unavailable
+ID still fails planner_asset_unavailable, and invented IDs fail
+planner_unknown_action. validate_action_plan maps the exact four-field object
+to the existing internal six-field proposal and applies shared strict policy.
+The legacy validate_plan adapter validates internal six-field completions only;
+it must not be used to validate the new provider payload. Historical procedures
+above describe prior executions, not authorization to replay them.
+
+Read-only ledger audit confirmed failed attempt
+d4430228-f580-4175-94ca-09fc667f0707 once, planner_invalid_combination,
+valid 578/956/1534 usage. Its discarded fields are unknown. No response was
+recovered, imported or replayed. New contract compatibility and useful
+refusal-aware live choices remain unverified. All 94 backend tests and 10
+frontend tests pass; type/build passes. No live call or server operations.
+FT-007 remains PARTIAL; see state.md for current accounting and next action.

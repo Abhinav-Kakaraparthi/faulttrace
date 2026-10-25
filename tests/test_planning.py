@@ -34,6 +34,12 @@ class PlanningCase(WorkflowCase):
         context = json.loads(payload['messages'][1]['content'])
         self.contexts.append(context)
         value = self.proposal(context)
+        # Independently specified provider fixtures; internal policy tests still use six fields.
+        action_id = {('REQUEST_OBSERVATION', 'F-17', 'READ_LOCAL_DP'): 'OBSERVE_F-17_READ_LOCAL_DP',
+                     ('REQUEST_OBSERVATION', 'V-08', 'OBSERVE_POSITION'): 'OBSERVE_V-08_OBSERVE_POSITION',
+                     ('ESCALATE', 'HUMAN', 'HUMAN_INVESTIGATION'): 'ESCALATE_HUMAN_INVESTIGATION'}[self.choice]
+        value = {'action_id': action_id, **{name: value[name] for name in
+                 ('context_revision', 'evidence_refs', 'explanation_code')}}
         value = self.change(value)
         content = value if isinstance(value, str) else json.dumps(value)
         return json.dumps({'id': 'chatcmpl-abcd', 'model': MODEL,

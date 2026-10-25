@@ -4,8 +4,15 @@ Current application status: FT-007 adds explicit observation planning to the
 local server-backed workflow. Start incident creates no automatic task;
 Choose next observation proposes F-17 local DP, V-08 position-only, or human
 escalation using NVIDIA Nano. Strict application validation checks registered
-asset/capability combinations, existing references and context revision;
-application templates generate instructions and short explanation text.
+asset/capability combinations, existing references and context revision.
+The provider now chooses one action_id from registered, currently available
+observations or human escalation; application code maps it to the existing
+internal fields. Output must contain exactly action_id, context_revision,
+evidence_refs and explanation_code. Inaccessible observations are omitted from
+the enum/catalog and independently rejected. The four-field flat contract is
+offline-tested, not live-verified; historical six-field successes below do not
+verify it. No retry, historical rewrite or additional provider request occurred.
+Application templates generate instructions and short explanation text.
 No output grants equipment authority, diagnostic certainty or recovery.
 V-08 position reports are explicitly human-reported, not image-verified.
 See [workflow guide](evidence-workflow.md) for exact manual restart commands
@@ -42,11 +49,11 @@ telemetry-001 reference and evidence_gap explanation. No workflow task was
 created by this standalone call. The later connected API evidence is described
 above; its repeated inaccessible-task limitation remains part of the record.
 
-Latest structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 returned
+Earlier structural diagnostic 81d8d4d2-0d3c-4a36-9d81-a67b3acf8211 returned
 only kind/asset_id/capability, matching the old partial anyOf branch properties.
 Application rejection and 328/1125/1453 usage are recorded once. This implicates
 composition compatibility, not a proven provider bug. Only provider root anyOf
-and its unused branch construction were removed: the schema is flat with six
+and its unused branch construction were removed: that revision used a flat schema with six
 required fields; application combination/reference/shape/revision/explanation
 checks remain strict. Eight focused tests and 81 backend tests pass offline;
 no inference ran in that coding step. The later standalone compatibility success

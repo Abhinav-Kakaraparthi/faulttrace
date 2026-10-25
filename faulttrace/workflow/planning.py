@@ -6,7 +6,7 @@ from faulttrace.accounting import MODEL, new_receipt, sanitized_receipt
 from faulttrace.ledger import LedgerError, load
 from faulttrace.provider import run_probe
 
-from .planner_contract import EXPLANATIONS, build_context, planner_payload, validate_plan
+from .planner_contract import EXPLANATIONS, build_context, planner_payload, validate_action_plan
 from .storage import WorkflowError, now
 
 
@@ -62,7 +62,7 @@ class Planner:
 
         def validate(envelope):
             nonlocal proposal
-            proposal = validate_plan(envelope, context)
+            proposal = validate_action_plan(envelope, context)
 
         receipt = run_probe(self.engine.key_source(), self.engine.revision, self.engine.send,
                             payload=planner_payload(context), validator=validate)
