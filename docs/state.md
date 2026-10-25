@@ -1,6 +1,51 @@
 # Checkpoint state
 
-## Current: FT-008A coherent outcome and evidence presentation
+## Current: FT-009A distinct Commander and Operator workspaces
+
+Started clean at 9241d66def510c202fc861a58bf0c52cc4367d82; FT-008A preserved.
+Branch feat/ft-009-workspaces. Dedicated page components use /commander and
+/operator; old connected query URLs canonicalize client-side. One mounted
+workflow controller supplies both pages; separate tabs read the same API. No
+backend, database/history, policy, inference, budget, idempotency or simulator
+boundary change. No dependency installation, paid infrastructure or deployment.
+
+Commander owns incident creation, overview/schematic, actual stored telemetry,
+assessment, NVIDIA observation planning, correction approval, recovery and audit.
+Operator is a mobile-first assignment screen with actual task instructions,
+image upload/explicit analysis, structured reports/refusals and approved simulated
+completion acknowledgment. It contains no incident creation, planner, approval
+or simulation-clock controls. The shared evidence section preserves actual
+provenance/scopes; no data duplication, fake links or migration. Connected
+schematic/chart never substitute the sample preview's fixed numbers; absent
+server telemetry is explicitly unknown.
+
+NVIDIA task evidence can inform observation planning but does not yet satisfy
+the deterministic simulated correction assessment. This integration gap is
+visible in the product. Architecture docs distinguish existing local API/SQLite/
+worker/private simulator from future public hosting, anomaly delivery, durable
+production workflow, storage, secrets and protected logs. Server-enforced roles
+and incident/evidence access are an explicit unchecked deployment gate: routes
+and hidden controls are not authentication.
+
+Checks: 24 frontend tests, TypeScript and production build; source lengths and
+diff checks. Six added routing/page tests plus FT-008A regressions cover shared
+references, role control boundaries, legacy URLs, image/report/refusal paths,
+opt-in analysis, real/absent telemetry, recovery and loading/offline states.
+Backend unchanged; prior 104 offline-test evidence remains applicable. No paid
+inference or application mutation was performed. Read-only API checks confirm the existing completed incident remains revision 9,
+with verified recovery; no server restart was performed. Both dedicated route
+URLs, the legacy Operator URL and their transformed page modules returned HTTP
+200 on the existing preview. These HTTP checks are not browser verification.
+
+Browser inventory apps=[]/browsers=[]; in-app opening failed with Browser is
+not available: iab. No actual desktop/mobile/keyboard/back-forward or browser
+journey acceptance is claimed. FT-009A implementation/offline checks pass;
+visual acceptance remains PARTIAL. Next action: inspect the existing completed
+run at http://127.0.0.1:5180/commander and /operator, including 1440x900 and
+390x844, keyboard, legacy-link canonicalization, back/forward and reload. Keep
+existing histories intact; no new provider request is authorized here.
+
+## Prior: FT-008A coherent outcome and evidence presentation
 
 Started clean at 55c1d592402556b5a6b84f13f4556f3b4e3bb2f6 on
 feat/ft-008-simulated-recovery. Presentation/tests/docs only: no backend,

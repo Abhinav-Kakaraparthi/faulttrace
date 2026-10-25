@@ -8,6 +8,13 @@ investigate equipment anomalies.
 
 ## Status
 
+FT-009A provides separate server-backed **/commander** and **/operator** pages.
+Open http://127.0.0.1:5180/commander and http://127.0.0.1:5180/operator in the
+existing isolated preview; old connected query URLs remain compatible. See
+[current and target architecture](docs/architecture.md). Route separation is
+not authentication; server-enforced roles remain a deployment gate. NVIDIA task
+evidence is not yet integrated into the simulated correction assessment.
+
 FT-008 adds a complete **simulation-only** evidence -> working diagnosis -> human
 approval -> simulated filter replacement -> independent recovery journey. No paid
 inference is needed; fresh isolated data preserves existing runs. See

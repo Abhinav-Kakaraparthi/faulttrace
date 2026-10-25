@@ -14,8 +14,8 @@ function evidenceStatus(item: Evidence) {
   return item.analysis?.status === 'pending' ? 'Analysis pending · no reading yet' : statusLabel[item.status] ?? item.status;
 }
 
-export function ServerEvidenceList({ state, inspect, analyze, disabled }: {
-  state: ServerState; inspect: (item: Evidence) => void; analyze: (item: Evidence) => void; disabled: boolean;
+export function ServerEvidenceList({ state, inspect, analyze, disabled, allowAnalysis = true }: {
+  state: ServerState; inspect: (item: Evidence) => void; analyze: (item: Evidence) => void; disabled: boolean; allowAnalysis?: boolean;
 }) {
   const latest = state.evidence.at(-1)?.id;
   return <section className="section-surface connected-evidence"><h2>{state.journey ? 'Image and planner-task evidence' : 'Server evidence record'}</h2>
@@ -30,7 +30,7 @@ export function ServerEvidenceList({ state, inspect, analyze, disabled }: {
       {item.analysis?.receipt && <HTTPDiagnostics receipt={item.analysis.receipt} />}
       {item.analysis?.receipt && <p>Known tokens: input {item.analysis.receipt.token_usage?.prompt_tokens ?? 'unknown'} / output {item.analysis.receipt.token_usage?.completion_tokens ?? 'unknown'} / total {item.analysis.receipt.token_usage?.total_tokens ?? 'unknown'} · Usage {item.analysis.receipt.usage_status} · Ledger {item.analysis.accounting}</p>}
       <div className="server-evidence-actions"><button className="button secondary" onClick={() => inspect(item)}>Inspect evidence</button>
-        {item.id === latest && item.status === 'pending' && !item.analysis && <button className="button primary" disabled={disabled || !state.inference_enabled} onClick={() => analyze(item)}>Analyze image</button>}
+        {allowAnalysis && item.task_id === state.task?.id && item.id === latest && item.status === 'pending' && !item.analysis && <button className="button primary" disabled={disabled || !state.inference_enabled} onClick={() => analyze(item)}>Analyze image</button>}
       </div>
       {item.id === latest && item.status === 'pending' && !state.inference_enabled && <p className="caption">Inference disabled by default. Backend must be explicitly started with FAULTTRACE_ALLOW_INFERENCE=1.</p>}
     </article>)}

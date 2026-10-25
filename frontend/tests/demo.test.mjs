@@ -98,3 +98,20 @@ test('operator execution requires current approval and corroborated evidence; co
   assert.equal(recoveryLabel('failed'), 'Recovery verification failed');
   assert.equal(recoveryLabel('verified'), 'Simulated operating recovery verified');
 });
+
+
+const { resolveRoute } = await import('../src/routing.ts');
+test('dedicated routes override obsolete query controls; legacy connected URLs keep unrelated query and fragment', () => {
+  for (const [path, workspace, canonical] of [
+    ['/commander', 'commander', '/commander'], ['/operator', 'operator', '/operator'],
+    ['/?mode=connected&view=operator', 'operator', '/operator'],
+    ['/?mode=connected', 'commander', '/commander'],
+    ['/?view=operator&source=bookmark#task', 'operator', '/operator?source=bookmark#task'],
+    ['/operator/?mode=sample&view=commander', 'operator', '/operator'],
+    ['/commander?view=operator', 'commander', '/commander'],
+  ]) {
+    assert.deepEqual(resolveRoute(new URL(path, 'http://localhost:5180')), {kind: 'connected', workspace, canonical});
+  }
+  assert.equal(resolveRoute(new URL('http://localhost:5180/?mode=sample')).kind, 'sample');
+  assert.equal(resolveRoute(new URL('http://localhost:5180/missing')).kind, 'not-found');
+});

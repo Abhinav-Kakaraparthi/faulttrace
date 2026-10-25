@@ -11,7 +11,7 @@ export function ServerTask({ state, mutate, disabled }: { state: ServerState; mu
   const input = useRef<HTMLInputElement>(null);
   const selectionKey = useRef(crypto.randomUUID());
   const task = state.task;
-  if (!task) return <section className="operator-task section-surface"><h2>No server task assigned</h2><p>Use Choose next observation after starting an incident. No task is assigned automatically.</p></section>;
+  if (!task) return <section className="operator-task section-surface"><h2>No server task assigned</h2><p>Waiting for Commander to assign an observation. No task is assigned automatically.</p></section>;
   const accepts = ['awaiting', 'needs_evidence'].includes(task.status);
   async function upload() {
     if (!task || (!file && !selection)) { setError('Choose a PNG/JPEG file or a committed synthetic fixture.'); return; }

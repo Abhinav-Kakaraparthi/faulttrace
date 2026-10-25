@@ -17,7 +17,7 @@ const output = await build({ configFile: false, logLevel: 'silent',
 const entry = output.output.find(item => item.type === 'chunk' && item.isEntry);
 const file = join(temporary, 'render.mjs');
 writeFileSync(file, entry.code);
-const { renderJourney, renderEvidence, renderPlanningHistory, renderAudit } = await import(pathToFileURL(file));
+const { renderJourney, renderEvidence, renderPlanningHistory, renderAudit, renderCommander, renderOperator } = await import(pathToFileURL(file));
 
 function snapshot() {
   const observations = [
@@ -130,4 +130,113 @@ test('operator evidence entry and commander approval stay available before corre
   const failed = renderJourney(state, 'commander');
   assert.match(failed, /Recovery verification failed/);
   assert.doesNotMatch(failed, /Simulated operating recovery verified/);
+});
+
+
+test('dedicated Commander and Operator render the same stored completed incident with different responsibilities', () => {
+  const state = snapshot();
+  const before = JSON.stringify(state);
+  const commander = renderCommander(state);
+  const operator = renderOperator(state);
+  for (const html of [commander, operator]) {
+    assert.match(html, /incident-test/);
+    assert.match(html, /evidence revision 9/);
+    assert.match(html, /180 kPa/);
+    assert.match(html, /V-08 \/ intermediate/);
+    assert.match(html, /Simulated operating recovery verified/);
+    for (const ref of state.journey.approved_evidence_refs) assert.ok(html.includes(ref));
+  }
+  assert.match(commander, /Process overview/);
+  assert.match(commander, /Stored simulated telemetry/);
+  assert.match(commander, /32 kPa \/ simulated/);
+  assert.doesNotMatch(commander, /184 kPa \/ ELEVATED|62 kPa \/ BASELINE/);
+  assert.match(commander, /NVIDIA observation planning/);
+  assert.doesNotMatch(operator, /Choose next observation|Approve simulated correction|Decline \/ revoke|Start .*incident|Advance 10 simulated seconds|Process overview|NVIDIA observation planning/);
+  assert.match(operator, /No further operator action is required/);
+  assert.equal(JSON.stringify(state), before);
+});
+
+test('approval and incident creation belong to Commander; approved completion belongs to Operator', () => {
+  const state = snapshot();
+  state.journey.maintenance_status = 'not_completed';
+  state.journey.recovery.status = 'not_started';
+  state.journey.assessment.eligible = true;
+  assert.match(renderCommander(state), /Approve simulated correction/);
+  assert.doesNotMatch(renderOperator(state), /Approve simulated correction|Decline \/ revoke|Choose next observation/);
+  assert.match(renderOperator(state), /Record local pressure report/);
+  state.journey.approval_current = true;
+  assert.match(renderOperator(state), /Complete simulated filter replacement/);
+  assert.doesNotMatch(renderCommander(state), /Complete simulated filter replacement/);
+  state.journey.maintenance_status = 'simulated_replacement_completed';
+  state.journey.recovery.status = 'observing';
+  assert.match(renderOperator(state), /Completion acknowledged/);
+  assert.doesNotMatch(renderOperator(state), /Advance 10 simulated seconds/);
+  const empty = { ...state, incident: null, task: null, journey: null, evidence: [] };
+  assert.match(renderCommander(empty), /Start restriction-to-recovery simulation/);
+  assert.match(renderCommander(empty), /Start observation-only incident/);
+  assert.match(renderOperator(empty), /Waiting for an assignment/);
+  assert.doesNotMatch(renderOperator(empty), /Start .*incident|Choose next observation|Approve simulated correction/);
+});
+
+function imageTaskState() {
+  const state = snapshot();
+  state.journey = null;
+  state.task = { id: 'assigned-task', revision: 2, asset_id: 'F-17', capability: 'READ_LOCAL_DP',
+    status: 'awaiting', instruction: 'Read the assigned local indicator only. Do not operate equipment.',
+    creation_source: 'validated NVIDIA proposal', explanation: 'An independent observation is needed.' };
+  state.evidence = [{ id: 'image-evidence', task_id: 'assigned-task', kind: 'image', origin: 'user-upload',
+    fixture_id: null, status: 'pending', submitted_revision: 1, analysis: null, created_at: '2026-10-25T12:00:00Z' }];
+  state.inference_enabled = true;
+  return state;
+}
+
+test('assigned image/report/refusal and opt-in analysis controls are in Operator; Commander only reviews', () => {
+  const state = imageTaskState();
+  const operator = renderOperator(state);
+  assert.match(operator, /Read the assigned local indicator only/);
+  assert.match(operator, /Submit image/);
+  assert.match(operator, /Analyze image/);
+  assert.match(operator, /Report cannot access/);
+  assert.match(operator, /Report wrong equipment/);
+  assert.match(operator, /Report unreadable/);
+  assert.doesNotMatch(operator, /Choose next observation|Start .*incident|Approve simulated correction/);
+  const commander = renderCommander(state);
+  assert.match(commander, /Choose next observation/);
+  assert.doesNotMatch(commander, /Submit image|>Analyze image</);
+  assert.match(commander, /No timestamped simulator measurements/);
+  assert.match(commander, /Pressure unavailable/);
+  assert.doesNotMatch(commander, /184 kPa|62 kPa|>86 /);
+  state.inference_enabled = false;
+  assert.match(renderOperator(state), /<button[^>]*disabled[^>]*>Analyze image</);
+  state.task.asset_id = 'V-08';
+  state.task.capability = 'OBSERVE_POSITION';
+  assert.match(renderOperator(state), /Report intermediate/);
+  assert.match(renderOperator(state), /Report cannot determine/);
+});
+
+test('combined evidence retains scopes without pretending model evidence participates in recovery policy', () => {
+  const state = imageTaskState();
+  state.journey = snapshot().journey;
+  for (const html of [renderCommander(state), renderOperator(state)]) {
+    assert.match(html, /Investigation evidence/);
+    assert.match(html, /Journey evidence record/);
+    assert.match(html, /user-upload/);
+    assert.match(html, /NVIDIA task evidence/);
+    assert.match(html, /not consumed by the simulated correction\/recovery assessment/);
+    assert.doesNotMatch(html, /No evidence submitted\./);
+  }
+});
+
+test('both dedicated pages have meaningful loading/offline states; stale snapshots disable mutation controls', () => {
+  for (const render of [renderCommander, renderOperator]) {
+    assert.match(render(null, { connection: 'loading', disabled: true }), /Loading server state/);
+    assert.match(render(null, { connection: 'paused', disabled: true }), /Backend is not available/);
+    assert.doesNotMatch(render(null, { connection: 'paused', disabled: true }), /180 kPa|recovery verified/);
+  }
+  const state = imageTaskState();
+  const operator = renderOperator(state, { connection: 'paused', disabled: true });
+  assert.match(operator, /<fieldset[^>]*disabled/);
+  assert.match(operator, /<button[^>]*disabled[^>]*>Analyze image</);
+  const commander = renderCommander(state, { connection: 'paused', disabled: true });
+  assert.match(commander, /<button[^>]*disabled[^>]*>Choose next observation</);
 });

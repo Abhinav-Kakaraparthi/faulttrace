@@ -1,5 +1,13 @@
 # FT-008: simulated restriction-to-recovery journey
 
+FT-009A workspaces: open `/commander` to review evidence, approve correction and
+advance verification; open `/operator` to submit observations and acknowledge
+approved simulated completion. Both share the preserved server run. Old connected
+query URLs route to these pages. Operator has no planning/creation/approval/clock
+controls. Evidence scopes and the separate model/recovery integration gap are
+explained in [architecture](architecture.md). Existing 5180 preview needs no
+backend restart. No route separation is claimed as server role authorization.
+
 One synthetic F-17 restriction fixture, not a plant operating procedure or live
 AI demonstration. It uses the existing local FastAPI/SQLite app and both React
 views. Start requires an empty run; existing incident histories cannot be

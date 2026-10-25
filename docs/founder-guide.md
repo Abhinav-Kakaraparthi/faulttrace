@@ -1,5 +1,13 @@
 # Provider smoke test
 
+FT-009A separates `/commander` (decisions/planning/approval) and `/operator`
+(assigned observations, uploads, refusals and approved simulated completion).
+Both use the same backend records; old connected query URLs remain compatible.
+Refresh the existing preview without resetting the completed run. Route
+separation is not authentication. See [architecture and deployment gates](architecture.md).
+NVIDIA image/task evidence remains distinct from the simulation-only correction
+assessment; no integrated AI recovery reasoning or browser visual pass is claimed.
+
 FT-008A presents the existing completed simulation as one outcome/evidence
 record, with separate scoped image/planner evidence and history-only completed
 planning. The user reports the successful two-view walkthrough; read-only API

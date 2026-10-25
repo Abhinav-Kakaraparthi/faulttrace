@@ -9,6 +9,13 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+FT-009A adds dedicated Commander/Operator routes and components sharing the same
+server workflow. 24 frontend tests and type/build pass. Role separation is UI
+only; server authorization is an explicit required deployment gate. NVIDIA task
+evidence and deterministic simulated recovery assessment remain separate. No
+paid inference, hosting or browser visual acceptance is claimed. See
+[architecture](architecture.md); broad submission gates remain unchecked.
+
 FT-008A records a user-reported completed two-view simulated recovery walkthrough,
 corroborated by read-only API state. Presentation now scopes evidence clearly,
 shows a recovery/audit summary and separates simulated measurement from wall-clock
@@ -162,6 +169,7 @@ a completed live application, or independent recovery verification.
 - [ ] Restart, duplicate submission, and stale proposal handling checked.
 - [ ] Measured evaluation includes scenario count, latency, usage, and cost.
 - [ ] Desktop/mobile browser review and relevant accessibility checks pass.
+- [ ] Server-enforced identity, Commander/Operator roles and incident/evidence access verified, including direct API requests.
 - [ ] Working demo URL verified from a fresh browser session.
 - [ ] Judge testing instructions and dedicated access provided if needed.
 - [ ] Free judge access maintained through December 15, 2026.

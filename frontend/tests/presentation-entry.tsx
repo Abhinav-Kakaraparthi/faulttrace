@@ -1,5 +1,7 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { CommanderPage } from '../src/CommanderPage';
+import { OperatorPage } from '../src/OperatorPage';
 import { JourneyPanel } from '../src/JourneyPanel';
 import { PlannerPanel } from '../src/PlannerPanel';
 import { AuditHistory } from '../src/AuditHistory';
@@ -14,3 +16,10 @@ export const renderPlanningHistory = (state: ServerState) =>
   renderToStaticMarkup(createElement(PlannerPanel, { state, disabled: false, choose: () => {}, open: () => {}, historyOnly: true }));
 export const renderAudit = (state: ServerState) =>
   renderToStaticMarkup(createElement(AuditHistory, { state }));
+
+const pageProps = (state: ServerState | null, overrides = {}) => ({ state, connection: 'online' as const, disabled: false,
+  mutate: async () => true, inspect: () => {}, analyze: () => {}, navigate: () => {}, ...overrides });
+export const renderCommander = (state: ServerState | null, overrides = {}) =>
+  renderToStaticMarkup(createElement(CommanderPage, pageProps(state, overrides)));
+export const renderOperator = (state: ServerState | null, overrides = {}) =>
+  renderToStaticMarkup(createElement(OperatorPage, pageProps(state, overrides)));
