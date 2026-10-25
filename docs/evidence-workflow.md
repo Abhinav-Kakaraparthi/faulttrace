@@ -136,18 +136,36 @@ npm.cmd run build
 API tests use fake transport and temporary data/images/ledger. Two ASGI clients
 and a fresh application instance verify shared state/restart persistence,
 not an actual two-tab browser journey. Standalone probes are unchanged.
-Browser inventory was empty; iab opening failed in FT-006 and FT-007. No
+Browser inventory was empty; iab opening failed in FT-006, FT-007 and FT-007A. No
 agent desktop/mobile screenshots were captured or inspected. Ignored
-`.local/visual/ft-007/verification.json` records the latest blocker/code hashes.
-No real inference ran in the FT-007 coding checkpoint.
+`.local/visual/ft-007a/verification.json` records the latest blocker/code hashes.
+No real inference ran in either FT-007 or FT-007A coding checkpoints.
 
-## FT-007 planner contract and later bounded verification
+## FT-007 / FT-007A planner contract and bounded verification
 
 Model: `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`; endpoint:
 `https://api.tokenfactory.nebius.com/v1/chat/completions`. Existing bounded
 transport: 2048 output tokens, 256 KiB response, 60-second socket-operation
 timeout, no retries, fallback generations or redirects. Image inference is
 separate. Both operations use the same existing opt-in, worker and ledger.
+
+FT-007A adds `response_format` with type `json_schema` and a `json_schema`
+wrapper containing name, strict=true and schema. Constraints include required
+fields, additionalProperties=false, typed/enumerated fields, anyOf for the
+three permitted combinations, exact context revision, min/max/unique evidence
+references drawn from this context, and context-supported explanation codes.
+Application-side validation remains independent and mandatory.
+
+Official sources checked for FT-007A:
+- [Nebius structured output documentation](https://docs.tokenfactory.nebius.com/ai-models-inference/json)
+  documents json_schema, the named strict wrapper, JSON Schema compliance and
+  checking a model card's JSON mode tag. Platform support is not model proof.
+- [Nebius Nano cookbook](https://github.com/nebius/token-factory-cookbook/blob/main/models/nemotron/nemotron3-nano-30b.md)
+  advertises structured output for Nano, using lowercased model ID and a
+  regional endpoint. This is model-family documentation, not an authenticated
+  verification of our exact ID/endpoint/schema subset. Public Playground text
+  did not expose a verifiable exact-ID JSON-mode tag. No inference/model-list
+  request was made. Unsupported schema requests fail without fallback/retry.
 
 `POST /api/planning` accepts exactly `{ "revision": <incident revision> }`,
 local-client header and UUID Idempotency-Key. Context is snapshotted before
@@ -214,10 +232,34 @@ view switching, disabled explanations, task access and history. No mock planner
 is substituted when inference is disabled. Screenshots/visual approval remain
 pending because the agent has no browser surface.
 
-**Proposed later live verification: at most TWO text calls, no image calls.**
-Only after separate authorization and clean committed checkout, manually stop
-your disabled backend, ensure its process environment has the key (never paste
-it into the UI), then run:
+**FT-007A next live test is currently blocked.** Existing revision 1 already
+has rejected attempt 13d345c9-3480-45bc-a4c6-c2260b319300. Three turns remain,
+but a new key/restart/fixed payload cannot produce a second call on that
+context. The original receipt and evidence must stay intact. No output can be
+reconstructed from invalid_proposal. Do not reuse the earlier two-call plan.
+
+Bounded proposal after review and separate authorization:
+
+1. Manually restart inference-disabled using the command above; review the
+   disabled button, visible reason and planning history in both views. The
+   coding agent has not touched your servers. Inspect desktop/mobile/keyboard.
+2. Determine whether a genuine new F-17 reassessment is needed. The existing
+   registered `POST /api/tasks/{id}/reopen` accepts the current task revision,
+   local-client header and fresh UUID Idempotency-Key. It creates an awaiting
+   observation, not new evidence, and blocks planning until that task is
+   answered. This is NOT a retry button. Use only to perform an actual new
+   reassessment, never merely to advance context revision.
+3. Submit new truthful evidence or a truthful inability/unreadability report
+   through Operator. Do not falsely label the existing clear fixture unreadable,
+   claim an access failure just to retry, or replay its accepted analysis. If
+   fresh image interpretation is genuinely necessary, that is an additional
+   separately authorized vision call, not included in this one-planner-call
+   proposal. If no genuine new observation exists, STOP: corrected live
+   verification remains blocked; do not reset/copy/edit history or bypass policy.
+4. Once truthful new evidence is accepted/reported and both views show a new
+   unattempted context with no blocking task, manually restart opt-in only
+   after live authorization. Keep the existing credential in the backend
+   environment; never paste it into the UI. Commands (not run in FT-007A):
 
 ```powershell
 Set-Location 'C:\Users\surya\Projects\faulttrace'
@@ -229,27 +271,22 @@ $env:FAULTTRACE_ALLOW_INFERENCE = '1'
 & .venv\Scripts\python.exe -m uvicorn faulttrace.workflow.main:app --host 127.0.0.1 --port 8765 --workers 1 --no-access-log --log-level warning
 ```
 
-1. Use the retained incident/evidence (do not repeat its clear-image analysis).
-   On a fresh store only, start an incident and verify no automatic task.
-   Confirm at least two remaining turns and no blocking task.
-2. Click Choose next observation ONCE. Inspect the real proposal, context
-   revision, task template or escalation, receipt/usage and matching second-tab
-   state. If rejected, failed, uncertain or escalated, stop; no retry.
-3. If a task exists, submit one honest simulated observation/refusal. For F-17,
-   use Report unreadable/cannot access, with no new image analysis. For V-08,
-   submit a human position report or cannot determine. No equipment operation.
-   Confirm the new evidence/provenance and revision in both tabs.
-4. Click Choose next observation ONCE more, then stop regardless of result.
-   Verify the second context includes that evidence and the remaining budget
-   decreased by two overall. A repeated choice is possible and must be reported
-   honestly, not replaced with an expected adaptive result. Check inference
-   validation separately from accounting completeness. Save sanitized evidence.
-5. Manually restart inference-disabled with the earlier command. Read offline
-   accounting without importing/replaying anything:
+5. Click Choose next observation ONCE. Stop regardless of result; no repair,
+   retries, schema downgrade, fallback model or token increase. Check the exact
+   schema/model compatibility, fixed validation diagnostic, policy/task result
+   and accounting separately. Confirm this attempt occurs once, the original
+   rejection/evidence remain unchanged, and budget decreases from 3 to 2 if no
+   other planning turns have occurred. Manually restore inference-disabled.
+
+Offline accounting only (no import/replay):
 
 ```powershell
 & .venv\Scripts\python.exe -m faulttrace.probe --ledger-summary
 ```
 
-No further provider calls follow from this procedure. The application hard cap
-is four planning turns, but this proposed verification is limited to two.
+Fixed new diagnostic codes: planner_field_shape, planner_field_type,
+planner_revision_mismatch, planner_reference_count, planner_unknown_reference,
+planner_duplicate_reference, planner_invalid_combination,
+planner_explanation_unsupported. Existing JSON/envelope/refusal/truncation
+codes remain separate; stale completion still uses stale_context. Historical
+invalid_proposal remains readable and is never retrospectively relabeled.

@@ -1,52 +1,72 @@
 # Checkpoint state
 
-## Current: FT-007 observation planner shipped; live/browser verification pending
+## Current: FT-007A reliability fix; FT-007 remains PARTIAL
 
-Implementation acceptance: PASS offline; overall PARTIAL. Started clean from
-`00d2beeb669be3e970eda34c7344d402fa0cd14c`, created
-`feat/ft-007-observation-planner`. This checkpoint's scoped implementation/docs
-commit is identified by `git log -1` on that branch; no later source edits are
-part of the test evidence. Existing servers were not stopped or restarted.
+Started clean on feat/ft-007-observation-planner at
+`8ce8172ed587c3c124467329926d0ac1742f3100`. The scoped FT-007A commit
+contains the tested fix and this record; identify it with git log -1.
+No inference, server restart, receipt import, migration, database/ledger write,
+new feature, deployment or merge occurred in this checkpoint.
 
-Incident creation no longer assigns F-17 automatically. Choose next observation
-explicitly reserves one NVIDIA Nano text call. Policy accepts only F-17 local
-DP observation, V-08 position observation, or human escalation. Application
-templates supply instructions and brief explanations. V-08 reports remain
-human-reported, never image-verified. Both views poll the same persisted state.
+Read-only inspection (SQLite URI mode=ro plus query_only; one ledger load)
+confirmed attempt `13d345c9-3480-45bc-a4c6-c2260b319300` once, rejected with
+`invalid_proposal`, accounting recorded, no proposal retained and no new task.
+Receipt matches the ledger: timestamp 2026-10-25T00:50:18.260217+00:00,
+response chatcmpl-b831667d-dc12-498c-b220-2870a78c5bd4, Nano model,
+implementation 8ce8172ed587c3c124467329926d0ac1742f3100, 18703 ms,
+transport invoked, 564 input / 1483 output / 2047 total, valid usage,
+validation failed and metadata/accounting diagnostics empty.
 
-Bounded context includes public simulated telemetry, up to 4 task records and
-the latest 16 observations with provenance/readability, omitted-record count,
-conflicts and remaining budget. No fixture answers, private image bytes, raw
-notes or hidden fault fields enter it. Duplicate context/click reuses its
-reservation; at most one blocking task; stale completions cannot create tasks.
-Four reserved turns maximum, shared serialized worker, no transaction during
-network I/O, no retry/fallback. Rejected proposals retain available usage;
-interrupted turns remain uncertain and consumed. Additive schema changes preserve
-legacy fixed-task provenance; migration was tested only on temporary data.
+Persisted context revision 1 equals current revision 1. It included the legacy
+observed F-17 task, accepted user-upload image interpretation 180 kPa, simulated
+184 kPa pressure / 86 m3/h flow / 72% feedback, their comparison conflict,
+and four turns before reservation. One attempt leaves three turns. The old
+code path establishes valid JSON and passing completion-envelope checks before
+proposal rejection; it does not identify the offending field, value or exact
+policy condition. Output was discarded. No reconstruction or root-cause claim
+is possible. Token usage does not establish the amount of reasoning or a
+cap-induced truncation. Context SHA-256:
+`c1b14563a790c869c59232a6ea719979c780ffb1b469fe51f1f026f56aeee4e4`.
 
-Checks: 66 Python offline tests (18 planner + 48 regression), 8 frontend tests,
-TypeScript/Vite build and pip check; sources below 500 lines. The full suite
-also passed with external socket connections blocked (zero forbidden attempts;
-Windows asyncio internal loopback socket-pair setup only was allowed).
-One initial full-suite failure
-was a Windows test-fixture SQLite handle left open; explicitly closing it fixed
-cleanup, then all tests passed. Existing TestClient/Node deprecation/experimental
-warnings remain. No dependencies added. Mock choices prove policy, not live
-adaptive reasoning. Actual workflow data/ledger were not opened or changed;
-prior accounting below is historical evidence, not a fresh account audit.
+The fix adds fixed shape/type/revision/reference-count/unknown-reference/
+duplicate-reference/asset-capability/explanation-condition codes, independently
+validated and allowlisted in receipts. The strict original smoke contract is
+unchanged. Requests now use strict json_schema with required fields, no extra
+properties, allowed combinations, exact revision, bounded unique existing
+references and currently supported explanation codes. Nebius documents this
+wrapper; its official Nano cookbook advertises structured output, but uses a
+different model-ID casing/regional endpoint. Exact configured ID/endpoint and
+schema-keyword acceptance remain unverified. Sources and caveats are in the
+[workflow guide](evidence-workflow.md). No repair/retry/fallback or cap increase.
 
-Browser blocker: enabled-surface inventory empty; local iab opening returned
-`Browser is not available: iab`. No screenshot or actual desktop/mobile,
-keyboard, focus/overflow visual pass. Blocker/hash record is ignored at
-`.local/visual/ft-007/verification.json`. An older running backend now produces
-an explicit compatibility message until the user manually restarts it.
+The attempted-context button retains native disabling/idempotency, adds a
+graphite disabled appearance and aria-describedby linked visible status text.
+Checks: 71 backend offline tests (including five new diagnostic/payload tests),
+9 frontend tests, TypeScript/Vite build and pip check. The backend suite also
+passed with external sockets blocked: zero forbidden network attempts, allowing
+only Windows asyncio's internal loopback socket-pair setup. Existing TestClient/Node warnings
+remain. No dependencies added; source files remain below 500 lines.
+Browser inventory empty; iab failed with Browser is not available: iab.
+No actual desktop/mobile/keyboard visual verification or screenshots. Ignored
+`.local/visual/ft-007a/verification.json` records blocker and tested file hashes.
 
-Exact next action: follow the FT-007 section of [workflow guide](evidence-workflow.md),
-first restart manually inference-disabled and review desktop/mobile; then,
-under separate live authorization, at most two explicit text-planning calls
-separated by one honest simulated observation/refusal. No image analysis replay,
-automatic calls, intervention, recovery, deployment or merge. Live planner,
-connected unreadable/refusal browser coverage, mobile, CI and hosting remain open.
+Accounting checked once, no imports: ledger 6 attempts, 5 complete known
+contributors = 1937 input / 2712 output / 4649 total. One historical attempt
+has missing usage; partial/invalid/inconsistent counts are all zero. Separate
+historical manual success = 155 / 112 / 267; cross-record known =
+2092 / 2824 / 4916. No discrepancy, billing estimate or complete-consumption claim.
+
+Next action: first manual inference-disabled restart and founder UI review.
+A corrected call on revision 1 is BLOCKED despite three remaining turns;
+restarting, deploying this fix or using a new click key cannot authorize it.
+Only a genuinely needed reassessment through the existing F-17 reopen workflow,
+followed by new truthful evidence/refusal, can enable a later context. Do not
+reopen solely to advance revision or fabricate a report. If no genuine new
+observation exists, remain blocked for live verification. The guide proposes
+at most one corrected planner call after that condition and separate approval;
+no replay, database reset, historical edit, budget reset or policy bypass.
+Live adaptive success, mobile/broad browser coverage, recovery, CI and hosting
+remain unverified. Prior verified FT-006 evidence below stays historical.
 
 ## Prior verified evidence: FT-006 connected clear-image finalization
 

@@ -20,6 +20,14 @@ test('disabled inference, pending reservation, spent budget and duplicate contex
   assert.match(planningBlocker({ ...planningReady, planning: [{ status: 'rejected', context_revision: 2 }] }), /already has an attempt/);
 });
 
+test('a rejected attempted context stays blocked with three turns remaining; a different revision alone cannot override a blocking task', () => {
+  const attempted = { ...planningReady, incident: { revision: 1 }, planning_remaining: 3,
+    planning: [{ status: 'rejected', context_revision: 1 }] };
+  assert.match(planningBlocker(attempted), /already has an attempt/);
+  assert.match(planningBlocker({ ...attempted, incident: { revision: 2 }, task: { status: 'awaiting' } }), /Finish or report/);
+  assert.equal(planningBlocker({ ...attempted, incident: { revision: 3 }, task: { status: 'needs_evidence' } }), null);
+});
+
 test('incident starts with an observation request and no completed evidence', () => {
   const state = reduceDemo(initial, { type: 'start' });
   assert.equal(state.started, true);

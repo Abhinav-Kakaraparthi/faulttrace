@@ -9,8 +9,12 @@ application templates generate instructions and short explanation text.
 No output grants equipment authority, diagnostic certainty or recovery.
 V-08 position reports are explicitly human-reported, not image-verified.
 See [workflow guide](evidence-workflow.md) for exact manual restart commands
-and the proposed maximum-two-call live check. No inference or server restart
-was performed in this checkpoint. Live adaptive reasoning remains unverified.
+and the blocked, proposed one-planner-call verification after genuine new evidence.
+FT-007A adds a documented strict JSON-schema request and precise sanitized
+shape/type/revision/reference/combination/explanation diagnostics. Exact Nano
+endpoint/schema compatibility still needs live verification; application policy
+remains mandatory. No inference or server restart was performed in FT-007A.
+Live adaptive reasoning remains unverified.
 
 The workflow keeps the earlier sample preview separate. See the workflow guide
 for exact setup/URLs and the completed FT-006 clear-image evidence. Earlier
@@ -48,12 +52,22 @@ context includes only public telemetry and recent observations, not fixture
 answers, hidden simulator labels or raw notes. Conflicting observations remain
 in the evidence history. Trust only local users/processes; do not expose these dev servers.
 
-The supplied panel-a/panel-b vision successes were confirmed in the ledger,
-not repeated/imported. After the new connected attempt, actual known ledger
-totals are 1373 input / 1229 output / 2602 total across 5 attempts (4 known).
-Cross-record including the separate manual record: 1528 / 1341 / 2869, plus
-one failed request with unknown usage. Two digital fixtures cannot establish
-arbitrary gauge accuracy or broad application runtime coverage.
+FT-007A read-only accounting found 6 ledger attempts, 5 with complete known
+usage: 1937 input / 2712 output / 4649 total. Separate historical manual success
+155 / 112 / 267 gives cross-record known 2092 / 2824 / 4916. One historical
+failed request still has unknown usage; no imports or record changes occurred.
+Two digital fixtures cannot establish arbitrary gauge accuracy or broad
+application runtime coverage.
+
+The first live planner attempt 13d345c9-3480-45bc-a4c6-c2260b319300 rejected
+with invalid_proposal, retaining valid 564 / 1483 / 2047 usage once. Its context
+included accepted clear-image evidence and the simulated pressure discrepancy.
+Output was discarded, so the exact defect and reasoning are unknowable.
+Three turns remain, but revision 1 is already attempted. The disabled button
+now looks disabled and links to its visible explanation. Do not reset history,
+invent a refusal, or reopen just to change revision. A genuine reassessment
+and new truthful evidence are prerequisites for the later one-call proposal;
+otherwise testing remains blocked. See the guide's bounded recovery path.
 
 The connected record is evidence a757eca7-445b-4d0c-b2ae-c70980b3f20d,
 attempt 1b6b653c-abc9-4ec2-a9be-96d24aba38cc: readable 180 kPa, 1938 ms,
@@ -66,7 +80,7 @@ action authorization, or recovery. See state.md for the sanitized receipt.
 Agent browser access remains unavailable; no agent-operated visual pass or
 screenshot inspection is claimed. User observations are attributed explicitly.
 Mobile, connected unreadable/refusal, adaptive planning, recovery, CI, and
-hosting remain open. FT-007 has 66 passing offline backend tests, 8 frontend
+hosting remain open. FT-007A has 71 passing offline backend tests, 9 frontend
 tests and a passing type/build check. Browser surfaces remain unavailable;
 these checks do not establish a visual pass or live adaptive reasoning.
 

@@ -20,6 +20,9 @@ tasks or human escalation, four reserved turns per incident, and structured
 V-08 human reports. Offline policy tests pass; live adaptive planning and
 desktop/mobile browser review remain unverified. Inference is disabled by
 default; CI, hosting, and recovery verification stay open.
+FT-007A adds strict structured-output requests and precise sanitized diagnostics.
+The existing rejected live attempt remains preserved; a corrected call is
+blocked on its already-attempted context. See the workflow guide before testing.
 
 ## Planned workflow
 

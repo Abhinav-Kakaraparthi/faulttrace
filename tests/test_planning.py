@@ -29,6 +29,8 @@ class PlanningTests(WorkflowCase):
             pass  # Independently prove no SQLite write transaction spans the provider call.
         self.assertEqual(payload['model'], MODEL)
         self.assertEqual(payload['max_tokens'], 2048)
+        self.assertEqual(payload['response_format']['type'], 'json_schema')
+        self.assertIs(payload['response_format']['json_schema']['strict'], True)
         context = json.loads(payload['messages'][1]['content'])
         self.contexts.append(context)
         value = self.proposal(context)
@@ -173,6 +175,7 @@ class PlanningTests(WorkflowCase):
         self.assertIsNone(state['task'])
         self.assertEqual(state['planning'][0]['status'], 'rejected')
         self.assertIsNone(state['planning'][0]['proposal'])
+        self.assertEqual(state['planning'][0]['error'], 'planner_field_shape')
         self.assertEqual(state['planning'][0]['receipt']['token_usage']['total_tokens'], 18)
         self.assertNotIn('SENTINEL_PRIVATE_KEY', json.dumps(state))
         self.assertNotIn('SENTINEL_PRIVATE_KEY', self.ledger.read_text())

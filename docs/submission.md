@@ -14,9 +14,12 @@ Check an item only after recording evidence or a verified link.
 
 FT-007 ships offline-tested explicit text planning: bounded public evidence
 context, strict observation/escalation policy, durable four-turn reservations,
-stale/duplicate rejection and V-08 human reports. 66 backend tests, 8 frontend
-tests and type/build checks pass with fake transport only. No live planning
-request or agent-operated browser review occurred; adaptive reasoning, mobile,
+stale/duplicate rejection and V-08 human reports. FT-007A adds strict schema
+requests, fixed precise diagnostics and an accessible disabled-state treatment.
+71 backend tests, 9 frontend tests and type/build checks pass offline. The
+first live planner request rejected with invalid_proposal (564/1483/2047 known
+tokens, recorded once); its discarded output cannot establish the exact cause.
+No corrected live request or agent-operated browser review occurred; adaptive reasoning, mobile,
 connected unreadable/refusal browser journeys, CI and hosting remain unverified.
 No broad submission gate is checked by this checkpoint. Existing FT-006 user
 browser evidence below remains attributed to that earlier implementation.
@@ -42,8 +45,8 @@ See [workflow guide](evidence-workflow.md).
 - [ ] Connected unreadable/refusal paths verified in the browser.
 - [ ] Mobile/accessibility/overflow review completed.
 
-Known ledger: 1373 input / 1229 output / 2602 total. Separate historical manual
-record: 155 / 112 / 267. Cross-record known: 1528 / 1341 / 2869 plus one failed
+FT-007A read-only known ledger: 1937 input / 2712 output / 4649 total. Separate historical manual
+record: 155 / 112 / 267. Cross-record known: 2092 / 2824 / 4916 plus one failed
 request with unknown consumption. No billing or complete-consumption claim.
 Full checklist gates remain unchecked unless their whole claim is verified.
 
