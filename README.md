@@ -19,8 +19,10 @@ FT-009B adds camera/file photograph collection with local preview, replace/cance
 measured upload progress and actual stored-image display. Uploads alone remain collection-only; FT-010 adds a separate explicit observation
 analysis contract, whose factual photographic accuracy remains unverified.
 [Photo scope, source/license guidance and later activation](docs/photo-evidence.md).
-Existing servers were left running; photo controls capability-gate the older API
-until a later manual backend restart using the same data directory.
+The isolated preview at http://127.0.0.1:5180/commander and /operator now uses
+the updated backend with inference disabled, preserving the completed run and its
+data directory. That run has no assigned observation task or stored photograph;
+photo interaction acceptance remains open. See [activation evidence](docs/state.md).
 
 FT-009A provides separate server-backed **/commander** and **/operator** pages.
 Open http://127.0.0.1:5180/commander and http://127.0.0.1:5180/operator in the

@@ -2,6 +2,27 @@
 
 ## Current: FT-010 photographic observation analysis (offline implementation)
 
+Local preview activation (2026-10-26), tested code 626daa9a7bdd873b224b28fc701b7636c7177b58:
+restarted only the verified FaultTrace backend on 127.0.0.1:8780 with
+FAULTTRACE_ALLOW_INFERENCE=0 and the same data directory
+`.local/verification/ft008-ff11c43ec36b4f44901c9a46a8a1375f`. Frontends on
+5180/5173 were left running. /commander and /operator on 5180 return HTTP 200;
+their shared API proxy matches the updated backend and advertises photo support.
+Completed incident 2a9ab9ea-0b2f-400a-946b-72dde56313b2 remains revision 9,
+recovery verified with five samples over 40 simulated seconds. Prior table rows,
+image inventory and ledger hash match; only an empty photo_analyses table was
+added by startup migration. A consistent pre-restart SQLite backup and audit are
+under ignored `.local/visual/ft010-activation-6208ef4c89a84c9090a15d0f8b9043c8/`.
+34 frontend tests, typecheck, 7 photo-collection and 12 photographic-workflow tests
+pass offline. No inference or run mutation was performed. Browser inventory is
+empty, native pipe unavailable and in-app opening failed: desktop/mobile,
+keyboard, camera and photo interactions are NOT verified; no screenshots exist.
+The preserved run has no assigned task or stored image, so photo upload controls
+cannot be exercised there without changing its workflow. Next: founder review at
+http://127.0.0.1:5180/commander and /operator; separately scope an offline collection
+test with an assigned task if interactive photo acceptance is needed. This later
+documentation update does not change the activated application code.
+
 Latest offline request audit, starting clean at a52b1642e2cc2a2a3a924efc992985fca500d644:
 experimental attempt b2e90f31-9383-45e8-a88e-4df019c0796a occurs once and matches
 its saved receipt: valid 1676 / 4096 / 5772 usage, finish_reason=length, no validated
