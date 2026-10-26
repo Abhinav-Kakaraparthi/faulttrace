@@ -10,6 +10,17 @@ inference disabled; the separate collection-review instance below preserves it.
 
 ## Isolated inference-disabled review
 
+The refined connected presentation prioritizes Operator assignment and camera/file
+controls. Requirements/provenance are expandable; synthetic fixtures are in a
+closed Development / test section. Evidence lists in both workspaces use separate
+compact thumbnail/status/asset/UTC-time rows. Inspect opens the full photograph;
+Enlarge/Fit switches to a focusable scrolling view without cropping. Full NVIDIA
+interpretations and human/source distinctions remain in inspection; accounting
+and explicit analysis gates remain accessible. No records are merged or migrated.
+User-referenced desktop/390x844 captures are user evidence, not agent browser tests;
+the screenshot files were unavailable here. Actual layout, focus, zoom/pan and file
+dialog acceptance remain pending because browser automation is unavailable.
+
 Commander: http://127.0.0.1:5181/commander. Operator:
 http://127.0.0.1:5181/operator. This private test instance has an explicitly
 TEST-CREATED / NOT AI-generated F-17 assignment, using the existing

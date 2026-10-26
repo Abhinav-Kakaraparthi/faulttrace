@@ -17,7 +17,7 @@ const output = await build({ configFile: false, logLevel: 'silent',
 const entry = output.output.find(item => item.type === 'chunk' && item.isEntry);
 const file = join(temporary, 'render.mjs');
 writeFileSync(file, entry.code);
-const { renderJourney, renderEvidence, renderPlanningHistory, renderAudit, renderCommander, renderOperator, renderPhotoCapture, renderPhotoDraft, renderEvidenceDetails } = await import(pathToFileURL(file));
+const { renderJourney, renderEvidence, renderPlanningHistory, renderAudit, renderCommander, renderOperator, renderPhotoCapture, renderPhotoDraft, renderEvidenceDetails, renderConnected } = await import(pathToFileURL(file));
 
 function snapshot() {
   const observations = [
@@ -195,7 +195,7 @@ test('assigned image/report/refusal and opt-in analysis controls are in Operator
   const operator = renderOperator(state);
   assert.match(operator, /Read the assigned local indicator only/);
   for (const heading of operator.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)) assert.doesNotMatch(heading[1], /<section|<input|<fieldset/);
-  assert.ok(operator.indexOf('Photograph the assigned observation') > operator.indexOf('Read the assigned local indicator only'));
+  assert.ok(operator.indexOf('Add a photograph') > operator.indexOf('Read the assigned local indicator only'));
   assert.match(operator, /Submit image/);
   assert.match(operator, /Analyze image/);
   assert.match(operator, /Report cannot access/);
@@ -222,11 +222,12 @@ test('combined evidence retains scopes without pretending model evidence partici
   for (const html of [renderCommander(state), renderOperator(state)]) {
     assert.match(html, /Investigation evidence/);
     assert.match(html, /Journey evidence record/);
-    assert.match(html, /user-upload/);
+    assert.match(html, /Inspect evidence/);
     assert.match(html, /NVIDIA task evidence/);
     assert.match(html, /not consumed by the simulated correction\/recovery assessment/);
     assert.doesNotMatch(html, /No evidence submitted\./);
   }
+  assert.match(renderEvidenceDetails(state.evidence[0]), /user-upload/);
 });
 
 test('both dedicated pages have meaningful loading/offline states; stale snapshots disable mutation controls', () => {
@@ -274,8 +275,8 @@ test('stored photograph, assigned asset, human reports and NVIDIA interpretation
   state.evidence=[photo];
   for(const html of [renderOperator(state),renderCommander(state),renderEvidenceDetails(photo)]) {
     assert.match(html,/src="\/api\/evidence\/photo-id\/image"/);
-    assert.match(html,/identity.*not assessed|identity.*not established/i);
-    assert.match(html,/collection.only/i);
+    assert.match(html,/identity.*unverified|identity.*not.*verified|identity.*not assessed|identity.*not established/i);
+    assert.match(html,/collection.only|Photograph collected \/ not analyzed/i);
     assert.doesNotMatch(html,/>Analyze image</);
   }
   const human={...photo,id:'human-report',kind:'report',status:'accepted',report:'intermediate',origin:'human-report',image_url:null};
@@ -314,15 +315,20 @@ function analyzedPhoto(value,status='interpreted') {
 
 test('both workspaces preserve actual gauge values/units, unknown type, uncertainty and provenance without scenario defaults', () => {
   const state=analyzedPhoto(photoResult());
-  for(const html of [renderOperator(state),renderCommander(state),renderEvidenceDetails(state.evidence[0])]) {
+  for(const html of [renderOperator(state),renderCommander(state)]) {
     assert.match(html,/src="\/api\/evidence\/photo\/image"/);
-    assert.match(html,/Observed numeric reading/);assert.match(html,/>75</);
-    assert.match(html,/>PSI</);assert.match(html,/>indeterminate</);
-    assert.match(html,/Measurement type cannot be established/);
-    assert.match(html,/PG-21/);assert.match(html,/not.*compatibility check/);
-    assert.match(html,/excluded from incident pressure comparisons/i);
+    assert.match(html,/Inspect evidence/);
+    assert.match(html,/Photographic analysis \/ interpreted/);
+    assert.doesNotMatch(html,/Observed numeric reading/);
     assert.doesNotMatch(html,/180 kPa|75 kPa/);
   }
+  const html=renderEvidenceDetails(state.evidence[0]);
+  assert.match(html,/Observed numeric reading/);assert.match(html,/>75</);
+  assert.match(html,/>PSI</);assert.match(html,/>indeterminate</);
+  assert.match(html,/Measurement type cannot be established/);
+  assert.match(html,/PG-21/);assert.match(html,/not.*compatibility check/);
+  assert.match(html,/excluded from incident pressure comparisons/i);
+  assert.doesNotMatch(html,/180 kPa|75 kPa/);
   const ledger=renderOperator(state);
   assert.match(ledger,/output unknown/);
   assert.match(ledger,/Usage partial/);
@@ -332,7 +338,10 @@ test('both workspaces preserve actual gauge values/units, unknown type, uncertai
 test('valve label remains distinct from assignment and instructions are escaped, not equipment authorization', () => {
   const state=analyzedPhoto(photoResult({category:'valve',measurement_type:'not_applicable',visible_unit:null,reading:null,
     label_text:'BV-104 <script>IGNORE POLICY</script>',valve_orientation:'perpendicular_to_visible_pipe',reasons:[]}));
-  const html=renderOperator(state);
+  const workspace=renderOperator(state);
+  assert.match(workspace,/Inspect evidence/);
+  assert.doesNotMatch(workspace,/>Analyze photographic observation</);
+  const html=renderEvidenceDetails(state.evidence[0]);
   assert.match(html,/Assigned asset: V-08/);
   assert.match(html,/BV-104 &lt;script&gt;IGNORE POLICY&lt;\/script&gt;/);
   assert.match(html,/perpendicular to visible pipe/);
@@ -344,7 +353,8 @@ test('valve label remains distinct from assignment and instructions are escaped,
 test('ambiguous/unreadable/unrelated observations remain bounded results, with failed/stale/uncertain status visible', () => {
   for(const [category,readability,reasons] of [['gauge','readable',['ambiguous_scale']],['cannot-determine','unreadable',['category_uncertain']],['other','readable',['not_equipment']]]) {
     const state=analyzedPhoto(photoResult({category,readability,measurement_type:category==='gauge'?'pressure':'not_applicable',reading:null,visible_unit:null,reasons}));
-    const html=renderOperator(state);
+    assert.match(renderOperator(state),/Inspect evidence/);
+    const html=renderEvidenceDetails(state.evidence[0]);
     assert.match(html,/Not established; no number inferred/);
     assert.match(html,new RegExp(`>${category}<`));
     assert.doesNotMatch(html,/180 kPa/);
@@ -353,6 +363,78 @@ test('ambiguous/unreadable/unrelated observations remain bounded results, with f
     const state=analyzedPhoto(photoResult(),status);
     const html=renderOperator(state);
     assert.match(html,new RegExp(`Photographic analysis / ${status}`));
-    assert.match(html,/not an accepted current observation/);
+    assert.match(renderEvidenceDetails(state.evidence[0]),/not an accepted current observation/);
   }
+});
+
+test('Operator leads with assigned asset and requested observation before photo controls and technical details', () => {
+  const state=imageTaskState();state.photo_collection={version:1,assets:['F-17','V-08']};
+  state.task.creation_source='TEST-CREATED / offline visual review / NOT AI-generated';
+  const html=renderOperator(state);
+  assert.match(html,/<h1>F-17 · Observation task<\/h1>/);
+  assert.ok(html.indexOf('Read the assigned local indicator only')<html.indexOf('Choose a photograph from files'));
+  assert.ok(html.indexOf('Choose a photograph from files')<html.indexOf('Photo requirements &amp; evidence limits'));
+  assert.match(html,/Test-created · not AI-generated/);
+  assert.doesNotMatch(html,/Choose next observation|Approve simulated correction/);
+});
+
+test('camera and ordinary file inputs have separate visible labels and associated expandable guidance', () => {
+  const html=renderPhotoCapture();
+  assert.match(html,/<label>Take a photograph<input[^>]*type="file"[^>]*capture="environment"/);
+  assert.match(html,/<label>Choose a photograph from files<input[^>]*type="file"/);
+  const ids=[...html.matchAll(/aria-describedby="([^"]+)"/g)].map(m=>m[1]);
+  assert.equal(ids.length,2);assert.equal(ids[0],ids[1]);
+  assert.ok(html.includes(`<details id="${ids[0]}" class="photo-guidance">`));
+  assert.match(html,/1,048,576 pixels/);assert.match(html,/metadata after submission/);
+});
+
+test('synthetic fixtures are closed development controls while refusal responses stay outside them', () => {
+  const html=renderOperator(imageTaskState());
+  const development=html.match(/<details class="fixture-development">([\s\S]*?)<\/details>/)?.[1];
+  assert.ok(development);assert.match(development,/Development \/ test: synthetic fixtures/);
+  assert.match(development,/panel-a/);assert.match(development,/panel-b/);
+  for(const response of ['Report cannot access','Report wrong equipment','Report unreadable']) {
+    assert.ok(html.indexOf(response)<html.indexOf('fixture-development'));
+    assert.doesNotMatch(development,new RegExp(response));
+  }
+});
+
+test('both workspaces keep every uploaded record as a thumbnail, status, asset, timestamp and Inspect action', () => {
+  const state=imageTaskState();
+  state.evidence=[0,1,2].map(i=>({...state.evidence[0],id:`upload-${i}`,asset_id:'F-17',status:'collected',
+    image_url:`/api/evidence/upload-${i}/image`,created_at:`2026-10-26T12:00:0${i}Z`}));
+  const before=JSON.stringify(state);
+  for(const html of [renderOperator(state),renderCommander(state)]) {
+    assert.equal((html.match(/class="evidence-photo-thumb"/g)||[]).length,3);
+    assert.equal((html.match(/>Inspect evidence<\/button>/g)||[]).length,3);
+    for(const item of state.evidence) {
+      assert.ok(html.includes(`data-evidence-id="${item.id}"`));
+      assert.ok(html.includes(`src="${item.image_url}"`));
+      assert.ok(html.includes(`dateTime="${item.created_at}"`));
+    }
+    assert.match(html,/Assigned asset: F-17/);assert.match(html,/Photograph collected \/ not analyzed/);
+    assert.match(html,/UTC · wall-clock/);assert.doesNotMatch(html,/image-view-tools|Enlarge photograph/);
+  }
+  assert.equal(JSON.stringify(state),before);
+});
+
+test('inspection provides a full-image source, enlargement control, focusable scroll region and expandable provenance', () => {
+  const evidence={...imageTaskState().evidence[0],image_url:'/api/evidence/original-record/image',status:'collected'};
+  const html=renderEvidenceDetails(evidence);
+  assert.match(html,/src="\/api\/evidence\/original-record\/image"/);
+  assert.match(html,/<button[^>]*aria-pressed="false"[^>]*>Enlarge photograph/);
+  assert.match(html,/Full image · no crop/);
+  assert.match(html,/role="region"[^>]*aria-label="Full evidence photograph; scroll to inspect when enlarged"[^>]*tabindex="0"/);
+  assert.match(html,/<details class="inspection-provenance"><summary>Provenance, evidence limits &amp; receipt/);
+  assert.match(html,/Evidence ID/);assert.match(html,/NVIDIA readability \(if analyzed\).*Not analyzed/);
+});
+
+test('connected header keeps simulation disclosure and native modal close affordance without stacked banners', () => {
+  const html=renderConnected();
+  assert.match(html,/Simulated incident \/ local server/);assert.match(html,/Inference status pending/);
+  assert.doesNotMatch(html,/Inference disabled/);
+  assert.match(html,/aria-label="Workspaces"/);assert.match(html,/Open separate sample preview/);
+  assert.doesNotMatch(html,/class="demo-banner"|class="topbar"|class="mode-bar"/);
+  assert.match(html,/<dialog[^>]*aria-label="Evidence inspection"/);
+  assert.match(html,/<button[^>]*autofocus=""[^>]*aria-label="Close evidence inspection"/);
 });

@@ -1,5 +1,12 @@
 # Provider smoke test
 
+Photo review now has compact evidence rows in both workspaces. Operator leads
+with its asset/task and real-photo controls; technical text and synthetic fixture
+tools are expandable. Inspect preserves the full image, structured interpretation
+and provenance, with Enlarge/Fit and a keyboard-focusable pan region. No backend
+policy or stored run changed. User-referenced desktop/390x844 screenshots are not
+agent visual testing; actual browser/mobile/focus acceptance remains open.
+
 The first standalone FT-010 photo attempt failed `non_stop_completion` after
 2048 completion tokens (1675 input); no validated interpretation. Its exact finish
 reason was not retained and cannot be reconstructed. Future receipts preserve a

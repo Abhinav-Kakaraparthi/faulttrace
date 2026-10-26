@@ -8,8 +8,8 @@ import { AuditHistory } from './AuditHistory';
 export function OperatorPage(props: WorkspaceProps) {
   const { state, connection, disabled, mutate } = props;
   return <main id="main-content" tabIndex={-1} className="operator-layout connected-operator operator-page">
-    <header className="operator-intro"><span className="eyebrow">OPERATOR / FIELD TASK</span><h1>Assigned work</h1><p>Observe, report evidence gaps and complete only an approved simulated assignment. No real equipment control.</p>
-      {state?.incident && <p className="caption">Shared incident {state.incident.id} / evidence revision {state.incident.revision}</p>}
+    <header className="operator-intro"><span className="eyebrow">OPERATOR / FIELD TASK</span><h1>{state?.task ? `${state.task.asset_id} · Observation task` : 'Assigned work'}</h1>
+      {state?.incident && <details className="incident-context"><summary>Incident details</summary><p>Shared incident {state.incident.id} / evidence revision {state.incident.revision}. Human observations and approved simulated assignments only; no real equipment control.</p></details>}
     </header>
     <WorkspaceState state={state} connection={connection} workspace="operator" />
     {state?.incident && <>

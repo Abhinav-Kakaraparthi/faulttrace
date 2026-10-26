@@ -18,6 +18,12 @@ reviewed-photo evaluation is a plan only; no expected values or ground truth
 have been invented. [Contract/evaluation plan](photographic-analysis.md).
 No submission checkbox is newly satisfied.
 
+Photo-workflow refinement passes 40 frontend tests and type/build checks. Compact
+records preserve every upload and full-image/interpretation inspection. User
+desktop/390x844 review is attributed to the user; screenshot files and usable
+browser automation were unavailable. No agent visual, keyboard or camera pass is
+claimed, and no new runtime/accuracy gate is satisfied.
+
 An isolated, inference-disabled photographic collection review is prepared with
 an explicitly test-created task. API upload/storage/failure checks and offline
 regressions pass; browser/mobile/keyboard/camera acceptance remains open.

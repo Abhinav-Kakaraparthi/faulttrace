@@ -7,7 +7,7 @@ export function EvidenceWorkspace({ state, inspect, analyze, disabled, workspace
   const journey = state.journey;
   return <section className="workspace-evidence" aria-labelledby="investigation-evidence-title">
     <h2 id="investigation-evidence-title">Investigation evidence</h2>
-    <p>Stored sources from this incident. Simulated human reports, uploaded images and NVIDIA interpretations retain their own provenance.</p>
+    <p>Observations do not establish photographed identity or authorize correction. Inspect a record for its full image, interpretation and provenance.</p>
     {journey && <div className="journey"><JourneyRecord journey={journey} completed={journey.maintenance_status !== 'not_completed'} /></div>}
     {!!state.evidence.length && <ServerEvidenceList state={state} inspect={inspect} analyze={analyze} disabled={disabled} allowAnalysis={workspace === 'operator'} />}
     {!state.evidence.length && !journey && <section className="section-surface connected-empty"><h3>No observation evidence yet</h3><p>Operator submissions will appear here. No reading, model interpretation or cause has been established.</p></section>}

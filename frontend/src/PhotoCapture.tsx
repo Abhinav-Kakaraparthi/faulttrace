@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { localPhotoURL, photoDimensionsError, photoFileError, type UploadProgress } from './photoUpload';
 import './photos.css';
 
@@ -10,7 +10,7 @@ export function PhotoDraft({ url, busy, progress, ready, failed, disabled = fals
   return <section className="photo-draft" aria-label="Unsubmitted photograph preview" aria-busy={busy}>
     <h4>Selected photograph / not submitted</h4>
     <img className="photo-preview" src={url} alt="Selected local photograph; assignment and instrument identity have not been verified" onLoad={onLoad} onError={onError} />
-    <p>Local preview only. The server removes metadata after submission. No image interpretation or identity check has occurred.</p>
+    <p>Local preview only · nothing submitted yet.</p>
     <div className="photo-actions"><button type="button" className="button secondary" disabled={busy || disabled} onClick={onReplace}>Replace photograph</button><button type="button" className="button quiet" disabled={busy} onClick={onCancel}>Cancel selection</button><button type="button" className="button primary" disabled={busy || disabled || !ready || failed} onClick={onSubmit}>Submit image / collection only</button></div>
     {busy && <div role="status" className="photo-transfer"><progress max="100" value={progress ?? undefined} aria-label="Photograph upload progress" /><span>{progress === null ? 'Uploading; transfer size unavailable.' : progress === 100 ? 'Transfer complete; waiting for server validation and storage.' : `Uploading ${progress}%`}</span></div>}
   </section>;
@@ -28,6 +28,7 @@ export function PhotoCapture({ asset, disabled, supported, upload }: { asset: st
   const [message, setMessage] = useState('');
   const files = useRef<HTMLInputElement>(null), camera = useRef<HTMLInputElement>(null);
   const identity = useRef('');
+  const guidanceId = useId();
   useEffect(() => {
     if (!file) { setURL(''); return; }
     const preview = localPhotoURL(file); setURL(preview.url);
@@ -54,14 +55,13 @@ export function PhotoCapture({ asset, disabled, supported, upload }: { asset: st
   }
   const unavailable = disabled || busy || !supported;
   return <section className="photo-capture" aria-label={`${asset} photographic evidence`}>
-    <h3>Photograph the assigned observation</h3><p>Assigned asset: <strong>{asset}</strong>. This assignment does not identify the equipment in your photograph. If its tag differs, report wrong asset; never relabel it.</p>
-    <p>Upload only collects the photograph; NVIDIA observation analysis is a separate opt-in. An ordinary pressure gauge does not establish differential pressure. A valve handle image does not prove internal valve condition.</p>
+    <h3>Add a photograph</h3><p>Include the instrument and visible tag. If the tag differs from {asset}, report wrong equipment. Upload collects evidence only; no analysis runs.</p>
     {!supported && <p className="notice">Photo collection requires the updated backend. The existing server has been left untouched; these controls stay disabled until it advertises collection support.</p>}
-    <div className="photo-pickers"><label>Take a photograph (camera where supported)<input ref={camera} type="file" accept="image/png,image/jpeg" capture="environment" disabled={unavailable} onChange={e => select(e.target.files?.[0])} /></label><label>Choose a photograph from files<input ref={files} type="file" accept="image/png,image/jpeg" disabled={unavailable} onChange={e => select(e.target.files?.[0])} /></label></div>
-    <p className="caption">PNG/JPEG, at most 2 MiB; 16 to 2048 pixels per side and at most 1,048,576 pixels. Prepare a smaller copy if needed. Camera support varies; file selection is always offered. Capture/upload does not request inference.</p>
+    <div className="photo-pickers"><label>Take a photograph<input ref={camera} type="file" accept="image/png,image/jpeg" capture="environment" aria-describedby={guidanceId} disabled={unavailable} onChange={e => select(e.target.files?.[0])} /></label><label>Choose a photograph from files<input ref={files} type="file" accept="image/png,image/jpeg" aria-describedby={guidanceId} disabled={unavailable} onChange={e => select(e.target.files?.[0])} /></label></div>
     {url && <PhotoDraft url={url} disabled={disabled || !supported} busy={busy} progress={progress} ready={ready && !disabled && supported} failed={!!error} onReplace={() => { if (files.current) { files.current.value = ''; files.current.click(); } }} onCancel={cancel} onSubmit={() => void submit()}
       onLoad={e => { const invalid = photoDimensionsError(e.currentTarget.naturalWidth, e.currentTarget.naturalHeight); setReady(!invalid); if (invalid) setError(invalid); }}
       onError={() => { setReady(false); setError('The selected image cannot be previewed. Replace it with a valid PNG or JPEG; nothing has been submitted.'); }} />}
-    {error && <p className="form-error" role="alert">{error}</p>}<p role="status">{message}</p>
+    {error && <p className="form-error" role="alert">{error}</p>}{message && <p role="status">{message}</p>}
+    <details id={guidanceId} className="photo-guidance"><summary>Photo requirements &amp; evidence limits</summary><p>PNG/JPEG, at most 2 MiB; 16 to 2048 pixels per side and at most 1,048,576 pixels. Prepare a smaller copy if needed. Camera support varies; file selection is always offered. The server strips metadata after submission.</p><p>Assignment does not identify the equipment in your photograph. An ordinary pressure gauge does not establish differential pressure. A valve handle image does not prove internal valve condition. NVIDIA analysis is separate and explicit; no photograph authorizes correction or recovery.</p></details>
   </section>;
 }

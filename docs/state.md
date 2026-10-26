@@ -2,6 +2,29 @@
 
 ## Current: FT-010 photographic observation analysis (offline implementation)
 
+Photo-workflow presentation refinement (2026-10-26), starting clean at
+a388d5383d9adfe1782dcec6c59cadc73f61d053: compact connected status/navigation,
+Operator asset/task/photo controls first, technical guidance and synthetic fixture
+controls in accessible details. Refusal/human reporting remains outside fixture
+tools. Both workspaces retain every evidence record as a contained thumbnail,
+status, assigned asset, wall-clock UTC time and Inspect action. The native dialog
+keeps full structured interpretations, uncropped full-image fit/enlarged views,
+a keyboard-focusable pan region, sticky close control and expandable provenance.
+Commander investigation/approval responsibilities and all analysis gates remain.
+User references desktop and 390x844 screenshots; their files were unavailable to
+the agent. Record this as user-captured/reported review, not agent inspection.
+No browser surfaces or native helper are available; in-app opening failed.
+Desktop/390x844 layout, actual focus return/dialog panning and file-picker journeys
+remain unverified; no agent screenshots exist. 40 frontend tests, typecheck and
+production build pass, including inspection content, record separation, labels
+and loading/disabled states. Static rendering of the actual two-upload run passes;
+this is not visual acceptance. Both runs/tables/images and ledger are unchanged.
+No inference, backend edits, API writes or server operations. Source hashes,
+read-only state checks and manual review steps are in ignored
+`.local/visual/ft010-photo-refinement-ab8abb2e3f6e4afea92908e3cae74c54/`.
+Next: refresh 5181/operator and /commander; review at 1440x900 and 390x844,
+Tab/Shift+Tab, Escape/focus return, native file inputs and Enlarge/Fit scrolling.
+
 Isolated photo review (2026-10-26), starting clean at 95ac2f8c68726e88753f76d139a873fed9ab7eaa:
 new preview 5181/8781 uses ignored
 `.local/visual/ft010-isolated-7661c16d0084429a9e9ac130010f12e9/data` and

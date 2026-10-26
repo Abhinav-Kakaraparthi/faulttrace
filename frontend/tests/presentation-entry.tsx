@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { PhotoCapture, PhotoDraft } from '../src/PhotoCapture';
+import { Connected } from '../src/Connected';
 import { ServerEvidenceDetails } from '../src/ServerEvidence';
 import { CommanderPage } from '../src/CommanderPage';
 import { OperatorPage } from '../src/OperatorPage';
@@ -33,3 +34,4 @@ export const renderPhotoDraft = (overrides = {}) => renderToStaticMarkup(createE
   onReplace: () => {}, onCancel: () => {}, onSubmit: () => {}, ...overrides }));
 export const renderEvidenceDetails = (evidence: ServerState['evidence'][number]) =>
   renderToStaticMarkup(createElement(ServerEvidenceDetails, { evidence }));
+export const renderConnected = () => renderToStaticMarkup(createElement(Connected, { workspace: 'operator', navigate: () => {} }));
