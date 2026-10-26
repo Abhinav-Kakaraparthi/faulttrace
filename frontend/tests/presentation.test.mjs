@@ -17,7 +17,7 @@ const output = await build({ configFile: false, logLevel: 'silent',
 const entry = output.output.find(item => item.type === 'chunk' && item.isEntry);
 const file = join(temporary, 'render.mjs');
 writeFileSync(file, entry.code);
-const { renderJourney, renderEvidence, renderPlanningHistory, renderAudit, renderCommander, renderOperator } = await import(pathToFileURL(file));
+const { renderJourney, renderEvidence, renderPlanningHistory, renderAudit, renderCommander, renderOperator, renderPhotoCapture, renderPhotoDraft, renderEvidenceDetails } = await import(pathToFileURL(file));
 
 function snapshot() {
   const observations = [
@@ -194,6 +194,8 @@ test('assigned image/report/refusal and opt-in analysis controls are in Operator
   const state = imageTaskState();
   const operator = renderOperator(state);
   assert.match(operator, /Read the assigned local indicator only/);
+  for (const heading of operator.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)) assert.doesNotMatch(heading[1], /<section|<input|<fieldset/);
+  assert.ok(operator.indexOf('Photograph the assigned observation') > operator.indexOf('Read the assigned local indicator only'));
   assert.match(operator, /Submit image/);
   assert.match(operator, /Analyze image/);
   assert.match(operator, /Report cannot access/);
@@ -239,4 +241,46 @@ test('both dedicated pages have meaningful loading/offline states; stale snapsho
   assert.match(operator, /<button[^>]*disabled[^>]*>Analyze image</);
   const commander = renderCommander(state, { connection: 'paused', disabled: true });
   assert.match(commander, /<button[^>]*disabled[^>]*>Choose next observation</);
+});
+
+
+test('assigned camera collection also offers ordinary files and capability-gates older servers', () => {
+  const html=renderPhotoCapture();
+  const inputs=html.match(/<input[^>]*type="file"[^>]*>/g);
+  assert.equal(inputs.length,2);
+  assert.equal(inputs.filter(input=>input.includes('capture="environment"')).length,1);
+  assert.match(html,/Take a photograph/);assert.match(html,/Choose a photograph from files/);
+  assert.match(html,/assignment does not identify/i);assert.match(html,/ordinary pressure gauge does not establish differential pressure/i);
+  assert.match(html,/valve handle image does not prove internal valve condition/i);
+  assert.doesNotMatch(html,/<img/);
+  const old=renderPhotoCapture(false);
+  assert.match(old,/requires the updated backend/);
+  assert.equal((old.match(/<input[^>]*disabled/g)||[]).length,2);
+});
+test('draft displays selected local photo, replace/cancel controls and honest progress states', () => {
+  const draft=renderPhotoDraft();
+  assert.match(draft,/src="blob:actual-local-selection"/);
+  assert.match(draft,/not submitted/);assert.match(draft,/Replace photograph/);assert.match(draft,/Cancel selection/);
+  const busy=renderPhotoDraft({busy:true,progress:37});
+  assert.match(busy,/Uploading 37%/);assert.match(busy,/<progress[^>]*value="37"/);
+  assert.match(busy,/<button[^>]*disabled[^>]*>Replace photograph/);
+  assert.match(renderPhotoDraft({busy:true,progress:100}),/waiting for server validation and storage/);
+  assert.match(renderPhotoDraft({disabled:true}), /<button[^>]*disabled[^>]*>Replace photograph/);
+  assert.match(renderPhotoDraft({failed:true}),/<button[^>]*disabled[^>]*>Submit image \/ collection only/);
+});
+test('stored photograph, assigned asset, human reports and NVIDIA interpretation remain distinct', () => {
+  const state=imageTaskState();state.photo_collection={version:1,assets:['F-17','V-08']};
+  const photo={...state.evidence[0],status:'collected',asset_id:'V-08',image_url:'/api/evidence/photo-id/image'};
+  state.evidence=[photo];
+  for(const html of [renderOperator(state),renderCommander(state),renderEvidenceDetails(photo)]) {
+    assert.match(html,/src="\/api\/evidence\/photo-id\/image"/);
+    assert.match(html,/identity.*not assessed|identity.*not established/i);
+    assert.match(html,/collection.only/i);
+    assert.doesNotMatch(html,/>Analyze image</);
+  }
+  const human={...photo,id:'human-report',kind:'report',status:'accepted',report:'intermediate',origin:'human-report',image_url:null};
+  state.evidence.push(human);
+  assert.match(renderEvidence(state),/Human report \/ intermediate/);
+  assert.doesNotMatch(renderEvidenceDetails(human),/src="\/api\/evidence/);
+  assert.match(renderEvidenceDetails(human),/NVIDIA readability \(if analyzed\).*Not analyzed/);
 });

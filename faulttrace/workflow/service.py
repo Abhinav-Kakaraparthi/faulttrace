@@ -24,10 +24,15 @@ class Workflow:
             self.store.remember(db, key, fingerprint, incident_id)
         return incident_id
 
-    def submit(self, task_id, revision, key, *, image=None, report=None):
+    def submit(self, task_id, revision, key, *, image=None, report=None, reference_photo=False):
         payload = {"task": task_id, "revision": revision, "report": report,
                    "sha256": image["sha256"] if image else None,
                    "fixture_id": image["fixture_id"] if image else None}
+        # Preserve legacy operation fingerprints; only the new collection mode adds a field.
+        if reference_photo:
+            if not image or image['fixture_id'] is not None:
+                raise WorkflowError('invalid_evidence_purpose', 400)
+            payload['purpose'] = 'reference-photo'
         with self.write_lock, self.store.connection(write=True) as db:
             fingerprint, existing = self.store.operation(db, key, "submit", payload)
             if existing:
@@ -43,10 +48,10 @@ class Workflow:
                            else ('open', 'intermediate', 'closed', 'cannot determine', 'cannot-access', 'wrong-equipment'))
                 if type(report) is not str or report not in allowed:
                     raise WorkflowError("invalid_report", 400)
-            if image and task['asset_id'] != 'F-17':
+            if image and task['asset_id'] != 'F-17' and not (reference_photo and task['asset_id'] == 'V-08'):
                 raise WorkflowError('invalid_report', 400)
             evidence_id = str(uuid.uuid4())
-            status = ("pending" if image else "unreadable" if report == "unreadable"
+            status = ("collected" if reference_photo else "pending" if image else "unreadable" if report == "unreadable"
                       else "accepted" if task['asset_id'] == 'V-08' and report in ('open', 'intermediate', 'closed')
                       else "refused")
             if image:
@@ -63,8 +68,8 @@ class Workflow:
                 image["sha256"] if image else None, image["width"] if image else None,
                 image["height"] if image else None, report, now(), status, revision))
             db.execute("UPDATE tasks SET revision=revision+1,status=? WHERE id=?",
-                       ("submitted" if image else "observed" if status == 'accepted' else "needs_evidence", task_id))
-            self.store.event(db, "image_submitted" if image else "operator_reported_" + report, evidence_id)
+                       (task["status"] if reference_photo else "submitted" if image else "observed" if status == 'accepted' else "needs_evidence", task_id))
+            self.store.event(db, "reference_photo_collected" if reference_photo else "image_submitted" if image else "operator_reported_" + report, evidence_id)
             self.store.remember(db, key, fingerprint, evidence_id)
         return evidence_id
 
@@ -95,11 +100,15 @@ class Workflow:
             evidence = db.execute("SELECT * FROM evidence WHERE id=?", (identifier(evidence_id),)).fetchone()
             if not evidence:
                 raise WorkflowError("evidence_not_found", 404)
+            if evidence['status'] == 'collected':
+                raise WorkflowError('photo_analysis_unsupported', 409)
             existing = db.execute("SELECT id FROM analyses WHERE evidence_id=?", (evidence_id,)).fetchone()
             if existing:
                 self.store.remember(db, key, fingerprint, existing["id"])
                 return existing["id"], False  # Different click key still cannot repeat a call.
             task = self.store.task(db, evidence["task_id"], revision)
+            if evidence['kind'] == 'image' and task['asset_id'] != 'F-17':
+                raise WorkflowError('photo_analysis_unsupported', 409)
             latest = db.execute("SELECT id FROM evidence WHERE task_id=? ORDER BY rowid DESC LIMIT 1",
                                 (task["id"],)).fetchone()
             if evidence["kind"] != "image" or evidence["status"] != "pending" or latest["id"] != evidence_id:

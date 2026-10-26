@@ -1,5 +1,13 @@
 # Provider smoke test
 
+FT-009B collects original/permissioned camera or file photographs from assigned
+observations, with draft preview/replace/cancel, measured upload progress and
+actual stored image display. These new photos are collection-only: neither an
+ordinary pressure gauge nor a valve handle image grants a DP reading, internal
+valve-condition claim or correction authority. Keep photographed tags distinct
+from assignment (BV-104 is not V-08). See [scope and activation](photo-evidence.md).
+No reference extraction, image download, provider request or server restart.
+
 FT-009A separates `/commander` (decisions/planning/approval) and `/operator`
 (assigned observations, uploads, refusals and approved simulated completion).
 Both use the same backend records; old connected query URLs remain compatible.

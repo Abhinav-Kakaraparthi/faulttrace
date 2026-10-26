@@ -9,6 +9,14 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+FT-009B adds collection-only original/permissioned photograph capture/upload and
+stored-image presentation, with provenance and explicit identity/measurement
+limits. Analog-gauge/valve AI capability remains unverified; strict vision and
+recovery contracts are unchanged. 111 backend and 30 frontend tests, type/build
+pass offline. No reference assets downloaded, licensed by assumption or added;
+no provider requests/restarts. Browser/camera acceptance remains open and no
+submission checkbox is newly satisfied. [Photo evidence scope](photo-evidence.md).
+
 FT-009A adds dedicated Commander/Operator routes and components sharing the same
 server workflow. 24 frontend tests and type/build pass. Role separation is UI
 only; server authorization is an explicit required deployment gate. NVIDIA task

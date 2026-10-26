@@ -115,3 +115,59 @@ test('dedicated routes override obsolete query controls; legacy connected URLs k
   assert.equal(resolveRoute(new URL('http://localhost:5180/?mode=sample')).kind, 'sample');
   assert.equal(resolveRoute(new URL('http://localhost:5180/missing')).kind, 'not-found');
 });
+
+
+const { photoFileError, photoDimensionsError, localPhotoURL, uploadBlob } = await import('../src/photoUpload.ts');
+const { apiResponse } = await import('../src/api.ts');
+test('photo selection preserves server limits and releases local preview URLs exactly once', () => {
+  assert.equal(photoFileError({type:'image/jpeg',size:1024}), null);
+  assert.match(photoFileError({type:'image/heic',size:100}), /PNG or JPEG/);
+  for (const size of [0,2097153]) assert.match(photoFileError({type:'image/png',size}), /2 MiB/);
+  assert.equal(photoDimensionsError(1024,1024), null);
+  for(const size of [[15,16],[2049,16],[2048,1024]]) assert.match(photoDimensionsError(...size), /pixels/);
+  const revoked=[];
+  const preview=localPhotoURL(new Blob(['private-image']), {createObjectURL:()=> 'blob:local-only',revokeObjectURL:url=>revoked.push(url)});
+  assert.equal(preview.url,'blob:local-only'); preview.release(); preview.release();
+  assert.deepEqual(revoked,['blob:local-only']);
+});
+function fakeUpload() {
+  return { upload:{onprogress:null},status:200,responseText:'{"evidence_id":"saved-photo"}',calls:0,headers:{},
+    open(method,path) { this.method=method; this.path=path; },
+    setRequestHeader(name,value) { this.headers[name]=value; },
+    send(blob) { this.calls++; this.blob=blob; }, abort() { this.onabort?.(); } };
+}
+test('upload progress is measured, transfer completion is not storage confirmation, and upload uses one POST', async () => {
+  const xhr=fakeUpload(),progress=[],blob=new Blob(['image'],{type:'image/jpeg'});
+  let settled=false;
+  const result=uploadBlob('/api/tasks/task/images',blob,{'Idempotency-Key':'one-key','X-Task-Revision':'3','X-Evidence-Purpose':'reference-photo'},new AbortController().signal,p=>progress.push(p),()=>xhr);
+  result.then(()=>{settled=true;});
+  xhr.upload.onprogress({lengthComputable:true,loaded:25,total:100});
+  xhr.upload.onprogress({lengthComputable:false,loaded:50,total:0});
+  xhr.upload.onprogress({lengthComputable:true,loaded:100,total:100});
+  await Promise.resolve(); assert.equal(settled,false);
+  assert.deepEqual(progress,[0,25,null,100]); assert.equal(xhr.calls,1);
+  assert.equal(xhr.method,'POST'); assert.equal(xhr.blob,blob);
+  assert.equal(xhr.headers['X-Evidence-Purpose'],'reference-photo');
+  assert.equal(xhr.headers['Idempotency-Key'],'one-key');
+  xhr.onload(); assert.deepEqual(await apiResponse(await result),{evidence_id:'saved-photo'});
+});
+test('upload failures and server validation errors stay sanitized with no retry', async () => {
+  for(const event of ['onerror','ontimeout','onabort']) {
+    const xhr=fakeUpload();
+    const request=uploadBlob('/api/tasks/task/images',new Blob(['x']),{},new AbortController().signal,()=>{},()=>xhr);
+    xhr[event]({message:'CREDENTIAL_SENTINEL'});
+    await assert.rejects(request,error=>!error.message.includes('CREDENTIAL_SENTINEL') && /refresh/i.test(error.message));
+    assert.equal(xhr.calls,1);
+  }
+  const xhr=fakeUpload();
+  const request=uploadBlob('/api/tasks/task/images',new Blob(['x']),{},new AbortController().signal,()=>{},()=>xhr);
+  xhr.status=413; xhr.responseText='{"error":"image_size_invalid","detail":"CREDENTIAL_SENTINEL"}'; xhr.onload();
+  await assert.rejects(apiResponse(await request),error=>/2 MiB/.test(error.message)&&!error.message.includes('CREDENTIAL_SENTINEL'));
+  const malformed=fakeUpload();
+  const bad=uploadBlob('/api/tasks/task/images',new Blob(['x']),{},new AbortController().signal,()=>{},()=>malformed);
+  malformed.responseText='CREDENTIAL_SENTINEL';malformed.onload();
+  await assert.rejects(apiResponse(await bad),error=>/refresh/i.test(error.message)&&!error.message.includes('CREDENTIAL_SENTINEL'));
+  const controller=new AbortController();controller.abort();const stopped=fakeUpload();
+  await assert.rejects(uploadBlob('/api/tasks/task/images',new Blob(['x']),{},controller.signal,()=>{},()=>stopped));
+  assert.equal(stopped.calls,0);
+});

@@ -4,7 +4,7 @@ from io import BytesIO
 import json
 import warnings
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 from .storage import ROOT, WorkflowError
 
@@ -31,7 +31,9 @@ def validate_upload(data, mime, fixture_id=None):
                 image.verify()
             with Image.open(BytesIO(data), formats=("PNG", "JPEG")) as image:
                 image.load()
-                rgba = image.convert("RGBA")
+                oriented = ImageOps.exif_transpose(image)
+                width, height = oriented.size
+                rgba = oriented.convert("RGBA")
                 clean = Image.new("RGBA", rgba.size, "white")
                 clean.alpha_composite(rgba)
                 output = BytesIO()

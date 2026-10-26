@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { uploadBlob, type UploadProgress } from './photoUpload';
 import { apiResponse, type ServerState } from './api';
 
 export function useWorkflow() {
@@ -37,19 +38,20 @@ export function useWorkflow() {
     return () => { stopped = true; clearTimeout(timer); controller?.abort(); };
   }, [generation]);
 
-  async function mutate(path: string, body: object | Blob, identity: string, extra: Record<string, string> = {}) {
+  async function mutate(path: string, body: object | Blob, identity: string, extra: Record<string, string> = {}, onUploadProgress?: UploadProgress) {
     if (inFlight.current) return false;
     inFlight.current = true; setBusy(true); setError('');
     if (!keys.current.has(identity)) keys.current.set(identity, crypto.randomUUID());
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
     try {
-      await apiResponse(await fetch(path, {
-        method: 'POST', signal: controller.signal,
-        headers: { 'X-FaultTrace-Local': '1', 'Idempotency-Key': keys.current.get(identity)!,
-          'Content-Type': body instanceof Blob ? body.type : 'application/json', ...extra },
-        body: body instanceof Blob ? body : JSON.stringify(body),
-      }));
+      const headers = { 'X-FaultTrace-Local': '1', 'Idempotency-Key': keys.current.get(identity)!,
+        'Content-Type': body instanceof Blob ? body.type : 'application/json', ...extra };
+      const response = body instanceof Blob && onUploadProgress
+        ? await uploadBlob(path, body, headers, controller.signal, onUploadProgress)
+        : await fetch(path, { method: 'POST', signal: controller.signal, headers,
+            body: body instanceof Blob ? body : JSON.stringify(body) });
+      await apiResponse(response);
       refresh(value => value + 1);
       return true;
     } catch (failure) {

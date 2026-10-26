@@ -18,6 +18,7 @@ export type ServerEvidence = {
   analysis: { id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
+  photo_collection?: { version: number; assets: string[] };
   journey?: JourneyState | null;
   incident: { id: string; created_at: string; revision: number } | null;
   task: { id: string; revision: number; status: string; asset_id: string; capability: string; creation_source: string; explanation: string; instruction: string } | null;
@@ -28,6 +29,8 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  photo_analysis_unsupported: 'This photograph is collection-only. Analog gauges and valve images are outside the validated vision contract.',
+  invalid_evidence_purpose: 'This photo purpose is not supported. Refresh the assigned observation.',
   simulation_requires_fresh_run: 'Start FT-008 in a fresh isolated data directory. Existing incidents are preserved.',
   correction_evidence_blocked: 'Required evidence is missing, stale or disputed. Review the deterministic assessment.',
   stale_or_missing_approval: 'Approval is missing or stale. Commander must review the current evidence revision.',
@@ -57,5 +60,6 @@ export async function apiResponse(response: Response) {
     const value = await response.json().catch(() => ({}));
     throw new Error(errors[value.error] ?? 'Request failed. Refresh the current task; no automatic write retry occurred.');
   }
-  return response.json();
+  try { return await response.json(); }
+  catch { throw new Error('Server response could not be read. State may have changed; refresh before another action.'); }
 }

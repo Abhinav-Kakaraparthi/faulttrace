@@ -1,6 +1,50 @@
 # Checkpoint state
 
-## Current: FT-009A distinct Commander and Operator workspaces
+## Current: FT-009B real-photo collection and presentation
+
+Started clean at 4e9df6b4c8e31bbdfeef58d8879f6049ce542f47 on
+feat/ft-009-workspaces; FT-008A/009A and existing runs/fixtures preserved.
+Operator offers camera and ordinary files, actual local preview, replace/cancel,
+measured transfer progress and clear decode/limit/network/storage states. Actual
+stored photos appear in Commander/Operator and inspection. Assignment remains
+separate from photographed identity; human reports and NVIDIA interpretations
+are labeled separately. No tags inferred/remapped, DP inferred from an ordinary
+gauge, or internal valve condition claimed from a handle image.
+
+New reference-photo uploads on assigned F-17/V-08 tasks are collection-only,
+status collected, preserving separate structured reports. They cannot reserve
+analysis or satisfy simulated correction prerequisites. Existing DP fixtures,
+legacy operation fingerprints, validated upload bounds, private storage, receipts,
+budgets, stale revisions and vision contract remain. EXIF camera rotation is
+applied before metadata stripping, fixing an offline-reproduced orientation loss.
+No recovery-policy/model/prompt change or history/schema migration.
+
+No photographic assets downloaded, extracted from the reference or committed.
+[Photo guide](photo-evidence.md) covers actual source/license records and a separate
+unverified analog-gauge/valve evaluation. No reuse rights/authenticity assumed.
+
+Checks: 111 backend tests (seven new collection regressions), 30 frontend tests
+(six new photo/progress/markup tests), TypeScript/Vite build, AST/source lengths
+under 500 and diff review. Backend suite uses fake transport/temporary stores
+with zero forbidden external network attempts. Tests cover collection-only
+analysis rejection, JPEG normalization/EXIF privacy/orientation, idempotency,
+stale task, restart retention, separate V-08 reports, limits, legacy fixtures,
+unchanged correction gates, measured progress and sanitized failures. Existing
+V-08 cannot-determine contract remains; its unreadable position label does not
+introduce a new report value.
+
+No provider request, server restart, paid infrastructure, deployment, receipt
+import/replay or existing-run write. A capability flag keeps new photo inputs
+disabled against the existing older backend; later activation requires a manual
+restart preserving the existing data directory and inference disabled. Current
+preview cannot be claimed as a completed real-photo workflow test.
+Browser inventory empty; in-app opening returned Browser is not available: iab.
+No actual desktop/mobile camera, keyboard, upload or visual acceptance claimed.
+Implementation/offline checks pass; runtime activation/visual acceptance remains
+PARTIAL. Next action: review this checkpoint, then separately schedule activation
+and permissioned-photo collection QA; no inference is authorized by FT-009B.
+
+## Prior: FT-009A distinct Commander and Operator workspaces
 
 Started clean at 9241d66def510c202fc861a58bf0c52cc4367d82; FT-008A preserved.
 Branch feat/ft-009-workspaces. Dedicated page components use /commander and

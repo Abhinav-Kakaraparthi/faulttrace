@@ -46,6 +46,18 @@ measurements. Neither a model response nor an operator completion grants recover
 | Logs/accounting | Persisted wall-clock audit events, sanitized receipts/status codes, known/unknown token accounting; private local artifacts ignored | Protected centralized logs/monitoring and retention; no raw reasoning, provider bodies, headers, credentials or private uploads in public logs |
 | Policy and verifier | Registered observation IDs, revision/reference validation, four planning turns, no automatic retry; separate human-approved simulation action and sample-based recovery policy | Server role authorization and broader scenario evaluation; no real equipment-control connection or general industrial safety claim |
 
+## FT-009B collection boundary
+
+New camera/file photographs on assigned F-17/V-08 tasks use reference-photo
+purpose and collected status; no image interpretation is requested or permitted.
+Task assignment does not prove photographed identity or instrument type. Actual
+stored images and separate human/model records are shown in both workspaces.
+Limits/private normalization persist; camera orientation is applied before
+metadata removal. The API advertises the collection capability so newer UI
+cannot accidentally use older analysis semantics. No migration, server restart,
+provider call or recovery-policy change. See [photo evidence](photo-evidence.md)
+for unverified analog/valve capabilities and actual source/license requirements.
+
 ## Evidence integration: actual scope
 
 Both workspaces present the same real collections together, with distinct scope:

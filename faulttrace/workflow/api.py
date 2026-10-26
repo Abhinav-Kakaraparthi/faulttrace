@@ -95,7 +95,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     def state():
         with app.state.workflow.write_lock:
             snapshot = app.state.workflow.store.snapshot()
-            return dict(snapshot, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
+            return dict(snapshot, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
                         mode="local server / simulated incident / real inference only on explicit action")
 
     def key(request):
@@ -144,10 +144,15 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
             revision = int(request.headers.get("x-task-revision", ""))
         except ValueError:
             raise WorkflowError("invalid_revision", 400) from None
+        purpose = request.headers.get('x-evidence-purpose')
+        if purpose not in (None, 'reference-photo'):
+            raise WorkflowError('invalid_evidence_purpose', 400)
+        if purpose and request.headers.get('x-fixture-id') is not None:
+            raise WorkflowError('invalid_evidence_purpose', 400)
         body = await bounded_body(request, MAX_UPLOAD)
         image = await run_in_threadpool(validate_upload, body, request.headers.get("content-type"),
                                        request.headers.get("x-fixture-id"))
-        evidence_id = await run_in_threadpool(app.state.workflow.submit, task_id, revision, key(request), image=image)
+        evidence_id = await run_in_threadpool(app.state.workflow.submit, task_id, revision, key(request), image=image, reference_photo=purpose == 'reference-photo')
         return {"evidence_id": evidence_id}
 
     @app.post('/api/planning', status_code=202)

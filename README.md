@@ -8,6 +8,13 @@ investigate equipment anomalies.
 
 ## Status
 
+FT-009B adds camera/file photograph collection with local preview, replace/cancel,
+measured upload progress and actual stored-image display. New real photographs
+are collection-only; analog gauges and valve interpretation remain unverified.
+[Photo scope, source/license guidance and later activation](docs/photo-evidence.md).
+Existing servers were left running; photo controls capability-gate the older API
+until a later manual backend restart using the same data directory.
+
 FT-009A provides separate server-backed **/commander** and **/operator** pages.
 Open http://127.0.0.1:5180/commander and http://127.0.0.1:5180/operator in the
 existing isolated preview; old connected query URLs remain compatible. See
