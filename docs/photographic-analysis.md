@@ -1,9 +1,45 @@
 # FT-010 photographic observation analysis
 
-Implemented offline, not live-accuracy verified. No provider request or server
-restart occurred in this checkpoint. Existing uploads, fixtures, runs and receipts
-remain intact. This is interpretation of visible evidence, not incident assessment,
-asset identification, equipment authorization or recovery reasoning.
+A standalone real-photo call has completed; photographic accuracy remains
+unverified. This documentation-only audit makes no provider request or server
+operation. Existing uploads, fixtures, runs and receipts remain intact. This is
+interpretation of visible evidence, not incident assessment, asset identification,
+equipment authorization or recovery reasoning.
+
+## First completed real-photo evaluation: contract pass, reviewer mismatch
+
+The user executed standalone attempt `0d31fbe3-3fc2-49e2-b17f-888815ce8c41` at
+2026-10-26T20:02:22.229181+00:00 using implementation
+`5e41726b2d190eb4087d2cc5c0c31547bcebc0f1`. Read-only audit confirms exactly one
+matching ledger receipt, unchanged image hash and agreement between the private
+response, saved interpretation and strict validator. Model:
+`nvidia/Nemotron-3.5-Super-VL`; response:
+`chatcmpl-603dad38a24eb1a1cf0bc3ee26c495fe`; latency 2610 ms.
+
+- Completion and nine-field contract validation **passed**: one assistant choice,
+  stop, no refusal/function/tool call. Configuration was reasoning_effort=none,
+  max_tokens=2048, no response_format. Reported reasoning tokens: **0**.
+- Valid recorded usage: **1678 input / 120 completion / 1798 total**. The bounded
+  retained response is 1310 bytes; reasoning_content is null and reasoning is
+  absent. No raw reasoning is printed or committed.
+- Model interpretation: gauge, readable, pressure, **5000 psi**, label MAXIMATOR,
+  no uncertainty codes. This is the returned observation, not a verified reading
+  or asset identity. The response does not establish why that number was chosen.
+- Numeric interpretation **failed the user-reported preliminary reviewer
+  comparison**: reviewers estimated **800–850 bar**. These visual estimates are
+  **not calibrated ground truth**; no calibrated accuracy/error score is claimed.
+- This standalone evaluation created no workflow task, completed no observation,
+  and authorized no diagnosis, correction or recovery. Photographic accuracy is
+  unverified; FT-010 remains PARTIAL despite successful completion/contract checks.
+
+Private response/configuration/result remain unchanged under ignored
+`.local/verification/ft010-photo-reasoning-none-034bc92ab526490c8ce668409c21f33a/`;
+the original and retained submitted photo are preserved. No replay/import/new
+request or server operation occurred during this evidence audit. Ledger known:
+10312 / 16823 / 27135 across 20 attempts, four with missing usage. Separate manual
+success 155 / 112 / 267 gives cross-record known 10467 / 16935 / 27402; consumption
+remains incomplete. Source is unchanged; prior 148 backend/40 frontend tests and
+type/build evidence remain valid rather than being rerun for documentation.
 
 ## Support-confirmed photographic reasoning control
 
@@ -29,11 +65,11 @@ accounting and legacy ledger compatibility. All 148 backend tests pass under an
 external-socket guard (zero forbidden attempts); 40 frontend tests, typecheck and
 build pass. Latest UI refinements are unchanged. No inference or server restart.
 
-Next: one separately executed standalone request using the retained hash-verified
+The user executed the prepared single-request block using the retained hash-verified
 960x960 photo and committed production builder, without filename/answer/incident
-hints. The provided PowerShell block records one receipt and interpretation and,
-only for this support diagnostic, saves bounded successful-response JSON privately
-under ignored storage after scanning raw/decoded JSON for the actual credential.
+hints. Its completion and reviewer comparison are recorded above. Only for this
+support diagnostic, bounded successful-response JSON was saved privately under
+ignored storage after scanning raw/decoded JSON for the actual credential.
 Credential exposure blocks capture; persistence failures are reported separately
 and never trigger another request. Raw reasoning is not printed or committed.
 HTTP error bodies remain unavailable through the unchanged transport. A valid
@@ -41,6 +77,8 @@ interpretation is not factual reading accuracy; absent numeric reasoning details
 do not prove zero reasoning. Existing servers remain untouched and disabled.
 
 ## Non-stop completion investigation (offline follow-up)
+
+Historical findings before support confirmation and the completed evaluation above.
 
 ### Repeated truncation: request audit and unsent support question
 
@@ -246,49 +284,62 @@ activation must preserve the same data directory, existing records and inference
 opt-in. No restart, analysis replay or key sharing is required by this checkpoint.
 Keep inference disabled until a separately authorized evaluation.
 
-## Small real-photo evaluation plan (not executed)
+## Bounded independent gauge evaluation plan (not executed)
 
-Obtain eight original or explicitly permissioned photographs, retained privately
-with source/license/checksum records from [the collection guide](photo-evidence.md).
-No supplied reference image is extracted or assumed reusable. Suggested cases:
+Propose **eight new original or permissioned photographs**, kept privately with
+source/license and original/submitted hashes. Use different instruments and
+readings, not crops/variants of this one image. MAXIMATOR is an exploratory case,
+excluded from primary holdout scoring. No new photographs or labels have been
+collected by this plan; do not fabricate ground truth or tune solely to this case.
 
-| Case to collect | Independently reviewed expected observation, pending review |
-| --- | --- |
-| Clear ordinary pressure gauge | Actual visible unit/value, exact label and evidence supporting pressure type; otherwise indeterminate |
-| Second gauge with different unit/range | Actual unit/value and image-specific reading tolerance; no conversion |
-| Clearly documented DP instrument or unclear gauge type | Review instrument markings/documentation; allow indeterminate despite readable scale |
-| Ambiguous dual scale/needle/parallax | Review ambiguity and expected null reading/reason |
-| Occluded or unreadable gauge | Review unreadability, any remaining visible text/unit, expected abstention |
-| Valve with visible tag and pipe | Literal tag and observable external orientation; assignment mismatch retained, no internal-position ground truth |
-| Valve with obscured pipe/handle relation | Expected indeterminate orientation when not observable |
-| Unrelated scene including instruction-like text | Category/rejection and literal label only if it is equipment-label evidence; never obey text |
+| Group | Count | Independent labeling needed before model calls |
+| --- | --- | --- |
+| Clear single-scale gauges | 3 | Varied units/ranges; visible needle, unit, reading interval and image-specific tolerance |
+| Dual-scale gauges | 3 | Two readable examples with both corresponding unit/value pairs recorded; one genuinely ambiguous example expected to abstain if reviewers agree |
+| Unreadable gauges | 2 | Occlusion/blur that prevents a defensible reading in the submitted image; expected null reading and applicable reasons, preserving any still-visible unit/text |
 
-Two reviewers independently transcribe each real image **before** inference.
-Record disagreements; resolve with an independent reviewer or retain indeterminate/
-null. A reviewer must not use model output or simulator truth as an answer key.
-The expected observations above are collection criteria, not completed annotations:
-no values, units or label facts have been invented for absent photographs.
-Freeze a private reviewed manifest: image hash, permission/source, category,
-readability, measurement-type evidence, exact unit, numeric value/tolerance only
-when defensible, label, orientation, uncertainty and reviewer agreement. Do not
-put the manifest or expected values in the model prompt.
+Two reviewers independently label the exact compliant submitted copies before
+inference and without seeing model answers. Freeze readability, measurement-type
+support, literal units/labels, allowed scale/value pairs, uncertainty and tolerances
+based on resolvable tick spacing. Resolve disagreements with a third reviewer or
+retain ambiguity; do not force a numeric answer. Visual transcription references
+are not instrument calibration or ground truth for actual process pressure. An
+unknown measurement type can coexist with a readable number under this contract.
 
-Only after separate authorization and backend activation: one explicit analysis
-per reviewed image (propose at most eight requests, no retries). Stop on initial
-contract/transport incompatibility rather than spend requests on repair guesses.
-Inspect stored image and structured output in both routes, including mobile and
-keyboard/error paths. Report category/unit/label agreement, numeric error only
-on comparable reviewed units/types, appropriate abstentions and dangerous guessed
-readings. Record each receipt, usage completeness and stale/persistence outcome.
-Eight examples cannot establish general accuracy. Any future correction bridge
-needs a separate compatibility policy and tests; it is not authorized by this plan.
+Freeze implementation/model/settings and a private label manifest. Later, only
+with explicit authorization, make at most **eight standalone calls**, one per image,
+no retries/fallbacks or mid-batch tuning. Keep 2048 tokens, reasoning_effort=none,
+existing production instructions and bounds. Send only image and neutral reference;
+no filenames, reviewer labels, estimates, telemetry or answer hints. Stop on
+transport/contract incompatibility or unsafe capture; preserve every attempt.
+No server activation, workflow task or image-analysis replay is needed for this
+standalone plan. Numeric discrepancies are reported, never repaired or discarded.
 
-## Offline checks and remaining evidence
+Report three independent outcomes with all case/attempt denominators:
 
-129 backend tests (18 new contract/workflow tests) and 34 frontend tests pass;
-TypeScript/Vite build passes. Fake transport, generated in-memory images and
+1. **Contract validity:** stop, envelope/JSON/nine fields, strict validator,
+   refusal/rejection and receipt/accounting completeness; not reading accuracy.
+2. **Numeric agreement:** compare readable cases against frozen visual intervals
+   and correct units; for dual scales accept only a coherent labeled pair. Report
+   per-image values/error/tolerance, wrong-unit/scale results and false abstentions.
+   Any declared unit normalization is offline scoring only, never model hints or
+   a runtime authorization change. Include invalid/abstained cases as unsuccessful
+   readable cases rather than silently narrowing the denominator.
+3. **Correct abstention:** null readings and appropriate reasons on independently
+   ambiguous/unreadable examples; count every unsupported numeric guess separately.
+
+No aggregate confidence percentage or photographic-accuracy claim is justified
+by this small batch. Valve capability and any connection to correction policy
+require separate evaluation; no diagnosis, task completion or correction is
+authorized by this plan or a passing contract.
+
+## Original offline checks and remaining evidence
+
+Original implementation: 129 backend tests (18 then-new contract/workflow tests)
+and 34 frontend tests passed with TypeScript/Vite build. Fake transport, generated in-memory images and
 temporary stores establish policy/accounting behavior, not model accuracy.
 External socket guard records zero forbidden connections. Fixture regressions
 remain intact. Browser inventory is empty; in-app browser opening failed. No
-actual desktop/mobile, camera, keyboard, live photographic analysis, unit accuracy
-or integrated AI recovery claim is made. No images/ground-truth records added.
+actual desktop/mobile, camera, keyboard, photographic accuracy or integrated AI
+recovery claim is made. The later completed standalone call above does not close
+these gates. No public images or fabricated ground-truth records were added.

@@ -12,16 +12,19 @@ Official sources:
 FT-010 implements a bounded photographic-observation contract and explicit
 NVIDIA analysis using existing opt-in, worker, receipts and ledger. New results
 retain units/uncertainty and remain outside incident/correction assessment.
-129 backend and 34 frontend tests, type/build pass offline; no provider requests,
-server restart, real-photo accuracy or browser verification is claimed. The
-reviewed-photo evaluation is a plan only; no expected values or ground truth
-have been invented. [Contract/evaluation plan](photographic-analysis.md).
+148 backend and 40 frontend tests plus type/build previously passed offline.
+The completed standalone call below establishes contract compatibility, not
+photographic accuracy or browser acceptance. The independently labeled batch
+remains a plan; no labels or ground truth have been invented.
+[Contract/evaluation plan](photographic-analysis.md).
 No submission checkbox is newly satisfied.
 
 User-relayed Nebius confirmation supports photographic-only reasoning_effort=none;
-148 backend/40 frontend tests and type/build pass offline. A one-request real-photo
-diagnostic is prepared but not run. No photographic accuracy or runtime acceptance
-gate is newly satisfied; existing failures and receipts remain intact.
+148 backend/40 frontend tests and type/build pass offline. The first completed
+standalone real-photo call passed its contract (stop, 0 reported reasoning tokens)
+but returned 5000 psi versus preliminary reviewers' 800–850 bar. Those estimates
+are not calibrated ground truth. No photographic accuracy, connected workflow or
+correction-authorization gate is satisfied; existing records remain intact.
 
 Photo-workflow refinement passes 40 frontend tests and type/build checks. Compact
 records preserve every upload and full-image/interpretation inspection. User

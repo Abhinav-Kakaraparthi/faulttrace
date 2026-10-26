@@ -1,11 +1,13 @@
 # Provider smoke test
 
-Nebius Support confirmation relayed by the user now enables photographic-only
-reasoning_effort=none at the unchanged 2048 cap. Numeric reasoning token counts
-are preserved when supplied; missing remains unknown and raw reasoning stays out
-of ordinary receipts. The next standalone check is prepared, not executed: one
-request, no retries, with credential-checked raw JSON saved only privately for
-support. Fixtures and the latest UI remain unchanged; no server was restarted.
+The first completed standalone real-photo evaluation passed completion and JSON
+contract checks with reasoning_effort=none, stop and 0 reported reasoning tokens.
+It returned 5000 psi, failing the user's preliminary reviewer comparison of
+800–850 bar. Those estimates are not calibrated ground truth. Valid JSON is not
+a correct measurement; no diagnosis, task completion or correction was authorized.
+The private response is preserved, with no cause invented or raw reasoning printed.
+Next is a separately authorized, independently labeled gauge batch scored for
+numeric agreement, abstention and contract validity; no tuning to this one image.
 
 Photo review now has compact evidence rows in both workspaces. Operator leads
 with its asset/task and real-photo controls; technical text and synthetic fixture
@@ -18,10 +20,10 @@ The first standalone FT-010 photo attempt failed `non_stop_completion` after
 2048 completion tokens (1675 input); no validated interpretation. Its exact finish
 reason was not retained and cannot be reconstructed. Future receipts preserve a
 bounded finish reason before validation, while historical records remain intact.
-Reasoning budget exhaustion is a hypothesis, not an established image-reading
-failure. NVIDIA documents reasoning controls on its own endpoint; support for
-Nebius's hosted alias must be confirmed before adding one. Limits and prompts are
-unchanged. [Investigation, sources and proposed single-call diagnostic](photographic-analysis.md#non-stop-completion-investigation-offline-follow-up).
+Reasoning budget exhaustion remains a hypothesis for that historical failure.
+Exact-alias support was subsequently confirmed and the reasoning-off completion
+is recorded above; its numeric interpretation still failed preliminary review.
+[Historical investigation and sources](photographic-analysis.md#non-stop-completion-investigation-offline-follow-up).
 
 FT-010 adds a separate explicit photographic-observation analysis action using
 the existing NVIDIA/Nebius worker and accounting. It preserves observed units,
@@ -30,8 +32,8 @@ identity or internal valve-condition claims. Readable images may have unknown
 measurement type; ambiguous/unreadable images must abstain. These results do not
 complete the task, become simulator observations or authorize correction.
 [Contract and independently reviewed evaluation plan](photographic-analysis.md).
-No live photo analysis or server restart was performed; factual accuracy and
-browser acceptance remain unverified.
+The original implementation checkpoint made no live call. The later standalone
+evaluation above leaves factual accuracy and browser acceptance unverified.
 
 FT-009B collects original/permissioned camera or file photographs from assigned
 observations, with draft preview/replace/cancel, measured upload progress and

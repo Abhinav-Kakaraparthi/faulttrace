@@ -1,23 +1,28 @@
 # Checkpoint state
 
-## Current: FT-010 photographic observation analysis (offline implementation)
+## Current: FT-010 photographic observation analysis (PARTIAL)
 
-Photographic reasoning setting (2026-10-26), starting clean at
-cedb85cf015c711d0e9086cf2ebb788ce047fe0d: user-relayed Nebius Support confirmation
-justifies adding only top-level reasoning_effort=none to request_photo. Prompt,
-model, 2048 cap, timeout/body bounds, strict validation and fixtures stay intact;
-no response_format. Optional numeric reasoning_tokens is preserved in sanitized
-receipts/ledger, including zero; absent/invalid details stay unknown, raw reasoning
-is excluded, and historical field absence is not backfilled. Subset accounting is
-not double-counted. Seven new tests; all 148 backend tests pass with zero external
-socket attempts; 40 frontend tests and type/build pass. UI files unchanged. Existing
-ledger remains 19 attempts, known 8634 / 16703 / 25337, four missing usage; no
-imports or inference. Latest UI/runs/images/receipts remain intact, no server
-operations. Next: execute the supplied single-request standalone diagnostic block
-against this committed builder and retained hash-verified 960x960 photo. It may
-save bounded successful-response JSON only in ignored private storage, after
-credential-exposure checks, without printing reasoning. No live result claimed;
-FT-010 remains PARTIAL. [Control and diagnostic scope](photographic-analysis.md#support-confirmed-photographic-reasoning-control).
+First completed real-photo evaluation recorded read-only (2026-10-26): user-run
+attempt 0d31fbe3-3fc2-49e2-b17f-888815ce8c41 occurs exactly once and its saved
+receipt matches the ledger and private response. Tested implementation
+5e41726b2d190eb4087d2cc5c0c31547bcebc0f1; model nvidia/Nemotron-3.5-Super-VL,
+reasoning_effort=none, max_tokens=2048, no response_format. Completion/contract
+validation passed: stop, 0 reported reasoning tokens, 1678 / 120 / 1798 usage,
+2610 ms. Model returned readable pressure, 5000 psi, with no uncertainty codes.
+Numeric interpretation FAILED the user-reported preliminary comparison (800–850
+bar). Reviewer estimates are not calibrated ground truth; no error cause or
+photographic accuracy is established. No diagnosis, task completion or correction
+was authorized; the call created no workflow task. FT-010 remains PARTIAL.
+Image, private diagnostic response, receipt and ledger are unchanged; no imports,
+replay, inference, server operations or source/configuration edits in this audit.
+Ledger known 10312 / 16823 / 27135 across 20 attempts; four retain missing usage.
+Separate manual success 155 / 112 / 267; cross-record known 10467 / 16935 / 27402.
+Prior 148 backend/40 frontend tests and type/build remain valid; source unchanged.
+Next: collect/freeze independent labels for eight new single-scale, dual-scale and
+unreadable gauge photos, then seek authorization for at most eight one-call cases
+with unchanged production input/settings. Score contract, numeric agreement and
+abstention separately; do not tune to MAXIMATOR or feed labels to the model.
+[Evidence and bounded evaluation plan](photographic-analysis.md#first-completed-real-photo-evaluation-contract-pass-reviewer-mismatch).
 
 Photo-workflow presentation refinement (2026-10-26), starting clean at
 a388d5383d9adfe1782dcec6c59cadc73f61d053: compact connected status/navigation,
