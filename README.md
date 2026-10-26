@@ -126,9 +126,26 @@ Backend: http://127.0.0.1:8765/api/state. Vite proxies /api; keys stay backend-o
 Full offline checks after backend setup:
 
 ```powershell
-& .venv\Scripts\python.exe -m unittest discover -s tests -v
+& .venv\Scripts\python.exe tools/run_offline_tests.py
 & .venv\Scripts\python.exe -m pip check
 ```
+
+## Continuous integration
+
+[FaultTrace CI](.github/workflows/ci.yml) runs on every push and pull request,
+using Ubuntu 24.04, Python 3.12 and Node 22. It installs the existing pinned
+`requirements-backend.txt` and uses `npm ci` with the frontend lockfile, then runs
+the full backend suite, frontend tests, TypeScript checks and production build.
+Actions are pinned to official release commit SHAs; token permissions are read-only.
+
+The backend runner removes `NEBIUS_API_KEY`, disables inference and rejects
+external Python DNS/socket operations before test discovery. Local IPC remains
+available for ASGI tests. Any blocked attempt fails the run even if application
+code catches the exception. This guards accidental test-process network access;
+it is not a sandbox for hostile code/native extensions/subprocesses. No provider
+secrets are configured. Dependency installation still needs package registries.
+Run the same backend command above and the frontend commands below locally.
+Static frontend tests and a successful build do not establish browser acceptance.
 
 ## FT-005 separate sample preview
 

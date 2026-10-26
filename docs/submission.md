@@ -9,6 +9,12 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+CI checkpoint: push/PR backend and frontend jobs are configured with no provider
+secrets and a network-guarded Python suite. Local clean installations, 162 backend
+and 45 frontend tests, typecheck and build pass. Hosted execution is pending;
+the submission-revision CI checkbox stays unchecked. Browser and deployment
+acceptance remain separate.
+
 FT-011 connects validated photo claims to saved observation-planner context, with
 compatibility/dispute/freshness assessment, explicit Operator handoff, accepted
 citations and source-photo clarification links. 159 backend/45 frontend offline

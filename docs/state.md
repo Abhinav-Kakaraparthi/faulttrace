@@ -1,5 +1,23 @@
 # Checkpoint state
 
+## Current: GitHub Actions CI
+
+Starting clean at `9b07cd0b65bbd513957cf5aba73bc02afb0a64a0` on the existing
+`feat/ft-011-photo-planning` branch. Push/PR workflow adds separate Ubuntu 24.04
+Python 3.12 and Node 22 jobs, pinned official actions, read-only permissions,
+existing backend requirements installation and lockfile-based frontend install.
+Reusable backend runner removes provider credentials, disables inference and
+forbids external Python DNS/socket operations before discovery; caught violations
+also fail the suite. Three guard regressions exercise denial, local IPC and
+credential removal. Existing product tests are unchanged.
+
+Equivalent local checks use a fresh ignored copy/venv, preserving the running
+previews and their dependencies. Installations, dependency consistency, 162 backend
+tests (zero forbidden external attempts), 45 frontend tests, TypeScript and build
+pass. GitHub execution is pending the checkpoint push. Static tests are not browser
+verification. No inference, server restart, deployment or run/history mutation.
+Next: inspect the actual push run and fix any CI-specific failure in this scope.
+
 ## Current: FT-011 photographic evidence informs planning (PARTIAL)
 
 Implemented on `feat/ft-011-photo-planning` from verified clean
