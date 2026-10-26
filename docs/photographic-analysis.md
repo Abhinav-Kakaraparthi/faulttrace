@@ -5,6 +5,55 @@ restart occurred in this checkpoint. Existing uploads, fixtures, runs and receip
 remain intact. This is interpretation of visible evidence, not incident assessment,
 asset identification, equipment authorization or recovery reasoning.
 
+## Non-stop completion investigation (offline follow-up)
+
+Standalone attempt `50740c31-0635-4d56-af69-f4b4f7a64073` is present once in
+the existing ledger and matches the saved local receipt. Usage is valid:
+1675 input / 2048 completion / 3723 total tokens; latency 6891 ms. Validation
+failed with `non_stop_completion`, with no validated interpretation. The saved
+960x960 PNG matches its private provenance hash. Receipt, image, provenance and
+ledger are preserved, with no imports or replay. The exact finish reason was
+discarded: neither `length`, empty content, an image-reading error nor reasoning
+token consumption can be established retrospectively. Hitting the configured
+completion count suggests budget pressure, not a proven cause or token split.
+
+[NVIDIA's exact-model API reference](https://docs.api.nvidia.com/nim/reference/nvidia-nemotron-3_5-super-vl-120b-a12b-infer)
+documents reasoning modes (`none`, `low`, `high`) and chat-template controls for
+its own endpoint. [Nebius's release note](https://nebius.com/blog/posts/three-new-open-weight-models-from-us-companies-give-builders-more-choice)
+identifies our hosted alias and warns that reasoning can exhaust a small output
+budget. Its [chat API reference](https://docs.tokenfactory.nebius.com/api-reference/inference/create-chat-completion)
+describes `max_completion_tokens` as including visible and reasoning tokens,
+but does not establish a model-specific reasoning toggle for this alias.
+NVIDIA endpoint settings are not proof of Nebius deployment support. No new
+parameter, prompt change or limit increase is justified yet; photo and fixture
+requests remain unchanged (2048 tokens, 60s timeout, 256 KiB body, no retries).
+
+Future sanitized receipts retain only `stop`, `length`, `tool_calls`,
+`content_filter` or `function_call` from a single-choice envelope, before content
+validation. Missing, malformed and unknown values stay null. Legacy receipts
+remain without that field; no historical finish reason is backfilled. Ledger
+validation rejects arbitrary persisted strings. Strict stop/content/proposal
+validation remains unchanged; neither content nor reasoning is retained by this
+diagnostic. Seven focused mocked tests cover rejection/accounting, allowlisting,
+secret non-disclosure, unchanged photo payload and legacy ledger idempotency.
+
+Proposed later verification, not executed or authorized by this investigation:
+one standalone request using the existing validated private 960x960 copy and
+unchanged production builder, with the new receipt field. Verify its hash first,
+send only the production instructions/image/neutral reference, record once and
+stop on any result, with no retry, workflow task or image-analysis replay. This
+would establish a future finish reason, not recover the old one. Confirm Nebius's
+exact-model reasoning-off support before separately proposing that configuration.
+
+Ledger known usage is 6958 / 12607 / 19565 across 18 attempts, with four missing
+usage attempts; separate historical manual success is 155 / 112 / 267, giving
+cross-record known totals 7113 / 12719 / 19832. These are incomplete consumption
+totals, not billing estimates. FT-010 remains PARTIAL; live accuracy is unverified.
+All 136 backend tests pass, including the seven new tests and existing fixture
+regressions, with zero forbidden external socket attempts. Hashes of the original,
+submitted image, provenance, saved result and ledger remain unchanged. No UI change
+requires a new browser claim; no live request or server operation was performed.
+
 ## Versioned contract: photo-observation-v1
 
 Exactly nine fields, strict assistant/stop/JSON envelope, no duplicate keys or

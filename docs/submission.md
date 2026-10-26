@@ -18,6 +18,12 @@ reviewed-photo evaluation is a plan only; no expected values or ground truth
 have been invented. [Contract/evaluation plan](photographic-analysis.md).
 No submission checkbox is newly satisfied.
 
+FT-010 follow-up: one user-run standalone photo request failed strict completion
+validation at 2048 completion tokens; exact historical finish reason is unknown.
+Allowlisted finish reasons are retained for future diagnostics, without weakening
+validation or changing requests. No live accuracy or compatibility gate is met by
+this failed request or the offline follow-up. [Evidence and sources](photographic-analysis.md#non-stop-completion-investigation-offline-follow-up).
+
 FT-009B adds collection-only original/permissioned photograph capture/upload and
 stored-image presentation, with provenance and explicit identity/measurement
 limits. Analog-gauge/valve AI capability remains unverified; strict vision and

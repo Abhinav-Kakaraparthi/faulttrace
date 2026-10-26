@@ -2,6 +2,29 @@
 
 ## Current: FT-010 photographic observation analysis (offline implementation)
 
+Offline non-stop diagnostic follow-up at clean starting revision
+2ca07c1fea25846275643c92fbee79921e68e5f7: attempt
+50740c31-0635-4d56-af69-f4b4f7a64073 occurs once, matches the ledger receipt and
+retains its image/provenance unchanged. Valid usage 1675 / 2048 / 3723, failed
+non_stop_completion, no validated interpretation. Exact historical finish reason
+and reasoning/output split are unavailable; no image-reading error established.
+Future receipts now retain an allowlisted finish_reason before validation fails,
+without changing historical receipt shape or accepting non-stop output. No
+provider configuration change: NVIDIA's documented reasoning controls do not
+establish support on Nebius's exact alias. Request limits, prompts and fixtures
+remain intact. [Sources, evidence and bounded next diagnostic](photographic-analysis.md#non-stop-completion-investigation-offline-follow-up).
+Ledger known 6958 / 12607 / 19565; 18 attempts, four missing usage. Separate
+historical success 155 / 112 / 267; cross-record known 7113 / 12719 / 19832.
+No provider requests, imports, workflow writes or server operations in this
+follow-up. FT-010 remains PARTIAL. Next: separately authorize one standalone
+diagnostic using the unchanged production builder and retained validated image,
+record the new finish reason once, and stop; confirm Nebius reasoning-off support
+before changing parameters.
+Checks: 7 focused completion-diagnostic tests and all 136 backend regressions pass
+under an external-socket guard (zero forbidden external attempts; loopback allowed
+for Windows asyncio). Post-test hash checks confirm original/submitted image,
+provenance, result and ledger preserved. No frontend code or UI changed.
+
 Started clean at 5c31b58075e80f737a1e043b4483ee921a368314; new branch
 feat/ft-010-photographic-analysis. No provider requests, server restarts,
 existing-run writes, receipt imports/replays or fixture/photo asset changes.

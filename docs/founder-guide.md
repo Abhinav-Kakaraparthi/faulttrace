@@ -1,5 +1,14 @@
 # Provider smoke test
 
+The first standalone FT-010 photo attempt failed `non_stop_completion` after
+2048 completion tokens (1675 input); no validated interpretation. Its exact finish
+reason was not retained and cannot be reconstructed. Future receipts preserve a
+bounded finish reason before validation, while historical records remain intact.
+Reasoning budget exhaustion is a hypothesis, not an established image-reading
+failure. NVIDIA documents reasoning controls on its own endpoint; support for
+Nebius's hosted alias must be confirmed before adding one. Limits and prompts are
+unchanged. [Investigation, sources and proposed single-call diagnostic](photographic-analysis.md#non-stop-completion-investigation-offline-follow-up).
+
 FT-010 adds a separate explicit photographic-observation analysis action using
 the existing NVIDIA/Nebius worker and accounting. It preserves observed units,
 readings, label text and external orientation with bounded uncertainty, not

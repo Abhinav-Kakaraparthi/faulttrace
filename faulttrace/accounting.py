@@ -12,6 +12,16 @@ VISION_MODEL = "nvidia/Nemotron-3.5-Super-VL"
 SUPPORTED_MODELS = {MODEL, VISION_MODEL}
 COUNTS = ("prompt_tokens", "completion_tokens", "total_tokens")
 USAGE_STATES = {"missing", "partial", "valid", "invalid", "inconsistent"}
+FINISH_REASONS = frozenset({"stop", "length", "tool_calls", "content_filter", "function_call"})
+
+
+def finish_reason(envelope):
+    """Retain one recognized enum only; malformed/unknown values stay unknown."""
+    choices = envelope.get("choices")
+    if type(choices) is not list or len(choices) != 1 or type(choices[0]) is not dict:
+        return None
+    reason = choices[0].get("finish_reason")
+    return reason if type(reason) is str and reason in FINISH_REASONS else None
 
 
 def valid_id(value):
@@ -58,7 +68,8 @@ def extract_accounting(envelope, expected_model=MODEL):
     if status in {"invalid", "inconsistent"}:
         diagnostics.append("inconsistent_usage" if status == "inconsistent" else "invalid_usage")
     return {"returned_model": model, "response_id": response_id,
-            "token_usage": usage, "usage_status": status, "diagnostics": diagnostics}
+            "token_usage": usage, "usage_status": status, "diagnostics": diagnostics,
+            "finish_reason": finish_reason(envelope)}
 
 
 def new_receipt(revision, model=MODEL):
@@ -67,6 +78,7 @@ def new_receipt(revision, model=MODEL):
             "response_id": None, "latency_ms": None, "transport_invoked": False,
             "token_usage": None, "usage_status": "missing", "diagnostics": [],
             "http_status": None, "http_error_category": None,
+            "finish_reason": None,
             "validation_result": "failed", "source_revision": revision if valid_revision(revision) else None}
 
 
@@ -74,7 +86,14 @@ def sanitized_receipt(value):
     """Validate a receipt allowlist for persistence; never copy arbitrary text."""
     if not isinstance(value, dict):
         raise ValueError()
-    result = {name: value.get(name) for name in new_receipt(None) if name not in HTTP_FIELDS}
+    result = {name: value.get(name) for name in new_receipt(None)
+              if name not in (*HTTP_FIELDS, "finish_reason")}
+    # Preserve absence in historical receipts for idempotent duplicate comparison.
+    if "finish_reason" in value:
+        reason = value["finish_reason"]
+        if reason is not None and (type(reason) is not str or reason not in FINISH_REASONS):
+            raise ValueError()
+        result["finish_reason"] = reason
     attempt = result["attempt_id"]
     if not isinstance(attempt, str) or str(uuid.UUID(attempt)) != attempt:
         raise ValueError()
