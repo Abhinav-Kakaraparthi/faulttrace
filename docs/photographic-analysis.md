@@ -7,6 +7,76 @@ asset identification, equipment authorization or recovery reasoning.
 
 ## Non-stop completion investigation (offline follow-up)
 
+### Repeated truncation: request audit and unsent support question
+
+Experimental attempt `b2e90f31-9383-45e8-a88e-4df019c0796a` occurs once in the
+ledger, exactly matching its saved receipt: 1676 input / 4096 completion / 5772
+total, valid usage, `finish_reason=length`, 12906 ms, no validated interpretation.
+Response ID: `chatcmpl-1ace4eb02ec74b7d6bf0ba5eb3bf49ca`. The 4096 override was
+standalone; production remains 2048. Length confirms truncation, not a reasoning
+loop, schema defect, incorrect reading or any particular discarded content.
+
+Rebuilt the request from committed code, saved neutral reference/configuration
+and hash-verified retained image, then verified the exact serializer with a mocked
+HTTP opener. This establishes current serialization, not a recovered wire capture.
+Top-level keys are only model, max_tokens, stream, messages; system instructions
+are 3055 characters, and the serialized experimental body is 803635 bytes. User
+content is one PNG data URL. No filename, incident data or expected reading enters
+the payload. There is no response_format, tool schema or reasoning-control field:
+JSON is requested only through prose and a JSON-encoded field specification,
+which is not a JSON Schema. All nine fields and principal uncertainty outcomes
+are represented; some conditional rules are implicit and others repeated. No
+contradictory requirement to invent a reading was found. Repetition or model
+difficulty applying these rules is hypothetical, not an established truncation
+cause. The prompt's ban on reasoning in the answer is not an API reasoning toggle.
+
+Parsing captures accounting/allowlisted finish reason first, rejects non-stop
+completions before content parsing, and validates only assistant message.content
+as strict JSON. reasoning/reasoning_content are neither parsed as answers nor
+persisted. Null interpretation proves rejection, not absent provider content.
+No partial output is recovered, repaired or fabricated. Strict validation and
+production/fixture requests remain unchanged; no concrete defect warrants a code
+change based on these records.
+
+The [Nebius structured-output guide](https://docs.tokenfactory.nebius.com/ai-models-inference/json)
+requires response_format for constrained decoding and directs users to model-card
+JSON support. The [generic API reference](https://docs.tokenfactory.nebius.com/api-reference/inference/create-chat-completion)
+lists reasoning_effort (including none), but gives no exact-alias compatibility
+guarantee. The maintained [Nemotron cookbook index](https://github.com/nebius/token-factory-cookbook/blob/main/models/nemotron/README.md)
+and [example notebook](https://github.com/nebius/token-factory-cookbook/blob/main/models/nemotron/run_nemotron.ipynb)
+do not demonstrate reasoning controls for 3.5 Super VL. The maintained
+[Nebius workbench guide](https://github.com/nebius/nebius-physical-ai/blob/main/docs/workbench/token-factory.md)
+distinguishes verified defaults for other models from generic overrides that
+providers may ignore or reject. None establishes an exact supported control for
+our alias; NVIDIA NIM support alone does not do so either.
+
+Unsent support draft (no image, prompt content, filename or credential):
+
+> For nvidia/Nemotron-3.5-Super-VL at POST
+> https://api.tokenfactory.nebius.com/v1/chat/completions, response
+> chatcmpl-1ace4eb02ec74b7d6bf0ba5eb3bf49ca (2026-10-26T02:59:21Z) ended with
+> finish_reason=length: 1676 input / 4096 completion / 5772 total tokens. Request:
+> max_tokens=4096, stream=false, one 960x960 PNG and system instructions requesting
+> bounded JSON; no response_format or reasoning control. No retries; client timeout
+> 60s and response bound 256 KiB. Which raw HTTP parameter, nesting and values are
+> supported to disable reasoning for this exact hosted alias? Does it support
+> json_object or json_schema with image input? Do completion_tokens include
+> reasoning, and are separate numeric reasoning-token counts available? Can you
+> identify the termination cause from this response ID without an image or key?
+
+Smallest next experiment is conditional on an exact-alias support answer: one
+separately authorized standalone call using the same hash-verified image, production
+2048 cap/prompt and only the confirmed reasoning-off setting; strict validation,
+receipt/ledger, timeout/body bound and no retries unchanged. Do not combine prompt,
+schema or budget experiments, and do not replay a workflow analysis.
+
+Offline checks: six photographic-contract tests and seven completion-diagnostic
+tests pass; mocked wire serialization and all nine prompt fields checked. Ledger
+known totals now 8634 / 16703 / 25337 across 19 attempts, with four missing-usage
+attempts. Separate historical success 155 / 112 / 267 gives cross-record known
+8789 / 16815 / 25604; consumption is incomplete. No imports, inference, server
+operations, historical-record writes or application changes in this audit.
+
 Standalone attempt `50740c31-0635-4d56-af69-f4b4f7a64073` is present once in
 the existing ledger and matches the saved local receipt. Usage is valid:
 1675 input / 2048 completion / 3723 total tokens; latency 6891 ms. Validation

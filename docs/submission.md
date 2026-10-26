@@ -18,6 +18,11 @@ reviewed-photo evaluation is a plan only; no expected values or ground truth
 have been invented. [Contract/evaluation plan](photographic-analysis.md).
 No submission checkbox is newly satisfied.
 
+A later standalone 4096-token experiment also truncated (finish_reason=length),
+with no validated interpretation. Offline request audit found prose-only JSON,
+without exact-alias evidence supporting a reasoning/structured-output override.
+Production remains unchanged. [Findings and unsent support draft](photographic-analysis.md#repeated-truncation-request-audit-and-unsent-support-question).
+
 FT-010 follow-up: one user-run standalone photo request failed strict completion
 validation at 2048 completion tokens; exact historical finish reason is unknown.
 Allowlisted finish reasons are retained for future diagnostics, without weakening

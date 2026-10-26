@@ -2,6 +2,22 @@
 
 ## Current: FT-010 photographic observation analysis (offline implementation)
 
+Latest offline request audit, starting clean at a52b1642e2cc2a2a3a924efc992985fca500d644:
+experimental attempt b2e90f31-9383-45e8-a88e-4df019c0796a occurs once and matches
+its saved receipt: valid 1676 / 4096 / 5772 usage, finish_reason=length, no validated
+interpretation. Current serialized request asks for JSON in prose only, without
+response_format or reasoning controls. Nine fields/principal uncertainty outcomes
+are present; no concrete causal defect established. Final content/reasoning was
+discarded and is not reconstructed. Six contract and seven diagnostic tests pass;
+mocked transport serialization checked. Production defaults/validator unchanged.
+Ledger known 8634 / 16703 / 25337; 19 attempts, four missing usage. Separate manual
+success 155 / 112 / 267 gives cross-record known 8789 / 16815 / 25604. Existing
+records/images/provenance remain intact; no provider calls, imports or server work.
+Next: obtain exact-alias Nebius confirmation of reasoning-off and image JSON-mode
+support using the [unsent support draft](photographic-analysis.md#repeated-truncation-request-audit-and-unsent-support-question).
+Only then propose one authorized standalone reasoning-off test at the unchanged
+2048 cap. FT-010 remains PARTIAL; no live reading accuracy has been established.
+
 Offline non-stop diagnostic follow-up at clean starting revision
 2ca07c1fea25846275643c92fbee79921e68e5f7: attempt
 50740c31-0635-4d56-af69-f4b4f7a64073 occurs once, matches the ledger receipt and
