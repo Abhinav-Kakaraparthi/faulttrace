@@ -18,6 +18,11 @@ reviewed-photo evaluation is a plan only; no expected values or ground truth
 have been invented. [Contract/evaluation plan](photographic-analysis.md).
 No submission checkbox is newly satisfied.
 
+An isolated, inference-disabled photographic collection review is prepared with
+an explicitly test-created task. API upload/storage/failure checks and offline
+regressions pass; browser/mobile/keyboard/camera acceptance remains open.
+[Review instructions](photo-evidence.md#isolated-inference-disabled-review).
+
 A later standalone 4096-token experiment also truncated (finish_reason=length),
 with no validated interpretation. Offline request audit found prose-only JSON,
 without exact-alias evidence supporting a reasoning/structured-output override.

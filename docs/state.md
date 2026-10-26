@@ -2,6 +2,27 @@
 
 ## Current: FT-010 photographic observation analysis (offline implementation)
 
+Isolated photo review (2026-10-26), starting clean at 95ac2f8c68726e88753f76d139a873fed9ab7eaa:
+new preview 5181/8781 uses ignored
+`.local/visual/ft010-isolated-7661c16d0084429a9e9ac130010f12e9/data` and
+FAULTTRACE_ALLOW_INFERENCE=0. Existing offline test setup pattern seeds one
+explicitly TEST-CREATED / NOT AI-generated F-17 assignment; no planner or model
+was invoked. Fixed-port origin rejection was reproduced and corrected with an
+explicit, validated loopback-only FAULTTRACE_PREVIEW_ORIGIN setting; defaults and
+local header policy remain intact. Five focused regressions cover this boundary.
+API checks: compliant 960x960 MAXIMATOR copy collected once, stored bytes match;
+bad image (400) and stale revision (409) rejected; analyze-photo returns 403
+inference_disabled with no attempt or ledger change. Task remains awaiting so
+manual review can exercise collection controls. Both routes serve HTTP 200.
+Completed 5180/8780 preview, its tables/images and original photo are preserved.
+141 backend tests pass with zero forbidden external sockets; 34 frontend tests,
+typecheck and production build pass. Native/browser automation unavailable: no
+desktop/mobile/keyboard/photo interaction or camera verification, no screenshots.
+Exact manual and resume steps: `manual-review.md` in that ignored review folder;
+[review scope and origin configuration](photo-evidence.md#isolated-inference-disabled-review).
+Next: founder exercises selection, preview, replace/cancel, failed/throttled upload
+and stored-image inspection on both isolated routes. Visual acceptance stays PARTIAL.
+
 Local preview activation (2026-10-26), tested code 626daa9a7bdd873b224b28fc701b7636c7177b58:
 restarted only the verified FaultTrace backend on 127.0.0.1:8780 with
 FAULTTRACE_ALLOW_INFERENCE=0 and the same data directory

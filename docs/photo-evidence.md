@@ -4,8 +4,36 @@ FT-009B established collection-only upload. FT-010 now adds a separate explicit
 photographic-observation endpoint; see [contract and evaluation plan](photographic-analysis.md).
 Uploads alone still request no inference. Analysis produces bounded observations,
 not incident assessment, asset identity, correction approval or verified accuracy.
-Existing servers remain untouched; both collection/analysis capability flags must
-be loaded by later user-controlled activation before the new controls can run.
+Both collection/analysis capability flags must be loaded by the backend before
+the new controls can run. The completed-run preview is now activated with
+inference disabled; the separate collection-review instance below preserves it.
+
+## Isolated inference-disabled review
+
+Commander: http://127.0.0.1:5181/commander. Operator:
+http://127.0.0.1:5181/operator. This private test instance has an explicitly
+TEST-CREATED / NOT AI-generated F-17 assignment, using the existing
+`tests/test_workflow_api.py` offline setup pattern. No planner call or task-policy
+change creates it. Inference is disabled; an API check returns inference_disabled
+before analysis reservation. The compliant MAXIMATOR copy and one API-collected,
+unanalyzed image live only in ignored storage; no photo is added to Git.
+
+New preview ports previously failed the fixed browser-origin allowlist. Set
+`FAULTTRACE_PREVIEW_ORIGIN=http://127.0.0.1:5181` only for this backend. It permits
+that exact origin in addition to existing defaults; only explicit HTTP localhost
+or 127.0.0.1 origins with valid ports are accepted. Invalid settings fail closed.
+The local-client header check, inference opt-in and all task policy remain intact.
+No wildcard, proxy-header rewrite or global origin relaxation is used.
+
+Data, logs, source hashes and exact manual/resume steps are under
+`.local/visual/ft010-isolated-7661c16d0084429a9e9ac130010f12e9/`.
+Open its `manual-review.md`: select the compliant photo, replace with an explicitly
+synthetic preview, cancel, simulate a blocked upload in this tab only, throttle a
+successful transfer and inspect the same stored image in both workspaces. Repeat
+at 1440x900 and 390x844 with keyboard navigation. Do not change the 5180/8780
+completed run or enable inference. No browser surfaces/native helper are available;
+these interactions, screenshots and camera capture remain unverified. API and
+mocked/static tests establish only their stated checks, not visual acceptance.
 
 Use original photographs you are entitled to supply, or photographs with clear
 permission for the intended use. The user's reference is visual guidance only:

@@ -14,6 +14,7 @@ from faulttrace.provider import transport
 from faulttrace.validation import parse_json
 
 from .journey import Journey
+from .local_origin import allowed_origins
 from .analysis import AnalysisEngine, source_revision
 from .service import Workflow
 from .storage import DEFAULT_DATA, InstanceLock, Store, WorkflowError, identifier
@@ -45,6 +46,7 @@ async def fields(request, expected):
 
 def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transport,
                enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective"):
+    origins = allowed_origins()
     inference_enabled = (os.environ.get("FAULTTRACE_ALLOW_INFERENCE") == "1") if enabled is None else enabled
 
     @asynccontextmanager
@@ -71,7 +73,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     @app.middleware("http")
     async def local_boundary(request, call_next):
         if request.method not in ("GET", "HEAD"):
-            if request.headers.get("origin") not in (None, "http://127.0.0.1:5173", "http://localhost:5173", "http://127.0.0.1:5180", "http://localhost:5180"):
+            if request.headers.get("origin") is not None and request.headers.get("origin") not in origins:
                 return JSONResponse({"error": "origin_not_allowed"}, 403)
             if request.headers.get("x-faulttrace-local") != "1":
                 return JSONResponse({"error": "local_client_header_required"}, 403)

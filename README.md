@@ -24,6 +24,11 @@ the updated backend with inference disabled, preserving the completed run and it
 data directory. That run has no assigned observation task or stored photograph;
 photo interaction acceptance remains open. See [activation evidence](docs/state.md).
 
+An additional inference-disabled photo-review instance is available at
+http://127.0.0.1:5181/commander and /operator, with a clearly test-created task and
+separate data. [Manual checks and explicit preview-origin configuration](docs/photo-evidence.md#isolated-inference-disabled-review).
+The completed 5180/8780 run is unchanged; no visual or camera pass is claimed.
+
 FT-009A provides separate server-backed **/commander** and **/operator** pages.
 Open http://127.0.0.1:5180/commander and http://127.0.0.1:5180/operator in the
 existing isolated preview; old connected query URLs remain compatible. See
