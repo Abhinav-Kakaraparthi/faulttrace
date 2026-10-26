@@ -67,9 +67,28 @@ def extract_accounting(envelope, expected_model=MODEL):
         diagnostics.append("invalid_metadata_id")
     if status in {"invalid", "inconsistent"}:
         diagnostics.append("inconsistent_usage" if status == "inconsistent" else "invalid_usage")
+    reasoning, reasoning_diagnostics = reasoning_usage(envelope.get("usage"))
+    diagnostics.extend(reasoning_diagnostics)
     return {"returned_model": model, "response_id": response_id,
             "token_usage": usage, "usage_status": status, "diagnostics": diagnostics,
-            "finish_reason": finish_reason(envelope)}
+            "finish_reason": finish_reason(envelope), "reasoning_tokens": reasoning}
+
+
+def reasoning_usage(usage):
+    """Numeric subset of completion tokens only; never retain reasoning text."""
+    if not isinstance(usage, dict) or usage.get("completion_tokens_details") is None:
+        return None, []
+    details = usage["completion_tokens_details"]
+    if not isinstance(details, dict):
+        return None, ["invalid_reasoning_usage"]
+    count = details.get("reasoning_tokens")
+    if count is None:
+        return None, []
+    if type(count) is not int or count < 0:
+        return None, ["invalid_reasoning_usage"]
+    completion = usage.get("completion_tokens")
+    inconsistent = type(completion) is int and completion >= 0 and count > completion
+    return count, ["inconsistent_reasoning_usage"] if inconsistent else []
 
 
 def new_receipt(revision, model=MODEL):
@@ -78,7 +97,7 @@ def new_receipt(revision, model=MODEL):
             "response_id": None, "latency_ms": None, "transport_invoked": False,
             "token_usage": None, "usage_status": "missing", "diagnostics": [],
             "http_status": None, "http_error_category": None,
-            "finish_reason": None,
+            "finish_reason": None, "reasoning_tokens": None,
             "validation_result": "failed", "source_revision": revision if valid_revision(revision) else None}
 
 
@@ -87,13 +106,18 @@ def sanitized_receipt(value):
     if not isinstance(value, dict):
         raise ValueError()
     result = {name: value.get(name) for name in new_receipt(None)
-              if name not in (*HTTP_FIELDS, "finish_reason")}
+              if name not in (*HTTP_FIELDS, "finish_reason", "reasoning_tokens")}
     # Preserve absence in historical receipts for idempotent duplicate comparison.
     if "finish_reason" in value:
         reason = value["finish_reason"]
         if reason is not None and (type(reason) is not str or reason not in FINISH_REASONS):
             raise ValueError()
         result["finish_reason"] = reason
+    if "reasoning_tokens" in value:
+        count = value["reasoning_tokens"]
+        if count is not None and (type(count) is not int or count < 0):
+            raise ValueError()
+        result["reasoning_tokens"] = count
     attempt = result["attempt_id"]
     if not isinstance(attempt, str) or str(uuid.UUID(attempt)) != attempt:
         raise ValueError()
@@ -127,6 +151,11 @@ def sanitized_receipt(value):
         raise ValueError()
     # Invalid fields have already been replaced by null, but their invalid status survives.
     result["token_usage"] = counts
+    reasoning = result.get("reasoning_tokens")
+    completion = (counts or {}).get("completion_tokens")
+    if (reasoning is not None and completion is not None and reasoning > completion
+            and "inconsistent_reasoning_usage" not in diagnostics):
+        raise ValueError()
     error = value.get("error")
     if error is not None:
         if not isinstance(error, str) or error not in SAFE_CODES:

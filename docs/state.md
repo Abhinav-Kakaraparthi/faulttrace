@@ -2,6 +2,23 @@
 
 ## Current: FT-010 photographic observation analysis (offline implementation)
 
+Photographic reasoning setting (2026-10-26), starting clean at
+cedb85cf015c711d0e9086cf2ebb788ce047fe0d: user-relayed Nebius Support confirmation
+justifies adding only top-level reasoning_effort=none to request_photo. Prompt,
+model, 2048 cap, timeout/body bounds, strict validation and fixtures stay intact;
+no response_format. Optional numeric reasoning_tokens is preserved in sanitized
+receipts/ledger, including zero; absent/invalid details stay unknown, raw reasoning
+is excluded, and historical field absence is not backfilled. Subset accounting is
+not double-counted. Seven new tests; all 148 backend tests pass with zero external
+socket attempts; 40 frontend tests and type/build pass. UI files unchanged. Existing
+ledger remains 19 attempts, known 8634 / 16703 / 25337, four missing usage; no
+imports or inference. Latest UI/runs/images/receipts remain intact, no server
+operations. Next: execute the supplied single-request standalone diagnostic block
+against this committed builder and retained hash-verified 960x960 photo. It may
+save bounded successful-response JSON only in ignored private storage, after
+credential-exposure checks, without printing reasoning. No live result claimed;
+FT-010 remains PARTIAL. [Control and diagnostic scope](photographic-analysis.md#support-confirmed-photographic-reasoning-control).
+
 Photo-workflow presentation refinement (2026-10-26), starting clean at
 a388d5383d9adfe1782dcec6c59cadc73f61d053: compact connected status/navigation,
 Operator asset/task/photo controls first, technical guidance and synthetic fixture

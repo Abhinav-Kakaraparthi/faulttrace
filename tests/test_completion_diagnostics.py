@@ -86,9 +86,10 @@ class CompletionDiagnosticsTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 sanitized_receipt(dict(receipt, finish_reason=reason))
 
-    def test_photo_payload_limits_and_controls_remain_unchanged(self):
+    def test_photo_payload_limits_and_confirmed_reasoning_control(self):
         payload = request_photo(b'fake-image', 'evidence-neutral')
-        self.assertEqual(set(payload), {'model', 'max_tokens', 'stream', 'messages'})
+        self.assertEqual(set(payload), {'model', 'max_tokens', 'stream', 'messages', 'reasoning_effort'})
+        self.assertEqual(payload['reasoning_effort'], 'none')
         self.assertEqual(payload['model'], VISION_MODEL)
         self.assertEqual(payload['max_tokens'], 2048)
         self.assertFalse(payload['stream'])

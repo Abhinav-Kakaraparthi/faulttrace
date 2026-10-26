@@ -5,6 +5,41 @@ restart occurred in this checkpoint. Existing uploads, fixtures, runs and receip
 remain intact. This is interpretation of visible evidence, not incident assessment,
 asset identification, equipment authorization or recovery reasoning.
 
+## Support-confirmed photographic reasoning control
+
+The user relayed Nebius Support confirmation for the exact
+`nvidia/Nemotron-3.5-Super-VL` alias: top-level `reasoning_effort="none"` disables
+reasoning; image JSON object/simple strict schema modes work; numeric reasoning
+usage is `usage.completion_tokens_details.reasoning_tokens`. This is attributed
+support evidence, not an agent-operated live verification or recovered response.
+Only the photographic builder now sends reasoning_effort=none. Its prompt,
+model, 2048 cap, 60s timeout, 256 KiB response bound and strict validator are
+unchanged; no response_format, retry, fallback or fixture-contract change.
+
+Sanitized receipts/ledger preserve optional numeric reasoning_tokens. Missing
+details stay null; real zero stays zero; invalid booleans/types/negative counts
+are unknown with fixed diagnostics. Counts exceeding a known completion count
+are retained with an inconsistency diagnostic. This is a subset of completion
+tokens and is not added to consumption totals again. Legacy absence stays absent
+for idempotency; raw reasoning is never retained in ordinary receipts.
+
+Seven focused offline tests include a frozen historical serialized-payload hash
+proving that only the new top-level field changes, numeric/missing/rejected-output
+accounting and legacy ledger compatibility. All 148 backend tests pass under an
+external-socket guard (zero forbidden attempts); 40 frontend tests, typecheck and
+build pass. Latest UI refinements are unchanged. No inference or server restart.
+
+Next: one separately executed standalone request using the retained hash-verified
+960x960 photo and committed production builder, without filename/answer/incident
+hints. The provided PowerShell block records one receipt and interpretation and,
+only for this support diagnostic, saves bounded successful-response JSON privately
+under ignored storage after scanning raw/decoded JSON for the actual credential.
+Credential exposure blocks capture; persistence failures are reported separately
+and never trigger another request. Raw reasoning is not printed or committed.
+HTTP error bodies remain unavailable through the unchanged transport. A valid
+interpretation is not factual reading accuracy; absent numeric reasoning details
+do not prove zero reasoning. Existing servers remain untouched and disabled.
+
 ## Non-stop completion investigation (offline follow-up)
 
 ### Repeated truncation: request audit and unsent support question

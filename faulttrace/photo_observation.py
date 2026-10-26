@@ -110,6 +110,6 @@ def request_photo(data, evidence_ref):
               'Non-gauge: measurement_type not_applicable, unit and reading null. Other requires not_equipment and orientation not_applicable. '
               'Cannot-determine requires unreadable, category_uncertain and orientation not_applicable. '
               'Unreadable requires an applicable unreadability reason; no numeric reading. Use no reasons only when supported and unambiguous.')
-    return {'model': VISION_MODEL, 'max_tokens': 2048, 'stream': False,
+    return {'model': VISION_MODEL, 'max_tokens': 2048, 'stream': False, 'reasoning_effort': 'none',
             'messages': [{'role': 'system', 'content': rules}, {'role': 'user', 'content': [
                 {'type': 'image_url', 'image_url': {'url': 'data:image/png;base64,' + base64.b64encode(data).decode()}}]}]}

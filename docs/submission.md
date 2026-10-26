@@ -18,6 +18,11 @@ reviewed-photo evaluation is a plan only; no expected values or ground truth
 have been invented. [Contract/evaluation plan](photographic-analysis.md).
 No submission checkbox is newly satisfied.
 
+User-relayed Nebius confirmation supports photographic-only reasoning_effort=none;
+148 backend/40 frontend tests and type/build pass offline. A one-request real-photo
+diagnostic is prepared but not run. No photographic accuracy or runtime acceptance
+gate is newly satisfied; existing failures and receipts remain intact.
+
 Photo-workflow refinement passes 40 frontend tests and type/build checks. Compact
 records preserve every upload and full-image/interpretation inspection. User
 desktop/390x844 review is attributed to the user; screenshot files and usable

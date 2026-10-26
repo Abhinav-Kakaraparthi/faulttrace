@@ -14,6 +14,7 @@ SAFE_CODES = frozenset({
     "unexpected_tool_calls", "unexpected_function_call", "empty_or_invalid_content",
     "invalid_proposal", "invalid_metadata_model", "invalid_metadata_id",
     "invalid_usage", "inconsistent_usage", "probe_failed", "live_opt_in_required",
+    "invalid_reasoning_usage", "inconsistent_reasoning_usage",
     "invalid_or_refused_message",  # Historical sanitized receipts only.
     "invalid_image_evidence", "invalid_fixture",
     "planner_field_shape", "planner_field_type", "planner_revision_mismatch",

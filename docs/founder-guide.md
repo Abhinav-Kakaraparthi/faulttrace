@@ -1,5 +1,12 @@
 # Provider smoke test
 
+Nebius Support confirmation relayed by the user now enables photographic-only
+reasoning_effort=none at the unchanged 2048 cap. Numeric reasoning token counts
+are preserved when supplied; missing remains unknown and raw reasoning stays out
+of ordinary receipts. The next standalone check is prepared, not executed: one
+request, no retries, with credential-checked raw JSON saved only privately for
+support. Fixtures and the latest UI remain unchanged; no server was restarted.
+
 Photo review now has compact evidence rows in both workspaces. Operator leads
 with its asset/task and real-photo controls; technical text and synthetic fixture
 tools are expandable. Inspect preserves the full image, structured interpretation
