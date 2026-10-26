@@ -69,8 +69,11 @@ Both workspaces present the same real collections together, with distinct scope:
 - `evidence`: image uploads or structured reports for application-created
   observation tasks. NVIDIA image results are explicitly model interpretations,
   with their original source, validation and accounting. Human reports are not
-  image-verified. Legacy fixture/human task evidence can enter the bounded planner context; new
-  photographic interpretations are quarantined until compatibility policy exists.
+  image-verified. FT-011 includes a bounded, validated photographic-claim projection
+  in planner context, with original readings/units, compatibility, unknown identity,
+  freshness and human/model disputes. Raw label text stays excluded. Explicit
+  handoff enables clarification/escalation; no photographic claim satisfies the
+  deterministic correction checklist. [FT-011 boundary](photo-planning.md).
 - Planning receipts/proposals and human correction approval remain different
   records with different authority. No record is migrated or duplicated by UI.
 

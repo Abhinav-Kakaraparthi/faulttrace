@@ -8,11 +8,18 @@ investigate equipment anomalies.
 
 ## Status
 
+FT-011 carries validated photographic interpretations into observation planning
+as unverified model claims. Commander sees compatibility/disputes and accepted
+citations; Operator can explicitly hand off a photo for follow-up and inspect
+source photos on clarification tasks. Human reports remain independent, and no
+photo satisfies the simulated correction checklist. Offline checks pass; live
+and browser acceptance remain open. [Behavior and preview commands](docs/photo-planning.md).
+
 FT-010 adds explicit NVIDIA photographic-observation analysis for collected
 photos: category, visible reading/unit, measurement type, label transcription,
 external handle orientation and bounded uncertainty. It is separate from fixture
-analysis and excluded from correction/incident reasoning pending compatibility
-policy. [Contract and real-photo evaluation plan](docs/photographic-analysis.md).
+analysis and excluded from correction authorization. FT-011 permits bounded
+planner-only claims. [Contract and real-photo evaluation plan](docs/photographic-analysis.md).
 The first completed standalone photo call passed its contract but failed a
 preliminary reviewer numeric comparison. Photographic accuracy remains unverified;
 no diagnosis, task completion or correction was authorized.

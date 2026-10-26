@@ -9,9 +9,18 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+FT-011 connects validated photo claims to saved observation-planner context, with
+compatibility/dispute/freshness assessment, explicit Operator handoff, accepted
+citations and source-photo clarification links. 159 backend/45 frontend offline
+tests plus type/build pass. Provider doubles are not live adaptive evidence;
+desktop/mobile/keyboard browser verification is blocked. Correction policy,
+photographic-accuracy evaluation and deployment gates remain open. No checkbox
+is newly satisfied. [FT-011 scope and next acceptance action](photo-planning.md).
+
 FT-010 implements a bounded photographic-observation contract and explicit
 NVIDIA analysis using existing opt-in, worker, receipts and ledger. New results
-retain units/uncertainty and remain outside incident/correction assessment.
+retain units/uncertainty and remain outside correction assessment; FT-011 permits
+their bounded use as unverified observation-planning claims only.
 148 backend and 40 frontend tests plus type/build previously passed offline.
 The completed standalone call below establishes contract compatibility, not
 photographic accuracy or browser acceptance. The independently labeled batch

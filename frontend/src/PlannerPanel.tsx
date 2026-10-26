@@ -3,10 +3,11 @@ import { type ServerState } from './api';
 import { planningBlocker } from './planningPolicy';
 import { HTTPDiagnostics } from './HTTPDiagnostics';
 
-export function PlannerPanel({ state, disabled, choose, open, historyOnly = false }: {
-  state: ServerState; disabled: boolean; choose: () => void; open: () => void; historyOnly?: boolean;
+export function PlannerPanel({ state, disabled, choose, open, inspect, historyOnly = false }: {
+  state: ServerState; disabled: boolean; choose: () => void; open: () => void; inspect?: (item: ServerState['evidence'][number]) => void; historyOnly?: boolean;
 }) {
   const task = state.task;
+  const accepted = state.planning.filter(p => ['accepted', 'escalated'].includes(p.status) && p.proposal).at(-1);
   const reasonId = useId();
   const pending = state.planning.some(item => item.status === 'pending');
   const blocker = planningBlocker(state);
@@ -22,6 +23,11 @@ export function PlannerPanel({ state, disabled, choose, open, historyOnly = fals
     <button className="button primary wide repeat-observation planner-choose" disabled={unavailable} aria-describedby={reasonId} onClick={choose}>{pending ? 'Planning request pending' : 'Choose next observation'}</button>
     <p id={reasonId} className="caption" role="status">{blocker ?? (disabled ? 'Server unavailable or another request is in progress.' : 'One explicit NVIDIA text request. No automatic retry.')} {state.planning_remaining} of 4 planning turns remain.</p>
     </>}
+    {accepted?.proposal && <div className="accepted-references"><h3>Latest accepted proposal cites</h3>
+      <ul>{accepted.proposal.evidence_refs.map(ref => {
+        const evidence = state.evidence.find(e => `evidence-${e.id}` === ref);
+        return <li key={ref}>{evidence && inspect ? <button className="button secondary" onClick={() => inspect(evidence)}>Inspect cited {evidence.kind === 'image' ? 'photograph' : 'human report'} · assigned {evidence.asset_id}</button> : <span>{ref}</span>}</li>;
+      })}</ul><p className="caption">Citations support the observation choice; they do not validate a measurement or authorize correction.</p></div>}
     {historyOnly && !state.planning.length && <p>No NVIDIA planning attempts in this run. The simulated journey used human reports and deterministic policy.</p>}
     {!!state.planning.length && <details className="rationale"><summary>Planning history ({state.planning.length})</summary><ol className="planning-history">{state.planning.map(item => <li key={item.id}>
       <strong>{item.status === 'escalated' ? 'Human investigation requested' : item.status} · context {item.context_revision}</strong>

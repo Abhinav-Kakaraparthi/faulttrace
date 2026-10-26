@@ -86,7 +86,7 @@ class Workflow:
             other = db.execute("SELECT id FROM tasks WHERE id<>? AND status IN ('awaiting','submitted','analyzing')", (task_id,)).fetchone()
             if other:
                 raise WorkflowError('active_task_conflict', 409)
-            db.execute("UPDATE evidence SET status='stale' WHERE task_id=? AND status='pending'", (task_id,))
+            db.execute("UPDATE evidence SET status='stale' WHERE task_id=? AND status IN ('pending','collected')", (task_id,))
             db.execute("UPDATE tasks SET revision=revision+1,status='awaiting' WHERE id=?", (task_id,))
             self.store.event(db, "observation_reissued")
             self.store.remember(db, key, fingerprint, task_id)

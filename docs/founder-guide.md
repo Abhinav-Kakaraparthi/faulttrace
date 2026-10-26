@@ -1,5 +1,16 @@
 # Provider smoke test
 
+FT-011 lets photographic **model claims** inform the next observation decision.
+Operator explicitly sends a validated photo for follow-up; Commander requests a
+registered observation or escalation, and accepted citations link back to photos.
+The new task shows its source photograph. Human reports are never overwritten.
+Pressure is not DP, identity remains unconfirmed, and stale/disputed/unreadable
+claims require clarification. Even a usable planning claim cannot satisfy the
+correction checklist. Technical reasons/provenance are expandable in both views.
+159 backend/45 frontend offline tests and type/build pass; browser and live
+planner acceptance remain open. No inference or server restart was performed.
+[Scope, freshness rule and isolated preview instructions](photo-planning.md).
+
 The first completed standalone real-photo evaluation passed completion and JSON
 contract checks with reasoning_effort=none, stop and 0 reported reasoning tokens.
 It returned 5000 psi, failing the user's preliminary reviewer comparison of

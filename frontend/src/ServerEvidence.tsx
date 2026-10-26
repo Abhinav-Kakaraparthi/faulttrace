@@ -1,6 +1,7 @@
 import { type ServerEvidence as Evidence, type ServerState } from './api';
 import { EvidencePhoto } from './EvidencePhoto';
 import { evidenceStatus, evidenceTimestamp } from './evidencePresentation';
+import { PhotoPlanningAssessment } from './PhotoPlanning';
 import { HTTPDiagnostics } from './HTTPDiagnostics';
 export { statusLabel } from './evidencePresentation';
 export { ServerEvidenceDetails } from './EvidenceDetails';
@@ -17,6 +18,7 @@ export function ServerEvidenceList({ state, inspect, analyze, disabled, allowAna
       <div className="evidence-row-summary"><h3>Assigned asset: {item.asset_id}</h3>
         <span className={`pill ${item.status === 'accepted' ? 'teal' : 'amber'}`}>{evidenceStatus(item)}</span>
         <time dateTime={item.created_at}>{evidenceTimestamp(item.created_at)} · wall-clock</time>
+        {item.photo_assessment && <PhotoPlanningAssessment value={item.photo_assessment} />}
         {item.kind === 'report' && <p>Human report / {item.report}</p>}
       </div>
       <button className="button secondary inspect-evidence" aria-label={`Inspect evidence for ${item.asset_id}, ${evidenceTimestamp(item.created_at)}`} onClick={() => inspect(item)}>Inspect evidence</button>

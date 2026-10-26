@@ -3,6 +3,7 @@ import { WorkspaceState } from './WorkspaceState';
 import { ServerTask } from './ServerTask';
 import { JourneyPanel } from './JourneyPanel';
 import { EvidenceWorkspace } from './EvidenceWorkspace';
+import { PhotoFollowUp } from './PhotoPlanning';
 import { AuditHistory } from './AuditHistory';
 
 export function OperatorPage(props: WorkspaceProps) {
@@ -16,6 +17,7 @@ export function OperatorPage(props: WorkspaceProps) {
       {state.task && <section aria-label="Assigned observation"><ServerTask key={`${state.task.id}-${state.task.revision}`} state={state} mutate={mutate} disabled={disabled} />
         {state.journey && <p className="notice">This NVIDIA observation task is separate from the simulated correction checklist below. Its evidence is not yet integrated into that deterministic assessment.</p>}
       </section>}
+      <PhotoFollowUp state={state} disabled={disabled} mutate={mutate} inspect={props.inspect} />
       {state.journey && <JourneyPanel state={state} view="operator" presentation="operator" includeRecord={false} mutate={mutate} disabled={disabled} />}
       {!state.task && !state.journey && <ServerTask state={state} mutate={mutate} disabled={disabled} />}
       <EvidenceWorkspace {...props} workspace="operator" />

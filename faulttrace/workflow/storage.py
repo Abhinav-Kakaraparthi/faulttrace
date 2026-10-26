@@ -176,6 +176,15 @@ class Store:
                 attempt.pop('context')  # Internal bounded input; never expose a raw provider response.
                 for field in ('proposal', 'receipt'):
                     attempt[field] = json.loads(attempt[field]) if attempt[field] else None
+            from .photo_planning import assessments
+            photos = {p['evidence_id']: p for p in assessments(db)}
+            for item in evidence:
+                if item['id'] in photos:
+                    item['photo_assessment'] = photos[item['id']]
+            for task in tasks:
+                accepted = next((p for p in planning if p['task_id'] == task['id'] and p['status'] == 'accepted'), None)
+                refs = (accepted['proposal'] or {}).get('evidence_refs', []) if accepted else []
+                task['source_photo_ids'] = [pid for pid in photos if 'evidence-' + pid in refs]
         return {"incident": dict(incident) if incident else None,
                 "task": task, "tasks": tasks, "planning": planning,
                 "planning_remaining": max(0, 4-len(planning)),

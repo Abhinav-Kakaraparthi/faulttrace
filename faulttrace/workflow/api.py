@@ -97,7 +97,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     def state():
         with app.state.workflow.write_lock:
             snapshot = app.state.workflow.store.snapshot()
-            return dict(snapshot, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
+            return dict(snapshot, photo_planning={'version': 1}, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
                         mode="local server / simulated incident / real inference only on explicit action")
 
     def key(request):
@@ -162,6 +162,14 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         body = await fields(request, ['revision'])
         attempt_id = await run_in_threadpool(app.state.engine.planner.choose, body['revision'], key(request))
         return {'attempt_id': attempt_id}
+
+    @app.post('/api/tasks/{task_id}/photo-follow-up')
+    async def photo_follow_up(task_id: str, request: Request):
+        from .photo_planning import forward_for_planning
+        body = await fields(request, ['revision', 'evidence_id'])
+        eid = await run_in_threadpool(forward_for_planning, app.state.workflow,
+                                     task_id, body['revision'], body['evidence_id'], key(request))
+        return {'evidence_id': eid}
 
     @app.post("/api/tasks/{task_id}/reports")
     async def report(task_id: str, request: Request):

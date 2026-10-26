@@ -1,6 +1,35 @@
 # Checkpoint state
 
-## Current: FT-010 photographic observation analysis (PARTIAL)
+## Current: FT-011 photographic evidence informs planning (PARTIAL)
+
+Implemented on `feat/ft-011-photo-planning` from verified clean
+`86d8e76e463652aa7b3dc76ba248df1309141a12`. Photographs now contribute bounded,
+validated model claims to saved planner context, with source/task association,
+original readings/units, uncertainty, identity limits, compatibility, freshness and
+human/model disagreements. Explicit Operator handoff releases an awaiting blocker
+without accepting a measurement; Commander still explicitly chooses an action.
+Accepted proposal citations and source-photo clarification links appear in the
+respective workspaces. Refusal restrictions, budgets, revisions, accounting and
+independent correction/recovery policy remain intact. No inference or restart.
+
+159 backend tests pass with external networking forbidden (zero forbidden socket
+attempts), including 11 new fake-provider integration cases; 45 frontend tests,
+TypeScript and production build pass. Initial static citation test caught an
+incorrect separator introduced during editing; corrected in source and rerun.
+All source files remain below 500 lines. Historical preview public states and
+stored image hashes match the earlier baseline; ledger byte hash is unchanged.
+Read-only preservation/check record: `.local/visual/ft011-offline/verification.json`.
+Browser surfaces are absent and in-app opening fails: no desktop/mobile/keyboard
+or live adaptive-planning pass is claimed, and no screenshots were captured.
+Existing preview backends are untouched and have not loaded this implementation.
+
+Next: isolated inference-disabled visual acceptance of photo assessment, explicit
+handoff, accepted citations and source-photo clarification, then separately
+authorize bounded live planner evaluation. [Exact commands and limitations](photo-planning.md).
+Photographic numeric accuracy, integrated AI recovery, roles/authentication, CI
+and hosting remain open; no submission gate is newly satisfied.
+
+## FT-010 photographic observation analysis (PARTIAL)
 
 First completed real-photo evaluation recorded read-only (2026-10-26): user-run
 attempt 0d31fbe3-3fc2-49e2-b17f-888815ce8c41 occurs exactly once and its saved

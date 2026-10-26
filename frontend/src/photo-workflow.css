@@ -50,3 +50,9 @@
   .connected-shell .evidence-dialog { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }.connected-shell .evidence-dialog .dialog-heading { padding: 10px 12px; }.dialog-content { padding: 14px 12px; }
   .connected-shell .dialog-heading h2 { font-size: 20px; }.inspection-summary { align-items: start; }.inspection-image-frame { max-height: 56dvh; }.connected-shell .inspection-image-frame img { max-height: 52dvh; }
 }
+
+.photo-planning-assessment, .accepted-references { overflow-wrap: anywhere; min-width: 0; }
+.photo-planning-assessment p { margin: .35rem 0; }
+.photo-planning-assessment details { font-size: 1rem; }
+.accepted-references ul { padding-left: 1.2rem; }
+.accepted-references button { white-space: normal; text-align: left; }

@@ -55,7 +55,17 @@ def build_context(db):
             'unresolved_conflicts': conflicts, 'unavailable_assets': unavailable,
             'remaining_planning_calls': max(0, 4-count)}
     from .simulation import augment_context
-    return augment_context(db, context)
+    context = augment_context(db, context)
+    from .photo_planning import assessments, context_photo
+    photos = {p['evidence_ref']: p for p in assessments(db)}
+    context['observations'] = [context_photo(photos[o['evidence_ref']]) if o['evidence_ref'] in photos else o
+                               for o in context['observations']]
+    if photos:
+        context['unresolved_conflicts'].append('photographic_claims_require_clarification')
+    for p in photos.values():
+        context['unresolved_conflicts'].extend(f for f in p['flags'] if f.startswith('human_model_'))
+    context['unresolved_conflicts'] = list(dict.fromkeys(context['unresolved_conflicts']))
+    return context
 
 
 def unavailable_assets(context):
@@ -134,6 +144,11 @@ def validate_proposal(value, context):
         raise ProbeError('planner_asset_unavailable')
     if value['explanation_code'] not in supported_explanations(context):
         raise ProbeError('planner_explanation_unsupported')
+    if value['kind'] == 'REQUEST_OBSERVATION' and any(
+            o.get('photographic_observation', {}).get('requires_clarification')
+            for o in context['observations'] if o['evidence_ref'] in refs):
+        if value['explanation_code'] not in ('clarify_conflict', 'unreadable_evidence', 'human_review'):
+            raise ProbeError('planner_photo_clarification_required')
     return value
 
 
@@ -141,7 +156,9 @@ def supported_explanations(context):
     codes = ['evidence_gap', 'human_review']
     if context['unresolved_conflicts']:
         codes.append('clarify_conflict')
-    if any(o['status'] in ('unreadable', 'refused') for o in context['observations']):
+    if any(o['status'] in ('unreadable', 'refused') or
+           (o.get('photographic_observation', {}).get('claim') or {}).get('readability') == 'unreadable'
+           for o in context['observations']):
         codes.append('unreadable_evidence')
     return codes
 
@@ -173,7 +190,14 @@ def planner_payload(context):
         'Assets in unavailable_assets or with a cannot-access human report are unavailable for this incident. '
         'Never request another observation for the same inaccessible asset. Choose an available alternative '
         'or the catalog human-escalation action_id. Reopening a task or later evidence does not establish restored access; no access-clearance workflow exists. '
-        'An image does not establish asset identity. Uncertainty and conflicting sources must remain visible.'
+        'An image does not establish asset identity. Uncertainty and conflicting sources must remain visible. '
+        'Photographic observations are unverified model claims, including their measurement types. '
+        'Pressure is not differential pressure; handle orientation does not establish internal valve position. '
+        'No photo satisfies a measurement or correction requirement. Unknown identity, incompatible types, '
+        'stale results and disagreement require clarification or human escalation. '
+        'When citing a photo for an observation, use clarify_conflict, unreadable_evidence or human_review; '
+        'request only a registered observation template, never action instructions. '
+        'Human reports remain independent; do not replace them with model output. Raw image labels are excluded.'
     )
     catalog = {action_id: dict(zip(('kind', 'asset_id', 'capability'), action))
                for action_id, action in permitted_actions(context).items()}

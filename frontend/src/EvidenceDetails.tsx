@@ -2,6 +2,7 @@ import type { ServerEvidence } from './api';
 import { EvidencePhoto } from './EvidencePhoto';
 import { evidenceStatus, evidenceTimestamp } from './evidencePresentation';
 import { HTTPDiagnostics } from './HTTPDiagnostics';
+import { PhotoPlanningAssessment } from './PhotoPlanning';
 import { PhotoInterpretation } from './PhotoInterpretation';
 
 export function ServerEvidenceDetails({ evidence }: { evidence: ServerEvidence }) {
@@ -11,6 +12,7 @@ export function ServerEvidenceDetails({ evidence }: { evidence: ServerEvidence }
     {evidence.kind === 'image' ? <EvidencePhoto evidence={evidence} /> : <p>Human report only: {evidence.report}. No image or image-based identity verification supplied.</p>}
     {evidence.status === 'collected' && !evidence.analysis && <p>Collection-only photograph / not analyzed. No pressure reading inferred.</p>}
     {evidence.analysis?.interpretation && <PhotoInterpretation value={evidence.analysis.interpretation} status={evidence.analysis.status} />}
+    {evidence.photo_assessment && <PhotoPlanningAssessment value={evidence.photo_assessment} expanded />}
     <details className="inspection-provenance"><summary>Provenance, evidence limits &amp; receipt</summary>
       <p className="notice">Assignment is not image-verified identity. Record visible tags as seen; do not rename a different asset. An ordinary pressure gauge does not establish differential pressure; a valve handle does not prove internal valve condition. Evidence cannot authorize correction or recovery.</p>
       <p>{evidence.origin === 'synthetic-fixture' ? 'Committed synthetic fixture / regression evidence, not an equipment photograph.' : evidence.kind === 'image' ? 'User-supplied image / source and authenticity not independently verified.' : 'Human-reported observation; not image-verified.'}</p>

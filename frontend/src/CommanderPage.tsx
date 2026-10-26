@@ -29,7 +29,7 @@ export function CommanderPage(props: WorkspaceProps) {
       <div className="commander-process-grid"><Process active selected={equipment} onSelect={select} readings={{ pressure: sample?.pressure ?? null, valve: sample?.valve ?? null }} /><ServerTelemetry samples={j?.samples ?? []} /></div>
       <section className="section-surface model-workflow"><h2>NVIDIA observation planning</h2><p>Text proposals choose registered observations or human escalation. Image analysis produces interpretations, not diagnosis, correction approval or recovery declarations.</p>
         {j && <p className="notice">Separate workflow: NVIDIA task evidence does not currently satisfy the simulated correction assessment. Recovery is evaluated independently from simulator samples; no integrated model recovery reasoning is claimed.</p>}
-        <PlannerPanel state={state} disabled={disabled} historyOnly={terminal} choose={() => void mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => navigate('/operator')} />
+        <PlannerPanel inspect={props.inspect} state={state} disabled={disabled} historyOnly={terminal} choose={() => void mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => navigate('/operator')} />
       </section>
       {!j && <section className="section-surface"><h2>Evidence assessment</h2><p>Restriction, sensor discrepancy and valve mismatch remain hypotheses. No deterministic recovery assessment is available for this observation-only incident; model interpretations retain their provenance below.</p></section>}
       <EvidenceWorkspace {...props} workspace="commander" /><AuditHistory state={state} />

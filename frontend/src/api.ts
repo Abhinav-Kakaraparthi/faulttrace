@@ -13,18 +13,27 @@ export function httpDiagnosticSummary(receipt: Pick<Receipt, 'error' | 'http_sta
   return `Provider HTTP status: ${receipt.http_status ?? 'unknown'} · Category: ${receipt.http_error_category ?? 'unknown'}. Status category only; provider cause is not established. Error body and headers are not retained.`;
 }
 export type Interpretation = FixtureInterpretation | PhotoObservation;
+export type PhotoAssessment = {
+  evidence_id: string; evidence_ref: string; task_id: string; assigned_asset: string;
+  source: string; timestamp: string; analysis_status: string | null;
+  status: 'usable' | 'disputed' | 'incompatible' | 'unresolved' | 'stale';
+  identity_status: string; flags: string[]; conflicting_refs: string[];
+  claim: Omit<PhotoObservation, 'label_text' | 'evidence_ref'> | null;
+};
 export type ServerEvidence = {
   id: string; task_id: string; asset_id: string; kind: 'image' | 'report'; origin: string; fixture_id: string | null;
   sha256: string | null; width: number | null; height: number | null; status: string; report: string | null;
   created_at: string; image_url: string | null; submitted_revision: number;
+  photo_assessment?: PhotoAssessment;
   analysis: { contract?: string; id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
+  photo_planning?: { version: number };
   photo_analysis?: { version: number; contract: string };
   photo_collection?: { version: number; assets: string[] };
   journey?: JourneyState | null;
   incident: { id: string; created_at: string; revision: number } | null;
-  task: { id: string; revision: number; status: string; asset_id: string; capability: string; creation_source: string; explanation: string; instruction: string } | null;
+  task: { source_photo_ids?: string[]; id: string; revision: number; status: string; asset_id: string; capability: string; creation_source: string; explanation: string; instruction: string } | null;
   planning_remaining: number;
   planning: { id: string; context_revision: number; status: string; error: string | null; explanation: string | null; accounting: string; task_id: string | null; receipt: Receipt | null; proposal: { kind: string; asset_id: string; capability: string; explanation_code: string; evidence_refs: string[] } | null }[];
   evidence: ServerEvidence[];
@@ -32,6 +41,7 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  photo_follow_up_unavailable: 'This photograph cannot be sent for follow-up. Refresh and review its analysis and freshness.',
   photo_contract_not_applicable: 'This endpoint analyzes collected photographs only; existing fixture analysis remains separate.',
   stale_photo_result: 'Investigation changed during analysis. The stale result cannot be used; accounting is preserved.',
   photo_analysis_unsupported: 'This photograph is collection-only. Analog gauges and valve images are outside the validated vision contract.',
