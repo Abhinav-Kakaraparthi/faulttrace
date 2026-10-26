@@ -47,7 +47,7 @@ export function PhotoCapture({ asset, disabled, supported, upload }: { asset: st
     setBusy(true); setProgress(0); setError('');
     try {
       const saved = await upload(file, identity.current, setProgress);
-      if (saved) { cancel(); setMessage('Photograph stored as collection-only evidence. No analysis was requested.'); }
+      if (saved) { cancel(); setMessage('Photograph stored. No analysis was requested; observation analysis is a separate explicit action.'); }
       else setError('Photo submission was not confirmed. Review the server error and refresh state before resubmitting; the server may already have stored it.');
     } catch { setError('Photo submission interrupted. Refresh server state before another action.'); }
     finally { setBusy(false); }
@@ -55,7 +55,7 @@ export function PhotoCapture({ asset, disabled, supported, upload }: { asset: st
   const unavailable = disabled || busy || !supported;
   return <section className="photo-capture" aria-label={`${asset} photographic evidence`}>
     <h3>Photograph the assigned observation</h3><p>Assigned asset: <strong>{asset}</strong>. This assignment does not identify the equipment in your photograph. If its tag differs, report wrong asset; never relabel it.</p>
-    <p>Photos are collected only. An ordinary pressure gauge does not establish differential pressure. A valve handle image does not prove internal valve condition.</p>
+    <p>Upload only collects the photograph; NVIDIA observation analysis is a separate opt-in. An ordinary pressure gauge does not establish differential pressure. A valve handle image does not prove internal valve condition.</p>
     {!supported && <p className="notice">Photo collection requires the updated backend. The existing server has been left untouched; these controls stay disabled until it advertises collection support.</p>}
     <div className="photo-pickers"><label>Take a photograph (camera where supported)<input ref={camera} type="file" accept="image/png,image/jpeg" capture="environment" disabled={unavailable} onChange={e => select(e.target.files?.[0])} /></label><label>Choose a photograph from files<input ref={files} type="file" accept="image/png,image/jpeg" disabled={unavailable} onChange={e => select(e.target.files?.[0])} /></label></div>
     <p className="caption">PNG/JPEG, at most 2 MiB; 16 to 2048 pixels per side and at most 1,048,576 pixels. Prepare a smaller copy if needed. Camera support varies; file selection is always offered. Capture/upload does not request inference.</p>

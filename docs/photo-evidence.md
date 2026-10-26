@@ -1,4 +1,11 @@
-# FT-009B: photographic collection, not new vision capability
+# Photographic collection and versioned observation analysis
+
+FT-009B established collection-only upload. FT-010 now adds a separate explicit
+photographic-observation endpoint; see [contract and evaluation plan](photographic-analysis.md).
+Uploads alone still request no inference. Analysis produces bounded observations,
+not incident assessment, asset identity, correction approval or verified accuracy.
+Existing servers remain untouched; both collection/analysis capability flags must
+be loaded by later user-controlled activation before the new controls can run.
 
 Use original photographs you are entitled to supply, or photographs with clear
 permission for the intended use. The user's reference is visual guidance only:
@@ -59,8 +66,10 @@ is not proof of instrument type, asset identity or measurement validity.
 
 ## Existing analysis path and historical compatibility
 
-Collected photographs cannot reserve inference, including through a direct API
-analysis request. V-08 photo interpretation is unsupported. Synthetic DP-display
+The legacy fixture `/analyze` endpoint continues to reject collected photographs.
+FT-010 uses only the new `/analyze-photo` contract for explicit observational
+analysis, with separate uncertainty and orientation fields, never internal valve
+condition or correction authorization. Synthetic DP-display
 fixtures keep their existing explicit analysis opt-in and validated output
 contract. Existing legacy pending uploads, receipts and duplicate-operation
 fingerprints are preserved; the native DP-display path is not silently redefined
@@ -107,7 +116,7 @@ fabricated by this checkpoint, and the reference supplies no reuse permission.
 
 ## Required separate vision evaluation
 
-Analog-gauge reading and valve interpretation remain unverified. Before proposing
+Factual analog-gauge reading and external valve-orientation accuracy remain unverified. Before proposing
 a new model contract, evaluate original/permissioned held-out images with independent
 human ground truth: ordinary versus differential instruments, units/ranges,
 needle/parallax/lighting, unreadability, tag mismatches and unsupported instrument

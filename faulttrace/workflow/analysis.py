@@ -45,6 +45,9 @@ class AnalysisEngine:
         self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="faulttrace-analysis")
         self.futures = []
         self.recover()
+        from .photo_analysis import PhotoAnalysis
+        self.photos = PhotoAnalysis(self)
+        self.photos.recover()
         from .planning import Planner
         self.planner = Planner(self)
 
@@ -67,7 +70,7 @@ class AnalysisEngine:
 
     def recover(self):
         with self.store.connection() as db:
-            pending = [dict(r) for r in db.execute("SELECT * FROM analyses WHERE status='pending'")]
+            pending = [dict(r) for r in db.execute("SELECT * FROM analyses WHERE status='pending' AND NOT EXISTS (SELECT 1 FROM photo_analyses p WHERE p.analysis_id=analyses.id)")]
         if not pending:
             return
         try:

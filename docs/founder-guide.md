@@ -1,5 +1,15 @@
 # Provider smoke test
 
+FT-010 adds a separate explicit photographic-observation analysis action using
+the existing NVIDIA/Nebius worker and accounting. It preserves observed units,
+readings, label text and external orientation with bounded uncertainty, not
+identity or internal valve-condition claims. Readable images may have unknown
+measurement type; ambiguous/unreadable images must abstain. These results do not
+complete the task, become simulator observations or authorize correction.
+[Contract and independently reviewed evaluation plan](photographic-analysis.md).
+No live photo analysis or server restart was performed; factual accuracy and
+browser acceptance remain unverified.
+
 FT-009B collects original/permissioned camera or file photographs from assigned
 observations, with draft preview/replace/cancel, measured upload progress and
 actual stored image display. These new photos are collection-only: neither an

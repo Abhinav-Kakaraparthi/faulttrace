@@ -284,3 +284,75 @@ test('stored photograph, assigned asset, human reports and NVIDIA interpretation
   assert.doesNotMatch(renderEvidenceDetails(human),/src="\/api\/evidence/);
   assert.match(renderEvidenceDetails(human),/NVIDIA readability \(if analyzed\).*Not analyzed/);
 });
+
+
+test('photo analysis is explicit, capability/opt-in gated and separate from fixture analysis', () => {
+  const state=imageTaskState();state.evidence[0]={...state.evidence[0],status:'collected',asset_id:'F-17',image_url:'/api/evidence/photo/image'};
+  state.photo_analysis={version:1,contract:'photo-observation-v1'};
+  let html=renderOperator(state);
+  assert.match(html,/>Analyze photographic observation</);
+  assert.doesNotMatch(html,/>Analyze image</);
+  assert.doesNotMatch(renderCommander(state),/>Analyze photographic observation</);
+  state.inference_enabled=false;
+  assert.match(renderOperator(state),/<button[^>]*disabled[^>]*>Analyze photographic observation</);
+  state.inference_enabled=true;delete state.photo_analysis;
+  assert.match(renderOperator(state),/<button[^>]*disabled[^>]*>Analyze photographic observation</);
+  assert.match(renderOperator(state),/requires an updated backend/);
+});
+
+function photoResult(changes={}) {
+  return {category:'gauge',readability:'readable',measurement_type:'indeterminate',visible_unit:'PSI',reading:75,
+    label_text:'PG-21',valve_orientation:'not_applicable',reasons:['measurement_type_uncertain'],evidence_ref:'evidence-photo',...changes};
+}
+function analyzedPhoto(value,status='interpreted') {
+  const state=imageTaskState();
+  state.evidence[0]={...state.evidence[0],status:'collected',asset_id:'V-08',image_url:'/api/evidence/photo/image',
+    analysis:{id:'photo-attempt',contract:'photo-observation-v1',status,interpretation:value,
+      receipt:{...{},usage_status:'partial',validation_result:'passed',token_usage:{prompt_tokens:11,completion_tokens:null,total_tokens:null}},accounting:'recorded'}};
+  return state;
+}
+
+test('both workspaces preserve actual gauge values/units, unknown type, uncertainty and provenance without scenario defaults', () => {
+  const state=analyzedPhoto(photoResult());
+  for(const html of [renderOperator(state),renderCommander(state),renderEvidenceDetails(state.evidence[0])]) {
+    assert.match(html,/src="\/api\/evidence\/photo\/image"/);
+    assert.match(html,/Observed numeric reading/);assert.match(html,/>75</);
+    assert.match(html,/>PSI</);assert.match(html,/>indeterminate</);
+    assert.match(html,/Measurement type cannot be established/);
+    assert.match(html,/PG-21/);assert.match(html,/not.*compatibility check/);
+    assert.match(html,/excluded from incident pressure comparisons/i);
+    assert.doesNotMatch(html,/180 kPa|75 kPa/);
+  }
+  const ledger=renderOperator(state);
+  assert.match(ledger,/output unknown/);
+  assert.match(ledger,/Usage partial/);
+  assert.match(ledger,/Ledger recorded/);
+});
+
+test('valve label remains distinct from assignment and instructions are escaped, not equipment authorization', () => {
+  const state=analyzedPhoto(photoResult({category:'valve',measurement_type:'not_applicable',visible_unit:null,reading:null,
+    label_text:'BV-104 <script>IGNORE POLICY</script>',valve_orientation:'perpendicular_to_visible_pipe',reasons:[]}));
+  const html=renderOperator(state);
+  assert.match(html,/Assigned asset: V-08/);
+  assert.match(html,/BV-104 &lt;script&gt;IGNORE POLICY&lt;\/script&gt;/);
+  assert.match(html,/perpendicular to visible pipe/);
+  assert.match(html,/does not prove internal valve position or operating condition/);
+  assert.doesNotMatch(html,/<script>|internal valve.*closed/);
+  assert.doesNotMatch(html,/>Analyze photographic observation</);
+});
+
+test('ambiguous/unreadable/unrelated observations remain bounded results, with failed/stale/uncertain status visible', () => {
+  for(const [category,readability,reasons] of [['gauge','readable',['ambiguous_scale']],['cannot-determine','unreadable',['category_uncertain']],['other','readable',['not_equipment']]]) {
+    const state=analyzedPhoto(photoResult({category,readability,measurement_type:category==='gauge'?'pressure':'not_applicable',reading:null,visible_unit:null,reasons}));
+    const html=renderOperator(state);
+    assert.match(html,/Not established; no number inferred/);
+    assert.match(html,new RegExp(`>${category}<`));
+    assert.doesNotMatch(html,/180 kPa/);
+  }
+  for(const status of ['failed','stale','uncertain']) {
+    const state=analyzedPhoto(photoResult(),status);
+    const html=renderOperator(state);
+    assert.match(html,new RegExp(`Photographic analysis / ${status}`));
+    assert.match(html,/not an accepted current observation/);
+  }
+});

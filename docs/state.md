@@ -1,6 +1,55 @@
 # Checkpoint state
 
-## Current: FT-009B real-photo collection and presentation
+## Current: FT-010 photographic observation analysis (offline implementation)
+
+Started clean at 5c31b58075e80f737a1e043b4483ee921a368314; new branch
+feat/ft-010-photographic-analysis. No provider requests, server restarts,
+existing-run writes, receipt imports/replays or fixture/photo asset changes.
+
+photo-observation-v1 is a separate strict nine-field contract for category,
+readability, model-reported measurement type, literal visible unit and numeric
+reading, visible label text, external valve orientation, fixed reasons and exact
+evidence reference. Readable/indeterminate type is supported; ambiguous scales,
+unsupported instruments and unreadability abstain explicitly. No default reading,
+DP assumption, unit conversion, asset renaming, internal-valve condition or raw
+reasoning. The photo-only payload omits assignment, simulator data and answer keys.
+[Full contract and evaluation plan](photographic-analysis.md).
+
+Explicit analyze-photo reuses inference opt-in, existing single worker/transport,
+2048 output-token cap, 60s socket timeout, 256 KiB response bound, one reservation
+per image and sanitized receipt/ledger outbox. Additive photo_analyses metadata
+holds contract and task/context revisions without altering historical analysis
+schema/receipts. Stale task/context results lose their interpretation but preserve
+usage. Interrupted attempts remain uncertain, consume their reservation and never
+replay. No provider call spans a DB transaction. Task status is restored, not
+silently completed; external photos never become simulator observations.
+
+New interpretations are quarantined from legacy pressure comparisons and planner
+interpretation payloads until explicit compatibility/evidence policy. They cannot
+authorize correction, even if the model reports differential_pressure. Existing
+fixture contract/validator/prompt and recovery policy are unchanged. Both routes
+show actual image, structured observations, uncertainty, status, provenance and
+known/unknown accounting; label text stays escaped/untrusted.
+
+Checks: 129 backend tests including 18 new contract/workflow cases; 34 frontend
+tests including four photo interpretation/control cases; TypeScript/Vite build.
+Full backend socket guard reports zero forbidden external connections. Coverage
+includes varied readings/units, indeterminate type, ambiguity, unreadability,
+unrelated images, injection-shaped text, invalid output, usage after rejection,
+HTTP/ledger failure, idempotency, stale completion and interrupted/outbox recovery.
+Mocked results and generated images are not evidence of live photographic accuracy.
+
+Existing backend is left running; new analysis is capability-gated until later
+manual activation preserving its data directory and inference opt-in. Browser
+inventory empty; in-app opening failed (Browser is not available: iab). No actual
+desktop/mobile/keyboard, live model-contract compatibility or accuracy claimed.
+FT-010 implementation/offline checks pass; runtime/evaluation acceptance remains
+PARTIAL. Next: obtain original/permissioned evaluation photos, independently
+review and freeze expected observations before a separately authorized bounded
+photo evaluation. No ground truth has been invented or provider call authorized
+by the plan. Keep existing runs/receipts intact and do not replay old analysis.
+
+## Prior: FT-009B real-photo collection and presentation
 
 Started clean at 4e9df6b4c8e31bbdfeef58d8879f6049ce542f47 on
 feat/ft-009-workspaces; FT-008A/009A and existing runs/fixtures preserved.

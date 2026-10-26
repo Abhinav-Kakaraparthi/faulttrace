@@ -40,6 +40,6 @@ export function ServerTask({ state, mutate, disabled }: { state: ServerState; mu
     </fieldset>}
     {!accepts && <p className="caption">Current evidence is on the server. Analyze explicitly below or have Commander request another observation.</p>}
     {error && <p role="alert" className="form-error">{error}</p>}
-    <p className="caption">Real photographs are collection-only. Analog gauges and valve photographs are unverified vision capabilities. No photograph authorizes correction or recovery.</p>
+    <p className="caption">Photographs upload without inference. The separate photographic-observation contract is offline-tested, not live-accuracy verified. No photograph authorizes correction or recovery.</p>
   </section>;
 }

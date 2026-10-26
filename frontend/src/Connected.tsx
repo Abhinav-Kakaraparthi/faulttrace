@@ -22,7 +22,10 @@ export function Connected({ workspace, navigate }: { workspace: Workspace; navig
   const props = { state, connection: server.connection, disabled: server.busy || server.connection !== 'online',
     mutate: server.mutate, navigate, inspect: open,
     analyze: (item: ServerEvidence) => {
-      if (state?.task && state.task.id === item.task_id) void server.mutate(`/api/evidence/${item.id}/analyze`, { revision: state.task.revision }, `analysis-${item.id}-${state.task.revision}`);
+      if (state?.task && state.task.id === item.task_id) {
+        const photo = item.status === 'collected';
+        void server.mutate(`/api/evidence/${item.id}/${photo ? 'analyze-photo' : 'analyze'}`, { revision: state.task.revision }, `${photo ? 'photo-analysis' : 'analysis'}-${item.id}-${state.task.revision}`);
+      }
     } };
   const link = (value: Workspace) => <a key={value} href={`/${value}`} aria-current={workspace === value ? 'page' : undefined}
     onClick={e => { if (e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) { e.preventDefault(); navigate(`/${value}`); } }}><Icon name={value === 'commander' ? 'grid' : 'phone'} />{value === 'commander' ? 'Commander' : 'Operator'}</a>;

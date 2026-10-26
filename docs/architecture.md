@@ -48,8 +48,10 @@ measurements. Neither a model response nor an operator completion grants recover
 
 ## FT-009B collection boundary
 
-New camera/file photographs on assigned F-17/V-08 tasks use reference-photo
-purpose and collected status; no image interpretation is requested or permitted.
+Camera/file uploads on assigned F-17/V-08 tasks use reference-photo purpose and
+collected status; upload alone requests no inference. FT-010 adds a separate
+explicit photo-observation contract through the existing worker/transport/ledger,
+with contract/revision metadata, no replay and no historical receipt rewrite.
 Task assignment does not prove photographed identity or instrument type. Actual
 stored images and separate human/model records are shown in both workspaces.
 Limits/private normalization persist; camera orientation is applied before
@@ -67,7 +69,8 @@ Both workspaces present the same real collections together, with distinct scope:
 - `evidence`: image uploads or structured reports for application-created
   observation tasks. NVIDIA image results are explicitly model interpretations,
   with their original source, validation and accounting. Human reports are not
-  image-verified. They can enter the bounded observation-planner context.
+  image-verified. Legacy fixture/human task evidence can enter the bounded planner context; new
+  photographic interpretations are quarantined until compatibility policy exists.
 - Planning receipts/proposals and human correction approval remain different
   records with different authority. No record is migrated or duplicated by UI.
 

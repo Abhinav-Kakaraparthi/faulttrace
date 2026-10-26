@@ -1,3 +1,4 @@
+import type { PhotoObservation } from './PhotoInterpretation';
 import type { JourneyState } from './journeyState';
 export type Receipt = {
   attempt_id: string; requested_model: string; returned_model: string | null;
@@ -6,18 +7,20 @@ export type Receipt = {
   error?: string; http_status?: number | null; http_error_category?: string | null;
   token_usage: { prompt_tokens: number | null; completion_tokens: number | null; total_tokens: number | null } | null;
 };
-export type Interpretation = { readability: 'readable' | 'unreadable'; reading: number | null; unit: string | null; evidence_ref: string };
+export type FixtureInterpretation = { readability: 'readable' | 'unreadable'; reading: number | null; unit: string | null; evidence_ref: string };
 export function httpDiagnosticSummary(receipt: Pick<Receipt, 'error' | 'http_status' | 'http_error_category'>): string | null {
   if (receipt.error !== 'provider_http_error') return null;
   return `Provider HTTP status: ${receipt.http_status ?? 'unknown'} · Category: ${receipt.http_error_category ?? 'unknown'}. Status category only; provider cause is not established. Error body and headers are not retained.`;
 }
+export type Interpretation = FixtureInterpretation | PhotoObservation;
 export type ServerEvidence = {
   id: string; task_id: string; asset_id: string; kind: 'image' | 'report'; origin: string; fixture_id: string | null;
   sha256: string | null; width: number | null; height: number | null; status: string; report: string | null;
   created_at: string; image_url: string | null; submitted_revision: number;
-  analysis: { id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
+  analysis: { contract?: string; id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
+  photo_analysis?: { version: number; contract: string };
   photo_collection?: { version: number; assets: string[] };
   journey?: JourneyState | null;
   incident: { id: string; created_at: string; revision: number } | null;
@@ -29,6 +32,8 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  photo_contract_not_applicable: 'This endpoint analyzes collected photographs only; existing fixture analysis remains separate.',
+  stale_photo_result: 'Investigation changed during analysis. The stale result cannot be used; accounting is preserved.',
   photo_analysis_unsupported: 'This photograph is collection-only. Analog gauges and valve images are outside the validated vision contract.',
   invalid_evidence_purpose: 'This photo purpose is not supported. Refresh the assigned observation.',
   simulation_requires_fresh_run: 'Start FT-008 in a fresh isolated data directory. Existing incidents are preserved.',

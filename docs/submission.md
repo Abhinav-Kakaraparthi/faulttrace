@@ -9,6 +9,15 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+FT-010 implements a bounded photographic-observation contract and explicit
+NVIDIA analysis using existing opt-in, worker, receipts and ledger. New results
+retain units/uncertainty and remain outside incident/correction assessment.
+129 backend and 34 frontend tests, type/build pass offline; no provider requests,
+server restart, real-photo accuracy or browser verification is claimed. The
+reviewed-photo evaluation is a plan only; no expected values or ground truth
+have been invented. [Contract/evaluation plan](photographic-analysis.md).
+No submission checkbox is newly satisfied.
+
 FT-009B adds collection-only original/permissioned photograph capture/upload and
 stored-image presentation, with provenance and explicit identity/measurement
 limits. Analog-gauge/valve AI capability remains unverified; strict vision and

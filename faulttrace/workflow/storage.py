@@ -81,6 +81,8 @@ class Store:
               CREATE TABLE IF NOT EXISTS events (
                 sequence INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT, evidence_id TEXT, created_at TEXT);
             ''')
+            from .photo_analysis import initialize as initialize_photos
+            initialize_photos(db)
             from .simulation import initialize
             initialize(db)
             # Additive migration preserves existing FT-006 evidence and task provenance.
@@ -162,6 +164,9 @@ class Store:
                 analysis = db.execute("SELECT * FROM analyses WHERE evidence_id=?", (item["id"],)).fetchone()
                 item["analysis"] = dict(analysis) if analysis else None
                 if analysis:
+                    photo = db.execute('SELECT contract FROM photo_analyses WHERE analysis_id=?', (analysis['id'],)).fetchone()
+                    if photo:
+                        item['analysis']['contract'] = photo['contract']
                     for key in ("receipt", "interpretation"):
                         item["analysis"][key] = json.loads(analysis[key]) if analysis[key] else None
                 item["image_url"] = f'/api/evidence/{item["id"]}/image' if item["kind"] == "image" else None

@@ -20,9 +20,9 @@ EXPLANATIONS = {
 def build_context(db):
     incident = db.execute('SELECT id,revision FROM incidents').fetchone()
     tasks = [dict(r) for r in db.execute('SELECT id,asset_id,capability,status,creation_source FROM tasks ORDER BY rowid')]
-    rows = list(db.execute('''SELECT e.id,e.task_id,t.asset_id,e.kind,e.origin,e.status,e.report,a.interpretation
+    rows = list(db.execute('''SELECT e.id,e.task_id,t.asset_id,e.kind,e.origin,e.status,e.report,CASE WHEN p.analysis_id IS NULL THEN a.interpretation ELSE NULL END AS interpretation
         FROM evidence e JOIN tasks t ON t.id=e.task_id
-        LEFT JOIN analyses a ON a.evidence_id=e.id ORDER BY e.rowid DESC LIMIT 16'''))
+        LEFT JOIN analyses a ON a.evidence_id=e.id LEFT JOIN photo_analyses p ON p.analysis_id=a.id ORDER BY e.rowid DESC LIMIT 16'''))
     observations = []
     for row in reversed(rows):
         item = {k: row[k] for k in ('task_id', 'asset_id', 'kind', 'origin', 'status', 'report')}
@@ -32,7 +32,7 @@ def build_context(db):
     conflicts = []
     # Aggregate over full history so bounded recent context cannot erase old conflicts.
     discrepancy = db.execute('''SELECT 1 FROM evidence e JOIN analyses a ON a.evidence_id=e.id
-        WHERE e.status='accepted' AND json_extract(a.interpretation,'$.readability')='readable'
+        WHERE e.status='accepted' AND NOT EXISTS (SELECT 1 FROM photo_analyses p WHERE p.analysis_id=a.id) AND json_extract(a.interpretation,'$.readability')='readable'
         AND json_extract(a.interpretation,'$.reading')<>184 LIMIT 1''').fetchone()
     if discrepancy:
         conflicts.append('local_pressure_differs_from_simulated_telemetry')

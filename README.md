@@ -8,9 +8,16 @@ investigate equipment anomalies.
 
 ## Status
 
+FT-010 adds explicit NVIDIA photographic-observation analysis for collected
+photos: category, visible reading/unit, measurement type, label transcription,
+external handle orientation and bounded uncertainty. It is separate from fixture
+analysis and excluded from correction/incident reasoning pending compatibility
+policy. [Contract and unevaluated real-photo plan](docs/photographic-analysis.md).
+Offline tests pass; no provider requests/restarts or live accuracy claim.
+
 FT-009B adds camera/file photograph collection with local preview, replace/cancel,
-measured upload progress and actual stored-image display. New real photographs
-are collection-only; analog gauges and valve interpretation remain unverified.
+measured upload progress and actual stored-image display. Uploads alone remain collection-only; FT-010 adds a separate explicit observation
+analysis contract, whose factual photographic accuracy remains unverified.
 [Photo scope, source/license guidance and later activation](docs/photo-evidence.md).
 Existing servers were left running; photo controls capability-gate the older API
 until a later manual backend restart using the same data directory.

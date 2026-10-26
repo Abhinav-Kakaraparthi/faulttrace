@@ -95,7 +95,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     def state():
         with app.state.workflow.write_lock:
             snapshot = app.state.workflow.store.snapshot()
-            return dict(snapshot, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
+            return dict(snapshot, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
                         mode="local server / simulated incident / real inference only on explicit action")
 
     def key(request):
@@ -179,6 +179,12 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         body = await fields(request, ["revision"])
         analysis_id = await run_in_threadpool(app.state.engine.analyze, evidence_id, body["revision"], key(request))
         return {"analysis_id": analysis_id}
+
+    @app.post('/api/evidence/{evidence_id}/analyze-photo', status_code=202)
+    async def analyze_photo(evidence_id: str, request: Request):
+        body = await fields(request, ['revision'])
+        analysis_id = await run_in_threadpool(app.state.engine.photos.analyze, evidence_id, body['revision'], key(request))
+        return {'analysis_id': analysis_id}
 
     @app.get("/api/evidence/{evidence_id}/image")
     def image_content(evidence_id: str):
