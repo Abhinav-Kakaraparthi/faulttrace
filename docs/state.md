@@ -20,11 +20,19 @@ backend byte-for-byte fixture-regeneration assertion on Ubuntu (161 other tests
 passed; zero forbidden attempts). Exact font/encoder cause is not established.
 Backend runner now matches the clean Windows environment; no assertions, fixtures
 or application behavior changed. Linux fixture byte reproducibility stays open.
-Corrected hosted execution is pending. Static tests are not browser verification.
+Corrected [run 40399590742](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40399590742)
+at `1b8249f704a900323ca71d115866704ba88fc452` PASSED both jobs: 162 backend
+tests, zero forbidden attempts; 45 frontend tests, dependency checks, TypeScript
+and production build. Hosted runtimes were CPython 3.12.10 / Node 22.23.3;
+local runtimes were Python 3.12.14 / Node 22.14.0. This later evidence update is
+documentation-only; implementation and valid local checks are unchanged. The
+final push run must be verified separately before handoff. Static tests are not
+browser verification. Preview databases/images and ledger hashes remain unchanged.
 No inference, server restart, deployment or run/history mutation.
-Next: inspect the corrected push run and fix any remaining CI-specific failure.
+Next: retain passing CI when reviewing this feature branch; FT-011 visual/live
+acceptance and the final submission-revision CI gate remain separate.
 
-## Current: FT-011 photographic evidence informs planning (PARTIAL)
+## FT-011 photographic evidence informs planning (PARTIAL)
 
 Implemented on `feat/ft-011-photo-planning` from verified clean
 `86d8e76e463652aa7b3dc76ba248df1309141a12`. Photographs now contribute bounded,
@@ -53,8 +61,8 @@ Existing preview backends are untouched and have not loaded this implementation.
 Next: isolated inference-disabled visual acceptance of photo assessment, explicit
 handoff, accepted citations and source-photo clarification, then separately
 authorize bounded live planner evaluation. [Exact commands and limitations](photo-planning.md).
-Photographic numeric accuracy, integrated AI recovery, roles/authentication, CI
-and hosting remain open; no submission gate is newly satisfied.
+Photographic numeric accuracy, integrated AI recovery, roles/authentication and
+hosting remain open. CI status is recorded above; no product gate is newly satisfied.
 
 ## FT-010 photographic observation analysis (PARTIAL)
 

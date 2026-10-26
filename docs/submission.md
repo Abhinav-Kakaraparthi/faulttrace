@@ -9,11 +9,14 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
-CI checkpoint: push/PR backend and frontend jobs are configured with no provider
-secrets and a network-guarded Python suite. Local clean installations, 162 backend
-and 45 frontend tests, typecheck and build pass. Hosted execution is pending;
-the submission-revision CI checkbox stays unchecked. Browser and deployment
-acceptance remain separate.
+CI checkpoint: push/PR backend and frontend jobs use no provider secrets and a
+network-guarded Python suite. Local clean installations and hosted
+[run 40399590742](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40399590742)
+at `1b8249f704a900323ca71d115866704ba88fc452` pass 162 backend / 45 frontend
+tests, dependency checks, typecheck and build. Backend uses the verified Windows
+fixture environment; Linux PNG byte regeneration failed and remains a limitation.
+The final submission revision has not been selected, so its CI checkbox stays
+unchecked. Static tests do not establish browser or deployment acceptance.
 
 FT-011 connects validated photo claims to saved observation-planner context, with
 compatibility/dispute/freshness assessment, explicit Operator handoff, accepted

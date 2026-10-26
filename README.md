@@ -72,7 +72,7 @@ saved-refusal-context test, producing user-reported validated human escalation.
 No task or browser journey was verified by that call; general reliability is open.
 FT-007 stays PARTIAL;
 browser verification and useful adaptive decisions remain open. Inference is disabled by
-default; CI, hosting, and recovery verification stay open.
+default; hosting and broader recovery verification stay open. CI is recorded below.
 FT-007A adds strict structured-output requests and precise sanitized diagnostics.
 The existing rejected live attempt remains preserved; a corrected call is
 blocked on its already-attempted context. See the workflow guide before testing.
@@ -150,6 +150,10 @@ Static frontend tests and a successful build do not establish browser acceptance
 The initial Ubuntu backend run exposed different regenerated PNG bytes. Backend
 CI matches the verified Windows environment; fixtures/assertions are unchanged,
 and Linux fixture byte reproducibility remains unverified.
+[Verified hosted run](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40399590742)
+at `1b8249f704a900323ca71d115866704ba88fc452`: 162 backend / 45 frontend
+tests, dependency checks, typecheck and build passed. Later commits require their
+own passing run; see the branch's Actions checks.
 
 ## FT-005 separate sample preview
 
