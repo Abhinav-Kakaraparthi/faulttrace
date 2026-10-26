@@ -133,7 +133,8 @@ Full offline checks after backend setup:
 ## Continuous integration
 
 [FaultTrace CI](.github/workflows/ci.yml) runs on every push and pull request,
-using Ubuntu 24.04, Python 3.12 and Node 22. It installs the existing pinned
+using Windows Server 2025 / Python 3.12 for backend and Ubuntu 24.04 / Node 22
+for frontend. It installs the existing pinned
 `requirements-backend.txt` and uses `npm ci` with the frontend lockfile, then runs
 the full backend suite, frontend tests, TypeScript checks and production build.
 Actions are pinned to official release commit SHAs; token permissions are read-only.
@@ -146,6 +147,9 @@ it is not a sandbox for hostile code/native extensions/subprocesses. No provider
 secrets are configured. Dependency installation still needs package registries.
 Run the same backend command above and the frontend commands below locally.
 Static frontend tests and a successful build do not establish browser acceptance.
+The initial Ubuntu backend run exposed different regenerated PNG bytes. Backend
+CI matches the verified Windows environment; fixtures/assertions are unchanged,
+and Linux fixture byte reproducibility remains unverified.
 
 ## FT-005 separate sample preview
 

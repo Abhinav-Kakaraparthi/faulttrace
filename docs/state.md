@@ -3,8 +3,8 @@
 ## Current: GitHub Actions CI
 
 Starting clean at `9b07cd0b65bbd513957cf5aba73bc02afb0a64a0` on the existing
-`feat/ft-011-photo-planning` branch. Push/PR workflow adds separate Ubuntu 24.04
-Python 3.12 and Node 22 jobs, pinned official actions, read-only permissions,
+`feat/ft-011-photo-planning` branch. Push/PR workflow adds separate Windows Server
+2025 / Python 3.12 and Ubuntu 24.04 / Node 22 jobs, pinned official actions, read-only permissions,
 existing backend requirements installation and lockfile-based frontend install.
 Reusable backend runner removes provider credentials, disables inference and
 forbids external Python DNS/socket operations before discovery; caught violations
@@ -14,9 +14,15 @@ credential removal. Existing product tests are unchanged.
 Equivalent local checks use a fresh ignored copy/venv, preserving the running
 previews and their dependencies. Installations, dependency consistency, 162 backend
 tests (zero forbidden external attempts), 45 frontend tests, TypeScript and build
-pass. GitHub execution is pending the checkpoint push. Static tests are not browser
-verification. No inference, server restart, deployment or run/history mutation.
-Next: inspect the actual push run and fix any CI-specific failure in this scope.
+pass. Initial hosted run [40398484966](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40398484966)
+at `016baa6e113ebe39c14b32aa8478601d12a44827` passed frontend but failed the
+backend byte-for-byte fixture-regeneration assertion on Ubuntu (161 other tests
+passed; zero forbidden attempts). Exact font/encoder cause is not established.
+Backend runner now matches the clean Windows environment; no assertions, fixtures
+or application behavior changed. Linux fixture byte reproducibility stays open.
+Corrected hosted execution is pending. Static tests are not browser verification.
+No inference, server restart, deployment or run/history mutation.
+Next: inspect the corrected push run and fix any remaining CI-specific failure.
 
 ## Current: FT-011 photographic evidence informs planning (PARTIAL)
 
