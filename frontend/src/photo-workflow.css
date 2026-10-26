@@ -56,3 +56,4 @@
 .photo-planning-assessment details { font-size: 1rem; }
 .accepted-references ul { padding-left: 1.2rem; }
 .accepted-references button { white-space: normal; text-align: left; }
+.photo-follow-up button { max-width: 100%; white-space: normal; text-align: left; min-height: 44px; }

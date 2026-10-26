@@ -18,6 +18,9 @@ TypeScript and production build pass. Initial static citation test caught an
 incorrect separator introduced during editing; corrected in source and rerun.
 All source files remain below 500 lines. Historical preview public states and
 stored image hashes match the earlier baseline; ledger byte hash is unchanged.
+Core implementation: `fd5ec2e3492ffa5df5e8399dc93d95b060e4e136`. A subsequent scoped
+presentation fix allows source-photo/handoff buttons to wrap within mobile panels;
+45 frontend tests and type/build pass again. This is not browser verification.
 Read-only preservation/check record: `.local/visual/ft011-offline/verification.json`.
 Browser surfaces are absent and in-app opening fails: no desktop/mobile/keyboard
 or live adaptive-planning pass is claimed, and no screenshots were captured.

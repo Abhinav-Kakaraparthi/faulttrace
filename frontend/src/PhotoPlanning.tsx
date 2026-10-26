@@ -41,11 +41,11 @@ export function PhotoFollowUp({ state, disabled, mutate, inspect }: {
   const canForward = task.status === 'awaiting' && assessment?.analysis_status === 'interpreted'
     && assessment.claim && assessment.status !== 'stale';
   return <>
-    {!!sources.length && <section className="section-surface"><h2>Clarify photographic evidence</h2>
+    {!!sources.length && <section className="section-surface photo-follow-up"><h2>Clarify photographic evidence</h2>
       <p>This observation cites earlier photographs. Follow the registered task instructions; confirm equipment and measurement type independently.</p>
       {sources.map(e => <button className="button secondary" key={e.id} onClick={() => inspect(e)}>Inspect source photograph · assigned {e.asset_id}</button>)}
     </section>}
-    {canForward && latest && <section className="section-surface"><h2>Photo ready for follow-up review</h2>
+    {canForward && latest && <section className="section-surface photo-follow-up"><h2>Photo ready for follow-up review</h2>
       <p>Send this claim to Commander for the next observation decision. This does not accept its reading or complete the measurement task.</p>
       <button className="button secondary" disabled={disabled} onClick={() => void mutate(`/api/tasks/${task.id}/photo-follow-up`,
         { revision: task.revision, evidence_id: latest.id }, `photo-follow-up-${latest.id}-${task.revision}`)}>Send photo for follow-up planning</button>
