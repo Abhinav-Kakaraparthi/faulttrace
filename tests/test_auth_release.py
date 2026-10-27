@@ -162,6 +162,7 @@ class AdministratorTests(unittest.TestCase):
         from faulttrace.workflow.auth_admin import main
         from faulttrace.workflow.auth import Registry
         root = Path(__file__).resolve().parents[1]
+        (root / '.local').mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=root / '.local') as temp:
             registry, delivery = Path(temp) / 'registry.json', Path(temp) / 'delivery.token'
             base = ['--registry', str(registry)]

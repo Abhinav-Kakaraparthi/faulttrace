@@ -225,9 +225,11 @@ Exact local checks at that clean implementation:
   `42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca`.
 
 [Implementation CI 40591338759](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40591338759)
-was in progress at this documentation checkpoint: frontend tests/typecheck/build
-passed; backend dependency installation/check passed and its suite was running.
-See delivery for later observed status; no Linux backend matrix was added.
+failed one new administrator test on the fresh runner: its ignored `.local`
+parent did not exist. Other 193 backend tests, dependency checks and frontend
+tests/typecheck/build passed; zero forbidden attempts. The test now creates that
+parent explicitly; no product or shared test setup changed. See delivery for the
+corrected commit/CI outcome; no Linux backend matrix was added.
 
 Owned changed paths:
 
