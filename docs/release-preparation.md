@@ -171,7 +171,9 @@ bytes**. Only compressed IDAT payload differs: panel-a 6529 versus committed 648
 bytes; panel-b 5398 versus 5375. This reproduction rules out font/raster/filter
 differences and isolates PNG mismatch to compression encoding. Exact internal
 compressor decisions were not instrumented. Manifest non-hash fields match;
-PNG hashes differ and Linux emits LF versus committed Windows CRLF.
+PNG hashes differ and Linux emits LF versus this Windows checkout's CRLF. Git's
+index stores LF (`git ls-files --eol`); the newline observation reflects checkout
+serialization, not a second established cause of the original Linux CI failure.
 
 Committed SHA-256:
 
@@ -249,3 +251,12 @@ Owned changed paths:
 - `tests/test_fixture_portability.py`
 - `tools/start_release.py`
 - `docs/release-preparation.md`
+
+Latest clean application test SHA:
+`e956bd423f8fce453491f8d1f15c2148db2cde4f`: 195 backend tests passed in
+53.689s, zero forbidden external attempts, dependency/diff checks passed. This
+includes the fresh-checkout setup correction and sanitized audit-failure test.
+Its [exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40592354394)
+and final documentation-only commit status are reported in the delivery. The
+preceding [fresh-checkout correction CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40591960336)
+passed. No frontend visual acceptance or Linux byte pass follows from these runs.
