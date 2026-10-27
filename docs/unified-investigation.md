@@ -52,6 +52,11 @@ Scripted choices demonstrate application policy, not live model reasoning/accura
 Browser inventory is empty and in-app opening fails. Desktop/390x844, keyboard,
 file selection, dialog focus/scroll and complete visual interaction remain open;
 no screenshots or camera pass are claimed. Static tests are not browser evidence.
+Implementation `b8fc87771c4906f5477dd515ab14407604b6764f` passed
+[hosted CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40534982605).
+The isolated 5182/8782 preview is running with fresh ignored data under
+`.local/visual/ft012-5297706b4e5a41a09f344ca6c62a1f31/data`.
+Both route HTTP checks pass; browser access remains unavailable.
 
 ## Isolated review: zero provider requests
 

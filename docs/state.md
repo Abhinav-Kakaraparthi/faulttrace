@@ -22,6 +22,14 @@ Browser surfaces are absent and in-app opening failed: desktop/mobile/keyboard,
 upload and dialog interaction remain unverified; no new screenshots exist.
 Read-only history/image/ledger comparisons and a scripted walkthrough summary are
 in ignored `.local/visual/ft012-5297706b4e5a41a09f344ca6c62a1f31/`.
+Implementation `b8fc87771c4906f5477dd515ab14407604b6764f` passed
+[CI 40534982605](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40534982605):
+175 backend / 51 frontend tests, zero forbidden attempts, typecheck/build. Later
+changes only strengthen the synthetic harness regression and record this evidence;
+application behavior is unchanged. Isolated offline-double review is running on
+5182/8782 with fresh `data/` in that ignored folder. Both routes return 200 and
+`test_output=true` is verified; this is HTTP readiness, not a browser pass. Old
+5180/8780 and 5181/8781 servers are untouched. Final push CI is checked separately.
 [Isolated test-output preview and bounded later live plan](unified-investigation.md).
 Next: founder visual review of that offline preview, then separately authorize a
 bounded live walkthrough after checking credits. Conflicts/refusals have no

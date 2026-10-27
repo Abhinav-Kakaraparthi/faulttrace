@@ -283,8 +283,16 @@ class UnifiedInvestigationTests(WorkflowCase):
     def test_offline_harness_never_reads_real_photos_and_labels_all_test_output(self):
         from tools.offline_investigation_demo import fake_transport
         from faulttrace.workflow.api import create_app
+        from faulttrace.photo_observation import request_photo, validate_photo_observation
+        from faulttrace.workflow.uploads import validate_upload
         with self.assertRaisesRegex(ValueError, '^test_output_requires_provider_double$'):
             create_app(self.data, self.ledger, test_output=True)
+        from pathlib import Path
+        panel = Path(__file__).resolve().parents[1] / 'fixtures/image-evidence/panel-a.png'
+        normalized = validate_upload(panel.read_bytes(), 'image/png', None)
+        fixture_only = validate_photo_observation(json.loads(fake_transport('OFFLINE_TEST_DOUBLE',
+            request_photo(normalized['bytes'], 'evidence-test'))), 'evidence-test')
+        self.assertEqual((fixture_only['reading'], fixture_only['visible_unit']), (180, 'kPa'))
         self.app = self.application(send=fake_transport, simulation_clock=lambda:self.wall, test_output=True)
         client = self.enterContext(TestClient(self.app))
         self.assertEqual(self.post(client, '/api/investigations', {}).status_code, 200)
@@ -317,4 +325,3 @@ class UnifiedInvestigationTests(WorkflowCase):
             self.assertEqual(state['planning_remaining'], 3)
             self.assertIsNone(state['task'])
         self.assertFalse(self.calls)
-

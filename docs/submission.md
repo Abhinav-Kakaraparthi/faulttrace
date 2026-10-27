@@ -14,6 +14,9 @@ evidence, explicit correction approval and telemetry verification through shared
 references. 175 backend/51 frontend offline tests and type/build pass, including
 failure, dispute, stale evidence, ineffective correction and relapse. Scripted
 provider doubles do not establish live reasoning or photographic accuracy.
+[Implementation CI passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40534982605)
+at `b8fc87771c4906f5477dd515ab14407604b6764f`; a fresh isolated offline-double
+preview is available on 5182/8782. HTTP readiness is not browser acceptance.
 Browser/mobile, server-enforced roles, live walkthrough and hosting remain open;
 no product checkbox is newly satisfied. [Scope and review plan](unified-investigation.md).
 
