@@ -215,6 +215,19 @@ and accessibility verification is pending; no screenshots were taken.
 The checklist items below remain open. Local preview is not deployed hosting,
 a completed live application, or independent recovery verification.
 
+## Partner roadmap gates (planned only)
+
+[Scope, dependencies and acceptance criteria](architecture.md#partner-integration-roadmap).
+No new partner integration or credit entitlement is claimed. Current orchestration
+is custom Python/SQLite; LangChain/LangGraph are not dependencies, and migration
+is not required. Existing NVIDIA/Nebius runtime remains in place.
+
+- [ ] **Nebius — conditional:** verify credited balance and restrictions before approving an evaluation/hosted-demo budget; no balance or redemption assumed.
+- [ ] **LangSmith — optional/planned after CI:** deterministic reviewed-reference evaluation of contract validity, numeric accuracy and abstention, plus measured latency/usage; verify export controls excluding credentials, private images and raw reasoning by default.
+- [ ] **Tavily — planned after the core connected journey:** confirmed equipment model, restricted official manufacturer domains, visible actual citations and rejection tests; reference context never becomes observed evidence or correction authority.
+- [ ] **Toloka — conditional assessment:** confirm eligibility, reviewer suitability, cost/credit coverage and turnaround before use; approve labeling quality and data-permission/privacy controls.
+- [ ] **Tandem — deferred/not selected:** establish concrete project benefit and a bounded acceptance test before reconsideration.
+
 ## Entry and eligibility
 
 - [ ] Registration and eligibility confirmed.

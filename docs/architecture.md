@@ -46,6 +46,25 @@ measurements. Neither a model response nor an operator completion grants recover
 | Logs/accounting | Persisted wall-clock audit events, sanitized receipts/status codes, known/unknown token accounting; private local artifacts ignored | Protected centralized logs/monitoring and retention; no raw reasoning, provider bodies, headers, credentials or private uploads in public logs |
 | Policy and verifier | Registered observation IDs, revision/reference validation, four planning turns, no automatic retry; separate human-approved simulation action and sample-based recovery policy | Server role authorization and broader scenario evaluation; no real equipment-control connection or general industrial safety claim |
 
+## Partner-integration roadmap
+
+Current orchestration is **custom Python with SQLite**. LangChain and LangGraph
+are not current dependencies. None of the plans below requires an orchestration
+migration. Existing NVIDIA inference through Nebius is retained; the additional
+partner work and balance/offer checks below are not implemented or verified.
+
+| Partner / status | Dependencies and planned scope | Acceptance before use or claiming integration |
+| --- | --- | --- |
+| **Nebius Token Factory — conditional budget check** | Retain NVIDIA runtime inference. Verify credited balance before budgeting evaluation or hosted-demo usage. | Privately confirm usable credited balance, expiry/restrictions and verification date; approve a bounded allocation before calls. Do not assume an offer was redeemed or that unknown usage is zero. |
+| **LangSmith — planned, optional, after CI** | Passing CI, independently reviewed references and an approved export policy. Add evaluation/observability without replacing the custom workflow. | Deterministic evaluators measure contract validity, numeric accuracy and abstention against reviewed references; retain measured latency and actual known/unknown usage separately. Test evaluators against independently expected cases and verify redaction/export controls. Credentials, private images and raw reasoning are excluded by default. |
+| **Tavily — planned, after the core connected journey** | A confirmed equipment model and restricted official manufacturer domains; no lookup inferred solely from assignment or an uncertain photo label. | Useful manufacturer-document lookup with visible citations to actual sources. Test missing documents, model mismatch, off-domain results and malicious document text. Retrieved material remains untrusted reference context, never observed evidence or correction authority. No bonus/integration claim before functional verification. |
+| **Toloka — conditional offer assessment** | Independently labeled photo evaluation plan and permission/privacy review before sharing any data. | Confirm offer eligibility, reviewer suitability, credit coverage, actual cost and turnaround before use. Approve labeling instructions, independent review/disagreement handling and source/permission records; do not invent labels or treat preliminary estimates as calibrated truth. |
+| **Tandem — deferred, not selected** | No concrete FaultTrace benefit has been established. | Reconsider only after a specific benefit and bounded acceptance test are documented, with dependency/privacy/cost review. No account, package or data transfer is selected now. |
+
+These are planning decisions, not account creation, offer redemption, data export
+or runtime changes. New spending and external-data use need applicable approval.
+Track unverified gates in the [submission tracker](submission.md#partner-roadmap-gates-planned-only).
+
 ## FT-009B collection boundary
 
 Camera/file uploads on assigned F-17/V-08 tasks use reference-photo purpose and

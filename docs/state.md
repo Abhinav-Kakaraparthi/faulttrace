@@ -1,5 +1,20 @@
 # Checkpoint state
 
+Partner roadmap persisted (documentation only), starting clean at
+`7a67539adf823c81b4bec3bb4b5024493003d498`. Nebius balance verification and
+Toloka offer assessment are conditional; LangSmith is optional/planned after CI;
+Tavily follows the core connected journey; Tandem is deferred/not selected.
+[Roadmap and acceptance/dependency gates](architecture.md#partner-integration-roadmap)
+are mirrored in the [submission tracker](submission.md#partner-roadmap-gates-planned-only).
+Current orchestration remains custom Python/SQLite, with no LangChain/LangGraph
+dependency or required migration. No packages/accounts/offers, partner data
+exports, provider calls or runtime changes. CI implementation is preserved;
+[run 40399953494](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40399953494)
+passed for the starting revision (162 backend / 45 frontend tests, type/build).
+Valid local test evidence is reused for this documentation-only update; the new
+push gets its own CI check. Next: privately verify credited Nebius balance before
+proposing any bounded evaluation or hosted-demo allocation; no calls authorized here.
+
 ## Current: GitHub Actions CI
 
 Starting clean at `9b07cd0b65bbd513957cf5aba73bc02afb0a64a0` on the existing
