@@ -45,7 +45,15 @@ async def fields(request, expected):
 
 
 def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transport,
-               enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective", test_output=False):
+               enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective", test_output=False,
+               profile='local', auth_registry=None):
+    if profile not in ('local', 'release'):
+        raise ValueError('invalid_profile')
+    from .auth import Registry
+    from .access import Access
+    if profile == 'release' and not auth_registry:
+        raise ValueError('auth_configuration_required')
+    registry = Registry(auth_registry) if profile == 'release' else None
     if test_output and send is transport:
         raise ValueError('test_output_requires_provider_double')
     origins = allowed_origins()
@@ -63,6 +71,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
             engine = AnalysisEngine(workflow, ledger_path, send, inference_enabled, revision=source_revision(), **kwargs)
             app.state.workflow, app.state.engine = workflow, engine
             app.state.journey = Journey(workflow, simulation_clock, simulation_outcome, test_output)
+            app.state.access = Access(store, registry) if registry else None
             yield
         finally:
             if engine:
@@ -74,17 +83,30 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
 
     @app.middleware("http")
     async def local_boundary(request, call_next):
+        if profile == 'local' and (not request.client or request.client.host not in ('127.0.0.1', '::1', 'testclient')):
+            return JSONResponse({'error': 'loopback_required'}, 403, headers={'Cache-Control': 'no-store'})
+        if registry and (request.url.path == '/api' or request.url.path.startswith('/api/')):
+            try:
+                request.state.principal = registry.authenticate(request.headers.get('authorization'))
+                await app.state.access.authorize(request, request.state.principal)
+            except WorkflowError as error:
+                app.state.access.audit(getattr(request.state, 'principal', None), request.method, error.status)
+                return JSONResponse({'error': error.code}, error.status, headers={'Cache-Control': 'no-store'})
+            except Exception:
+                return JSONResponse({'error': 'access_denied'}, 403, headers={'Cache-Control': 'no-store'})
         if request.method not in ("GET", "HEAD"):
             if request.headers.get("origin") is not None and request.headers.get("origin") not in origins:
-                return JSONResponse({"error": "origin_not_allowed"}, 403)
-            if request.headers.get("x-faulttrace-local") != "1":
-                return JSONResponse({"error": "local_client_header_required"}, 403)
+                return JSONResponse({"error": "origin_not_allowed"}, 403, headers={'Cache-Control': 'no-store'})
+            if not registry and request.headers.get("x-faulttrace-local") != "1":
+                return JSONResponse({"error": "local_client_header_required"}, 403, headers={'Cache-Control': 'no-store'})
         try:
             response = await call_next(request)
         except Exception:
             response = JSONResponse({"error": "storage_or_internal_failure"}, 500)
         response.headers["Cache-Control"] = "no-store"
         response.headers["X-Content-Type-Options"] = "nosniff"
+        if registry and hasattr(request.state, 'principal'):
+            app.state.access.audit(request.state.principal, request.method, response.status_code)
         return response
 
     @app.exception_handler(WorkflowError)
@@ -96,11 +118,33 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         return JSONResponse({"error": "invalid_request"}, 400)
 
     @app.get("/api/state")
-    def state():
+    def state(request: Request):
         with app.state.workflow.write_lock:
             snapshot = app.state.workflow.store.snapshot()
-            return dict(snapshot, test_output=test_output, photo_planning={'version': 1}, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
+            result = dict(snapshot, test_output=test_output, photo_planning={'version': 1}, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
                         mode="local server / simulated incident / real inference only on explicit action")
+            return app.state.access.scope(request.state.principal, result) if registry else result
+
+    @app.get('/api/identity')
+    def identity(request: Request):
+        p = request.state.principal if registry else {}
+        return {'profile': profile, 'principal_id': p.get('principal_id'), 'role': p.get('role'),
+                'capabilities': {'create_incident': p.get('create', False)},
+                'incident_ids': p.get('incidents', [])}
+
+    def start_authorized(request, operation, *args):
+        with app.state.workflow.write_lock:
+            if registry:
+                with app.state.workflow.store.connection() as db:
+                    existing = db.execute('SELECT id FROM incidents').fetchone()
+                if existing:
+                    # Recheck under the creation lock: two concurrent creators
+                    # must not both gain the singleton incident.
+                    app.state.access.incident(request.state.principal)
+            incident_id = operation(*args)
+            if registry:
+                registry.grant_creator(request.state.principal['principal_id'], incident_id)
+            return incident_id
 
     def key(request):
         return identifier(request.headers.get("idempotency-key"))
@@ -108,13 +152,13 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     @app.post("/api/incidents")
     async def start(request: Request):
         await fields(request, [])
-        incident_id = await run_in_threadpool(app.state.workflow.start, key(request))
+        incident_id = await run_in_threadpool(start_authorized, request, app.state.workflow.start, key(request))
         return {"incident_id": incident_id}
 
     @app.post('/api/investigations')
     async def investigation_start(request: Request):
         await fields(request, [])
-        result = await run_in_threadpool(app.state.journey.start, key(request), True)
+        result = await run_in_threadpool(start_authorized, request, app.state.journey.start, key(request), True)
         return {'incident_id': result}
 
     @app.post('/api/tasks/{task_id}/observations')
@@ -128,7 +172,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     @app.post('/api/simulation/start')
     async def simulation_start(request: Request):
         await fields(request, [])
-        result = await run_in_threadpool(app.state.journey.start, key(request))
+        result = await run_in_threadpool(start_authorized, request, app.state.journey.start, key(request))
         return {'incident_id': result}
 
     @app.post('/api/simulation/advance')
@@ -153,6 +197,8 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     @app.post('/api/simulation/execute')
     async def simulation_execute(request: Request):
         body = await fields(request, ['revision', 'approval_id'])
+        if registry:
+            app.state.access.correction(request.state.principal, body['approval_id'])
         result = await run_in_threadpool(app.state.journey.execute, body['revision'], body['approval_id'], key(request))
         return {'execution_id': result}
 

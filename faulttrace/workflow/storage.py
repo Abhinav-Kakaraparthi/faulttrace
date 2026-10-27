@@ -113,6 +113,10 @@ class Store:
     def connection(self, write=False):
         db = sqlite3.connect(self.database, timeout=5, isolation_level=None)
         db.row_factory = sqlite3.Row
+        # Release assignment triggers resolve trusted administration at INSERT time,
+        # including asynchronous planner tasks. Local stores assign nobody.
+        db.create_function('faulttrace_operator', 1,
+                           lambda incident: getattr(self, 'assignment_source', lambda _: None)(incident))
         try:
             db.execute("PRAGMA foreign_keys=ON")
             if write:
