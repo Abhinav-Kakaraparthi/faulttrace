@@ -1,5 +1,29 @@
 # Checkpoint state
 
+## Worker C draft review — static PASS, final video NOT RECORDED
+
+Reviewed immutable `b0de010addad04c72923d2feac59e7f7e5a42b18` against
+`f2da0085`: only four new drafts (`requirements-audit`, `submission-description`,
+`submission-architecture`, `demo-script` under docs); no runtime/shared-status edits.
+Remote `docs/finish-submission` matches. Exact-SHA
+[CI 40587796095](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40587796095)
+passed: 175 backend tests, zero forbidden external attempts, 51 frontend tests,
+dependency checks, typecheck/build. Coordinator pre-review `ac534601` also passed
+[CI 40590390413](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40590390413).
+Source unchanged; reused valid checks, reviewed documentation/secret diff.
+
+C's claims are bounded appropriately; its 170-second script is only a desk-timed
+offline rehearsal. No live integrated footage, browser acceptance, auth/release,
+hosting or submission gate is newly verified. Rules/FAQ read-only recheck agrees
+with the recorded deadline and runtime requirement; entrant eligibility remains
+unconfirmed. Drafts are not merged/cherry-picked or copied into this branch.
+[Final-video revision plan](final-video-revision-plan.md) requires later authorized
+actual NVIDIA/Nebius calls in the integrated application, clearly simulated
+equipment, separately labeled mock footage and a concise photo-accuracy caveat.
+No inference, server operations or recording occurred. Exact next dependency:
+founder relays B's finalized auth contract/tested SHA, then prepare A's bounded
+frontend assignment. Replace base limitations only after combined verification.
+
 ## Worker A handoff review — static PASS, browser BLOCKED
 
 Workers are running in their assigned worktrees; this review does not integrate

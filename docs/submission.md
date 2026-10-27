@@ -9,6 +9,18 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+Worker C's four drafts at `b0de010addad04c72923d2feac59e7f7e5a42b18` were
+reviewed without integration. [Exact-SHA CI passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40587796095)
+(175 backend / 51 frontend, dependency/type/build checks; zero forbidden attempts).
+Its demo script is an offline rehearsal, not recorded live integration footage.
+[Final-video revision plan](final-video-revision-plan.md) prepares actual in-app
+NVIDIA/Nebius capture only after B/A contract, integration, CI and manual review;
+no requests or footage are authorized/executed here. Simulated equipment and any
+mock footage must stay explicit. Real-photo accuracy remains unverified. Rules
+and FAQ rechecked October 27; eligibility, final release CI, browser, auth, hosting,
+video and submission gates remain open. B's finalized contract then A's auth
+follow-up are the next implementation dependency; no checkboxes changed.
+
 Worker A handoff `e9efbb61db4b13b78d314ee0d562fa74f2366f0b` is documentation
 only; coordinator verified [successful exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40587272362)
 (175 backend / 51 frontend tests, typecheck/build). Static checks PASS; browser
