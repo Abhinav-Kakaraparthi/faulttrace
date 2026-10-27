@@ -201,3 +201,47 @@ visual, TLS/retention/hosting and Linux byte gates unverified; no checkbox impli
 combined acceptance. Proposed CI change: none pending Linux review. Next action:
 relay this contract to A, integrate sequentially, run combined CI and visually
 recheck both roles, images, logout and errors before selecting the release.
+
+## Checkpoint handoff evidence
+
+Implementation and clean local tested SHA:
+`a695ef3c15b1b11deb3145621bee5f8878ce5bb5`.
+Remote branch was verified at the identical SHA after its scoped push. The later
+handoff documentation commit changes no implementation; final SHA/remote/CI
+status are reported in the delivery message.
+
+Exact local checks at that clean implementation:
+
+- `.venv/Scripts/python.exe tools/run_offline_tests.py`: 194 passed in 63.454s;
+  zero forbidden external network attempts. Output is ignored
+  `.local/worker-b-clean-offline.txt` (synthetic tests only).
+- `.venv/Scripts/python.exe -m pip check`: no broken requirements.
+- `git diff --check` and staged whitespace review: pass; staged credential-pattern
+  review found no credentials. All source files remain below 500 lines.
+- Separate Linux Python 3.12.10/Pillow 13.0.0 diagnostic: identical pixels and
+  decompressed IDAT, differing compressed bytes/hashes/newlines as recorded above.
+  This is a confirmed negative portability outcome, not a passing Linux suite.
+- Official isolated Linux wheel SHA-256:
+  `42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca`.
+
+[Implementation CI 40591338759](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40591338759)
+was in progress at this documentation checkpoint: frontend tests/typecheck/build
+passed; backend dependency installation/check passed and its suite was running.
+See delivery for later observed status; no Linux backend matrix was added.
+
+Owned changed paths:
+
+- `faulttrace/workflow/api.py`
+- `faulttrace/workflow/main.py`
+- `faulttrace/workflow/storage.py`
+- `faulttrace/workflow/access.py`
+- `faulttrace/workflow/auth.py`
+- `faulttrace/workflow/auth_admin.py`
+- `faulttrace/workflow/startup.py`
+- `tests/test_auth_release.py`
+- `tests/test_access_release.py`
+- `tests/test_access_journey.py`
+- `tests/test_startup_release.py`
+- `tests/test_fixture_portability.py`
+- `tools/start_release.py`
+- `docs/release-preparation.md`
