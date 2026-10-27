@@ -1,5 +1,30 @@
 # Checkpoint state
 
+## Parallel finish setup (no product implementation started)
+
+Three sibling worktrees start at verified clean
+`f2da0085a99061fe00f29ba91e5ba92b36d475fa`, with
+[passing baseline CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40568257106):
+
+| Worker | Sibling directory / branch | Bounded ownership |
+| --- | --- | --- |
+| A | `faulttrace-visual` / `feat/finish-visual` | Concrete frontend visual defects, frontend tests, separate visual report; no backend/dependency changes without review |
+| B | `faulttrace-release` / `feat/finish-release` | Server auth/roles/access, local reproducible startup, independent tests and Linux fixture investigation; no policy weakening/provisioning |
+| C | `faulttrace-submission` / `docs/finish-submission` | New requirements audit, description, architecture explanation and <=180-second script drafts; no publishing/submission |
+
+Each has an ignored `.local/TASK-BRIEF.md` with acceptance/checks/handoff rules.
+Only tracked source and new brief text were written; no environments, credentials,
+uploads, databases, ledgers, venvs or node_modules were copied. All three HEADs
+match the base and tracked trees are clean. No worker session was started here.
+Coordinator exclusively owns shared state/submission status and integration;
+README/common architecture/guides, CI and common configuration changes also need
+coordinator review. Auth's frontend contract is the main overlap: B must flag it
+before A-owned edits. Workers commit/push only their own branches, returning
+proposed shared updates. No provider calls, spending, public deployment or merges.
+Next: open the three folders as separate sessions with their briefs. Integration
+is a later sequential checkpoint with full CI and visual rechecking; no automatic
+merge/cherry-pick. Existing previews and runs remain untouched.
+
 Visual acceptance prepared for application SHA
 `17b7ffeb4bf0af31a385ee120ad34113f89ab49a` (documentation/setup only).
 Existing 5182/8782 has equivalent runtime source; older 5180/8780 and 5181/8781
