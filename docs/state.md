@@ -1,5 +1,23 @@
 # Checkpoint state
 
+Visual acceptance prepared for application SHA
+`17b7ffeb4bf0af31a385ee120ad34113f89ab49a` (documentation/setup only).
+Existing 5182/8782 has equivalent runtime source; older 5180/8780 and 5181/8781
+lack unified fields. All old servers/runs are preserved. Fifteen new isolated
+scenario pairs on 5190..5204 use the current production build/API with inference
+disabled, seeded test output, separate SQLite/ledgers and a fixed review wall
+clock. They cover assignment, photos/handoff, disputes/uncertainty, cited
+clarification/escalation, approval/stale approval, progress/success/failure/relapse
+and empty/loading/disconnected/upload-error states. Both routes are HTTP-ready;
+this is not visual or interaction acceptance. TypeScript/build pass; no product
+source/policy/dependency changes or provider calls. Browser inventory is empty and
+in-app opening fails: no screenshots, desktop/mobile/keyboard/dialog, upload
+progress or camera pass. Checklist, source/build hashes and empty screenshot
+folders are in ignored `.local/visual/acceptance-ee8278bc794b4085a89d545564345c14/`.
+Next: review 5190/commander and 5190/operator at 1440x900 then 390x844, starting
+only with incident overview and the test-created F-17 assignment; record founder
+feedback before proceeding through the numbered manual checklist.
+
 ## Current: FT-012 unified investigation-to-recovery (PARTIAL)
 
 Started clean at `fabeb26c95c6592378d441723f74d7d2621bc854`; latest

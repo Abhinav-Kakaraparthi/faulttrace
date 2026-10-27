@@ -9,6 +9,12 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+Current-build visual review has fifteen isolated, inference-disabled scenario
+pairs prepared with clearly labeled test output and controlled clocks. Setup,
+HTTP readiness and build checks are not browser/mobile/keyboard, upload-progress
+or camera acceptance. Those gates remain unchecked; no provider requests or new
+live-model evidence were produced. First review: 5190/commander and /operator.
+
 FT-012: new simulated investigations connect planner tasks, independent human
 evidence, explicit correction approval and telemetry verification through shared
 references. 175 backend/51 frontend offline tests and type/build pass, including

@@ -60,6 +60,14 @@ Both route HTTP checks pass; browser access remains unavailable.
 
 ## Isolated review: zero provider requests
 
+Visual acceptance scenarios for current application SHA `17b7ffeb` are prepared
+separately on ports 5190..5204, with inference disabled while served. Start with
+http://127.0.0.1:5190/commander and http://127.0.0.1:5190/operator. The complete
+numbered checklist and scenario URL pairs are in ignored
+`.local/visual/acceptance-ee8278bc794b4085a89d545564345c14/manual-review.md`.
+Seeded results are offline test output; wall clocks are paused test fixtures,
+not proof of production freshness. No browser/camera/interaction pass is claimed.
+
 The development harness injects deterministic doubles, records **OFFLINE TEST
 OUTPUT**, uses a new ignored directory and separate test-only ledger, and ignores
 real provider credentials. No new dependency or runtime architecture is required.
