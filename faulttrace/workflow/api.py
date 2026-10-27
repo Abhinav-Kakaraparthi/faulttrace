@@ -90,7 +90,10 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
                 request.state.principal = registry.authenticate(request.headers.get('authorization'))
                 await app.state.access.authorize(request, request.state.principal)
             except WorkflowError as error:
-                app.state.access.audit(getattr(request.state, 'principal', None), request.method, error.status)
+                try:
+                    app.state.access.audit(getattr(request.state, 'principal', None), request.method, error.status)
+                except Exception:
+                    pass  # Preserve denial even when its private audit store is unavailable.
                 return JSONResponse({'error': error.code}, error.status, headers={'Cache-Control': 'no-store'})
             except Exception:
                 return JSONResponse({'error': 'access_denied'}, 403, headers={'Cache-Control': 'no-store'})
@@ -106,7 +109,11 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         response.headers["Cache-Control"] = "no-store"
         response.headers["X-Content-Type-Options"] = "nosniff"
         if registry and hasattr(request.state, 'principal'):
-            app.state.access.audit(request.state.principal, request.method, response.status_code)
+            try:
+                app.state.access.audit(request.state.principal, request.method, response.status_code)
+            except Exception:
+                return JSONResponse({'error': 'storage_or_internal_failure'}, 500,
+                                    headers={'Cache-Control': 'no-store'})
         return response
 
     @app.exception_handler(WorkflowError)

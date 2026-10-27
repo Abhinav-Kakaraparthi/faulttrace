@@ -148,6 +148,8 @@ durability boundaries: crash/registry-lock failure between creation and creator
 grant can leave an inaccessible incident, requiring explicit administrator grant.
 Audit failure can likewise return an error after a workflow commit. Use existing
 idempotency keys; never assume an error proves no operation occurred.
+Such failures are sanitized/no-store; failed denial auditing never permits access
+or replaces the identity/resource denial with internal diagnostic details.
 
 TLS, managed identity/secret lifecycle, rate limiting, verified directory ACLs,
 retention, backup/restore, multi-instance execution and deployment remain gates.

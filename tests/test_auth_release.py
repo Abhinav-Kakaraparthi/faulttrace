@@ -132,6 +132,19 @@ class AuthenticationTests(ReleaseCase):
         for token in self.tokens.values():
             self.assertNotIn(token, json.dumps(rows))
 
+    def test_audit_failure_preserves_denial_and_sanitizes_authorized_failure(self):
+        def broken(*args):
+            raise RuntimeError('private internal detail')
+        self.app.state.access.audit = broken
+        denied = self.client.get('/api/state')
+        self.assertEqual(denied.status_code, 401)
+        self.assertEqual(denied.json(), {'error': 'authentication_required'})
+        response = self.state()
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json(), {'error': 'storage_or_internal_failure'})
+        self.assertEqual(response.headers['cache-control'], 'no-store')
+        self.assertNotIn('private internal detail', response.text)
+
     def test_concurrent_creators_do_not_both_gain_singleton_incident(self):
         delivery = self.root / 'second.token'
         issue(self.registry, 'second', 'commander', 1, True, delivery)
