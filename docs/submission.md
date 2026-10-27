@@ -9,6 +9,13 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+Worker A handoff `e9efbb61db4b13b78d314ee0d562fa74f2366f0b` is documentation
+only; coordinator verified [successful exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40587272362)
+(175 backend / 51 frontend tests, typecheck/build). Static checks PASS; browser
+acceptance remains BLOCKED with no screenshots or exercised interactions. No
+visual, authentication or release gate is newly satisfied, and no integration
+has occurred. Combined-auth acceptance will use founder manual review.
+
 Current-build visual review has fifteen isolated, inference-disabled scenario
 pairs prepared with clearly labeled test output and controlled clocks. Setup,
 HTTP readiness and build checks are not browser/mobile/keyboard, upload-progress

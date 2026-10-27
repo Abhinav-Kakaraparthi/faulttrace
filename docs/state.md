@@ -1,6 +1,36 @@
 # Checkpoint state
 
-## Parallel finish setup (no product implementation started)
+## Worker A handoff review — static PASS, browser BLOCKED
+
+Workers are running in their assigned worktrees; this review does not integrate
+their work. Coordinator inspected A's exact handoff
+`e9efbb61db4b13b78d314ee0d562fa74f2366f0b` against base `f2da0085`: the only
+change is new `docs/visual-acceptance-review.md`. No frontend/backend code, tests,
+dependency, policy or shared status edits. Remote `feat/finish-visual` matches.
+Local record reports 51 frontend tests/typecheck/build PASS. Independently checked
+[CI 40587272362](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40587272362)
+is SUCCESS at that exact SHA: 175 backend tests, zero forbidden external attempts,
+51 frontend tests, dependency checks, TypeScript and production build.
+
+Visual acceptance is BLOCKED: no browser surfaces/native helper, no screenshots,
+desktop/mobile, keyboard/dialog, photo/progress/camera or recovery interaction
+pass. A made no invented visual fix; the handoff is a blocked-review report, not
+visual acceptance. No merge/cherry-pick or application activation occurred.
+A is available for bounded frontend authentication work, but assignment is held
+until the founder relays B's finalized API contract and tested commit. Scope will
+cover memory-only credentials, authenticated JSON/upload/image requests, logout
+and access errors, without backend/policy changes. Do not request another round
+of the same unavailable browser attempts; use founder manual review instead.
+
+Proposed integration order, not executed: review/freeze B's server contract and
+checks; review A's subsequent contract-specific frontend diff; integrate B then
+A sequentially only when authorized, with full CI at each combined SHA; reconcile
+C's claims with the resulting code and founder visual evidence. Existing frozen
+5190..5204 cases are unauthenticated references, not combined-auth acceptance.
+[Contract intake and founder manual-review plan](combined-auth-manual-review.md).
+Next: await B's relayed contract; no partner work or cross-worker edits.
+
+## Parallel finish setup (baseline)
 
 Three sibling worktrees start at verified clean
 `f2da0085a99061fe00f29ba91e5ba92b36d475fa`, with
