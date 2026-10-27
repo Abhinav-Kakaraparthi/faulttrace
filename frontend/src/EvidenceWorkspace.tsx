@@ -8,10 +8,10 @@ export function EvidenceWorkspace({ state, inspect, analyze, disabled, workspace
   return <section className="workspace-evidence" aria-labelledby="investigation-evidence-title">
     <h2 id="investigation-evidence-title">Investigation evidence</h2>
     <p>Observations do not establish photographed identity or authorize correction. Inspect a record for its full image, interpretation and provenance.</p>
-    {journey && <div className="journey"><JourneyRecord journey={journey} completed={journey.maintenance_status !== 'not_completed'} /></div>}
+    {journey && <div className="journey"><JourneyRecord evidence={state.evidence} inspect={inspect} journey={journey} completed={journey.maintenance_status !== 'not_completed'} /></div>}
     {!!state.evidence.length && <ServerEvidenceList state={state} inspect={inspect} analyze={analyze} disabled={disabled} allowAnalysis={workspace === 'operator'} />}
     {!state.evidence.length && !journey && <section className="section-surface connected-empty"><h3>No observation evidence yet</h3><p>Operator submissions will appear here. No reading, model interpretation or cause has been established.</p></section>}
     {!state.evidence.length && journey && <p className="caption">No image or NVIDIA planner-task evidence in this run. The journey records above are simulated observations, not missing uploads.</p>}
-    {journey && !!state.evidence.length && <p className="notice">NVIDIA task evidence is available for investigation, but it is not consumed by the simulated correction/recovery assessment. That workflow currently checks its own simulated human reports and simulator samples.</p>}
+    {journey && journey.evidence_mode !== 'task-evidence' && !!state.evidence.length && <p className="notice">NVIDIA task evidence is available for investigation, but it is not consumed by the simulated correction/recovery assessment. That workflow currently checks its own simulated human reports and simulator samples.</p>}
   </section>;
 }

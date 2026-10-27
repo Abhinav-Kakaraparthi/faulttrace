@@ -12,8 +12,9 @@ ACTION = 'SIMULATE_F17_FILTER_REPLACEMENT'
 
 
 class Journey:
-    def __init__(self, workflow, clock=None, outcome='effective'):
+    def __init__(self, workflow, clock=None, outcome='effective', test_output=False):
         self.workflow, self.store = workflow, workflow.store
+        self.test_output = test_output
         self.clock = clock or (lambda: datetime.now(timezone.utc).timestamp())
         if outcome not in ('effective', 'ineffective', 'relapse'):
             raise ValueError('invalid_fixture_outcome')
@@ -33,9 +34,9 @@ class Journey:
     def bump(self, db):
         db.execute('UPDATE incidents SET revision=revision+1')
 
-    def start(self, key):
+    def start(self, key, integrated=False):
         with self.workflow.write_lock, self.store.connection(write=True) as db:
-            fingerprint, existing = self.store.operation(db, key, 'simulation_start', {})
+            fingerprint, existing = self.store.operation(db, key, 'investigation_start' if integrated else 'simulation_start', {})
             if existing:
                 return existing
             if db.execute('SELECT id FROM incidents').fetchone():
@@ -46,8 +47,10 @@ class Journey:
             db.execute('INSERT INTO incidents(id,singleton,created_at) VALUES(?,1,?)', (incident_id, stamp))
             db.execute('INSERT INTO sim_runs(incident_id,epoch,tick,private_outcome) VALUES(?,?,0,?)',
                        (incident_id, epoch, self.outcome))
+            if integrated:
+                db.execute('INSERT INTO integrated_runs(incident_id,test_output) VALUES(?,?)', (incident_id, int(self.test_output)))
             simulation.sample(db, self.run(db))
-            self.store.event(db, 'synthetic_journey_started')
+            self.store.event(db, 'task_investigation_started' if integrated else 'synthetic_journey_started')
             self.store.remember(db, key, fingerprint, incident_id)
             return incident_id
 
@@ -85,6 +88,9 @@ class Journey:
                 return existing
             run = self.run(db)
             self.revision(db, revision)
+            from .investigation_evidence import integrated
+            if integrated(db):
+                raise WorkflowError('task_observation_required', 409)
             if run['executed_tick'] is not None:
                 raise WorkflowError('simulation_observations_closed', 409)
             if db.execute('SELECT COUNT(*) FROM sim_observations').fetchone()[0] >= 32:
@@ -115,7 +121,7 @@ class Journey:
                 self.store.event(db, 'simulated_correction_declined')
                 result = 'declined'
             else:
-                assessment = assess(db, run)
+                assessment = assess(db, run, self.clock())
                 if not assessment['eligible']:
                     raise WorkflowError('correction_evidence_blocked', 409)
                 if self.blocking(db):
@@ -147,7 +153,7 @@ class Journey:
             self.revision(db, revision)
             if run['approval_id'] != approval_id or run['approved_revision'] != revision:
                 raise WorkflowError('stale_or_missing_approval', 409)
-            if not assess(db, run)['eligible'] or self.blocking(db):
+            if not assess(db, run, self.clock())['eligible'] or self.blocking(db):
                 raise WorkflowError('correction_evidence_blocked', 409)
             if run['executed_tick'] is not None:
                 raise WorkflowError('simulation_already_executed', 409)
@@ -163,13 +169,16 @@ class Journey:
             if not run:
                 return None
             samples = simulation.public_samples(db)
-            observations = [dict(r) for r in db.execute('SELECT * FROM sim_observations ORDER BY rowid')]
-            assessment = assess(db, run)
+            from .investigation_evidence import observations as records, integrated
+            observations = records(db)
+            assessment = assess(db, run, self.clock())
             if self.blocking(db):
                 assessment['blockers'].append('active_observation_or_planning')
                 assessment['eligible'] = False
             revision = db.execute('SELECT revision FROM incidents').fetchone()[0]
             return {'label': 'Synthetic return-loop journey; no equipment connection',
+                    'evidence_mode': 'task-evidence' if integrated(db) else 'legacy-simulation',
+                    'test_output': bool(db.execute('SELECT test_output FROM integrated_runs').fetchone()[0]) if integrated(db) else False,
                     'clock': simulation.timestamp(run), 'tick': run['tick'], 'samples': samples,
                     'observations': observations, 'assessment': assessment, 'policy': POLICY,
                     'action_id': ACTION, 'approval_id': run['approval_id'],

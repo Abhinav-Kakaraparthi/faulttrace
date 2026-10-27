@@ -21,7 +21,7 @@ export function PlannerPanel({ state, disabled, choose, open, inspect, historyOn
       <details className="rationale"><summary>Why this task?</summary><p>{task.explanation}</p><p>No equipment action or recovery is authorized.</p></details>
       <button className="button secondary wide" onClick={open}>Open operator task</button></> : <p>No task is assigned automatically. NVIDIA may propose an observation; application policy creates the task.</p>}
     <button className="button primary wide repeat-observation planner-choose" disabled={unavailable} aria-describedby={reasonId} onClick={choose}>{pending ? 'Planning request pending' : 'Choose next observation'}</button>
-    <p id={reasonId} className="caption" role="status">{blocker ?? (disabled ? 'Server unavailable or another request is in progress.' : 'One explicit NVIDIA text request. No automatic retry.')} {state.planning_remaining} of 4 planning turns remain.</p>
+    <p id={reasonId} className="caption" role="status">{blocker ?? (disabled ? 'Server unavailable or another request is in progress.' : state.test_output ? 'One scripted offline provider-double call; no live AI.' : 'One explicit NVIDIA text request. No automatic retry.')} {state.planning_remaining} of 4 planning turns remain.</p>
     </>}
     {accepted?.proposal && <div className="accepted-references"><h3>Latest accepted proposal cites</h3>
       <ul>{accepted.proposal.evidence_refs.map(ref => {

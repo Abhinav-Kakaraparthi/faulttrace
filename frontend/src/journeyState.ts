@@ -1,6 +1,7 @@
 export type Sample = { id: string; tick: number; timestamp: string; flow: number; pressure: number; valve: number; alarm: string | null };
-export type SimObservation = { id: string; asset_id: string; status: string; reading: number | null; unit: string | null; origin: string; timestamp: string };
+export type SimObservation = { evidence_id?: string; task_id?: string; human_observation?: import('./api').HumanObservationRecord; id: string; asset_id: string; status: string; reading: number | null; unit: string | null; origin: string; timestamp: string };
 export type JourneyState = {
+  evidence_mode?: 'task-evidence' | 'legacy-simulation'; test_output?: boolean;
   label: string; clock: string; tick: number; samples: Sample[]; observations: SimObservation[];
   assessment: { source: string; working_diagnosis: string | null; evidence_refs: string[]; blockers: string[]; eligible: boolean; alternatives: string[] };
   policy: { freshness_seconds: number; pressure_agreement_kpa: number; restriction_pressure_kpa: number[]; restricted_flow_m3h: number[]; recovery_pressure_kpa: number[]; recovery_flow_m3h: number[]; valve_feedback_percent: number[]; window_seconds: number; minimum_samples: number };

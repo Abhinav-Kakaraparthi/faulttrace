@@ -3,14 +3,17 @@ import { EvidencePhoto } from './EvidencePhoto';
 import { evidenceStatus, evidenceTimestamp } from './evidencePresentation';
 import { HTTPDiagnostics } from './HTTPDiagnostics';
 import { PhotoPlanningAssessment } from './PhotoPlanning';
+import { HumanObservationDetails } from './HumanObservation';
 import { PhotoInterpretation } from './PhotoInterpretation';
 
 export function ServerEvidenceDetails({ evidence }: { evidence: ServerEvidence }) {
   const receipt = evidence.analysis?.receipt;
   return <section className="evidence-inspection">
+    {evidence.test_output && <p className="notice">OFFLINE TEST OUTPUT / provider double. No live inference, latency or token consumption is established.</p>}
     <div className="inspection-summary"><span className="pill amber">{evidenceStatus(evidence)}</span><strong>Assigned asset: {evidence.asset_id}</strong><time dateTime={evidence.created_at}>{evidenceTimestamp(evidence.created_at)} · wall-clock record</time></div>
     {evidence.kind === 'image' ? <EvidencePhoto evidence={evidence} /> : <p>Human report only: {evidence.report}. No image or image-based identity verification supplied.</p>}
     {evidence.status === 'collected' && !evidence.analysis && <p>Collection-only photograph / not analyzed. No pressure reading inferred.</p>}
+    {evidence.human_observation && <HumanObservationDetails evidence={evidence} />}
     {evidence.analysis?.interpretation && <PhotoInterpretation value={evidence.analysis.interpretation} status={evidence.analysis.status} />}
     {evidence.photo_assessment && <PhotoPlanningAssessment value={evidence.photo_assessment} expanded />}
     <details className="inspection-provenance"><summary>Provenance, evidence limits &amp; receipt</summary>
@@ -24,7 +27,7 @@ export function ServerEvidenceDetails({ evidence }: { evidence: ServerEvidence }
         <div><dt>Human report</dt><dd>{evidence.kind === 'report' ? evidence.report : 'No human report in this image record'}</dd></div>
         <div><dt>Image-supported asset identity</dt><dd>Not assessed by assignment</dd></div>
         <div><dt>NVIDIA readability (if analyzed)</dt><dd>{evidence.analysis?.interpretation?.readability ?? 'Not analyzed'}</dd></div>
-        {receipt && <><div><dt>Model</dt><dd>{receipt.returned_model ?? 'unknown'} · validation {receipt.validation_result}</dd></div><div><dt>Attempt</dt><dd>{receipt.attempt_id}</dd></div><div><dt>Latency</dt><dd>{receipt.latency_ms == null ? 'unknown' : `${receipt.latency_ms} ms measured`}</dd></div><div><dt>Revision</dt><dd>{receipt.source_revision ?? 'unknown / dirty checkout'}</dd></div>
+        {receipt && <><div><dt>Model</dt><dd>{receipt.returned_model ?? 'unknown'} · validation {receipt.validation_result}</dd></div><div><dt>Attempt</dt><dd>{receipt.attempt_id}</dd></div><div><dt>Latency</dt><dd>{evidence.test_output ? 'Not applicable / offline provider double' : receipt.latency_ms == null ? 'unknown' : `${receipt.latency_ms} ms measured`}</dd></div><div><dt>Revision</dt><dd>{receipt.source_revision ?? 'unknown / dirty checkout'}</dd></div>
           <div><dt>Known tokens</dt><dd>input {receipt.token_usage?.prompt_tokens ?? 'unknown'} / output {receipt.token_usage?.completion_tokens ?? 'unknown'} / total {receipt.token_usage?.total_tokens ?? 'unknown'} · Usage {receipt.usage_status} · Ledger {evidence.analysis?.accounting}</dd></div></>}
         {evidence.analysis?.error && <div><dt>Diagnostic</dt><dd>{evidence.analysis.error}</dd></div>}
       </dl>{receipt && <HTTPDiagnostics receipt={receipt} />}

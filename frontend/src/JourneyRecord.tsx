@@ -1,3 +1,4 @@
+import type { ServerEvidence } from './api';
 import type { JourneyState } from './journeyState';
 
 export function measurement(value: unknown): string {
@@ -7,12 +8,12 @@ export function referenceText(value: unknown): string {
   return typeof value === 'string' && value.trim() ? value : 'Reference unavailable';
 }
 
-export function JourneyRecord({ journey: j, completed }: { journey: JourneyState; completed: boolean }) {
+export function JourneyRecord({ journey: j, completed, evidence = [], inspect }: { journey: JourneyState; completed: boolean; evidence?: ServerEvidence[]; inspect?: (e: ServerEvidence) => void }) {
   const refs = completed ? j.approved_evidence_refs : j.assessment.evidence_refs;
   const known = new Set([...j.samples.map(s => s.id), ...j.observations.map(o => o.id)]);
   return <section className="section-surface journey-record" aria-labelledby="journey-record-title">
     <h3 id="journey-record-title">Journey evidence record</h3>
-    <p>{j.observations.length} simulated human observations and {j.samples.length} simulator measurements. These are separate from image uploads and NVIDIA planner-task submissions.</p>
+    <p>{j.observations.length} simulated human observations and {j.samples.length} simulator measurements. {j.evidence_mode === 'task-evidence' ? 'Assessment references point to the same task evidence below. Model claims are separate from independent human reports.' : 'These are separate from image uploads and NVIDIA planner-task submissions.'}</p>
     {!j.observations.length ? <p>No journey observations yet. Telemetry alone cannot authorize correction.</p> :
       <ul className="journey-observations">{j.observations.map((o, i) => <li key={o.id || i}>
         <strong>{o.asset_id} / {o.status}{o.reading !== null ? ` / ${measurement(o.reading)} ${o.unit ?? 'unit unknown'}` : ''}</strong>
@@ -23,7 +24,7 @@ export function JourneyRecord({ journey: j, completed }: { journey: JourneyState
         </details>
       </li>)}</ul>}
     <details className="journey-reference-details"><summary>{completed ? 'Approval evidence references' : 'Assessment evidence references'} ({refs.length})</summary>
-      {!refs.length ? <p>No references recorded.</p> : <ol className="journey-refs">{refs.map((ref, i) => <li key={`${ref}-${i}`}><code>{referenceText(ref)}</code>{!known.has(ref) && <span>Reference not present in this snapshot; no link is available.</span>}</li>)}</ol>}
+      {!refs.length ? <p>No references recorded.</p> : <ol className="journey-refs">{refs.map((ref, i) => <li key={`${ref}-${i}`}>{evidence.find(e => `evidence-${e.id}` === ref) && inspect ? <button className="button secondary" onClick={() => inspect(evidence.find(e => `evidence-${e.id}` === ref)!)}>Inspect shared task evidence</button> : <code>{referenceText(ref)}</code>}{!known.has(ref) && <span>Reference not present in this snapshot; no link is available.</span>}</li>)}</ol>}
       <p>References identify the stored records; no external evidence link is implied.</p>
     </details>
     <details><summary>Telemetry measurements and recovery references ({j.samples.length})</summary>

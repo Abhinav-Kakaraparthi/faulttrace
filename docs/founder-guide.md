@@ -1,5 +1,13 @@
 # Provider smoke test
 
+FT-012 joins new simulated investigations through shared task-evidence references.
+Commander chooses an observation; Operator enters independent identity/type/unit/
+reading or position, confirms/disputes a photo, or refuses. Answers start blank;
+model claims never become measurements automatically. The existing deterministic
+rules gate human approval, and later telemetry independently verifies recovery.
+Old runs remain unchanged. 175 backend/51 frontend checks and type/build pass;
+browser/live acceptance is open. [Offline preview and bounded live plan](unified-investigation.md).
+
 FT-011 lets photographic **model claims** inform the next observation decision.
 Operator explicitly sends a validated photo for follow-up; Commander requests a
 registered observation or escalation, and accepted citations link back to photos.

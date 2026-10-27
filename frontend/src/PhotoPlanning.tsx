@@ -2,6 +2,7 @@ import type { PhotoAssessment, ServerEvidence, ServerState } from './api';
 import type { Mutate } from './workspace';
 
 const labels: Record<string, string> = {
+  human_model_report_disagreement: 'The independent human report disputes or does not corroborate this photo; inspect both sources.',
   identity_unconfirmed: 'Photographed asset identity remains unconfirmed.',
   model_tag_disagrees_with_assignment: 'Model-read tag differs from the assigned asset; identity is unresolved.',
   human_reports_wrong_equipment: 'Operator reported different equipment.',
@@ -42,7 +43,7 @@ export function PhotoFollowUp({ state, disabled, mutate, inspect }: {
     && assessment.claim && assessment.status !== 'stale';
   return <>
     {!!sources.length && <section className="section-surface photo-follow-up"><h2>Clarify photographic evidence</h2>
-      <p>This observation cites earlier photographs. Follow the registered task instructions; confirm equipment and measurement type independently.</p>
+      <p>This observation references evidence associated with these photographs. Follow the registered task instructions; confirm equipment and measurement type independently.</p>
       {sources.map(e => <button className="button secondary" key={e.id} onClick={() => inspect(e)}>Inspect source photograph · assigned {e.asset_id}</button>)}
     </section>}
     {canForward && latest && <section className="section-surface photo-follow-up"><h2>Photo ready for follow-up review</h2>

@@ -9,6 +9,14 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+FT-012: new simulated investigations connect planner tasks, independent human
+evidence, explicit correction approval and telemetry verification through shared
+references. 175 backend/51 frontend offline tests and type/build pass, including
+failure, dispute, stale evidence, ineffective correction and relapse. Scripted
+provider doubles do not establish live reasoning or photographic accuracy.
+Browser/mobile, server-enforced roles, live walkthrough and hosting remain open;
+no product checkbox is newly satisfied. [Scope and review plan](unified-investigation.md).
+
 CI checkpoint: push/PR backend and frontend jobs use no provider secrets and a
 network-guarded Python suite. Local clean installations and hosted
 [run 40399590742](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40399590742)

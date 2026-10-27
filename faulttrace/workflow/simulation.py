@@ -47,12 +47,14 @@ def public_samples(db):
 
 def planner_observations(db):
     """Explicit allowlist: no outcome, correction state, fixture labels or answer keys."""
+    from .investigation_evidence import observations
     return [{'evidence_ref': r['id'], 'asset_id': r['asset_id'], 'kind': 'report',
              'origin': 'human-report', 'provenance': r['origin'],
              'status': 'accepted' if r['status'] in ('readable', 'intermediate', 'open', 'closed') else 'refused',
              'report': r['status'], 'timestamp': r['timestamp'],
-             'interpretation': {'reading': r['reading'], 'unit': r['unit']} if r['reading'] is not None else None}
-            for r in db.execute('SELECT * FROM sim_observations ORDER BY rowid')]
+             'interpretation': {'reading': r['reading'], 'unit': r['unit']} if r['reading'] is not None else None,
+             **({'human_observation': r['human_observation']} if 'human_observation' in r else {})}
+            for r in observations(db)]
 
 
 def augment_context(db, context):
@@ -67,12 +69,19 @@ def augment_context(db, context):
         'differential_pressure': {'value': latest['pressure'], 'unit': 'kPa'},
         'valve_feedback': {'value': latest['valve'], 'unit': '%', 'physical_position_verified': False},
         'active_alarm': latest['alarm']}
-    combined = context['observations'] + reports
+    from .investigation_evidence import integrated
+    if integrated(db):
+        by_ref = {r['evidence_ref']: r for r in reports}
+        combined = [by_ref.get(o['evidence_ref'], o) for o in context['observations']]
+    else:
+        combined = context['observations'] + reports
     context['observations'] = combined[-16:]
     context['omitted_observations'] += max(0, len(combined) - 16)
     context['unavailable_assets'] = sorted(set(context['unavailable_assets']) | {
         r['asset_id'] for r in reports if r['report'] == 'cannot-access'})
-    readings = [r['interpretation']['reading'] for r in reports if r['interpretation']]
+    readings = [(r['human_observation']['normalized_kpa'] if 'human_observation' in r else r['interpretation']['reading'])
+                for r in reports if r['interpretation']]
+    readings = [r for r in readings if r is not None]
     if readings and any(abs(r - latest['pressure']) > 8 for r in readings):
         context['unresolved_conflicts'].append('local_pressure_disagrees_with_simulated_telemetry')
     positions = {r['report'] for r in reports if r['asset_id'] == 'V-08' and r['report'] in ('open', 'intermediate', 'closed')}

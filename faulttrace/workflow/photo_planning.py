@@ -21,7 +21,8 @@ def assessments(db):
     latest = {r['task_id']: r['id'] for r in rows}
     humans = [dict(r) for r in db.execute("SELECT id,task_id,report FROM evidence WHERE kind='report' AND origin='human-report'")]
     # Explicitly public human observations, never sim_runs / hidden outcomes.
-    numeric = [dict(r) for r in db.execute("SELECT id,asset_id,status,reading,unit FROM sim_observations WHERE status='readable'")]
+    from .investigation_evidence import observations
+    numeric = [r for r in observations(db, policy=True) if r['status'] == 'readable']
     results = []
     factors = {'pa': .001, 'kpa': 1, 'mpa': 1000, 'bar': 100, 'mbar': .1, 'psi': 6.894757293}
     for row in rows:
@@ -60,6 +61,12 @@ def assessments(db):
         else:
             flags.append('validated_interpretation_unavailable')
         reports = [h for h in humans if h['task_id'] == row['task_id']]
+        from .investigation_evidence import details
+        for report in reports:
+            human = details(db, report['id'])
+            if human and human['photo_id'] == row['id'] and human['flags']:
+                conflicts.append('evidence-' + report['id'])
+                flags.append('human_model_report_disagreement')
         if any(h['report'] == 'wrong-equipment' for h in reports):
             identity = 'human_reported_wrong_equipment'
             flags.append('human_reports_wrong_equipment')

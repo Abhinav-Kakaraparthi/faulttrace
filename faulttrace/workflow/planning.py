@@ -98,6 +98,9 @@ class Planner:
                         capability,creation_source,explanation) VALUES(?,?,1,'awaiting',?,?,?,'validated NVIDIA proposal',?)''',
                         (task_id, row['incident_id'], now(), proposal['asset_id'], proposal['capability'],
                          EXPLANATIONS[proposal['explanation_code']]))
+                    from .investigation_evidence import integrated
+                    if integrated(db) and db.execute('SELECT test_output FROM integrated_runs').fetchone()[0]:
+                        db.execute("UPDATE tasks SET creation_source='TEST-CREATED / offline provider double' WHERE id=?", (task_id,))
             explanation = EXPLANATIONS[proposal['explanation_code']] if proposal else None
             db.execute('UPDATE planning SET status=?,proposal=?,receipt=?,error=?,accounting=?,task_id=?,explanation=? WHERE id=?',
                        (status, json.dumps(proposal), json.dumps(receipt), error, accounting, task_id, explanation, attempt_id))

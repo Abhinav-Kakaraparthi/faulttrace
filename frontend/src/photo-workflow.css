@@ -57,3 +57,12 @@
 .accepted-references ul { padding-left: 1.2rem; }
 .accepted-references button { white-space: normal; text-align: left; }
 .photo-follow-up button { max-width: 100%; white-space: normal; text-align: left; min-height: 44px; }
+
+.human-observation { border-top: 1px solid #526970; margin-top: 18px; padding-top: 16px; }
+.human-observation fieldset { min-width: 0; border: 0; padding: 0; display: grid; gap: 14px; }
+.human-observation label { display: grid; gap: 6px; }
+.human-observation select, .human-observation input[type=number] { min-height: 44px; min-width: 0; width: 100%; color: #e4edeb; background: #182428; border: 1px solid #637b80; border-radius: 5px; padding: 10px; font-size: 16px; }
+.human-observation .journey-consent { display: flex; align-items: flex-start; }
+.human-observation .button { white-space: normal; max-width: 100%; min-height: 44px; }
+.human-reading-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width:480px) { .human-reading-fields { grid-template-columns: 1fr; } }

@@ -8,6 +8,12 @@ investigate equipment anomalies.
 
 ## Status
 
+FT-012 adds a unified, simulation-only task-evidence-to-recovery journey for new
+incidents. Planner-created tasks, independent human reports, photo-claim disputes,
+approval and recovery share evidence references. Model readings are never
+prefilled into human reports or used directly for correction. Offline checks
+pass; browser/live acceptance remains open. [Zero-provider preview and later live plan](docs/unified-investigation.md).
+
 FT-011 carries validated photographic interpretations into observation planning
 as unverified model claims. Commander sees compatibility/disputes and accepted
 citations; Operator can explicitly hand off a photo for follow-up and inspect
@@ -42,8 +48,9 @@ FT-009A provides separate server-backed **/commander** and **/operator** pages.
 Open http://127.0.0.1:5180/commander and http://127.0.0.1:5180/operator in the
 existing isolated preview; old connected query URLs remain compatible. See
 [current and target architecture](docs/architecture.md). Route separation is
-not authentication; server-enforced roles remain a deployment gate. NVIDIA task
-evidence is not yet integrated into the simulated correction assessment.
+not authentication; server-enforced roles remain a deployment gate. In new FT-012
+runs, independent human task evidence can support the simulated assessment;
+photographic model claims alone cannot. Historical runs retain their legacy scope.
 
 FT-008 adds a complete **simulation-only** evidence -> working diagnosis -> human
 approval -> simulated filter replacement -> independent recovery journey. No paid

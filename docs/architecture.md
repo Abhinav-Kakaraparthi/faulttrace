@@ -96,11 +96,15 @@ Both workspaces present the same real collections together, with distinct scope:
 - Planning receipts/proposals and human correction approval remain different
   records with different authority. No record is migrated or duplicated by UI.
 
-**NVIDIA task evidence does not currently satisfy the simulated correction
-assessment.** Image interpretation and observation planning therefore must not be
-presented as integrated recovery reasoning. Operator's simulation checklist and
-NVIDIA-assigned observation task are labeled separately. UI unification alone
-does not close that integration gap.
+**Photo model claims do not satisfy the simulated correction assessment.** New
+FT-012 investigations project independently entered, compatible human task reports
+into the existing deterministic assessment using the same evidence IDs as planning
+and approval. Human confirmation/dispute preserves model and human sources; model
+values never prefill a report. Unreviewed, conflicting or stale evidence blocks
+approval. Registered simulated action and telemetry verification remain separate
+authority boundaries. Historical runs retain the legacy parallel streams without
+migration. This is application integration, not verified live AI recovery reasoning.
+[Unified journey and offline review](unified-investigation.md).
 
 The independent verifier consumes fresh post-correction samples and the execution
 boundary, not private simulator outcomes or an LLM declaration. Maintenance

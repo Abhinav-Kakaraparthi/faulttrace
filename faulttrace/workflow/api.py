@@ -45,7 +45,9 @@ async def fields(request, expected):
 
 
 def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transport,
-               enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective"):
+               enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective", test_output=False):
+    if test_output and send is transport:
+        raise ValueError('test_output_requires_provider_double')
     origins = allowed_origins()
     inference_enabled = (os.environ.get("FAULTTRACE_ALLOW_INFERENCE") == "1") if enabled is None else enabled
 
@@ -60,7 +62,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
             workflow = Workflow(store)
             engine = AnalysisEngine(workflow, ledger_path, send, inference_enabled, revision=source_revision(), **kwargs)
             app.state.workflow, app.state.engine = workflow, engine
-            app.state.journey = Journey(workflow, simulation_clock, simulation_outcome)
+            app.state.journey = Journey(workflow, simulation_clock, simulation_outcome, test_output)
             yield
         finally:
             if engine:
@@ -97,7 +99,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     def state():
         with app.state.workflow.write_lock:
             snapshot = app.state.workflow.store.snapshot()
-            return dict(snapshot, photo_planning={'version': 1}, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
+            return dict(snapshot, test_output=test_output, photo_planning={'version': 1}, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
                         mode="local server / simulated incident / real inference only on explicit action")
 
     def key(request):
@@ -108,6 +110,20 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         await fields(request, [])
         incident_id = await run_in_threadpool(app.state.workflow.start, key(request))
         return {"incident_id": incident_id}
+
+    @app.post('/api/investigations')
+    async def investigation_start(request: Request):
+        await fields(request, [])
+        result = await run_in_threadpool(app.state.journey.start, key(request), True)
+        return {'incident_id': result}
+
+    @app.post('/api/tasks/{task_id}/observations')
+    async def independent_observation(task_id: str, request: Request):
+        from .human_observations import submit
+        body = await fields(request, ['revision', 'task_revision', 'photo_id', 'decision',
+            'observed_asset_id', 'measurement_type', 'reading', 'unit', 'position', 'independent'])
+        result = await run_in_threadpool(submit, app.state.journey, task_id, body, key(request))
+        return {'evidence_id': result}
 
     @app.post('/api/simulation/start')
     async def simulation_start(request: Request):

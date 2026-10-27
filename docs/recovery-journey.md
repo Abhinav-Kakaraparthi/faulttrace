@@ -1,5 +1,8 @@
 # FT-008: simulated restriction-to-recovery journey
 
+This describes the preserved legacy rehearsal. New task-linked investigations use
+[FT-012's unified journey](unified-investigation.md); no historical run is migrated.
+
 FT-009A workspaces: open `/commander` to review evidence, approve correction and
 advance verification; open `/operator` to submit observations and acknowledge
 approved simulated completion. Both share the preserved server run. Old connected

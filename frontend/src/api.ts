@@ -20,14 +20,21 @@ export type PhotoAssessment = {
   identity_status: string; flags: string[]; conflicting_refs: string[];
   claim: Omit<PhotoObservation, 'label_text' | 'evidence_ref'> | null;
 };
+export type HumanObservationRecord = {
+  photo_id: string | null; decision: string; observed_asset_id: string; measurement_type: string;
+  reading: number | null; unit: string | null; position: string | null; normalized_kpa: number | null;
+  flags: string[]; status: string; timestamp: string; received_at: string; source: string;
+};
 export type ServerEvidence = {
   id: string; task_id: string; asset_id: string; kind: 'image' | 'report'; origin: string; fixture_id: string | null;
   sha256: string | null; width: number | null; height: number | null; status: string; report: string | null;
   created_at: string; image_url: string | null; submitted_revision: number;
+  human_observation?: HumanObservationRecord; test_output?: boolean;
   photo_assessment?: PhotoAssessment;
   analysis: { contract?: string; id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
+  test_output?: boolean;
   photo_planning?: { version: number };
   photo_analysis?: { version: number; contract: string };
   photo_collection?: { version: number; assets: string[] };
@@ -41,6 +48,10 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  task_observation_required: 'Record evidence on the assigned Operator task; untasked reports cannot support this investigation.',
+  task_investigation_required: 'This historical run uses the legacy journey. Start a fresh isolated investigation to use task-linked reports.',
+  invalid_human_observation: 'Choose an observed identity/type and valid reading/unit or position. No model value is substituted.',
+  independent_report_required: 'Confirm that you independently entered the observation; assignment and model output are not verification.',
   photo_follow_up_unavailable: 'This photograph cannot be sent for follow-up. Refresh and review its analysis and freshness.',
   photo_contract_not_applicable: 'This endpoint analyzes collected photographs only; existing fixture analysis remains separate.',
   stale_photo_result: 'Investigation changed during analysis. The stale result cannot be used; accounting is preserved.',

@@ -35,6 +35,6 @@ export function PhotoInterpretation({ value, status }: { value: Interpretation; 
     <h4>Uncertainty / bounded rejection reasons</h4>{value.reasons.length ? <ul>{value.reasons.map(code => <li key={code}>{reasons[code] ?? code}</li>)}</ul> : <p>No uncertainty code returned. This is not proof of measurement validity or accuracy.</p>}
     {status !== 'interpreted' && <p className="notice">Retained output is not an accepted current observation. Review analysis status and diagnostics.</p>}
     <p className="notice">Label text does not establish assigned asset identity. A model measurement type is not an independent compatibility check. Handle orientation does not prove internal valve position or operating condition.</p>
-    <p>Observation only: excluded from incident pressure comparisons, planner conclusions and correction/recovery authorization pending explicit compatibility and evidence policy.</p>
+    <p>Model claims remain excluded from incident pressure comparisons and correction/recovery authorization. They can inform observation planning; only independently entered, compatible human evidence can support the simulated correction policy.</p>
   </section>;
 }

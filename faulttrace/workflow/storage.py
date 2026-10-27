@@ -83,6 +83,8 @@ class Store:
             ''')
             from .photo_analysis import initialize as initialize_photos
             initialize_photos(db)
+            from .investigation_evidence import initialize as initialize_investigation
+            initialize_investigation(db)
             from .simulation import initialize
             initialize(db)
             # Additive migration preserves existing FT-006 evidence and task provenance.
@@ -159,9 +161,17 @@ class Store:
                 item['instruction'] = TEMPLATES[(item['asset_id'], item['capability'])]
             task = tasks[-1] if tasks else None
             evidence = [dict(r) for r in db.execute("SELECT * FROM evidence ORDER BY rowid")]
+            from .investigation_evidence import integrated
+            test_output = bool(db.execute('SELECT test_output FROM integrated_runs').fetchone()[0]) if integrated(db) else False
             for item in evidence:
+                if test_output:
+                    item['test_output'] = True
                 item['asset_id'] = next(t['asset_id'] for t in tasks if t['id'] == item['task_id'])
                 analysis = db.execute("SELECT * FROM analyses WHERE evidence_id=?", (item["id"],)).fetchone()
+                from .investigation_evidence import details
+                human = details(db, item["id"])
+                if human:
+                    item["human_observation"] = human
                 item["analysis"] = dict(analysis) if analysis else None
                 if analysis:
                     photo = db.execute('SELECT contract FROM photo_analyses WHERE analysis_id=?', (analysis['id'],)).fetchone()
@@ -184,7 +194,9 @@ class Store:
             for task in tasks:
                 accepted = next((p for p in planning if p['task_id'] == task['id'] and p['status'] == 'accepted'), None)
                 refs = (accepted['proposal'] or {}).get('evidence_refs', []) if accepted else []
-                task['source_photo_ids'] = [pid for pid in photos if 'evidence-' + pid in refs]
+                linked = {e['human_observation']['photo_id'] for e in evidence
+                          if 'evidence-' + e['id'] in refs and e.get('human_observation')}
+                task['source_photo_ids'] = [pid for pid in photos if 'evidence-' + pid in refs or pid in linked]
         return {"incident": dict(incident) if incident else None,
                 "task": task, "tasks": tasks, "planning": planning,
                 "planning_remaining": max(0, 4-len(planning)),

@@ -1,5 +1,32 @@
 # Checkpoint state
 
+## Current: FT-012 unified investigation-to-recovery (PARTIAL)
+
+Started clean at `fabeb26c95c6592378d441723f74d7d2621bc854`; latest
+[CI 40527627657](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40527627657)
+passed before work. Branch: `feat/ft-012-unified-investigation`. New fresh runs
+project canonical independent task reports into the unchanged fixture assessment,
+sharing references with planning, approval, audit and both workspaces. All human
+answers start blank; model claims, units/type/identity disputes and human reports
+remain separate. Pressure cannot satisfy DP, nor a handle image internal position.
+Unresolved/stale/unreviewed evidence blocks approval; only post-action telemetry
+verifies recovery. Old runs/receipts remain in legacy mode; no history migration.
+
+175 network-guarded backend tests pass (zero forbidden attempts), including 13
+new unified cases; 51 frontend tests, TypeScript and production build pass.
+Complete scripted flow, failures/disputes, stale evidence, duplicates, persistence,
+interruption, ineffective correction and relapse are covered. Provider doubles
+are explicitly test output, not evidence of live adaptive reasoning or accuracy.
+No provider requests, new spending, deployment or old-server restarts.
+Browser surfaces are absent and in-app opening failed: desktop/mobile/keyboard,
+upload and dialog interaction remain unverified; no new screenshots exist.
+Read-only history/image/ledger comparisons and a scripted walkthrough summary are
+in ignored `.local/visual/ft012-5297706b4e5a41a09f344ca6c62a1f31/`.
+[Isolated test-output preview and bounded later live plan](unified-investigation.md).
+Next: founder visual review of that offline preview, then separately authorize a
+bounded live walkthrough after checking credits. Conflicts/refusals have no
+automatic clearance path; clarify/escalate rather than force successful recovery.
+
 Partner roadmap persisted (documentation only), starting clean at
 `7a67539adf823c81b4bec3bb4b5024493003d498`. Nebius balance verification and
 Toloka offer assessment are conditional; LangSmith is optional/planned after CI;
@@ -15,7 +42,7 @@ Valid local test evidence is reused for this documentation-only update; the new
 push gets its own CI check. Next: privately verify credited Nebius balance before
 proposing any bounded evaluation or hosted-demo allocation; no calls authorized here.
 
-## Current: GitHub Actions CI
+## GitHub Actions CI
 
 Starting clean at `9b07cd0b65bbd513957cf5aba73bc02afb0a64a0` on the existing
 `feat/ft-011-photo-planning` branch. Push/PR workflow adds separate Windows Server
