@@ -9,6 +9,20 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+Current sprint: `26521a7` passes five exact-SHA jobs, 249 guarded backend/93 frontend,
+Linux/Windows, builds/contracts and actual Docker restart smoke. Live configuration,
+bounded global/session allowances, reference search/tracing and automatic simulated
+monitoring are implemented with offline doubles; **zero new provider calls**.
+Review http://127.0.0.1:8850/ (offline); hosting approval/credentials and founder
+browser/live acceptance remain open. No public URL or final video/submission.
+Paid infrastructure was declined. Render Free + Supabase Free is assessed, not
+implemented; external durable budgets/state/images and repeat acceptance are
+required before public inference. Free inactivity/quota rules do not verify
+continuous access through December 15. No storage migration or provisioning.
+The narrow Linux/PNG/container blockers are resolved; hosted TLS/disk/restart and
+judging-period capacity/budget are separate gates. See [sprint evidence](state.md)
+and [bounded walkthrough](sprint-verification.md). Earlier entries below are history.
+
 Judge-demo entry is implemented as a separate cookie-session flow: Try demo,
 automatic isolated simulated investigation/assignment, both workspaces for one
 visitor, refresh/second-tab resume, expiry and retained-history restart. No account
@@ -310,16 +324,17 @@ and accessibility verification is pending; no screenshots were taken.
 The checklist items below remain open. Local preview is not deployed hosting,
 a completed live application, or independent recovery verification.
 
-## Partner roadmap gates (planned only)
+## Partner roadmap gates (implementation versus acceptance)
 
 [Scope, dependencies and acceptance criteria](architecture.md#partner-integration-roadmap).
-No new partner integration or credit entitlement is claimed. Current orchestration
+Tavily and metadata-only LangSmith adapters are now offline-tested; actual source
+retrieval/trace visibility and any credit entitlement remain unverified. Current orchestration
 is custom Python/SQLite; LangChain/LangGraph are not dependencies, and migration
 is not required. Existing NVIDIA/Nebius runtime remains in place.
 
 - [ ] **Nebius — conditional:** verify credited balance and restrictions before approving an evaluation/hosted-demo budget; no balance or redemption assumed.
-- [ ] **LangSmith — optional/planned after CI:** deterministic reviewed-reference evaluation of contract validity, numeric accuracy and abstention, plus measured latency/usage; verify export controls excluding credentials, private images and raw reasoning by default.
-- [ ] **Tavily — planned after the core connected journey:** confirmed equipment model, restricted official manufacturer domains, visible actual citations and rejection tests; reference context never becomes observed evidence or correction authority.
+- [ ] **LangSmith — implemented/offline-tested metadata tracing:** verify actual sanitized trace visibility; reviewed-reference numeric/abstention evaluation remains planned. No credentials, images or raw reasoning export.
+- [ ] **Tavily — implemented/offline-tested lookup:** verify a useful actual official citation for a confirmed model. Reference context never becomes observed evidence or correction authority; no bonus claim yet.
 - [ ] **Toloka — conditional assessment:** confirm eligibility, reviewer suitability, cost/credit coverage and turnaround before use; approve labeling quality and data-permission/privacy controls.
 - [ ] **Tandem — deferred/not selected:** establish concrete project benefit and a bounded acceptance test before reconsideration.
 

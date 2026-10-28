@@ -8,18 +8,29 @@ investigate equipment anomalies.
 
 ## Status
 
+The final integration sprint adds an explicitly enabled, globally/session-budgeted
+live-demo configuration, restricted Tavily references, metadata-only LangSmith
+tracing, paused simulated-observation time, observation renewal and automatic
+independent recovery monitoring. Default remains offline. Current implementation
+`26521a7` passes Linux/Windows/backend/frontend/container CI; new live calls and
+public hosting remain unverified. Paid hosting was declined; free external durable
+storage is assessed, not migrated. Provider credentials remain unavailable here.
+Local compiled review: **http://127.0.0.1:8850/** — Try demo; no tokens required.
+[Integrated acceptance and bounded later live procedure](docs/sprint-verification.md),
+[deployment proposal](docs/sprint-release.md). Existing previews/runs are preserved.
+
 The optional judge-demo service offers **Try demo** with an expiring HttpOnly
-cookie, automatic isolated simulated investigation/Operator assignment and both
+cookie, automatic isolated simulated investigation and both
 workspaces for one visitor. No account or copied token is needed. Inference is
-hard-disabled; demo templates are not NVIDIA output. Administrative bearer access
+disabled by default; offline demo templates are not NVIDIA output. Administrative bearer access
 remains separate. [Startup, session/security limits and offline checks](docs/judge-demo.md).
 
 The `feat/finish-integrated` branch combines the reviewed server authorization and
 memory-only frontend authentication. Release uses privately delivered opaque
 bearer tokens; Commander/Operator permissions and incident/task/image access are
 checked by the server. Browser logout does not revoke a token. Combined offline
-contract checks pass; founder browser acceptance, hosting/TLS, Windows ACL review
-and Linux fixture byte portability remain open. See [review plan](docs/combined-auth-manual-review.md).
+contract checks pass; founder browser acceptance, hosting/TLS and Windows ACL review
+remain open. Linux fixture/container checks now pass. See [review plan](docs/combined-auth-manual-review.md).
 
 FT-012 adds a unified, simulation-only task-evidence-to-recovery journey for new
 incidents. Planner-created tasks, independent human reports, photo-claim disputes,
@@ -186,10 +197,10 @@ it is not a sandbox for hostile code/native extensions/subprocesses. No provider
 secrets are configured. Dependency installation still needs package registries.
 Run the same backend command above and the frontend commands below locally.
 Static frontend tests and a successful build do not establish browser acceptance.
-The initial Ubuntu backend run exposed different regenerated PNG bytes. Backend
-CI matches the verified Windows environment; fixtures/assertions are unchanged,
-and Linux fixture byte reproducibility remains unverified.
-[Verified hosted run](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40399590742)
+The initial Ubuntu run exposed different PNG compression bytes. Canonical encoding
+now passes strict byte regeneration on Windows/Ubuntu; historical originals and
+pixel-equivalence assertions are retained. CI also builds/restarts the container.
+The following [earlier CI run](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40399590742)
 at `1b8249f704a900323ca71d115866704ba88fc452`: 162 backend / 45 frontend
 tests, dependency checks, typecheck and build passed. Later commits require their
 own passing run; see the branch's Actions checks.

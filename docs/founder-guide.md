@@ -1,5 +1,14 @@
 # Provider smoke test
 
+Current integrated review: **http://127.0.0.1:8850/** → Try demo → Commander/Operator,
+no tokens. This preview uses real application policy with offline templates, not
+NVIDIA output. New demo human-report time pauses; audit/session/photo-review time
+does not. Complete evidence, explicitly approve, acknowledge in Operator, then
+**Start simulated recovery monitoring**. It samples automatically and independently;
+completion alone never means recovery. [Full review/live bounds](sprint-verification.md).
+Tavily/LangSmith code is offline-tested; credentials/public hosting/live visibility
+remain unverified. Existing runs/previews are retained. No browser acceptance is claimed.
+
 FT-012 joins new simulated investigations through shared task-evidence references.
 Commander chooses an observation; Operator enters independent identity/type/unit/
 reading or position, confirms/disputes a photo, or refuses. Answers start blank;

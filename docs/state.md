@@ -1,5 +1,64 @@
 # Checkpoint state
 
+## Final integration sprint — implemented; live/public acceptance open
+
+Started clean at `f1d7434` on `feat/finish-integrated`; isolated standard worktrees
+`feat/sprint-release` and `feat/sprint-partners` retain their own history. Sequential
+feature integration only; no main merge. Implementation `26521a7e8f268f0e7c112a7adbd770886b9b267f`
+[passes all five exact-SHA CI jobs](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40775523968).
+249 guarded backend tests pass (zero forbidden external attempts), 93 frontend
+tests, dependency/type checks, both builds and release/demo ASGI contracts pass.
+Actual Linux Docker build/smoke confirms UID10001, read-only root/tmpfs, routes,
+Secure-cookie contract, role/session/image isolation, CSRF/Origin and exact
+post-upload state/image persistence across container restart. This is not hosted TLS.
+
+Saved 5211 incident `12a834ac-7831-4e3e-a67d-98caa6c589df` was audited read-only:
+tick0 pressure/position reports received over six wall-clock minutes apart. The
+120-second wall-clock blocker is established; no timestamp/history was changed.
+New demo runs explicitly pause simulated-human-report age; release/local and
+photo-review wall freshness remain enforced. Explicit renewal creates new tasks
+and blank answers; conflicts/refusals remain. Explicit monitoring schedules six
+10-second simulated samples at one-second cadence; unchanged verifier, approval,
+idempotency and relapse rules remain independent from maintenance completion.
+
+Live-demo opt-in requires server-only credentials and persistent global/session
+request/token-admission reservations. Pending, unknown and interrupted calls retain
+full allowance. Explicit offline restart preserves live history/budget. Tavily
+requires confirmed manufacturer/model and registered official domains; documents
+are separate untrusted references. LangSmith exports allowlisted metadata only;
+failures cannot fail/retry inference. No provider prompt/model/token-cap change.
+No provider credentials (process/User), Render credentials or Toloka token were
+available. **Zero NVIDIA/Tavily/LangSmith calls**, no deployment or spending.
+Real ledger unchanged: 20 attempts, known 10312/16823/27135, four missing usage;
+separate manual success 155/112/267, cross-record 10467/16935/27402. Unknowns stay unknown.
+
+New compiled same-origin preview **http://127.0.0.1:8850/** plus `/commander` and
+`/operator`, inference/search/tracing disabled. Isolated root
+`.local/sprint-demo-b4a2fb3c1d3248fe95a0b599a27fabe1`; readiness evidence in
+`.local/visual/final-sprint-b4a2fb3c1d3248fe95a0b599a27fabe1/` ties to implementation.
+Actual HTTP scripted synthetic readiness visitor completed report/approval/Operator
+completion and six real scheduler samples, independently verified. This is API
+test output, not a founder walkthrough or live AI. Independent visitor and role
+denial checks pass. Old workflow-table, image, registry/delivery and ledger hashes
+are unchanged. New local port-specific cookie cannot clobber the old 5211 cookie.
+No old server restarted. Known-unavailable browser helpers were not retried;
+desktop/mobile, camera, keyboard/dialog and live visual acceptance remain open.
+
+Hosting decision: user declined paid infrastructure for now. The Render Free with
+Supabase Free Postgres/private Storage assessment is [recorded](sprint-release.md#concrete-free-alternative--assessment-only-october-28).
+It requires authoritative external workflow/session/budget/receipt/image storage
+and a new acceptance checkpoint; no broad migration has begun. Free pause/cold-
+start/quota rules do not establish uninterrupted judging-period availability.
+Do not enable public inference with ephemeral reservation records.
+Next: founder reviews 8850 and selects the bounded external-storage proof if
+zero-cost remains mandatory. Separately configure keys privately/confirm
+credited balance and execute the [single bounded live walkthrough](sprint-verification.md)
+(at most 2 text/1 photo/1 search; stop affected path after failure). Toloka labeling
+task is prepared, not launched; eligibility/cost/turnaround unknown. Video outline
+is under three minutes but unrecorded. Public URL, hosting persistence/TLS, live
+accuracy/partner visibility, founder acceptance and final Devpost gates stay open.
+This status/activation evidence is a later documentation-only revision.
+
 ## Judge demo — cookie session entry (local activation)
 
 Started clean on `feat/finish-integrated` at `36a60c1183f7f5dd02074f5f5608b51e9e329d76`.

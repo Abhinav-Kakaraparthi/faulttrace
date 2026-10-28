@@ -1,10 +1,14 @@
 # FaultTrace architecture: current local implementation and public target
 
-FT-009A separates Commander `/commander` and Operator `/operator`. Both consume
+Commander `/commander` and Operator `/operator` consume
 one server-backed workflow snapshot; the pages do not own separate incident,
 task, evidence, approval or recovery stores. Each tab polls the same API. Route
-identity changes presentation only: it is not authentication or authorization.
-No public deployment or paid infrastructure is created by this checkpoint.
+identity alone is not authorization: the integrated release now has server roles,
+grants and assignments; the judge service has isolated HttpOnly visitor sessions.
+One demo visitor may use both roles. Neither is a public deployment claim.
+The current package adds explicit budgeted live-demo mode, metadata-only tracing,
+restricted documentation references and simulated monitoring; live/public acceptance
+remains open. [Current checks and free-hosting assessment](sprint-release.md).
 
 ## Target boundaries
 
@@ -35,29 +39,31 @@ measurements. Neither a model response nor an operator completion grants recover
 
 | Boundary | Exists now | Future / required gate |
 | --- | --- | --- |
-| Application and API | React/Vite pages, local FastAPI, loopback proxy, explicit refresh and polling | Public hosting, TLS, production SPA fallback for both routes, API ingress controls |
-| Commander and Operator | Dedicated pages and canonical URLs; old connected query URLs map client-side to the correct route | **Server-enforced identity, roles and incident/evidence access are required before deployment.** Test direct API requests, not only hidden buttons. No role header or pathname is trusted as authority. |
+| Application and API | React pages, FastAPI, compiled same-origin SPA/API wrapper and tested Docker package | Public HTTPS hosting, ingress/quotas and browser acceptance |
+| Commander and Operator | Dedicated routes, server-enforced release identity/grants/assignments; isolated judge cookies, one visitor deliberately uses both roles | Deployed HTTPS/session/image and founder browser acceptance; demo role switching is not two-employee separation |
 | Durable workflow | Single-instance SQLite records, reserved planning turns, stale revisions, idempotent operations, serialized inference worker and recovery of interrupted attempts | Production durable job execution, multi-instance coordination, migrations, backup and restore; no external workflow engine is installed |
 | NVIDIA through Nebius | Text `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`; image `nvidia/Nemotron-3.5-Super-VL`; existing bounded transport and independent output validation | Broader connected adaptive evaluation and integrated evidence-based recovery reasoning remain unverified |
-| Private simulator | In-process fixture module and private state; explicit clock steps produce timestamped measurements, alarms and public references | Private service/source boundary and authenticated event delivery; no hidden fault state or answer keys in public state or model context |
-| Anomaly delivery | Explicit incident-start requests; evolving simulation only after explicit clock steps | Automated, authenticated and idempotent anomaly ingestion/event transport; no real sensor feed or automatic delivery exists |
-| Workflow/evidence persistence | Local SQLite, private metadata-stripped upload files, ignored sanitized receipt ledger; no history migration for route separation | Production database/object storage, access controls, retention and operational backup policy; no cloud database/bucket is provisioned |
+| Private simulator | Private fixture state; paused new-demo human-report clock, explicit accelerated sample monitoring; public measurements only | No real sensor feed, equipment-control connection or hidden truth in model context |
+| Anomaly delivery | Explicit incident start; explicit steps or human-started accelerated monitoring produce simulated samples | No real sensor feed; authenticated external anomaly ingestion remains future work |
+| Workflow/evidence persistence | Private SQLite, image files and sanitized ledger; actual Docker volume/restart checks pass | Render Free + external Postgres/private objects is assessed only; no storage migration. Actual hosting/backup/quotas remain open |
 | Secrets | Backend-only NEBIUS_API_KEY environment; inference disabled by default; no key in browser, URLs, Git or evidence | Managed server-side secret storage and rotation; browser-facing APIs must never accept provider keys |
-| Logs/accounting | Persisted wall-clock audit events, sanitized receipts/status codes, known/unknown token accounting; private local artifacts ignored | Protected centralized logs/monitoring and retention; no raw reasoning, provider bodies, headers, credentials or private uploads in public logs |
-| Policy and verifier | Registered observation IDs, revision/reference validation, four planning turns, no automatic retry; separate human-approved simulation action and sample-based recovery policy | Server role authorization and broader scenario evaluation; no real equipment-control connection or general industrial safety claim |
+| Logs/accounting | Sanitized receipts plus persistent global/session allowances; optional metadata-only LangSmith export is offline-tested | Actual trace visibility, operational retention and public abuse/load acceptance remain unverified |
+| Policy and verifier | Registered actions, role/revision/refusal/reference guards, human approval, independent unchanged sample verifier and explicit simulated monitoring | Broader scenario evaluation and live/browser acceptance; no real equipment control or industrial safety claim |
 
 ## Partner-integration roadmap
 
 Current orchestration is **custom Python with SQLite**. LangChain and LangGraph
-are not current dependencies. None of the plans below requires an orchestration
-migration. Existing NVIDIA inference through Nebius is retained; the additional
-partner work and balance/offer checks below are not implemented or verified.
+are not dependencies and no orchestration migration is required. NVIDIA inference
+is retained; Tavily and LangSmith adapters are now implemented/offline-tested.
+Actual new live integrations, credited balance and offer eligibility remain open.
+Zero-cost external durable hosting would require a separate storage migration,
+which has not begun; do not confuse that work with an orchestration replacement.
 
 | Partner / status | Dependencies and planned scope | Acceptance before use or claiming integration |
 | --- | --- | --- |
 | **Nebius Token Factory — conditional budget check** | Retain NVIDIA runtime inference. Verify credited balance before budgeting evaluation or hosted-demo usage. | Privately confirm usable credited balance, expiry/restrictions and verification date; approve a bounded allocation before calls. Do not assume an offer was redeemed or that unknown usage is zero. |
-| **LangSmith — planned, optional, after CI** | Passing CI, independently reviewed references and an approved export policy. Add evaluation/observability without replacing the custom workflow. | Deterministic evaluators measure contract validity, numeric accuracy and abstention against reviewed references; retain measured latency and actual known/unknown usage separately. Test evaluators against independently expected cases and verify redaction/export controls. Credentials, private images and raw reasoning are excluded by default. |
-| **Tavily — planned, after the core connected journey** | A confirmed equipment model and restricted official manufacturer domains; no lookup inferred solely from assignment or an uncertain photo label. | Useful manufacturer-document lookup with visible citations to actual sources. Test missing documents, model mismatch, off-domain results and malicious document text. Retrieved material remains untrusted reference context, never observed evidence or correction authority. No bonus/integration claim before functional verification. |
+| **LangSmith — implemented, offline-tested metadata tracing** | Explicit export opt-in and server-only key/project; no orchestration migration. Reviewed-reference evaluation remains planned. | Verify actual trace visibility, allowlisted usage/latency/outcomes and failure isolation. No credentials, images, raw reasoning or account identities exported. Numeric/abstention evaluation needs reviewed references. |
+| **Tavily — implemented, offline-tested reference lookup** | Human-confirmed model, registered official manufacturer domain, explicit key/opt-in and global/session reservation. | Verify one useful real citation/retrieval time. References are untrusted, outside telemetry/evidence/correction policy. No bonus acceptance from offline doubles. |
 | **Toloka — conditional offer assessment** | Independently labeled photo evaluation plan and permission/privacy review before sharing any data. | Confirm offer eligibility, reviewer suitability, credit coverage, actual cost and turnaround before use. Approve labeling instructions, independent review/disagreement handling and source/permission records; do not invent labels or treat preliminary estimates as calibrated truth. |
 | **Tandem — deferred, not selected** | No concrete FaultTrace benefit has been established. | Reconsider only after a specific benefit and bounded acceptance test are documented, with dependency/privacy/cost review. No account, package or data transfer is selected now. |
 

@@ -3,7 +3,8 @@
 The separate **demo** frontend opens with **Try demo**. No account, terminal,
 administrator grant or copied workspace token is needed by the visitor.
 Cookie bootstrap alone does not create an investigation. Try demo creates an
-isolated simulated run and an application-template F-17 observation assignment.
+isolated simulated run. Offline mode assigns an application-template F-17 task;
+explicit live mode starts with Commander's NVIDIA planning action and no fixed task.
 Commander/Operator switching and the second-tab link share that visitor's run.
 Refresh/reopening resumes it until the two-hour absolute session expiry.
 
@@ -22,10 +23,12 @@ escalate through **Demo observation templates — no AI inference**. Active task
 inaccessible assets, revisions and a four-assignment demo budget remain enforced.
 That budget is separate from the existing four-call model-planning budget.
 
-Inference is hard-disabled with an absent key source and forbidden transport,
-regardless of inherited inference environment flags. Explicit model controls stay
-visible but disabled. No photo interpretation, usage or latency is fabricated.
-Photographs are collection-only: an unreviewed photo can block approval. A fresh
+Default offline inference has an absent key source and forbidden transport,
+regardless of an inherited inference flag. Separately reviewed live mode requires
+both explicit flags, credentials and persistent global/session reservations.
+It retains the strict planner/photo contracts and no retries. **Start new offline
+demo** is explicit, preserves the live history/allowance and never replaces a failed
+model response. No interpretation, usage or latency is fabricated. An unreviewed photo can block approval. A fresh
 report-only investigation can demonstrate simulated recovery without pretending
 an image was analyzed. Human answers remain blank and independently entered.
 Pressure cannot satisfy a differential-pressure requirement. Conflicts/refusals
@@ -35,7 +38,8 @@ and stale reports still block correction; Operator completion is not recovery.
 
 - Cookie is opaque and HttpOnly; only its hash is stored server-side. HTTPS uses
   a host-only `__Host-` cookie with Secure, SameSite=Strict and Path=/. Explicit
-  loopback HTTP development uses a separately named non-Secure cookie, Path=/api.
+  loopback HTTP development uses a port-specific non-Secure cookie, Path=/api,
+  so one local review cannot overwrite another preview's cookie.
   No bearer credential is returned to JavaScript or stored in browser storage.
 - Session/run metadata and a synchronizer CSRF token are fetched into memory.
   All API reads require the demo custom header and reject cross-site/same-site
@@ -67,6 +71,7 @@ if (Get-NetTCPConnection -State Listen -LocalPort 8840,5211 -ErrorAction Silentl
 $env:FAULTTRACE_DEMO_ROOT = Join-Path (Get-Location) ('.local/judge-demo-' + [guid]::NewGuid().ToString('N'))
 $env:FAULTTRACE_DEMO_ORIGIN = 'http://127.0.0.1:5211'
 $env:FAULTTRACE_DEMO_LOCAL_HTTP = '1'
+$env:FAULTTRACE_DEMO_LIVE = '0'
 $env:FAULTTRACE_ALLOW_INFERENCE = '0'
 .venv\Scripts\python.exe -m uvicorn faulttrace.workflow.demo_app:create_demo --factory --host 127.0.0.1 --port 8840 --workers 1 --no-access-log --log-level critical
 ```
@@ -93,7 +98,9 @@ Visitor URL: http://127.0.0.1:5211/ — click Try demo, then switch workspaces o
 open Operator in a second tab. Use a separate browser profile/private context to
 review another isolated visitor. Do not reuse admin tokens in this flow.
 
-Activated local review: http://127.0.0.1:5211/ at implementation
+Current compiled review is http://127.0.0.1:8850/ at `26521a7`; see
+[integrated acceptance](sprint-verification.md). The following activation is history.
+Earlier local review: http://127.0.0.1:5211/ at implementation
 `b81928aa4ea06b43735dad9506d9ea44dc2e5a00`; its exact-SHA CI passed.
 Existing authenticated 5210/8830 remains running. This activation note is a later
 documentation-only update. HTTP checks verify the actual demo profile, shared
@@ -123,12 +130,11 @@ timeouts, storage capacity, retention/backup and operational log redaction.
 Current caps bound this local prototype, not adversarial internet traffic.
 No multi-worker/hosted durability or general tenant-security audit is claimed.
 
-Before any live inference: confirm credited Nebius balance, add server-authoritative
-global and per-visitor spend/token/request caps across new sessions/restarts,
-concurrency/rate/abuse controls, reservation/accounting and a hard kill switch.
-Per-investigation budgets alone do not prevent public spending abuse. This demo
-cannot enable inference merely by setting an environment flag; a separately
-reviewed change and bounded live acceptance would be required. Numeric photo
+Before live inference, confirm credited balance and the server-authoritative
+global/session reservations and kill switch. The integrated implementation retains
+full conservative allowances for missing/pending usage; it is not a billing estimate.
+Public quotas/abuse/availability still require acceptance. Ephemeral free compute
+cannot host authoritative spending records. Numeric photo
 accuracy, general adaptive reasoning and submission acceptance remain unverified.
 
 Security/framework references checked October 28, 2026:

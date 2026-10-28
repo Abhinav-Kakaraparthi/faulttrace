@@ -1,5 +1,9 @@
 # Sprint release package — approval required before hosting
 
+**Decision:** user declined paid infrastructure for now and prefers zero-cost
+hosting. Nothing is provisioned. `render.yaml` remains an unapproved paid proposal,
+not the selected deployment. No external-storage migration has begun.
+
 Prepared from `f1d7434eee50660cb0bfac15f6483d94c0fa960c` on
 `feat/sprint-release`; final integrated SHA must be selected after coordinator
 integration and CI. This is a deployable package, not a deployment or visual pass.
@@ -60,8 +64,12 @@ Strict current PNG/manifest regeneration byte equality remains enforced.
 Both Windows and Ubuntu backend CI now run the full guarded suite, preserving
 assertions. Local Docker daemon is unavailable. Existing Ubuntu WSL Python is
 3.10 with no pip/backend dependencies; no tool/dependency installation was made
-there. Actual Linux acceptance must come from the new Ubuntu CI, not a Windows
-build or an unexecuted Dockerfile. Container build remains separately unverified.
+there. Actual Ubuntu/Windows CI and Docker build/restart smoke now pass, including
+the integrated implementation `26521a7`; [exact CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40775523968).
+The smoke runs with a fresh volume, read-only root/tmpfs and UID10001, verifies
+Secure-cookie/role/image/CSRF controls and exact post-upload records/images after
+restart. It is a loopback HTTP harness with HTTPS Host/Origin, not actual TLS,
+browser or Render acceptance. No provider keys/requests/ledger were present.
 
 ## Exact hosting proposal (not executed)
 
@@ -95,6 +103,56 @@ Official sources:
 [Docker builds and secret handling](https://render.com/docs/docker),
 [Blueprint fields](https://render.com/docs/blueprint-spec),
 [free-service limitations](https://render.com/docs/free).
+
+## Concrete free alternative — assessment only, October 28
+
+Candidate: one Render Free Docker web service plus one Supabase Free project.
+Postgres would be authoritative for investigations/tasks/evidence, sessions,
+approvals, recovery schedules, receipt outbox and **global/session reservations**.
+A private Storage bucket would hold metadata-stripped images, fetched only after
+the API's visitor/asset authorization. No public bucket, browser service key or
+ephemeral spending-record fallback is acceptable.
+
+Render currently supplies 750 free instance hours per workspace/month, sleeps
+idle services after 15 minutes and has approximately minute-long cold starts.
+Local writes disappear on restart/spin-down; no free persistent disk. Free Render
+Postgres expires after 30 days, before December 15 if created now, so it is not
+this candidate's datastore. Free services also face shared bandwidth/build and
+service-initiated-traffic limits. Existing account usage is unknown.
+[Official free compute limits](https://render.com/docs/free).
+
+Supabase Free currently includes 500 MB database, 1 GB file storage, 5 GB egress
+plus 5 GB cached egress, and at most two active free projects. Available project
+slots/quotas in the user's account are unverified. Its low-activity pause policy
+can interrupt access after a week; data retention is not continuous availability.
+There is no verified commitment of uninterrupted free access through December 15.
+[Pricing](https://supabase.com/pricing),
+[current pause policy](https://supabase.com/docs/guides/platform/free-project-pausing).
+Free backups need an explicit export/restore plan; database dumps do not include
+the image objects. [Backup scope](https://supabase.com/docs/guides/platform/backups).
+
+| Required change | Free compute + external storage | Prepared Starter + disk |
+| --- | --- | --- |
+| Workflow database | Replace SQLite-specific transactions, rowid/JSON queries, triggers/UDFs and per-file run isolation with explicitly scoped Postgres transactions | Existing checked-in implementation preserved |
+| Sessions/budgets/receipts | Remote authoritative atomic reservations, idempotency and outbox; fail closed when database is unavailable, including across restarts | Existing persistent SQLite/ledger implementation tested in Docker |
+| Images | Private object adapter, bounded authenticated proxy and crash/orphan handling | Existing private filesystem/image checks tested |
+| Startup/availability | Cold-start UX, connection pool, paused-project/quotas and genuine availability monitoring | No free idle spin-down; actual hosted setup still unverified |
+| Delivery risk | New cross-cutting storage checkpoint and repeat full policy/security/concurrency/restart acceptance; not an environment-only change | Lower code-change risk; paid plan explicitly **not approved** |
+
+The paid baseline remains $7/month compute + $0.25/month for 1 GB disk before
+tax/bandwidth/providers. [Current pricing](https://render.com/pricing).
+Both alternatives need hosted HTTPS/role/image checks and founder review. A free
+hosting quota does not pay for NVIDIA/Tavily or establish credited balance.
+
+If zero-cost remains mandatory, the next bounded implementation decision is a
+new-run-only Postgres/private-object storage proof, preserving all local histories,
+then failure-injection/concurrency/isolation/restart tests before public inference.
+Do not upload a SQLite file periodically and call it durable global accounting:
+an ephemeral crash could lose reservations and reopen spending allowance.
+Use the existing [Supabase connection modes](https://supabase.com/docs/guides/database/connecting-to-postgres)
+and [private bucket controls](https://supabase.com/docs/guides/storage/buckets/fundamentals)
+as implementation references. No new accounts, free resources or data transfers
+were created by this assessment, and no database dependency was installed.
 
 After approval: deploy exact integrated SHA, confirm health/HTTPS, cookie flags,
 both routes, protected images and independent visitors; create a synthetic run,
