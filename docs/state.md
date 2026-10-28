@@ -1,6 +1,6 @@
 # Checkpoint state
 
-## Judge demo — cookie session entry (offline preparation)
+## Judge demo — cookie session entry (local activation)
 
 Started clean on `feat/finish-integrated` at `36a60c1183f7f5dd02074f5f5608b51e9e329d76`.
 New separate demo factory/UI provides Try demo, automatic private investigation
@@ -35,8 +35,24 @@ frontend/release+demo ASGI contracts. Exact-SHA CI is recorded with delivery.
 No provider calls, new dependencies, spending, deployment or old-server restart.
 No browser/helper retry; manual cookie/second-tab/desktop/mobile acceptance remains
 open. [Contract, commands, sources and deployment/spending gaps](judge-demo.md).
-Next: fresh isolated 5211/8840 localhost demo preview and founder one-click review;
-preserve authenticated 5210/8830 and all earlier runs. Activation evidence follows.
+Tested implementation: `b81928aa4ea06b43735dad9506d9ea44dc2e5a00`;
+[all exact-SHA CI jobs passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40732998171).
+This activation record is a later documentation-only change.
+Fresh localhost demo: http://127.0.0.1:5211/ (Try demo), `/commander` and
+`/operator`, same-origin proxy to 8840. Backend listener 77124, frontend 43484;
+source/environment confirmed demo profile, inference disabled. Private isolated
+root `.local/judge-demo-78d235c233394bc4bc317646c28027bf`; sanitized readiness
+evidence under `.local/visual/judge-demo-78d235c233394bc4bc317646c28027bf/`.
+Actual HTTP checks pass for both roles, shared assignment/refresh, two distinct
+visitor investigations, own image access/cross-visitor denial and CSRF rejection.
+Only the readiness visitor received a synthetic API upload; no image analysis.
+Logs contain none of the readiness session secrets. No provider ledger created.
+Existing 5210/8830 listeners remain 78448/74016; prior registry, delivery, image,
+ledger and workflow-table hashes unchanged. No old server restarted.
+Next: founder opens 5211, clicks Try demo, reviews Commander then Operator in a
+second tab, refresh and End demo at desktop/mobile sizes. Keyboard, upload,
+dialogs and cookie behavior need real browser acceptance; no agent browser or
+screenshot acceptance is claimed. Public TLS/hosting/security/spending gates stay open.
 
 ## Integrated preview — bounded presentation refinement
 

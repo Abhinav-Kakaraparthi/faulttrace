@@ -93,6 +93,19 @@ Visitor URL: http://127.0.0.1:5211/ — click Try demo, then switch workspaces o
 open Operator in a second tab. Use a separate browser profile/private context to
 review another isolated visitor. Do not reuse admin tokens in this flow.
 
+Activated local review: http://127.0.0.1:5211/ at implementation
+`b81928aa4ea06b43735dad9506d9ea44dc2e5a00`; its exact-SHA CI passed.
+Existing authenticated 5210/8830 remains running. This activation note is a later
+documentation-only update. HTTP checks verify the actual demo profile, shared
+assignment/refresh, independent visitor isolation, protected image access and CSRF
+denial. They do not verify rendering or browser cookie/keyboard interactions.
+No browser/helper retry or screenshot acceptance is claimed.
+
+First manual review: click **Try demo**, inspect Commander, switch to Operator
+and use **Operator in second tab**. Confirm the same assignment survives refresh,
+then test **End demo**. Repeat at desktop and 390×844. A separate private browser
+context should create a different investigation. No token entry is needed.
+
 Offline contract checks, from frontend with the existing Python interpreter:
 
 ```powershell

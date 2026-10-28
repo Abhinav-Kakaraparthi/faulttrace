@@ -18,6 +18,11 @@ Offline isolation, CSRF/Origin, duplicate/stale and recovery checks do not estab
 browser, hosting, live-model or production multi-employee acceptance. Spending/
 abuse controls, TLS/ACLs, retention and numeric photo accuracy remain open;
 no submission checkbox is newly closed. See [judge-demo limits](judge-demo.md).
+Implementation `b81928a` passes exact-SHA CI (218 guarded backend, 84 frontend,
+type/build and release/demo contracts). Isolated localhost 5211/8840 is active;
+same-origin HTTP session/isolation/image/CSRF checks passed. Founder one-click
+desktop/mobile review is next; HTTP checks are not browser acceptance. Existing
+authenticated preview and records are unchanged. Activation notes are later docs.
 
 Founder signed into both integrated roles and supplied Chrome desktop/390x844
 screenshots. These establish bounded user-reported sign-in/rendering observations,
