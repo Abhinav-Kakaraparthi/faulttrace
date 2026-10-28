@@ -1,6 +1,56 @@
 # Checkpoint state
 
-## Worker B backend review — correction required before integration
+## Integration review — B correction PASS, A inspection blocker
+
+Started clean at coordinator `d3c2dc734365d8d6414049b49382d5494123706d`.
+Reviewed B correction `625c3e6be620b7dd21b5be951637cbba09901ade` and A final
+`450c31a20e4bfc51bf38a0b7f3991babec0213ba` (application `bbc0329`). Both
+worker checkouts are clean and match verified remote tips. B's four correction
+paths and A's frontend/test/handoff diff respect ownership; A's final commit is
+documentation-only. Exact-SHA CI passes for
+[B](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40611790119)
+(205 backend / 51 frontend) and
+[A](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40609920592)
+(175 backend / 70 frontend), including dependency/type/build checks and zero
+forbidden external attempts. These are separate branches, not combined checks.
+
+Independently reran the original coordinator B reproduction unchanged: **200/200,
+one incident**, all 16 focused cases PASS, zero forbidden external attempts.
+B reauthenticates under the existing creation lock, checks current grants on
+replay and grants only new creation. Ten worker regressions cover all starts,
+admission/grant races, removed access, expiry/revocation and key conflicts.
+The prior creation blocker is resolved without changing the HTTP contract.
+
+**A blocker: retained evidence after access denial.** `ConnectedWorkspace` keeps
+the inspected record in component state, clears it only on close/workspace change,
+and renders `state?.evidence.find(...) ?? inspected`. After the controller clears
+state on `access_denied`, that fallback still renders the previously inspected
+record while the page says no private state is displayed. Source review plus an
+isolated seeded SSR probe confirms both denial and the old evidence ID/provenance
+are rendered; this is not browser interaction evidence. Probe changes only the
+workflow/hook initial-state inputs, leaving the production dialog expression
+unchanged. All records are synthetic, no API/provider/listener or old run touched.
+Ignored probe: `.local/reviews/a-denied-dialog.mjs`; expected non-disclosure
+assertion FAILS on A's exact clean checkout. No raw/private evidence was printed.
+
+Bounded founder relay to A: render inspection only from the current authorized
+snapshot, remove the cached-record fallback, close/clear selection on denial or
+evidence removal, and prevent selection restoration after access returns. Preserve
+image cleanup, independent human/model records, logout/401 isolation and API
+contract. Add offline regressions for open inspection -> denied/removed record ->
+restored access with no automatic reopening or stale metadata. Run frontend
+tests/typecheck/build, push and return exact SHA/CI; do not repeat unavailable
+browser attempts or mask errors. B needs no further correction from this review.
+
+Per the user's stop condition, **no integration branch, merge or fresh preview**
+was created. Next: review A's narrow fix; only after review passes create
+`feat/finish-integrated`, merge B then corrected A, add real combined-contract
+coverage, run full checks/CI, and prepare authenticated founder manual review.
+C/partner drafts remain unintegrated. Combined browser, Linux byte portability,
+Windows ACLs, TLS/hosting, live acceptance, photo accuracy and submission gates
+remain open. No inference, spending, migration or existing-server operation.
+
+## Earlier Worker B backend review — creation blocker subsequently resolved
 
 Reviewed the complete 14-path diff from `f2da0085` to
 `85d65c821d909783a09f87d4f360fe27e44002c5`: backend auth/access/startup,

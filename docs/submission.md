@@ -9,12 +9,22 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
-Worker B's backend handoff `85d65c8` and tested application `e956bd4` each have
+Integration review: corrected B `625c3e6` has passing exact-SHA CI (205 backend /
+51 frontend); A `450c31a` passes separate CI (175 backend / 70 frontend), plus
+dependency/type/build checks and zero forbidden attempts. Original concurrent
+creation reproduction now passes independently. Integration is blocked by A's
+retained evidence dialog fallback after access-denied state clearing, confirmed
+by source and seeded offline rendering, not browser testing. A correction is
+requested before creating the integration branch or authenticated preview.
+No combined check or submission gate is satisfied. Keep Linux portability, ACLs,
+TLS/hosting, live/photo accuracy and visual acceptance open; details in state.md.
+
+Earlier Worker B handoff `85d65c8` and tested application `e956bd4` each have
 passing exact-SHA CI (195 backend / 51 frontend, zero forbidden external attempts,
 dependency/type/build checks). Auth, server assignments/scoping and fail-closed
 local release startup are implemented on B's unintegrated branch. Coordinator's
 focused review reproduced a same-creator concurrent creation replay returning
-200/403 instead of one reused result; B correction is required before integration.
+200/403 instead of one reused result; that B correction is verified above.
 No credential/API-contract change is requested; A's memory-only frontend follow-up
 continues against B's relayed contract. No worker code was edited or integrated.
 Backend checks do not close combined auth/browser, TLS, hosting, Windows ACL or
