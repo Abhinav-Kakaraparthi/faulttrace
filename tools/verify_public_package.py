@@ -153,6 +153,9 @@ def verify(image, revision):
         code, original_image, _ = first.request(image_path)
         assert code==200 and original_image.startswith(b'\x89PNG')
         assert second.request(image_path)[0]==403
+        # Upload increments task/incident revisions. Persist and compare that
+        # actual post-upload state, not the earlier pre-upload snapshot.
+        before_restart, _ = first.json('/api/state')
         phase = 'restart_persistence'
         docker('restart',container,timeout=60)
         # Docker may allocate a different ephemeral host port on restart. Resume
@@ -168,8 +171,9 @@ def verify(image, revision):
         resumed, _ = first.json('/api/demo/session')
         assert resumed['active_run']==first.run
         after, _ = first.json('/api/state')
-        assert after['incident']==a['incident'] and after['task']['id']==a['task']['id']
-        assert after['task']['creation_source']==a['task']['creation_source']
+        assert after['incident']==before_restart['incident']
+        assert after['task']==before_restart['task']
+        assert after['evidence']==before_restart['evidence']
         code, restored_image, _ = first.request(image_path)
         assert code==200 and restored_image==original_image
         assert second.request(image_path)[0]==403
