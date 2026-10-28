@@ -1,10 +1,10 @@
 {
   "panel-a": {
     "evidence_ref": "image-001",
-    "sha256": "865db39953a926433d00de7be42eedc07f5795940bc07d78dc5c44d90dd16da6"
+    "sha256": "4a90371be7c1c9c468e157c99724c6ff40d7f2d2379947b613f099b25305f20f"
   },
   "panel-b": {
     "evidence_ref": "image-002",
-    "sha256": "0b787644c7315751357ed5e4bee087810d37d1ed1f976a264cd15505bad4547a"
+    "sha256": "1e0c8a7c85c95bc0ca46fafe814824b6325f1d255075345c1c4897ad2eb3740d"
   }
 }
