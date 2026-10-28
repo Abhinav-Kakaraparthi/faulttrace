@@ -87,6 +87,8 @@ class Store:
             initialize_investigation(db)
             from .simulation import initialize
             initialize(db)
+            from .walkthrough import initialize as initialize_walkthrough
+            initialize_walkthrough(db)
             # Additive migration preserves existing FT-006 evidence and task provenance.
             for table, column, definition in (
                 ('incidents', 'revision', 'INTEGER NOT NULL DEFAULT 1'),

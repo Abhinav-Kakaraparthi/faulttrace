@@ -1,5 +1,6 @@
 """Loopback-only local API; raw uploads and logs never include the provider key."""
 from contextlib import asynccontextmanager
+import asyncio
 import os
 from pathlib import Path
 
@@ -46,7 +47,7 @@ async def fields(request, expected):
 
 def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transport,
                enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective", test_output=False,
-               profile='local', auth_registry=None, demo_registry=None, browser_origin=None):
+               profile='local', auth_registry=None, demo_registry=None, browser_origin=None, budget=None):
     if profile not in ('local', 'release', 'demo'):
         raise ValueError('invalid_profile')
     from .auth import Registry
@@ -56,7 +57,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     registry = Registry(auth_registry) if profile == 'release' else None
     if profile == 'demo':
         from .demo_runtime import DemoRegistry
-        if not isinstance(demo_registry, DemoRegistry) or enabled is not False:
+        if not isinstance(demo_registry, DemoRegistry) or (enabled is not False and not (enabled is True and budget)):
             raise ValueError('invalid_demo_configuration')
         registry = demo_registry
     if test_output and send is transport:
@@ -75,11 +76,36 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         try:
             store = Store(directory)
             workflow = Workflow(store)
-            engine = AnalysisEngine(workflow, ledger_path, send, inference_enabled, revision=source_revision(), **kwargs)
+            engine = AnalysisEngine(workflow, ledger_path, send, inference_enabled, revision=source_revision(), budget=budget, **kwargs)
             app.state.workflow, app.state.engine = workflow, engine
-            app.state.journey = Journey(workflow, simulation_clock, simulation_outcome, test_output)
+            app.state.journey = Journey(workflow, simulation_clock, simulation_outcome, test_output, demo_time=profile == 'demo')
+            from .walkthrough import RecoveryMonitor
+            app.state.monitor = RecoveryMonitor(app.state.journey)
             app.state.access = Access(store, registry) if registry else None
-            yield
+            async def monitor():
+                while app.state.monitor.snapshot() and app.state.monitor.snapshot()['status'] == 'running':
+                    await asyncio.sleep(.25)
+                    try:
+                        await run_in_threadpool(app.state.monitor.step)
+                    except Exception:
+                        app.state.monitor.fail()
+            task = None
+            def start_monitor():
+                nonlocal task
+                status = app.state.monitor.snapshot()
+                if status and status['status'] == 'running' and (task is None or task.done()):
+                    task = asyncio.create_task(monitor())
+            app.state.start_monitor = start_monitor
+            start_monitor()  # Resume only an explicitly started durable schedule.
+            try:
+                yield
+            finally:
+                if task:
+                    task.cancel()
+                    try:
+                        await task
+                    except asyncio.CancelledError:
+                        pass
         finally:
             if engine:
                 await run_in_threadpool(engine.close)
@@ -137,6 +163,8 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
             snapshot = app.state.workflow.store.snapshot()
             result = dict(snapshot, test_output=test_output, photo_planning={'version': 1}, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
                         mode="local server / simulated incident / real inference only on explicit action")
+            if result['journey']:
+                result['journey']['monitoring'] = app.state.monitor.snapshot()
             return app.state.access.scope(request.state.principal, result) if registry else result
 
     @app.get('/api/identity')
@@ -198,6 +226,20 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
         body = await fields(request, ['revision'])
         result = await run_in_threadpool(app.state.journey.advance, body['revision'], key(request))
         return {'tick': result}
+
+    @app.post('/api/simulation/monitor')
+    async def simulation_monitor(request: Request):
+        body = await fields(request, ['revision'])
+        target = await run_in_threadpool(app.state.monitor.start, body['revision'], key(request))
+        app.state.start_monitor()
+        return {'target_tick': target}
+
+    @app.post('/api/tasks/{task_id}/renew-observation')
+    async def renew_observation(task_id: str, request: Request):
+        from .walkthrough import renew
+        body = await fields(request, ['revision'])
+        result = await run_in_threadpool(renew, app.state.journey, task_id, body['revision'], key(request))
+        return {'task_id': result}
 
     @app.post('/api/simulation/observe')
     async def simulation_observe(request: Request):

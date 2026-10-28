@@ -18,7 +18,8 @@ from .storage import InstanceLock, WorkflowError, identifier
 from .uploads import MAX_UPLOAD
 
 
-def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl=7200, limit=32):
+def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl=7200, limit=32,
+                    live=False, budget=None, send=None, key_source=None):
     url = urlsplit(origin)
     if (url.path or url.query or url.fragment or url.username or url.password
             or not url.hostname or url.scheme not in ('http', 'https')
@@ -28,6 +29,8 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
     cookie_name = '__Host-faulttrace_demo' if secure else 'faulttrace_demo_local'
     cookie_path = '/' if secure else '/api'
     root = Path(directory)
+    if live and not budget:
+        raise ValueError('live_spending_reservations_required')
     children, locks = {}, {}
     pool_lock = asyncio.Lock()
 
@@ -37,7 +40,9 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
         lock = InstanceLock(root / 'demo-instance.lock')
         try:
             async with AsyncExitStack() as stack:
-                app.state.sessions = DemoSessions(root, clock=clock, ttl=ttl, limit=limit)
+                app.state.sessions = DemoSessions(root, clock=clock, ttl=ttl, limit=limit, live=live)
+                if budget:
+                    budget.recover_pending()
                 app.state.stack = stack
                 yield
         finally:
@@ -48,10 +53,12 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
     app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=[url.hostname, '127.0.0.1', 'localhost', 'testserver'])
 
-    async def runtime(run):
+    async def runtime(run, session):
         async with pool_lock:
             if run not in children:
-                child, registry = await open_run(app.state.stack, root / 'runs' / identifier(run), origin)
+                child, registry = await open_run(app.state.stack, root / 'runs' / identifier(run), origin,
+                    live=live, budget=budget.for_session(session) if budget else None,
+                    send=send, key_source=key_source)
                 client = await app.state.stack.enter_async_context(httpx.AsyncClient(
                     transport=httpx.ASGITransport(app=child), base_url='http://127.0.0.1'))
                 children[run] = child, registry, client
@@ -107,7 +114,7 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
             if path in ('demo/start', 'demo/restart') and request.method == 'POST':
                 await fields(request, [])
                 row = sessions.change(token, request.headers.get('idempotency-key'), path.split('/')[1], prior)
-                await runtime(row['run'])
+                await runtime(row['run'], row['hash'])
                 return JSONResponse(sessions.public(row))
             if prior != row['run'] or not row['run']:
                 raise WorkflowError('demo_session_changed', 409)
@@ -117,11 +124,13 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
                 response = JSONResponse({'ended': True})
                 response.delete_cookie(cookie_name, path=cookie_path, secure=secure, httponly=True, samesite='strict')
                 return response
-            child, registry, client = await runtime(row['run'])
+            child, registry, client = await runtime(row['run'], row['hash'])
             role = request.headers.get('x-faulttrace-workspace')
             if role not in ('commander', 'operator'):
                 raise WorkflowError('access_denied', 403)
             if path == 'demo/observations' and request.method == 'POST':
+                if live:
+                    raise WorkflowError('offline_template_only', 403)
                 if role != 'commander':
                     raise WorkflowError('access_denied', 403)
                 value = await fields(request, ['action_id', 'revision'])
@@ -144,7 +153,8 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
                 value = result.json()
                 with child.state.workflow.store.connection() as db:
                     value['demo'] = {'template_actions': list(permitted_actions(build_context(db))),
-                        'assignment_remaining': max(0, 4-db.execute("SELECT COUNT(*) FROM events WHERE kind='demo_template_assigned'").fetchone()[0])}
+                        'assignment_remaining': max(0, 4-db.execute("SELECT COUNT(*) FROM events WHERE kind='demo_template_assigned'").fetchone()[0]),
+                        'live': live, 'spending': budget.summary(row['hash']) if budget else None}
                 return JSONResponse(value)
             return Response(result.content, result.status_code,
                             headers={'Content-Type': result.headers.get('content-type', 'application/json')})
@@ -156,4 +166,11 @@ def create_demo():
     directory, origin = os.environ.get('FAULTTRACE_DEMO_ROOT'), os.environ.get('FAULTTRACE_DEMO_ORIGIN')
     if not directory or not origin:
         raise ValueError('explicit_demo_configuration_required')
-    return create_demo_app(directory, origin, local_http=os.environ.get('FAULTTRACE_DEMO_LOCAL_HTTP') == '1')
+    live = os.environ.get('FAULTTRACE_DEMO_LIVE') == '1'
+    budget = None
+    if live:
+        if os.environ.get('FAULTTRACE_ALLOW_INFERENCE') != '1' or not (os.environ.get('NEBIUS_API_KEY') or '').strip():
+            raise ValueError('explicit_live_opt_in_and_credentials_required')
+        from .spending import Spending
+        budget = Spending(directory)
+    return create_demo_app(directory, origin, local_http=os.environ.get('FAULTTRACE_DEMO_LOCAL_HTTP') == '1', live=live, budget=budget)

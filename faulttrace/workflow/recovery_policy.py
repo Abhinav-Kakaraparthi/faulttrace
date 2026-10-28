@@ -11,12 +11,13 @@ def within(value, band):
     return band[0] <= value <= band[1]
 
 
-def assess(db, run, wall_time=None):
+def assess(db, run, wall_time=None, allow_paused_demo=False):
     samples = list(db.execute('SELECT * FROM sim_samples ORDER BY tick'))
     from .investigation_evidence import observations as records, extra_blockers
     observations = records(db, policy=True)
     latest = samples[-1] if samples else None
-    blockers = extra_blockers(db, wall_time, POLICY['freshness_seconds'])
+    from .walkthrough import paused_demo
+    blockers = extra_blockers(db, wall_time, POLICY['freshness_seconds'], allow_paused_demo and paused_demo(db))
     refs = [latest['id']] if latest else []
     if not latest or (run['tick'] - latest['tick']) * STEP_SECONDS > POLICY['freshness_seconds']:
         blockers.append('telemetry_missing_or_stale')

@@ -12,9 +12,10 @@ ACTION = 'SIMULATE_F17_FILTER_REPLACEMENT'
 
 
 class Journey:
-    def __init__(self, workflow, clock=None, outcome='effective', test_output=False):
+    def __init__(self, workflow, clock=None, outcome='effective', test_output=False, demo_time=False):
         self.workflow, self.store = workflow, workflow.store
         self.test_output = test_output
+        self.demo_time = demo_time
         self.clock = clock or (lambda: datetime.now(timezone.utc).timestamp())
         if outcome not in ('effective', 'ineffective', 'relapse'):
             raise ValueError('invalid_fixture_outcome')
@@ -121,7 +122,7 @@ class Journey:
                 self.store.event(db, 'simulated_correction_declined')
                 result = 'declined'
             else:
-                assessment = assess(db, run, self.clock())
+                assessment = assess(db, run, self.clock(), self.demo_time)
                 if not assessment['eligible']:
                     raise WorkflowError('correction_evidence_blocked', 409)
                 if self.blocking(db):
@@ -153,7 +154,7 @@ class Journey:
             self.revision(db, revision)
             if run['approval_id'] != approval_id or run['approved_revision'] != revision:
                 raise WorkflowError('stale_or_missing_approval', 409)
-            if not assess(db, run, self.clock())['eligible'] or self.blocking(db):
+            if not assess(db, run, self.clock(), self.demo_time)['eligible'] or self.blocking(db):
                 raise WorkflowError('correction_evidence_blocked', 409)
             if run['executed_tick'] is not None:
                 raise WorkflowError('simulation_already_executed', 409)
@@ -171,15 +172,17 @@ class Journey:
             samples = simulation.public_samples(db)
             from .investigation_evidence import observations as records, integrated
             observations = records(db)
-            assessment = assess(db, run, self.clock())
+            assessment = assess(db, run, self.clock(), self.demo_time)
             if self.blocking(db):
                 assessment['blockers'].append('active_observation_or_planning')
                 assessment['eligible'] = False
             revision = db.execute('SELECT revision FROM incidents').fetchone()[0]
+            from .walkthrough import paused_demo
             return {'label': 'Synthetic return-loop journey; no equipment connection',
                     'evidence_mode': 'task-evidence' if integrated(db) else 'legacy-simulation',
                     'test_output': bool(db.execute('SELECT test_output FROM integrated_runs').fetchone()[0]) if integrated(db) else False,
                     'clock': simulation.timestamp(run), 'tick': run['tick'], 'samples': samples,
+                    'time_mode': 'paused-demo' if self.demo_time and paused_demo(db) else 'wall-clock-evidence',
                     'observations': observations, 'assessment': assessment, 'policy': POLICY,
                     'action_id': ACTION, 'approval_id': run['approval_id'],
                     'approved_evidence_refs': json.loads(run['approval_refs']) if run['approval_refs'] else [],

@@ -62,4 +62,23 @@ export function registerJudgeDemoTests({ renderDemoEntry, renderCommander, rende
       await assert.rejects(demoSessionRequest(), error => !error.message.includes('PRIVATE_SENTINEL'));
     } finally { globalThis.fetch = original; }
   });
+  test('live demo is explicit, does not invent photographic accuracy and hides offline assignment templates', () => {
+    const html = renderDemoEntry(true);
+    assert.match(html, /Live NVIDIA inference is enabled only on explicit actions/);
+    assert.match(html, /unverified model claims/);
+    assert.doesNotMatch(html, /NVIDIA inference is disabled/);
+    const state = imageTaskState();
+    state.demo = { live: true, template_actions: ['OBSERVE_V-08_OBSERVE_POSITION'], assignment_remaining: 3 };
+    assert.doesNotMatch(renderCommander(state), /Assign V-08 observation/);
+    assert.doesNotMatch(renderOperator(state), /Assign V-08 observation/);
+  });
+  test('server explicitly selects the live mode; malformed enable values remain rejected', async () => {
+    const original = globalThis.fetch;
+    try {
+      globalThis.fetch = async () => response({ ...meta, inference_enabled: true });
+      assert.equal((await demoSessionRequest()).inference_enabled, true);
+      globalThis.fetch = async () => response({ ...meta, inference_enabled: 'true' });
+      await assert.rejects(demoSessionRequest());
+    } finally { globalThis.fetch = original; }
+  });
 }

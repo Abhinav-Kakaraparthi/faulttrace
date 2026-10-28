@@ -33,18 +33,18 @@ export function DemoExperience({ workspace, navigate }: { workspace: Workspace; 
   return <>
     {session?.active_run ? <DemoWorkspace key={`${session.active_run}-${workspace}`} session={session} workspace={workspace} navigate={navigate}
       register={value => { active.current = value; }} resume={() => void change('start')} restart={() => void change('restart')} end={() => void change('end')} />
-      : <DemoEntry error={error} start={() => void change('start')} />}
+      : <DemoEntry live={session?.inference_enabled} error={error} start={() => void change('start')} />}
     {session?.active_run && error && <p role="alert" className="connection-warning">{error}</p>}
   </>;
 }
 
-export function DemoEntry({ error, start }: { error: string; start: () => void }) {
+export function DemoEntry({ error, start, live = false }: { error: string; start: () => void; live?: boolean }) {
   return <main className="access-screen demo-entry" id="main-content"><section className="section-surface">
     <span className="eyebrow">FAULTTRACE / SIMULATED EQUIPMENT</span><h1>Trace the cause. Verify the recovery.</h1>
     <p>Explore a private simulated investigation. Switch between Commander and Operator; no account or access token required.</p>
     <button className="button primary" onClick={start}>Try demo</button>
-    <p>One demo visitor may use both workspaces. This is not production separation between employees. NVIDIA inference is disabled; observations are application-template assignments, not model output.</p>
-    <p>Photographs are collection-only here. Unreviewed photos can block correction. Explore report-only simulated recovery in a fresh investigation; no image reading is invented.</p>
+    <p>One demo visitor may use both workspaces. This is not production separation between employees. {live ? 'Live NVIDIA inference is enabled only on explicit actions, within server-wide and session allowances. No automatic retries.' : 'NVIDIA inference is disabled; observations are application-template assignments, not model output.'}</p>
+    <p>{live ? 'Photographic interpretations are unverified model claims, not verified readings. Independent compatible human evidence is required for simulated correction.' : 'Photographs are collection-only here. Unreviewed photos can block correction. Explore report-only simulated recovery in a fresh investigation; no image reading is invented.'}</p>
     <details><summary>Demo session and access limits</summary><p>Two-hour absolute expiry, up to three retained investigations per session. Restart creates a new investigation without deleting history. This browser shares the session across tabs. Administrative bearer access is a separate service.</p></details>
     {error && <p role="alert">{error}</p>}
   </section></main>;
@@ -66,10 +66,10 @@ function DemoWorkspace({ session, workspace, navigate, register, resume, restart
     return () => { mounted = false; clearTimeout(expiry); access.logout(''); };
   }, [access]);
   if (!attempted || snapshot.status === 'checking') return <main className="access-screen" id="main-content" role="status"><h1>Opening your demo workspace…</h1><p>Simulation only; inference disabled.</p></main>;
-  if (snapshot.status !== 'ready') return <DemoEntry error={snapshot.message}
+  if (snapshot.status !== 'ready') return <DemoEntry live={session.inference_enabled} error={snapshot.message}
     start={resume} />;
   return <><div className="access-toolbar workspace-access-toolbar demo-toolbar">
-    <strong>Demo visitor · both workspaces</strong><span>Inference disabled</span>
+    <strong>Demo visitor · both workspaces</strong><span>{session.inference_enabled ? 'Live inference · bounded explicit actions' : 'Inference disabled'}</span>
     <a href="/operator" target="_blank" rel="noopener">Operator in second tab</a>
     <button className="button secondary" onClick={restart}>Restart demo</button>
     <button className="button quiet" onClick={end}>End demo</button>

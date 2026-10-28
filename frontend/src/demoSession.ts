@@ -1,6 +1,6 @@
 import { apiResponse } from './api';
 export type DemoSession = { active_run: string | null; csrf_token: string; expires_at: number;
-  inference_enabled: false; privileges: string };
+  inference_enabled: boolean; privileges: string };
 let bootstrap: Promise<DemoSession> | null = null;
 export function demoSessionRequest(operation = 'session', session?: DemoSession, key?: string): Promise<DemoSession> {
   // StrictMode's repeated mount and same-tab consumers share the cookie bootstrap.
@@ -26,7 +26,7 @@ async function request(operation: string, session?: DemoSession, key?: string): 
   const value = await apiResponse(response);
   if (operation === 'end') return session!;
   if (!value || typeof value.csrf_token !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(value.csrf_token) ||
-      typeof value.expires_at !== 'number' || !Number.isFinite(value.expires_at) || value.expires_at <= 0 || value.inference_enabled !== false ||
+      typeof value.expires_at !== 'number' || !Number.isFinite(value.expires_at) || value.expires_at <= 0 || typeof value.inference_enabled !== 'boolean' ||
       (value.active_run !== null && (typeof value.active_run !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value.active_run))))
     throw new Error('Demo configuration unavailable.');
   return value;

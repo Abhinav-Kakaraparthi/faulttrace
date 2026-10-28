@@ -38,6 +38,8 @@ class Planner:
                 raise WorkflowError('planning_budget_exhausted', 409)
             context = build_context(db)
             attempt_id = str(uuid.uuid4())
+            if self.engine.budget:
+                self.engine.budget.reserve('planning', attempt_id)
             db.execute("""INSERT INTO planning(id,incident_id,context_revision,status,created_at,context,accounting)
                 VALUES(?,?,?,'pending',?,?,'pending')""",
                        (attempt_id, incident['id'], revision, now(), json.dumps(context)))

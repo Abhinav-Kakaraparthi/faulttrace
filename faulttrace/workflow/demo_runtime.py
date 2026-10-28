@@ -66,17 +66,22 @@ def assign(app, action, revision, key):
         return result
 
 
-async def open_run(stack, directory, origin):
+async def open_run(stack, directory, origin, *, live=False, budget=None, send=None, key_source=None):
     from .api import create_app
+    from faulttrace.provider import transport
     registry = DemoRegistry(directory / 'data')
-    app = create_app(directory / 'data', directory / 'usage.json', enabled=False,
-                     key_source=lambda: None, send=forbidden_transport,
+    app = create_app(directory / 'data', directory / 'usage.json', enabled=live, budget=budget,
+                     key_source=key_source if live else lambda: None,
+                     send=(send or transport) if live else forbidden_transport,
                      profile='demo', demo_registry=registry, browser_origin=origin)
     await stack.enter_async_context(app.router.lifespan_context(app))
     workflow = app.state.workflow
     with workflow.store.connection() as db:
         exists = db.execute('SELECT 1 FROM incidents').fetchone()
     if not exists:
+        with workflow.store.connection(write=True) as db:
+            db.execute("INSERT INTO journey_settings VALUES(1,'paused-demo')")
         app.state.journey.start(str(uuid.uuid4()), True)
-        assign(app, 'OBSERVE_F-17_READ_LOCAL_DP', 1, str(uuid.uuid4()))
+        if not live:
+            assign(app, 'OBSERVE_F-17_READ_LOCAL_DP', 1, str(uuid.uuid4()))
     return app, registry

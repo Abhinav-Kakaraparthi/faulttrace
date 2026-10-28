@@ -106,7 +106,7 @@ def review_flags(human, assigned_asset, claim):
     return flags
 
 
-def extra_blockers(db, wall_time, freshness):
+def extra_blockers(db, wall_time, freshness, demo_paused=False):
     """Additional guards only, never replacements for the existing fixture bands."""
     if not integrated(db):
         return []
@@ -124,7 +124,7 @@ def extra_blockers(db, wall_time, freshness):
         blockers.extend(human['flags'])
         if latest_by_asset[observation['asset_id']] != observation['id']:
             continue  # Freshness follows the latest report, as in existing policy.
-        if wall_time is not None:
+        if wall_time is not None and not demo_paused:
             age = round(wall_time - datetime.fromisoformat(human['received_at']).timestamp(), 6)
             if not 0 <= age <= freshness:
                 blockers.append('human_observation_wall_clock_stale')

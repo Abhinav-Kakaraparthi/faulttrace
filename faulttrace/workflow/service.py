@@ -114,6 +114,8 @@ class Workflow:
             if evidence["kind"] != "image" or evidence["status"] != "pending" or latest["id"] != evidence_id:
                 raise WorkflowError("stale_or_unanalyzable_evidence", 409)
             analysis_id = str(uuid.uuid4())
+            if getattr(self, 'budget', None):
+                self.budget.reserve('fixture', analysis_id)
             db.execute("INSERT INTO analyses VALUES(?,?,'pending',?,NULL,NULL,NULL,'pending')",
                        (analysis_id, evidence_id, now()))
             db.execute("UPDATE tasks SET revision=revision+1,status='analyzing' WHERE id=?", (task["id"],))

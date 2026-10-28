@@ -5,7 +5,7 @@ const labels: Record<string, string> = {
   ESCALATE_HUMAN_INVESTIGATION: 'Escalate for human investigation',
 };
 export function DemoObservations({ state, mutate, disabled }: WorkspaceProps) {
-  if (!state?.demo || !state.incident) return null;
+  if (!state?.demo || state.demo.live || !state.incident) return null;
   const blocked = !!state.task && ['awaiting','submitted','analyzing'].includes(state.task.status);
   return <details className="section-surface model-workflow"><summary>Demo observation templates — no AI inference</summary>
     <p>Application-assigned observations, not NVIDIA choices. Reports and correction still pass the same evidence policy. {state.demo.assignment_remaining} template assignments remain.</p>

@@ -39,9 +39,11 @@ def request_image(data, evidence_ref):
 
 class AnalysisEngine:
     def __init__(self, workflow, ledger_path=DEFAULT_LEDGER, send=transport, enabled=False,
-                 key_source=lambda: os.environ.get("NEBIUS_API_KEY"), revision=None):
+                 key_source=lambda: os.environ.get("NEBIUS_API_KEY"), revision=None, budget=None):
         self.workflow, self.store, self.ledger = workflow, workflow.store, ledger_path
         self.send, self.enabled, self.key_source, self.revision = send, enabled, key_source, revision
+        self.budget = budget
+        workflow.budget = budget
         self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="faulttrace-analysis")
         self.futures = []
         self.recover()
@@ -89,8 +91,10 @@ class AnalysisEngine:
 
     def account(self, receipt):
         try:
+            if self.budget:
+                self.budget.settle(receipt['attempt_id'], receipt)
             return record(receipt, self.ledger)[0]
-        except LedgerError:
+        except Exception:
             return "failed"
 
     def perform(self, analysis_id):

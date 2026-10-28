@@ -57,4 +57,4 @@ export const renderWrongWorkspace = (role: 'commander' | 'operator') => renderTo
 export const renderSessionToolbar = () => renderToStaticMarkup(createElement(SessionToolbar, {
   identity: { profile: 'release', principal_id: 'field-review', role: 'operator', capabilities: { create_incident: false }, incident_ids: [] },
   aligned: true, refresh: () => {}, logout: () => {} }));
-export const renderDemoEntry = () => renderToStaticMarkup(createElement(DemoEntry, { error: '', start: () => {} }));
+export const renderDemoEntry = (live = false) => renderToStaticMarkup(createElement(DemoEntry, { error: '', start: () => {}, live }));

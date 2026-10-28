@@ -20,6 +20,7 @@ export function JourneyPanel({ state, view, mutate, disabled, presentation = 'fu
   const j = state.journey;
   if (!j || !state.incident) return null;
   const revision = state.incident.revision;
+  const tasks = state.tasks ?? (state.task ? [state.task] : []);
   const completed = j.maintenance_status !== 'not_completed';
   const sample = j.samples.at(-1);
   const terminal = j.recovery.status === 'verified' || j.recovery.status === 'failed';
@@ -38,7 +39,7 @@ export function JourneyPanel({ state, view, mutate, disabled, presentation = 'fu
   }
   const advance = <div className="journey-clock"><span>Simulation clock (UTC)</span><time dateTime={j.clock}>{j.clock}</time>
     <button className="button secondary" disabled={disabled || j.tick >= 360} onClick={() => void act('advance', {})}>Advance 10 simulated seconds</button>
-    <small>Explicit steps, no background clock. New samples can invalidate approval or change recovery status.</small></div>;
+    <small>{j.time_mode === 'paused-demo' ? 'Walkthrough time pauses between explicit steps. Simulated human reports age in simulation time; photo review retains wall-clock freshness.' : 'Evidence freshness includes wall-clock time. Old observations must be collected again.'} Audit time and session expiry remain wall-clock based.</small></div>;
   const verification = <div className={`journey-verification ${j.recovery.status}`} role="status">
     <h4>{recoveryLabel(j.recovery.status)}</h4><p>{j.recovery.sample_count} post-correction samples / {j.recovery.window_seconds} simulated seconds observed / {j.policy.window_seconds}s minimum</p>
     <progress max={j.policy.window_seconds} value={Math.min(j.recovery.window_seconds, j.policy.window_seconds)} aria-label="Recovery observation window" />
@@ -65,7 +66,8 @@ export function JourneyPanel({ state, view, mutate, disabled, presentation = 'fu
       {presentation !== 'operator' && <details className="section-surface journey-assessment"><summary>Evidence assessment details</summary><span className="eyebrow">DETERMINISTIC WORKING DIAGNOSIS / NOT MODEL OUTPUT</span><h3>{j.assessment.working_diagnosis || 'Evidence is incomplete or disputed.'}</h3>
         {j.assessment.blockers.length ? <ul className="journey-blockers">{j.assessment.blockers.map(code => <li key={code}>{code.replaceAll('_', ' ')}</li>)}</ul> : <p className="journey-success">Required observations corroborate this synthetic scenario. Cause remains provisional.</p>}
       </details>}</div>}
-    {completed && !terminal && <section className="section-surface journey-progress">{verification}{presentation === 'operator' ? <p>Completion acknowledged. Commander collects the independent verification samples.</p> : advance}</section>}
+    {completed && <section className="section-surface journey-progress">{verification}{presentation === 'operator' ? <p>Completion acknowledged. Commander starts the independent simulated monitoring.</p> : <><button className="button primary" disabled={disabled || !!j.monitoring} onClick={() => void act('monitor', {})}>Start simulated recovery monitoring</button><p role="status">{j.monitoring ? `Monitoring ${j.monitoring.status}.` : 'Explicit start; no correction is approved or repeated.'} Accelerated simulation: one 10-second sample per real second, up to six samples. Refresh does not duplicate execution.</p></>}</section>}
+    {!completed && presentation !== 'operator' && j.assessment.blockers.some(code => code.includes('stale')) && <details className="section-surface"><summary>Renew expired observations</summary><p>Request a new independent report. Old reports and their timestamps remain in history; disagreements are not cleared.</p>{(['F-17','V-08'] as const).map(asset => { const task = tasks.filter(t => t.asset_id === asset).at(-1); return task && <button key={asset} className="button secondary" disabled={disabled || tasks.some(t => ['awaiting','submitted','analyzing'].includes(t.status))} onClick={() => void mutate(`/api/tasks/${task.id}/renew-observation`, {revision}, `renew-${task.id}-${revision}`)}>Renew {asset} observation</button>; })}</details>}
     <p role="status" className="caption">{message}</p>
     {includeRecord && <JourneyRecord journey={j} completed={completed} />}
     {presentation !== 'operator' && <details className="section-surface journey-rules"><summary>Working diagnosis, competing explanations and fixture rules</summary>

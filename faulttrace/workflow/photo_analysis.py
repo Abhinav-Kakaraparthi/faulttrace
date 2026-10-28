@@ -45,6 +45,8 @@ class PhotoAnalysis:
             if db.execute("SELECT 1 FROM analyses WHERE status='pending'").fetchone():
                 raise WorkflowError('analysis_in_progress', 409)
             aid = str(uuid.uuid4())
+            if self.engine.budget:
+                self.engine.budget.reserve('photo', aid)
             db.execute("INSERT INTO analyses VALUES(?,?,'pending',?,NULL,NULL,NULL,'pending')", (aid, evidence_id, now()))
             db.execute("UPDATE tasks SET revision=revision+1,status='analyzing' WHERE id=?", (task['id'],))
             context_revision = db.execute('SELECT revision FROM incidents WHERE id=?', (task['incident_id'],)).fetchone()[0]

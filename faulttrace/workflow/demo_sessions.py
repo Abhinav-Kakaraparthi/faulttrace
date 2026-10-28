@@ -12,9 +12,10 @@ from .storage import WorkflowError, identifier
 
 
 class DemoSessions:
-    def __init__(self, directory, clock=time.time, ttl=7200, limit=32, run_limit=3):
+    def __init__(self, directory, clock=time.time, ttl=7200, limit=32, run_limit=3, live=False):
         self.root, self.clock, self.ttl = Path(directory), clock, ttl
         self.limit, self.run_limit = limit, run_limit
+        self.live = live
         self.root.mkdir(parents=True, exist_ok=True)
         with self.db() as db:
             db.executescript('''CREATE TABLE IF NOT EXISTS sessions(
@@ -51,7 +52,7 @@ class DemoSessions:
 
     def public(self, row):
         return {'active_run': row['run'], 'csrf_token': row['csrf'],
-                'expires_at': row['expires'], 'inference_enabled': False,
+                'expires_at': row['expires'], 'inference_enabled': self.live,
                 'privileges': 'One demo visitor may use both workspaces; not separate employee identities.'}
 
     def check_csrf(self, row, value):

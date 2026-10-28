@@ -34,7 +34,8 @@ export type ServerEvidence = {
   analysis: { contract?: string; id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
-  demo?: { template_actions: string[]; assignment_remaining: number };
+  demo?: { template_actions: string[]; assignment_remaining: number; live?: boolean;
+    spending?: { requests_reserved: number; request_limit: number; token_allowance_consumed: number; token_allowance_limit: number; uncertain_or_pending: number; label: string } | null };
   test_output?: boolean;
   photo_planning?: { version: number };
   photo_analysis?: { version: number; contract: string };
@@ -42,6 +43,7 @@ export type ServerState = {
   journey?: JourneyState | null;
   incident: { id: string; created_at: string; revision: number } | null;
   task: { source_photo_ids?: string[]; id: string; revision: number; status: string; asset_id: string; capability: string; creation_source: string; explanation: string; instruction: string } | null;
+  tasks?: NonNullable<ServerState['task']>[];
   planning_remaining: number;
   planning: { id: string; context_revision: number; status: string; error: string | null; explanation: string | null; accounting: string; task_id: string | null; receipt: Receipt | null; proposal: { kind: string; asset_id: string; capability: string; explanation_code: string; evidence_refs: string[] } | null }[];
   evidence: ServerEvidence[];
@@ -49,6 +51,9 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  spending_budget_exhausted: 'The server or visitor inference allowance is exhausted. No provider request was made; prior records are retained.',
+  spending_concurrency_limit: 'The server inference slots are occupied. No request was queued or retried. Try an explicit action later.',
+  offline_template_only: 'Application templates are available only in the separately labeled offline demo.',
   demo_session_required: 'Choose Try demo to open a session.',
   demo_session_expired: 'Demo session expired. Choose Try demo to begin again; previous investigations are retained.',
   demo_session_changed: 'Demo restarted in another tab. Resume its current investigation; no write was replayed.',

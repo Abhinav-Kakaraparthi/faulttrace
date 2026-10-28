@@ -4,7 +4,7 @@ import re
 from .storage import WorkflowError, now
 
 STARTS = {'/api/incidents', '/api/investigations', '/api/simulation/start'}
-COMMANDER = {'/api/planning', '/api/simulation/approve', '/api/simulation/advance'}
+COMMANDER = {'/api/planning', '/api/simulation/approve', '/api/simulation/advance', '/api/simulation/monitor'}
 OPERATOR_TASK = {'images', 'reports', 'observations', 'photo-follow-up'}
 
 
@@ -86,7 +86,7 @@ class Access:
         match = re.fullmatch(r'/api/tasks/([^/]+)/([^/]+)', path)
         if match and method == 'POST':
             task, action = match.groups()
-            if (action in OPERATOR_TASK and role == 'operator') or (action == 'reopen' and role == 'commander'):
+            if (action in OPERATOR_TASK and role == 'operator') or (action in ('reopen', 'renew-observation') and role == 'commander'):
                 self.task(principal, task)
                 return
             denied()

@@ -3,6 +3,8 @@ export type SimObservation = { evidence_id?: string; task_id?: string; human_obs
 export type JourneyState = {
   evidence_mode?: 'task-evidence' | 'legacy-simulation'; test_output?: boolean;
   label: string; clock: string; tick: number; samples: Sample[]; observations: SimObservation[];
+  time_mode?: 'paused-demo' | 'wall-clock-evidence';
+  monitoring?: { status: 'running' | 'completed' | 'interrupted'; target_tick: number } | null;
   assessment: { source: string; working_diagnosis: string | null; evidence_refs: string[]; blockers: string[]; eligible: boolean; alternatives: string[] };
   policy: { freshness_seconds: number; pressure_agreement_kpa: number; restriction_pressure_kpa: number[]; restricted_flow_m3h: number[]; recovery_pressure_kpa: number[]; recovery_flow_m3h: number[]; valve_feedback_percent: number[]; window_seconds: number; minimum_samples: number };
   action_id: string; approval_id?: string | null; approval_current: boolean; approved_evidence_refs: string[];

@@ -44,6 +44,9 @@ def network_guard(blocked):
 
 def run_tests(suite=None):
     os.environ.pop('NEBIUS_API_KEY', None)
+    os.environ.pop('TAVILY_API_KEY', None)
+    os.environ.pop('LANGSMITH_API_KEY', None)
+    os.environ['FAULTTRACE_LANGSMITH_TRACING'] = '0'
     os.environ['FAULTTRACE_ALLOW_INFERENCE'] = '0'
     sys.path.insert(0, str(ROOT))
     blocked = []
