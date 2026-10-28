@@ -31,7 +31,7 @@ export function ConnectedWorkspace({ access, workspace, navigate }: { access: Ac
   function close() { dialog.current?.close(); server.inspect(null); focusReturn.current?.focus(); }
   const state = server.state;
   if (!identity) return null;
-  const props = { state, connection: server.connection, disabled: server.busy || server.connection !== 'online',
+  const props = { access, state, connection: server.connection, disabled: server.busy || server.connection !== 'online',
     release: identity.profile !== 'local', canCreate: canCreate(identity), creationReady: !server.busy && (server.connection === 'online' || server.denied),
     mutate: server.mutate, navigate, inspect: open,
     analyze: (item: ServerEvidence) => {

@@ -78,6 +78,7 @@ class Planner:
                        (json.dumps(receipt), json.dumps(proposal), attempt_id))
         accounting = self.engine.account(receipt)
         self.finish(attempt_id, receipt, proposal, accounting)
+        self.engine.trace('planning', receipt)
 
     def finish(self, attempt_id, receipt, proposal, accounting, interrupted=False):
         with self.workflow.write_lock, self.store.connection(write=True) as db:

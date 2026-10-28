@@ -37,6 +37,7 @@ export type ServerState = {
   demo?: { template_actions: string[]; assignment_remaining: number; live?: boolean;
     spending?: { requests_reserved: number; request_limit: number; token_allowance_consumed: number; token_allowance_limit: number; uncertain_or_pending: number; label: string } | null };
   test_output?: boolean;
+  documentation?: { enabled: boolean };
   photo_planning?: { version: number };
   photo_analysis?: { version: number; contract: string };
   photo_collection?: { version: number; assets: string[] };
@@ -54,6 +55,12 @@ const errors: Record<string, string> = {
   spending_budget_exhausted: 'The server or visitor inference allowance is exhausted. No provider request was made; prior records are retained.',
   spending_concurrency_limit: 'The server inference slots are occupied. No request was queued or retried. Try an explicit action later.',
   offline_template_only: 'Application templates are available only in the separately labeled offline demo.',
+  documentation_disabled: 'Documentation search is disabled in this configuration.',
+  documentation_context_invalid: 'Confirm an allowed manufacturer, exact model and official domain before searching.',
+  documentation_credentials_unavailable: 'Documentation search is unavailable; the host must configure it privately.',
+  documentation_budget_unavailable: 'Documentation search could not reserve a server allowance. No automatic retry.',
+  documentation_in_progress: 'A documentation lookup is already pending.',
+  documentation_budget_exhausted: 'This investigation has exhausted its documentation lookup allowance.',
   demo_session_required: 'Choose Try demo to open a session.',
   demo_session_expired: 'Demo session expired. Choose Try demo to begin again; previous investigations are retained.',
   demo_session_changed: 'Demo restarted in another tab. Resume its current investigation; no write was replayed.',
@@ -64,6 +71,7 @@ const errors: Record<string, string> = {
   demo_assignment_budget: 'This investigation has reached its demo assignment limit.',
   demo_action_unavailable: 'That observation is unavailable. Preserve the evidence and clarify or escalate.',
   demo_upload_limit: 'This demo investigation has reached its photograph limit.',
+  demo_upload_capacity: 'The server upload slots are occupied. No upload was queued or retried; select an explicit retry later.',
   authentication_required: 'Access ended. Enter your token again. Pending writes may have reached the server; none will be replayed.',
   access_denied: 'Access denied. Your role or incident grant does not permit this request. Refresh access after administrator changes.',
   storage_or_internal_failure: 'Server storage or internal failure. State may have changed; refresh before another action.',

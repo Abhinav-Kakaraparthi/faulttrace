@@ -14,7 +14,7 @@ from fastapi.testclient import TestClient
 from faulttrace.workflow.demo_app import create_demo_app
 
 ORIGIN = 'http://127.0.0.1:5211'
-COOKIE = 'faulttrace_demo_local'
+COOKIE = 'faulttrace_demo_local_5211'
 
 
 class DemoTests(unittest.TestCase):
@@ -213,6 +213,17 @@ class DemoTests(unittest.TestCase):
             visitor.update(result.json())
         self.assertEqual(self.request('POST', '/api/demo/restart', visitor, {}).status_code, 429)
         self.assertEqual(len(list((self.root / 'runs').iterdir())), 3)
+
+    def test_local_cookie_names_cannot_clobber_other_preview_ports_or_legacy_cookie(self):
+        origin = 'http://127.0.0.1:5212'
+        app = create_demo_app(self.root/'other-port', origin, local_http=True)
+        with TestClient(app, base_url=origin) as client:
+            response = client.get('/api/demo/session', headers={'X-FaultTrace-Demo':'1',
+                'Cookie':'faulttrace_demo_local=' + 'x'*43 + '; ' + COOKIE + '=' + 'y'*43})
+            self.assertEqual(response.status_code,200)
+            names = SimpleCookie(response.headers['set-cookie'])
+            self.assertEqual(set(names),{'faulttrace_demo_local_5212'})
+            self.assertNotIn('Max-Age=0',response.headers['set-cookie'])
 
     def prepare_reports(self, visitor):
         for asset in ('F-17', 'V-08'):

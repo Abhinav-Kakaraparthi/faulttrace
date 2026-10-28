@@ -9,6 +9,7 @@ import { PlannerPanel } from './PlannerPanel';
 import { EvidenceWorkspace } from './EvidenceWorkspace';
 import { AuditHistory } from './AuditHistory';
 import { DemoObservations } from './DemoObservations';
+import { DocumentationLookup } from './DocumentationLookup';
 
 export function CommanderPage(props: WorkspaceProps) {
   const { state, connection, disabled, mutate, navigate } = props;
@@ -37,6 +38,8 @@ export function CommanderPage(props: WorkspaceProps) {
       </section>
       {!j && <section className="section-surface"><h2>Evidence assessment</h2><p>Restriction, sensor discrepancy and valve mismatch remain hypotheses. No deterministic recovery assessment is available for this observation-only incident; model interpretations retain their provenance below.</p></section>}
       <EvidenceWorkspace {...props} workspace="commander" /><AuditHistory state={state} />
+      {state.documentation && props.access && <DocumentationLookup access={props.access} revision={state.incident.revision} enabled={!disabled && state.documentation.enabled} />}
+      {state.demo?.spending && <details className="section-surface"><summary>Server inference allowance</summary><p>{state.demo.spending.requests_reserved} of {state.demo.spending.request_limit} visitor requests reserved. {state.demo.spending.token_allowance_consumed} of {state.demo.spending.token_allowance_limit} token-admission units consumed; {state.demo.spending.uncertain_or_pending} uncertain or pending.</p><p>{state.demo.spending.label}. Full allowances remain charged even when usage is missing. Actual provider usage remains in individual receipts.</p></details>}
     </>}
   </main>;
 }

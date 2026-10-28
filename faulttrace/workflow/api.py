@@ -47,7 +47,8 @@ async def fields(request, expected):
 
 def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transport,
                enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective", test_output=False,
-               profile='local', auth_registry=None, demo_registry=None, browser_origin=None, budget=None):
+               profile='local', auth_registry=None, demo_registry=None, browser_origin=None, budget=None,
+               documentation_options=None):
     if profile not in ('local', 'release', 'demo'):
         raise ValueError('invalid_profile')
     from .auth import Registry
@@ -83,12 +84,16 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
             app.state.monitor = RecoveryMonitor(app.state.journey)
             app.state.access = Access(store, registry) if registry else None
             async def monitor():
-                while app.state.monitor.snapshot() and app.state.monitor.snapshot()['status'] == 'running':
-                    await asyncio.sleep(.25)
+                while True:
                     try:
+                        status = app.state.monitor.snapshot()
+                        if not status or status['status'] != 'running':
+                            return
+                        await asyncio.sleep(.25)
                         await run_in_threadpool(app.state.monitor.step)
                     except Exception:
                         app.state.monitor.fail()
+                        return
             task = None
             def start_monitor():
                 nonlocal task
@@ -165,6 +170,8 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
                         mode="local server / simulated incident / real inference only on explicit action")
             if result['journey']:
                 result['journey']['monitoring'] = app.state.monitor.snapshot()
+            if hasattr(app.state, 'documentation'):
+                result['documentation'] = {'enabled': bool(app.state.documentation.enabled)}
             return app.state.access.scope(request.state.principal, result) if registry else result
 
     @app.get('/api/identity')
@@ -328,4 +335,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
             raise WorkflowError("evidence_not_found", 404)
         return FileResponse(path, media_type="image/png")
 
+    if documentation_options is not None:
+        from .documentation import register
+        register(app, **documentation_options)
     return app

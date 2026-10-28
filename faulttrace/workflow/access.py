@@ -83,6 +83,9 @@ class Access:
             if exists:
                 self.incident(principal)
             return
+        if path == '/api/documentation' and method in ('GET', 'POST') and role == 'commander':
+            self.incident(principal)
+            return
         match = re.fullmatch(r'/api/tasks/([^/]+)/([^/]+)', path)
         if match and method == 'POST':
             task, action = match.groups()

@@ -26,6 +26,8 @@ await registerInspectionTests();
 registerAuthenticationTests({ ...harness, snapshot, imageTaskState });
 const { registerJudgeDemoTests } = await import('./judge-demo.mjs');
 registerJudgeDemoTests({ ...harness, imageTaskState });
+const { registerSprintPresentation } = await import('./sprint-presentation.mjs');
+registerSprintPresentation({ ...harness, snapshot });
 
 function snapshot() {
   const observations = [

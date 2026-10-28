@@ -98,6 +98,19 @@ class AnalysisEngine:
         except Exception:
             return "failed"
 
+    def trace(self, operation, receipt):
+        # Projection/export cannot alter the investigation or trigger another call.
+        try:
+            from faulttrace.partners.tracing import emit_trace
+            status = emit_trace(operation, receipt)
+            with self.store.connection(write=True) as db:
+                db.execute('''CREATE TABLE IF NOT EXISTS trace_exports(
+                    attempt_id TEXT PRIMARY KEY,operation TEXT,status TEXT)''')
+                db.execute('INSERT OR IGNORE INTO trace_exports VALUES(?,?,?)',
+                           (receipt['attempt_id'], operation, status))
+        except Exception:
+            pass
+
     def perform(self, analysis_id):
         interpretation = None
         with self.store.connection() as db:

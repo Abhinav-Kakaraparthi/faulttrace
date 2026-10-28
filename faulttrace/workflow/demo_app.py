@@ -26,13 +26,26 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
             or (url.scheme == 'http' and not (local_http and url.hostname in ('127.0.0.1', 'localhost')))):
         raise ValueError('invalid_demo_origin')
     secure = url.scheme == 'https'
-    cookie_name = '__Host-faulttrace_demo' if secure else 'faulttrace_demo_local'
+    # Browsers share cookies across ports. New local previews must not clobber
+    # the session of an older localhost service using the legacy cookie name.
+    cookie_name = '__Host-faulttrace_demo' if secure else 'faulttrace_demo_local_' + str(url.port or 80)
     cookie_path = '/' if secure else '/api'
     root = Path(directory)
     if live and not budget:
         raise ValueError('live_spending_reservations_required')
     children, locks = {}, {}
     pool_lock = asyncio.Lock()
+    upload_slots = asyncio.Semaphore(2)
+
+    @asynccontextmanager
+    async def upload_slot(required):
+        if not required:
+            yield
+        else:
+            if upload_slots.locked():
+                raise WorkflowError('demo_upload_capacity', 429)
+            async with upload_slots:
+                yield
 
     @asynccontextmanager
     async def lifespan(app):
@@ -147,8 +160,9 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
             headers = {k: v for k, v in request.headers.items() if k in (
                 'content-type', 'idempotency-key', 'origin', 'x-task-revision', 'x-fixture-id', 'x-evidence-purpose')}
             headers['authorization'] = 'Bearer ' + registry.tokens[role]
-            body = await bounded_body(request, MAX_UPLOAD)
-            result = await client.request(request.method, '/api/' + path, headers=headers, content=body)
+            async with upload_slot(request.method == 'POST' and path.endswith('/images')):
+                body = await bounded_body(request, MAX_UPLOAD)
+                result = await client.request(request.method, '/api/' + path, headers=headers, content=body)
             if path == 'state' and result.status_code == 200:
                 from .planner_contract import build_context, permitted_actions
                 value = result.json()

@@ -95,6 +95,7 @@ class PhotoAnalysis:
                        (json.dumps(receipt), json.dumps(interpretation), aid))
         accounting = self.engine.account(receipt)
         self.finish(aid, receipt, interpretation, accounting)
+        self.engine.trace('photo_analysis', receipt)
 
     def finish(self, aid, receipt, interpretation, accounting, interrupted=False):
         with self.workflow.write_lock, self.store.connection(write=True) as db:

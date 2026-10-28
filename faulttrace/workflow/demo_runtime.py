@@ -1,5 +1,6 @@
 """Per-run production workflow, with internal role grants and no model transport."""
 import secrets
+import os
 import sqlite3
 from contextlib import closing
 import uuid
@@ -73,7 +74,8 @@ async def open_run(stack, directory, origin, *, live=False, budget=None, send=No
     app = create_app(directory / 'data', directory / 'usage.json', enabled=live, budget=budget,
                      key_source=key_source if live else lambda: None,
                      send=(send or transport) if live else forbidden_transport,
-                     profile='demo', demo_registry=registry, browser_origin=origin)
+                     profile='demo', demo_registry=registry, browser_origin=origin,
+                     documentation_options={'enabled': live and os.environ.get('FAULTTRACE_TAVILY_ENABLED') == '1', 'budget': budget})
     await stack.enter_async_context(app.router.lifespan_context(app))
     workflow = app.state.workflow
     with workflow.store.connection() as db:
