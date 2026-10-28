@@ -1,0 +1,30 @@
+# Approval-required proposal. Do not apply this Blueprint before cost approval.
+services:
+  - type: web
+    name: faulttrace-judge-demo
+    runtime: docker
+    branch: feat/finish-integrated
+    plan: starter
+    region: oregon
+    numInstances: 1
+    autoDeployTrigger: off
+    healthCheckPath: /healthz
+    disk:
+      name: faulttrace-private-data
+      mountPath: /var/lib/faulttrace
+      sizeGB: 1
+    envVars:
+      - key: FAULTTRACE_BUILD_REVISION
+        sync: false
+      - key: FAULTTRACE_DEMO_ROOT
+        value: /var/lib/faulttrace/judge
+      - key: FAULTTRACE_DEMO_ORIGIN
+        sync: false
+      - key: FAULTTRACE_PERSISTENT_STORAGE_CONFIRMED
+        value: '1'
+      - key: FAULTTRACE_DEMO_LIVE
+        value: '0'
+      - key: FAULTTRACE_ALLOW_INFERENCE
+        value: '0'
+      - key: WEB_CONCURRENCY
+        value: '1'

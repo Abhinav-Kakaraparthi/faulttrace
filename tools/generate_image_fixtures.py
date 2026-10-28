@@ -1,4 +1,4 @@
-"""Offline synthetic fixture generation; tested with existing Pillow 12.3.0.
+"""Offline synthetic fixture generation; Pillow 13.0.0 and portable PNG writer.
 
 Pillow is a development-only generator/viewer dependency, never imported by
 the probe. No system fonts, external assets, PNG text, or alpha channels.
@@ -8,6 +8,10 @@ import json
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+try:
+    from tools.canonical_png import encode
+except ModuleNotFoundError:  # Direct invocation: python tools/generate_image_fixtures.py.
+    from canonical_png import encode
 
 ROOT = Path(__file__).resolve().parent.parent / "fixtures" / "image-evidence"
 DISPLAY = (65, 105, 415, 230)
@@ -41,7 +45,7 @@ def generate(directory=ROOT):
     for fixture_id, frame, ref in (("panel-a", image, "image-001"),
                                    ("panel-b", obscured, "image-002")):
         path = directory / (fixture_id + ".png")
-        frame.save(path, format="PNG", compress_level=9)
+        path.write_bytes(encode(frame))
         manifest[fixture_id] = {"evidence_ref": ref, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
     (directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
