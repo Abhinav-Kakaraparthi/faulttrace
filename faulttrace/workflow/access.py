@@ -74,10 +74,8 @@ class Access:
         if method == 'POST' and path in STARTS:
             if role != 'commander' or not principal['create']:
                 denied()
-            with self.store.connection() as db:
-                existing = db.execute('SELECT id FROM incidents').fetchone()
-            if existing:
-                self.incident(principal)
+            # Creation/replay resource checks use freshly authenticated grants
+            # under the workflow creation lock, not this admission snapshot.
             return
         if method == 'GET' and path == '/api/state':
             with self.store.connection() as db:

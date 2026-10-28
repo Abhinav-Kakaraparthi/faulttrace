@@ -142,15 +142,19 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     def start_authorized(request, operation, *args):
         with app.state.workflow.write_lock:
             if registry:
+                # Admission may predate a concurrent creator grant or a later
+                # administrator removal. Reauthenticate at the serialized boundary.
+                principal = registry.authenticate(request.headers.get('authorization'))
+                request.state.principal = principal
+                if principal['role'] != 'commander' or not principal['create']:
+                    raise WorkflowError('access_denied', 403)
                 with app.state.workflow.store.connection() as db:
                     existing = db.execute('SELECT id FROM incidents').fetchone()
                 if existing:
-                    # Recheck under the creation lock: two concurrent creators
-                    # must not both gain the singleton incident.
-                    app.state.access.incident(request.state.principal)
+                    app.state.access.incident(principal)
             incident_id = operation(*args)
-            if registry:
-                registry.grant_creator(request.state.principal['principal_id'], incident_id)
+            if registry and not existing:
+                registry.grant_creator(principal['principal_id'], incident_id)
             return incident_id
 
     def key(request):

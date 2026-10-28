@@ -260,3 +260,58 @@ Its [exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/ru
 and final documentation-only commit status are reported in the delivery. The
 preceding [fresh-checkout correction CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40591960336)
 passed. No frontend visual acceptance or Linux byte pass follows from these runs.
+
+## Concurrent initial creation correction
+
+Checkpoint base: `85d65c821d909783a09f87d4f360fe27e44002c5` on
+`feat/finish-release`. Coordinator review record:
+`d3c2dc734365d8d6414049b49382d5494123706d`. The coordinator reproduction
+script was inspected read-only; equivalent deterministic API regressions were
+added here using isolated synthetic identities/data, no listeners or providers.
+
+Before correction, concurrent same-principal/key/body initial requests produced
+200/403 for `/api/investigations`, `/api/incidents` and `/api/simulation/start`.
+Only one incident was created, but the second request used a pre-creation grant
+snapshot after acquiring the workflow lock. Newly added regressions also exposed
+stale identity on admitted replays after expiry/revocation or create/access removal.
+Seven of the initial nine regression cases failed against the old implementation;
+cross-creator isolation and conflicting-key/payload cases already passed.
+
+Creation resource authorization now runs at the serialized workflow boundary:
+reload the bearer identity from the authoritative registry, recheck live role and
+create permission, and require a current incident grant before invoking an
+existing-incident operation/replay. Admission no longer rejects creation using a
+stale incident-grant snapshot. Creator grant issuance occurs only when the
+operation creates the previously absent incident; an old idempotency key never
+restores access. Existing operation fingerprints and HTTP/frontend contracts are
+unchanged; no frontend suppression or automatic write retry is required.
+
+Lock ordering remains workflow RLock, short registry read, closed DB read,
+existing reentrant workflow transaction, then registry creator-grant edit for new
+creation only. No additional lock is introduced, and no registry write lock is
+held across a workflow transaction. Revocation after this boundary does not
+retroactively cancel an already-authorized operation; later requests recheck it.
+The previously documented separate registry/database durability limitation remains.
+
+Ten focused regressions pass after correction. They cover matching successful
+concurrent results on all three start routes; exactly one incident/operation/start
+event; correct creator grant; another ungranted creator denied with the same key;
+grant creation between authentication and admission; admitted and subsequent
+replay denial after access removal, expiry, revocation and create-permission
+removal; strict creation payload validation; cross-operation key conflicts; and
+changed-payload idempotency conflict on a valid simulation mutation.
+
+Commands: `.venv/Scripts/python.exe -m unittest discover -s tests -p
+test_auth_creation.py -v`, `.venv/Scripts/python.exe tools/run_offline_tests.py`,
+`.venv/Scripts/python.exe -m pip check`, and `git diff --check`. Full guarded
+suite, immutable corrected SHA, exact-SHA CI and final remote status are recorded
+in the delivery. Reproduction outputs are ignored `.local/creation-before.txt`
+and `.local/creation-after.txt`; they contain synthetic test outcomes only.
+
+Changed paths in this correction: `faulttrace/workflow/api.py`,
+`faulttrace/workflow/access.py`, `tests/test_auth_creation.py` and this document.
+Frontend, shared state/submission, Linux investigation, dependency manifests,
+runtime history and existing servers are unchanged. Worker A's reported frontend
+implementation/final commits remain separate; combined acceptance is unverified.
+Coordinator next: review this scoped fix, integrate sequentially with A, rerun
+combined checks and complete actual browser acceptance.
