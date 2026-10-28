@@ -9,6 +9,16 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+Founder signed into both integrated roles and supplied Chrome desktop/390x844
+screenshots. These establish bounded user-reported sign-in/rendering observations,
+not agent browser verification or broad visual acceptance. A presentation-only
+refinement addresses session/sidebar overlap and stacked mobile chrome, keeping
+task/evidence/decision priority, simulation/offline labels and expandable context.
+79 frontend tests, type/build and real frontend/ASGI contract checks pass; favicon
+paths return 200. No auth/API/policy or existing-server changes. Next: three small
+desktop/mobile screenshots; keyboard, logout, uploads, dialogs and recovery remain
+unaccepted. No submission checkbox is newly closed.
+
 Sequential feature integration now includes B `625c3e6` then corrected A
 `5cbd219`, with both earlier review blockers resolved. Local combined checks PASS:
 205 guarded backend / 76 frontend, dependency/type/build checks, and real frontend

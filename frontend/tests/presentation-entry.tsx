@@ -4,6 +4,7 @@ import { PhotoCapture, PhotoDraft } from '../src/PhotoCapture';
 import { Connected, ConnectedWorkspace } from '../src/Connected';
 import { AccessSession } from '../src/access';
 import { TokenEntry, WrongWorkspace } from '../src/AccessGate';
+import { SessionToolbar } from '../src/SessionToolbar';
 export { AccessSession } from '../src/access';
 export { configuredProfile, validateIdentity, canCreate, workspaceAllowed } from '../src/identity';
 export { APIError } from '../src/api';
@@ -51,3 +52,6 @@ export const renderConnected = () => {
 export const renderLocked = () => renderToStaticMarkup(createElement(Connected, { workspace: 'commander', navigate: () => {} }));
 export const renderTokenEntry = (checking = false) => renderToStaticMarkup(createElement(TokenEntry, { checking, message: '', local: false, authenticate: async () => false }));
 export const renderWrongWorkspace = (role: 'commander' | 'operator') => renderToStaticMarkup(createElement(WrongWorkspace, { role, navigate: () => {} }));
+export const renderSessionToolbar = () => renderToStaticMarkup(createElement(SessionToolbar, {
+  identity: { profile: 'release', principal_id: 'field-review', role: 'operator', capabilities: { create_incident: false }, incident_ids: [] },
+  aligned: true, refresh: () => {}, logout: () => {} }));

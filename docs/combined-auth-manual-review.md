@@ -1,12 +1,27 @@
 # Combined authenticated preview ? founder manual review
 
-Status: integrated offline checks PASS; browser acceptance NOT RUN.
-Tested implementation: `a5f7cb837d47fa2875a08a62fcdcaad46f0e3575`.
+Status: founder sign-in/screenshots reported; revised layout acceptance PENDING.
+The running frontend uses the latest `feat/finish-integrated` presentation source;
+record its delivered SHA with new screenshots. Backend remains unchanged from
+tested implementation `a5f7cb837d47fa2875a08a62fcdcaad46f0e3575`.
 [Exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40614907584)
-passes all three jobs: 205 guarded backend tests, 76 frontend tests,
+passes all three baseline jobs: 205 guarded backend tests, 76 frontend tests,
 dependency/type/build checks and actual frontend classes against release ASGI.
 Static/API checks do not establish browser, focus, upload-progress or camera acceptance.
 No repeated unavailable browser/helper attempts were made.
+The later bounded presentation revision passes 79 frontend tests, type/build and
+the real ASGI contract check; its exact-SHA CI is reported with delivery. Existing
+tabs may reload after the favicon HTML change; re-enter the same private token if
+needed. No server/registry restart or credential rotation is required.
+
+Next screenshot group only (before further interaction acceptance):
+
+1. Desktop Operator 1440x900: session identity/access/logout and top assigned task.
+2. Operator 390x844: initial viewport, stacked photo controls and blank answers.
+3. Commander 390x844: initial current decision, concrete gaps and simulation/test labels.
+
+Keep details closed initially; do not upload/submit/approve. Prior full checklist
+below remains pending beyond the founder-reported sign-in and screenshot findings.
 
 ## Active isolated review
 

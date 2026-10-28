@@ -1,0 +1,35 @@
+/* Shared, compact connected workspace chrome. Body text and touch targets stay readable. */
+.connected-shell .connected-topbar { padding-block: 4px; }
+.connected-shell .workspace-status { min-width: 0; gap: 4px 12px; }
+.connected-shell .workspace-tools { flex-shrink: 0; }
+.connected-shell .commander-page { padding-top: 12px; }
+.connected-shell .page-heading, .connected-shell .operator-intro { margin-bottom: 8px; }
+.connected-shell .page-heading>div, .connected-shell .operator-intro { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; min-width: 0; }
+.connected-shell .page-heading h1, .connected-shell .operator-intro h1 { flex-basis: 100%; margin: 0; font-size: 26px; }
+.workspace-test-label { font-size: 13px; line-height: 1.5; color: #e9c887; }
+.connected-shell .incident-context { min-width: 0; }.connected-shell .incident-context[open] { flex-basis: 100%; }
+.connected-shell .incident-context summary { min-height: 44px; padding-block: 10px; }
+.connected-shell .operator-task { padding: 16px; }.connected-shell .task-topline { margin-bottom: 8px; }
+.connected-shell .task-equipment { gap: 12px; margin-bottom: 4px; align-items: flex-start; }
+.connected-shell .equipment-tag.large { width: 48px; min-width: 48px; height: 48px; }
+.connected-shell .task-equipment h2 { font-size: 20px; margin: 2px 0; }
+.connected-shell .task-equipment p { margin-top: 4px; }
+.connected-shell .photo-capture { margin: 8px 0; padding-top: 8px; }
+.connected-shell .photo-pickers { margin: 8px 0; }.connected-shell .photo-pickers label { padding: 8px; gap: 4px; }
+.connected-shell .photo-capture>p { margin-block: 6px; }
+.connected-shell .rationale { margin: 8px 0; padding: 0; }.connected-shell .rationale summary { min-height: 44px; padding-block: 10px; }
+.commander-page .journey { margin-top: 0; }.commander-page .journey-outcome { margin-top: 0; padding: 16px 20px; }
+.commander-page .journey-outcome h3 { margin: 6px 0 8px; }
+.decision-gaps { margin: 12px 0; padding-left: 20px; color: #f1ce94; }.decision-gaps li + li { margin-top: 6px; }
+.journey-context { margin-bottom: 12px; }.journey-context[open] { padding: 12px; border: 1px solid var(--line); border-radius: 6px; }
+.journey>.caption:empty { display: none; }
+@media(max-width:760px) {
+  .connected-shell .connected-topbar { display: flex; padding: 4px 14px; gap: 4px 10px; }
+  .connected-shell .workspace-status { flex: 1; min-width: 150px; font-size: 14px; gap: 2px 10px; }
+  .connected-shell .workspace-tools { gap: 8px; }
+  .connected-shell .connected-topbar .mobile-switch { width: 100%; }
+  .connected-shell .commander-page, .connected-shell .connected-operator.operator-page { padding: 10px 14px 20px; }
+  .connected-shell .operator-task { padding: 14px; }
+  .commander-page .journey-outcome { padding: 14px; }
+  .connected-shell .photo-pickers { grid-template-columns: minmax(0,1fr); }
+}

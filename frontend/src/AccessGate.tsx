@@ -2,6 +2,7 @@ import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react
 import { AccessSession } from './access';
 import { configuredProfile, workspaceAllowed } from './identity';
 import type { Workspace } from './routing';
+import { SessionToolbar } from './SessionToolbar';
 import './access.css';
 
 export function TokenEntry({ checking, message, local, authenticate }: {
@@ -54,11 +55,9 @@ function AccessBoundary({ access, workspace, navigate, children }: {
   }, [snapshot.epoch, snapshot.status, workspace]);
   const identity = snapshot.identity;
   return <>
-    {snapshot.status !== 'locked' && <div className="access-toolbar" aria-label="Session access">
-      <span>{identity ? `${identity.profile} / ${identity.principal_id ?? 'explicit local identity'} / ${identity.role ?? 'local workspaces'}` : 'Verifying access'}</span>
-      <button className="button secondary" disabled={snapshot.status !== 'ready'} onClick={() => void access.refreshIdentity()}>Refresh access</button>
-      <button className="button quiet" onClick={() => access.logout()}>Log out</button>
-    </div>}
+    {snapshot.status !== 'locked' && <SessionToolbar identity={identity}
+      aligned={snapshot.status === 'ready' && !!identity && workspaceAllowed(identity, workspace)}
+      refresh={() => void access.refreshIdentity()} logout={() => access.logout()} />}
     {snapshot.status !== 'ready' || !identity
       ? <TokenEntry key={snapshot.epoch} local={access.profile === 'local'} checking={snapshot.status === 'checking'} message={snapshot.message} authenticate={token => access.authenticate(token)} />
       : !workspaceAllowed(identity, workspace)

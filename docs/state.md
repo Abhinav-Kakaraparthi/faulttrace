@@ -1,5 +1,47 @@
 # Checkpoint state
 
+## Integrated preview — bounded presentation refinement
+
+Started clean on `feat/finish-integrated` at
+`8e8d3a10af917664f02fabc720db66d07e7b4284`. Founder reports successful sign-in
+to both roles and supplied actual Chrome desktop/390x844 screenshots of 5210.
+Findings are user-captured/screenshot-based, not agent-operated browser evidence:
+desktop sidebar overlapped session text; mobile stacked introductions/notices
+delayed photo controls and the decision. Independent fields were blank, photo
+controls stacked, and stored telemetry/reference values were present. Only a
+favicon 404 was established; no API failure was established by those screenshots.
+Keyboard, logout, upload, dialog and recovery acceptance remain open.
+
+Sidebar/workspace/session toolbar now share one responsive rail offset. A compact
+role/identity disclosure retains Refresh access and logout; handlers, identity and
+auth policy are unchanged. Mobile chrome removes redundant role navigation and
+large repeated notices, retaining simulation, connection and one compact offline
+test disclosure per page. Operator's instruction/photo collection precede rationale;
+independent fields, mobile stacking, refusal and upload behavior are preserved.
+Commander shows the existing decision and actual server evidence blockers before
+expandable journey context; full IDs, stages, provenance, assessments and fixture
+rules remain accessible. Telemetry/reference rendering and all authorization,
+inference/evidence/recovery logic are unchanged. Code-native SVG/ICO favicons added.
+
+79 frontend tests, TypeScript, production build and the actual frontend/release
+ASGI combined-contract check PASS (zero provider/external attempts). New semantic
+checks cover session controls, disclosure count, task/action order, concrete gaps,
+disabled approval and no state mutation. Static markup does not prove CSS layout.
+No browser/helper attempts repeated, no new agent screenshots or visual pass.
+Both preview routes, favicon paths and updated CSS return HTTP 200. Existing
+frontend PID 78448/backend listener 74016 continue on 5210/8830; no restart/new
+server, registry, credential or run. Backend remains the unchanged implementation
+loaded at `a5f7cb8`; frontend serves this branch's updated source via Vite HMR.
+HTML favicon changes can reload tabs: re-enter the existing private tokens if
+needed, because browser credentials remain memory-only. No token rotation occurs.
+
+Next small founder screenshot group only: desktop Operator 1440x900 (session text,
+access/logout and top task); Operator 390x844 (initial photo controls); Commander
+390x844 (initial decision/gaps). Keep details closed initially and do not submit
+evidence. Save source revision with feedback; CSS/focus/interaction acceptance is
+still pending. Backend policy, historical runs/ledgers and all deployment, Linux,
+Windows ACL, photo-accuracy and final-submission gates remain unchanged/open.
+
 ## Sequential integration — offline/CI PASS; authenticated preview ready
 
 Started clean at `8a4ac28c85b69c2c03b0415e6b347539478421f6`. A final

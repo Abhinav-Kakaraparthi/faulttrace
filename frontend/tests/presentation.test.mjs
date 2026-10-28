@@ -437,10 +437,45 @@ test('inspection provides a full-image source, enlargement control, focusable sc
 
 test('connected header keeps simulation disclosure and native modal close affordance without stacked banners', () => {
   const html=renderConnected();
-  assert.match(html,/Simulated incident \/ local server/);assert.match(html,/Inference status pending/);
+  assert.match(html,/Simulation only/);assert.match(html,/Inference status pending/);
   assert.doesNotMatch(html,/Inference disabled/);
   assert.match(html,/aria-label="Workspaces"/);assert.match(html,/Open separate sample preview/);
   assert.doesNotMatch(html,/class="demo-banner"|class="topbar"|class="mode-bar"/);
   assert.match(html,/<dialog[^>]*aria-label="Evidence inspection"/);
   assert.match(html,/<button[^>]*autofocus=""[^>]*aria-label="Close evidence inspection"/);
+});
+
+test('session identity remains discoverable with refresh/logout controls and no credential field', () => {
+  const html = harness.renderSessionToolbar();
+  assert.match(html, /class="access-toolbar workspace-access-toolbar"/);
+  assert.match(html, /<summary><strong>Operator<\/strong>/);
+  assert.match(html, /release \/ field-review/); assert.match(html, /Profile: release/);
+  assert.match(html, /aria-label="Refresh access"/); assert.match(html, />Log out</);
+  assert.doesNotMatch(html, /<input|Bearer |type="password"/);
+});
+
+test('Commander decision and actual missing evidence precede expandable journey context', () => {
+  const state = snapshot(); state.journey.maintenance_status = 'not_completed';
+  state.journey.recovery.status = 'not_started'; state.journey.assessment.eligible = false;
+  state.journey.assessment.blockers = ['F-17_missing','V-08_missing','active_observation_or_planning'];
+  const before = JSON.stringify(state); const html = renderCommander(state);
+  assert.ok(html.indexOf('COMMANDER / DECISION') < html.indexOf('Journey context and stages'));
+  assert.ok(html.indexOf('F-17: local differential-pressure report missing.') < html.indexOf('Journey context and stages'));
+  assert.match(html, /V-08: position report missing\./);
+  assert.match(html, /<details class="incident-context">[\s\S]*Shared incident incident-test/);
+  assert.match(html, /<details class="section-surface journey-rules">/);
+  assert.match(html, /<button[^>]*disabled[^>]*>Approve simulated correction/);
+  assert.equal(JSON.stringify(state), before);
+});
+
+test('photo actions precede rationale and technical details; each page has one compact test disclosure', () => {
+  const state = imageTaskState(); state.test_output = true;
+  const html = renderOperator(state);
+  assert.ok(html.indexOf('Choose a photograph from files') < html.indexOf('Why this task?'));
+  assert.match(html, /<details class="rationale">/);
+  for (const render of [renderOperator, renderCommander]) {
+    const page = render(state);
+    assert.equal((page.match(/OFFLINE TEST OUTPUT/g) ?? []).length, 1);
+    assert.match(page, /class="workspace-test-label"/);
+  }
 });

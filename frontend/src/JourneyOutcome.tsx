@@ -1,6 +1,7 @@
 import type { ServerState } from './api';
 import type { JourneyState } from './journeyState';
 import { recoveryLabel } from './journeyState';
+import { evidenceGapLabel } from './evidenceGapLabel';
 
 export function nextJourneyAction(j: JourneyState, view: 'commander' | 'operator'): string {
   if (j.recovery.status === 'verified') return view === 'operator'
@@ -22,6 +23,8 @@ export function JourneyOutcome({ state, view }: { state: ServerState; view: 'com
     <span className="eyebrow">{view === 'operator' ? 'OPERATOR / NEXT ACTION' : 'COMMANDER / DECISION'}</span>
     <h3 id="journey-outcome-title">{completed ? recoveryLabel(j.recovery.status) : 'Evidence first. Human approval next.'}</h3>
     <p className="journey-next-action">{nextJourneyAction(j, view)}</p>
+    {!completed && view === 'commander' && j.assessment.blockers.length > 0 &&
+      <ul className="decision-gaps" aria-label="Current evidence gaps">{j.assessment.blockers.map(code => <li key={code}>{evidenceGapLabel(code)}</li>)}</ul>}
     {completed && <><dl className="journey-outcome-facts">
       <div><dt>Evidence</dt><dd>{j.observations.length} simulated human observations; {j.approved_evidence_refs.length} approval references</dd></div>
       <div><dt>Maintenance</dt><dd>Simulated replacement completed</dd></div>

@@ -11,10 +11,10 @@ export function OperatorPage(props: WorkspaceProps) {
   const completed = state?.journey && state.journey.maintenance_status !== 'not_completed';
   const actionAssigned = state?.journey?.approval_current && !!state.journey.approval_id && !completed;
   return <main id="main-content" tabIndex={-1} className="operator-layout connected-operator operator-page">
-    <header className="operator-intro"><span className="eyebrow">OPERATOR / FIELD TASK</span><h1>{completed ? 'Simulated correction and recovery record' : state?.task ? `${state.task.asset_id} · Observation task` : 'Assigned work'}</h1>
+    <header className="operator-intro"><h1>{completed ? 'Simulated correction and recovery record' : state?.task ? `${state.task.asset_id} · Observation task` : 'Assigned work'}</h1>
+      {(state?.test_output || state?.journey?.test_output) && <span className="workspace-test-label">OFFLINE TEST OUTPUT · no live AI</span>}
       {state?.incident && <details className="incident-context"><summary>Incident details</summary><p>Shared incident {state.incident.id} / evidence revision {state.incident.revision}. Human observations and approved simulated assignments only; no real equipment control.</p></details>}
     </header>
-    {state?.journey?.test_output && <p className="notice">OFFLINE TEST OUTPUT / provider doubles, no live AI or real token consumption.</p>}
     <WorkspaceState state={state} connection={connection} workspace="operator" />
     {state?.incident && <>
       {state.task && !completed && !actionAssigned && <section aria-label="Assigned observation"><ServerTask key={`${state.task.id}-${state.task.revision}`} state={state} mutate={mutate} disabled={disabled} inspect={props.inspect} />

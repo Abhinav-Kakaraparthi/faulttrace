@@ -55,7 +55,7 @@ export function PhotoCapture({ asset, disabled, supported, upload }: { asset: st
   }
   const unavailable = disabled || busy || !supported;
   return <section className="photo-capture" aria-label={`${asset} photographic evidence`}>
-    <h3>Add a photograph</h3><p>Include the instrument and visible tag. If the tag differs from {asset}, report wrong equipment. Upload collects evidence only; no analysis runs.</p>
+    <h3>Add a photograph</h3><p>Include instrument and tag; report wrong equipment if it differs from {asset}. Upload only — no analysis.</p>
     {!supported && <p className="notice">Photo collection requires the updated backend. The existing server has been left untouched; these controls stay disabled until it advertises collection support.</p>}
     <div className="photo-pickers"><label>Take a photograph<input ref={camera} type="file" accept="image/png,image/jpeg" capture="environment" aria-describedby={guidanceId} disabled={unavailable} onChange={e => select(e.target.files?.[0])} /></label><label>Choose a photograph from files<input ref={files} type="file" accept="image/png,image/jpeg" aria-describedby={guidanceId} disabled={unavailable} onChange={e => select(e.target.files?.[0])} /></label></div>
     {url && <PhotoDraft url={url} disabled={disabled || !supported} busy={busy} progress={progress} ready={ready && !disabled && supported} failed={!!error} onReplace={() => { if (files.current) { files.current.value = ''; files.current.click(); } }} onCancel={cancel} onSubmit={() => void submit()}
