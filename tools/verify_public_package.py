@@ -1,4 +1,4 @@
-"""CI-only Docker smoke: temporary resources, loopback HTTP, no provider egress.
+"""CI-only Docker smoke: temporary resources, loopback HTTP, inference off.
 
 This checks the HTTPS cookie contract over a private HTTP test connection with a
 fixed Host/Origin. It is not a TLS, browser, camera or public-hosting acceptance.
@@ -93,7 +93,10 @@ def verify(image, revision):
         phase = 'temporary_resources'
         docker('volume','create',volume)
         created_volume = True
-        docker('network','create','--internal',network)
+        # Internal-only bridge networks do not publish host ports on current
+        # Docker Engine. A unique bridge supports the localhost binding; server
+        # inference stays hard-disabled, with no provider keys or attempt ledger.
+        docker('network','create',network)
         created_network = True
         phase = 'container_launch'
         docker('run','--detach','--name',container,'--network',network,
