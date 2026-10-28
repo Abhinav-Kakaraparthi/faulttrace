@@ -8,6 +8,7 @@ import { JourneyPanel } from './JourneyPanel';
 import { PlannerPanel } from './PlannerPanel';
 import { EvidenceWorkspace } from './EvidenceWorkspace';
 import { AuditHistory } from './AuditHistory';
+import { DemoObservations } from './DemoObservations';
 
 export function CommanderPage(props: WorkspaceProps) {
   const { state, connection, disabled, mutate, navigate } = props;
@@ -28,6 +29,7 @@ export function CommanderPage(props: WorkspaceProps) {
     {state?.incident && <>
       {j && <JourneyPanel release={props.release} state={state} view="commander" presentation="commander" includeRecord={false} mutate={mutate} disabled={disabled} />}
       {!j && <section className="section-surface workspace-decision"><h2>Current decision: obtain an observation</h2><p>{state.task ? 'An observation is assigned. Review its state and wait for Operator evidence before requesting another.' : 'No task is assigned automatically. Choose a permitted observation or escalate for human investigation.'}</p></section>}
+      <DemoObservations {...props} />
       <div className="commander-process-grid"><Process active selected={equipment} onSelect={select} readings={{ pressure: sample?.pressure ?? null, valve: sample?.valve ?? null }} /><ServerTelemetry samples={j?.samples ?? []} /></div>
       <section className="section-surface model-workflow"><h2>NVIDIA observation planning</h2><p>Text proposals choose registered observations or human escalation. Image analysis produces interpretations, not diagnosis, correction approval or recovery declarations.</p>
         {j && j.evidence_mode !== 'task-evidence' && <p className="notice">Separate workflow: NVIDIA task evidence does not currently satisfy the simulated correction assessment. Recovery is evaluated independently from simulator samples; no integrated model recovery reasoning is claimed.</p>}

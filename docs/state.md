@@ -1,5 +1,43 @@
 # Checkpoint state
 
+## Judge demo — cookie session entry (offline preparation)
+
+Started clean on `feat/finish-integrated` at `36a60c1183f7f5dd02074f5f5608b51e9e329d76`.
+New separate demo factory/UI provides Try demo, automatic private investigation
+and F-17 application-template assignment, role switching/second tab, cookie resume,
+absolute two-hour expiry, restart without history deletion and server-side End demo.
+One visitor may use both workspaces; no claim of two-employee production separation.
+Administrative bearer mode and existing authenticated preview remain separate.
+
+Server stores cookie hashes and chooses isolated per-run database/image/ledger
+directories. HTTPS host-only Secure/HttpOnly/Strict cookie; explicit localhost HTTP
+exception is separately named. Synchronizer CSRF, exact mutation Origin, custom
+read header, fetch-metadata checks, no CORS, stale-run headers and scoped workflow
+authorization guard every operation. Budgets, evidence policy, approval/verifier,
+idempotency and hidden simulator boundaries are preserved. Bounded session/run/
+photo/template caps are explicit; archived investigations remain retained.
+
+Inference is hard-disabled with absent key source/forbidden transport, not merely
+an inherited environment flag. No model response or usage is fabricated. Explicit
+demo-template observation/escalation uses registered action/availability definitions,
+labels provenance and preserves refusal/active-task/revision checks. Unreviewed
+photos can block correction; report-only recovery needs no pretend image analysis.
+
+Offline checks include cookie creation/refresh, both views, automatic task/correction
+assignment, expiry/end, restart/persistence, cross-session task/image/result denial,
+CSRF/Origin failures, concurrent creation, duplicate upload at cap and full human-
+report -> approval -> completion -> independent five-sample recovery. A Windows
+SQLite cleanup defect was fixed by explicitly closing connections, not weakening
+assertions. Frontend checks and actual frontend/release+demo ASGI contract checks
+PASS: 218 guarded backend tests (zero forbidden external attempts), 84 frontend
+tests, dependency/type checks, release and demo production builds, and both actual
+frontend/release+demo ASGI contracts. Exact-SHA CI is recorded with delivery.
+No provider calls, new dependencies, spending, deployment or old-server restart.
+No browser/helper retry; manual cookie/second-tab/desktop/mobile acceptance remains
+open. [Contract, commands, sources and deployment/spending gaps](judge-demo.md).
+Next: fresh isolated 5211/8840 localhost demo preview and founder one-click review;
+preserve authenticated 5210/8830 and all earlier runs. Activation evidence follows.
+
 ## Integrated preview — bounded presentation refinement
 
 Started clean on `feat/finish-integrated` at

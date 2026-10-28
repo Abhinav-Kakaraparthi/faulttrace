@@ -3,7 +3,8 @@ import { validateIdentity, type Identity, type Profile } from './identity';
 import { localPhotoURL, MAX_PHOTO_BYTES, uploadBlob, type UploadProgress } from './photoUpload';
 
 export type AccessSnapshot = { epoch: number; status: 'locked' | 'checking' | 'ready'; identity: Identity | null; message: string };
-type Dependencies = { fetch: typeof fetch; upload: typeof uploadBlob; urls: Pick<typeof URL, 'createObjectURL' | 'revokeObjectURL'> };
+type Dependencies = { fetch: typeof fetch; upload: typeof uploadBlob; urls: Pick<typeof URL, 'createObjectURL' | 'revokeObjectURL'>;
+  demo?: { workspace: 'commander' | 'operator'; run: string; csrf: string } };
 const interrupted = () => new DOMException('Access changed or response interrupted. Writes may have reached the server; refresh before acting.', 'AbortError');
 
 // One instance per connected application. Private fields never enter React props,
@@ -69,14 +70,20 @@ export class AccessSession {
       const headers = new Headers(init.headers);
       headers.delete('Authorization'); headers.delete('X-FaultTrace-Local');
       if (this.profile === 'release') headers.set('Authorization', `Bearer ${this.#token}`);
-      else if (init.method === 'POST') headers.set('X-FaultTrace-Local', '1');
+      else if (this.profile === 'demo') {
+        const demo = this.#dependencies.demo;
+        if (!demo) throw new Error('Demo configuration unavailable.');
+        headers.set('X-FaultTrace-Demo', '1'); headers.set('X-FaultTrace-Workspace', demo.workspace);
+        headers.set('X-FaultTrace-Demo-Run', demo.run);
+        if (init.method === 'POST') headers.set('X-CSRF-Token', demo.csrf);
+      } else if (init.method === 'POST') headers.set('X-FaultTrace-Local', '1');
       const response = progress && init.body instanceof Blob
         ? await this.#dependencies.upload(path, init.body, Object.fromEntries(headers), controller.signal,
             value => { if (this.current(epoch) && !controller.signal.aborted) progress(value); })
-        : await this.#dependencies.fetch(path, { ...init, headers, cache: 'no-store', credentials: 'omit', redirect: 'error', signal: controller.signal });
+        : await this.#dependencies.fetch(path, { ...init, headers, cache: 'no-store', credentials: this.profile === 'demo' ? 'same-origin' : 'omit', redirect: 'error', signal: controller.signal });
       valid();
       if (response.status === 401) {
-        this.logout('Access ended. Enter your token again. Pending writes may have reached the server; none will be replayed.');
+        this.logout(this.profile === 'demo' ? 'Demo session expired or ended. Choose Try demo to continue; no write was replayed.' : 'Access ended. Enter your token again. Pending writes may have reached the server; none will be replayed.');
         throw interrupted();
       }
       // Only fixed application errors may be displayed; never surface arbitrary
@@ -86,7 +93,13 @@ export class AccessSession {
     } catch (failure) {
       valid();
       if (failure instanceof Error && failure.name === 'AbortError') throw interrupted();
-      if (failure instanceof APIError) throw failure;
+      if (failure instanceof APIError) {
+        if (this.profile === 'demo' && failure.code === 'demo_session_changed') {
+          this.logout('This demo changed in another tab. Resume the current session; no write was replayed.');
+          throw interrupted();
+        }
+        throw failure;
+      }
       throw new Error('Server response unavailable. State may have changed; refresh before another action.');
     } finally {
       clearTimeout(timeout); this.#pending.delete(controller); init.signal?.removeEventListener('abort', abort);

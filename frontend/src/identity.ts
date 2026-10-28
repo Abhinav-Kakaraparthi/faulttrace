@@ -1,4 +1,4 @@
-export type Profile = 'release' | 'local';
+export type Profile = 'release' | 'local' | 'demo';
 export type Identity = {
   profile: Profile; principal_id: string | null; role: 'commander' | 'operator' | null;
   capabilities: { create_incident: boolean }; incident_ids: string[];
@@ -24,6 +24,7 @@ export function validateIdentity(value: unknown, profile: Profile): Identity {
   } else if (typeof value.principal_id !== 'string' || !value.principal_id.trim() ||
       !['commander', 'operator'].includes(value.role as string) ||
       (value.role === 'operator' && value.capabilities.create_incident)) return invalid();
+  if (profile === 'demo' && value.capabilities.create_incident) return invalid();
   return value as Identity;
 }
 export function canCreate(identity: Identity): boolean {

@@ -46,17 +46,24 @@ async def fields(request, expected):
 
 def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transport,
                enabled=None, key_source=None, simulation_clock=None, simulation_outcome="effective", test_output=False,
-               profile='local', auth_registry=None):
-    if profile not in ('local', 'release'):
+               profile='local', auth_registry=None, demo_registry=None, browser_origin=None):
+    if profile not in ('local', 'release', 'demo'):
         raise ValueError('invalid_profile')
     from .auth import Registry
     from .access import Access
     if profile == 'release' and not auth_registry:
         raise ValueError('auth_configuration_required')
     registry = Registry(auth_registry) if profile == 'release' else None
+    if profile == 'demo':
+        from .demo_runtime import DemoRegistry
+        if not isinstance(demo_registry, DemoRegistry) or enabled is not False:
+            raise ValueError('invalid_demo_configuration')
+        registry = demo_registry
     if test_output and send is transport:
         raise ValueError('test_output_requires_provider_double')
     origins = allowed_origins()
+    if profile == 'demo':
+        origins = origins | {browser_origin}
     inference_enabled = (os.environ.get("FAULTTRACE_ALLOW_INFERENCE") == "1") if enabled is None else enabled
 
     @asynccontextmanager

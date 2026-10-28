@@ -8,6 +8,12 @@ investigate equipment anomalies.
 
 ## Status
 
+The optional judge-demo service offers **Try demo** with an expiring HttpOnly
+cookie, automatic isolated simulated investigation/Operator assignment and both
+workspaces for one visitor. No account or copied token is needed. Inference is
+hard-disabled; demo templates are not NVIDIA output. Administrative bearer access
+remains separate. [Startup, session/security limits and offline checks](docs/judge-demo.md).
+
 The `feat/finish-integrated` branch combines the reviewed server authorization and
 memory-only frontend authentication. Release uses privately delivered opaque
 bearer tokens; Commander/Operator permissions and incident/task/image access are

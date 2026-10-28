@@ -5,6 +5,8 @@ import { Connected, ConnectedWorkspace } from '../src/Connected';
 import { AccessSession } from '../src/access';
 import { TokenEntry, WrongWorkspace } from '../src/AccessGate';
 import { SessionToolbar } from '../src/SessionToolbar';
+import { DemoEntry } from '../src/DemoExperience';
+export { demoSessionRequest } from '../src/demoSession';
 export { AccessSession } from '../src/access';
 export { configuredProfile, validateIdentity, canCreate, workspaceAllowed } from '../src/identity';
 export { APIError } from '../src/api';
@@ -55,3 +57,4 @@ export const renderWrongWorkspace = (role: 'commander' | 'operator') => renderTo
 export const renderSessionToolbar = () => renderToStaticMarkup(createElement(SessionToolbar, {
   identity: { profile: 'release', principal_id: 'field-review', role: 'operator', capabilities: { create_incident: false }, incident_ids: [] },
   aligned: true, refresh: () => {}, logout: () => {} }));
+export const renderDemoEntry = () => renderToStaticMarkup(createElement(DemoEntry, { error: '', start: () => {} }));

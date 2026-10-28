@@ -13,6 +13,7 @@ after(() => {
   rmSync(temporary, { recursive: true, force: true });
 });
 const output = await build({ configFile: false, logLevel: 'silent',
+  define: { 'import.meta.env.VITE_FAULTTRACE_PROFILE': JSON.stringify('release') },
   build: { ssr: 'tests/presentation-entry.tsx', write: false, rollupOptions: { output: { format: 'es' } } } });
 const entry = output.output.find(item => item.type === 'chunk' && item.isEntry);
 const file = join(temporary, 'render.mjs');
@@ -23,6 +24,8 @@ const harness = await import(pathToFileURL(file));
 const { registerInspectionTests } = await import('./inspection-transitions.mjs');
 await registerInspectionTests();
 registerAuthenticationTests({ ...harness, snapshot, imageTaskState });
+const { registerJudgeDemoTests } = await import('./judge-demo.mjs');
+registerJudgeDemoTests({ ...harness, imageTaskState });
 
 function snapshot() {
   const observations = [

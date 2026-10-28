@@ -62,6 +62,10 @@ jobs:
         run: npm run typecheck
       - name: Production build
         run: npm run build
+      - name: Judge-demo production build
+        env:
+          VITE_FAULTTRACE_PROFILE: demo
+        run: npm run build
 
   combined:
     name: Combined authenticated ASGI contract / no provider
@@ -85,3 +89,6 @@ jobs:
       - name: Real frontend classes against release API / not a browser test
         working-directory: frontend
         run: node tests/combined-contract.mjs
+      - name: Real judge demo session contract / no provider or browser
+        working-directory: frontend
+        run: node tests/demo-contract.mjs

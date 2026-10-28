@@ -9,6 +9,16 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+Judge-demo entry is implemented as a separate cookie-session flow: Try demo,
+automatic isolated simulated investigation/assignment, both workspaces for one
+visitor, refresh/second-tab resume, expiry and retained-history restart. No account
+or copied workspace bearer is required. Inference is hard-disabled; registered
+demo templates are not NVIDIA output. Administrative access stays separate.
+Offline isolation, CSRF/Origin, duplicate/stale and recovery checks do not establish
+browser, hosting, live-model or production multi-employee acceptance. Spending/
+abuse controls, TLS/ACLs, retention and numeric photo accuracy remain open;
+no submission checkbox is newly closed. See [judge-demo limits](judge-demo.md).
+
 Founder signed into both integrated roles and supplied Chrome desktop/390x844
 screenshots. These establish bounded user-reported sign-in/rendering observations,
 not agent browser verification or broad visual acceptance. A presentation-only

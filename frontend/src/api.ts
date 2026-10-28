@@ -34,6 +34,7 @@ export type ServerEvidence = {
   analysis: { contract?: string; id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
+  demo?: { template_actions: string[]; assignment_remaining: number };
   test_output?: boolean;
   photo_planning?: { version: number };
   photo_analysis?: { version: number; contract: string };
@@ -48,6 +49,16 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  demo_session_required: 'Choose Try demo to open a session.',
+  demo_session_expired: 'Demo session expired. Choose Try demo to begin again; previous investigations are retained.',
+  demo_session_changed: 'Demo restarted in another tab. Resume its current investigation; no write was replayed.',
+  demo_csrf_required: 'Demo request could not be verified. Refresh the session before another action.',
+  demo_origin_required: 'This demo requires its configured same-origin application.',
+  demo_capacity: 'This local demo has reached its session capacity. Ask the host to provide a fresh review instance.',
+  demo_restart_limit: 'This session has reached its restart limit. Previous investigations remain retained.',
+  demo_assignment_budget: 'This investigation has reached its demo assignment limit.',
+  demo_action_unavailable: 'That observation is unavailable. Preserve the evidence and clarify or escalate.',
+  demo_upload_limit: 'This demo investigation has reached its photograph limit.',
   authentication_required: 'Access ended. Enter your token again. Pending writes may have reached the server; none will be replayed.',
   access_denied: 'Access denied. Your role or incident grant does not permit this request. Refresh access after administrator changes.',
   storage_or_internal_failure: 'Server storage or internal failure. State may have changed; refresh before another action.',
