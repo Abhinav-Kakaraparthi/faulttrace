@@ -53,11 +53,11 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
     app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=[url.hostname, '127.0.0.1', 'localhost', 'testserver'])
 
-    async def runtime(run, session):
+    async def runtime(run, session, run_live):
         async with pool_lock:
             if run not in children:
                 child, registry = await open_run(app.state.stack, root / 'runs' / identifier(run), origin,
-                    live=live, budget=budget.for_session(session) if budget else None,
+                    live=run_live, budget=budget.for_session(session) if budget and run_live else None,
                     send=send, key_source=key_source)
                 client = await app.state.stack.enter_async_context(httpx.AsyncClient(
                     transport=httpx.ASGITransport(app=child), base_url='http://127.0.0.1'))
@@ -111,10 +111,10 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
             if request.method != 'GET':
                 sessions.check_csrf(row, request.headers.get('x-csrf-token'))
             prior = request.headers.get('x-faulttrace-demo-run', '')
-            if path in ('demo/start', 'demo/restart') and request.method == 'POST':
+            if path in ('demo/start', 'demo/restart', 'demo/restart-offline') and request.method == 'POST':
                 await fields(request, [])
                 row = sessions.change(token, request.headers.get('idempotency-key'), path.split('/')[1], prior)
-                await runtime(row['run'], row['hash'])
+                await runtime(row['run'], row['hash'], sessions.public(row)['inference_enabled'])
                 return JSONResponse(sessions.public(row))
             if prior != row['run'] or not row['run']:
                 raise WorkflowError('demo_session_changed', 409)
@@ -124,12 +124,13 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
                 response = JSONResponse({'ended': True})
                 response.delete_cookie(cookie_name, path=cookie_path, secure=secure, httponly=True, samesite='strict')
                 return response
-            child, registry, client = await runtime(row['run'], row['hash'])
+            run_live = sessions.public(row)['inference_enabled']
+            child, registry, client = await runtime(row['run'], row['hash'], run_live)
             role = request.headers.get('x-faulttrace-workspace')
             if role not in ('commander', 'operator'):
                 raise WorkflowError('access_denied', 403)
             if path == 'demo/observations' and request.method == 'POST':
-                if live:
+                if run_live:
                     raise WorkflowError('offline_template_only', 403)
                 if role != 'commander':
                     raise WorkflowError('access_denied', 403)
@@ -154,7 +155,7 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
                 with child.state.workflow.store.connection() as db:
                     value['demo'] = {'template_actions': list(permitted_actions(build_context(db))),
                         'assignment_remaining': max(0, 4-db.execute("SELECT COUNT(*) FROM events WHERE kind='demo_template_assigned'").fetchone()[0]),
-                        'live': live, 'spending': budget.summary(row['hash']) if budget else None}
+                        'live': run_live, 'spending': budget.summary(row['hash']) if budget else None}
                 return JSONResponse(value)
             return Response(result.content, result.status_code,
                             headers={'Content-Type': result.headers.get('content-type', 'application/json')})

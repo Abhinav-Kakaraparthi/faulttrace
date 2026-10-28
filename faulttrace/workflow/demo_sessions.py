@@ -21,7 +21,8 @@ class DemoSessions:
             db.executescript('''CREATE TABLE IF NOT EXISTS sessions(
                 hash TEXT PRIMARY KEY, csrf TEXT, expires REAL, run TEXT, runs INTEGER, ended INTEGER);
                 CREATE TABLE IF NOT EXISTS operations(
-                session TEXT,key TEXT,operation TEXT,prior TEXT,result TEXT,PRIMARY KEY(session,key));''')
+                session TEXT,key TEXT,operation TEXT,prior TEXT,result TEXT,PRIMARY KEY(session,key));
+                CREATE TABLE IF NOT EXISTS run_modes(run TEXT PRIMARY KEY,live INTEGER);''')
 
     @contextmanager
     def db(self):
@@ -51,8 +52,13 @@ class DemoSessions:
         return cookie, self.get(cookie)
 
     def public(self, row):
+        live = self.live
+        if row['run']:
+            with self.db() as db:
+                mode = db.execute('SELECT live FROM run_modes WHERE run=?', (row['run'],)).fetchone()
+            live = live and bool(mode and mode['live'])
         return {'active_run': row['run'], 'csrf_token': row['csrf'],
-                'expires_at': row['expires'], 'inference_enabled': self.live,
+                'expires_at': row['expires'], 'inference_enabled': live,
                 'privileges': 'One demo visitor may use both workspaces; not separate employee identities.'}
 
     def check_csrf(self, row, value):
@@ -62,6 +68,7 @@ class DemoSessions:
     def change(self, cookie, key, operation, prior):
         identifier(key)
         row = self.get(cookie)
+        requested_live = self.public(row)['inference_enabled'] if row['run'] and operation == 'restart' else self.live
         with self.db() as db:
             db.execute('BEGIN IMMEDIATE')
             old = db.execute('SELECT * FROM operations WHERE session=? AND key=?', (row['hash'], key)).fetchone()
@@ -80,6 +87,7 @@ class DemoSessions:
                     raise WorkflowError('demo_restart_limit', 429)
                 result = str(uuid.uuid4())
                 db.execute('UPDATE sessions SET run=?,runs=runs+1 WHERE hash=?', (result, row['hash']))
+                db.execute('INSERT INTO run_modes VALUES(?,?)', (result, int(requested_live and operation != 'restart-offline')))
             db.execute('INSERT INTO operations VALUES(?,?,?,?,?)', (row['hash'],key,operation,prior,result))
         return self.get(cookie)
 

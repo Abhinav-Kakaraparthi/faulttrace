@@ -160,3 +160,16 @@ class LiveDemoDoubleTests(unittest.TestCase):
             for forbidden in ('private_outcome','corrected_tick','expected_reading','TEST_ONLY_SENTINEL'):
                 self.assertNotIn(forbidden,serialized)
             self.assertTrue(any(o['asset_id']=='F-17' for o in contexts[1]['observations']))
+            previous_run=response.json()['active_run']
+            headers['Idempotency-Key']=key()
+            fallback=client.post('/api/demo/restart-offline',json={},headers=headers)
+            self.assertEqual(fallback.status_code,200)
+            self.assertFalse(fallback.json()['inference_enabled'])
+            headers['X-FaultTrace-Demo-Run']=fallback.json()['active_run']
+            offline=state()
+            self.assertFalse(offline['inference_enabled'])
+            self.assertIn('not NVIDIA-generated',offline['task']['creation_source'])
+            self.assertEqual(offline['planning'],[])
+            self.assertEqual(offline['demo']['spending']['requests_reserved'],2)
+            self.assertTrue((root/'runs'/previous_run/'usage.json').is_file())
+            self.assertEqual(len(contexts),2)

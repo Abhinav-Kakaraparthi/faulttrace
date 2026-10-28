@@ -9,7 +9,7 @@ export function DemoExperience({ workspace, navigate }: { workspace: Workspace; 
   const [session, setSession] = useState<DemoSession | null>(null);
   const [loading, setLoading] = useState(true), [error, setError] = useState('');
   const active = useRef<AccessSession | null>(null);
-  const pendingKey = useRef({ start: crypto.randomUUID(), restart: crypto.randomUUID(), end: crypto.randomUUID() });
+  const pendingKey = useRef({ start: crypto.randomUUID(), restart: crypto.randomUUID(), 'restart-offline': crypto.randomUUID(), end: crypto.randomUUID() });
   useEffect(() => {
     let mounted = true;
     demoSessionRequest().then(value => { if (mounted) setSession(value); })
@@ -17,7 +17,7 @@ export function DemoExperience({ workspace, navigate }: { workspace: Workspace; 
       .finally(() => { if (mounted) setLoading(false); });
     return () => { mounted = false; active.current?.logout(''); };
   }, []);
-  async function change(operation: 'start' | 'restart' | 'end') {
+  async function change(operation: 'start' | 'restart' | 'restart-offline' | 'end') {
     if (loading) return;
     setLoading(true); setError(''); active.current?.logout('');
     try {
@@ -32,7 +32,7 @@ export function DemoExperience({ workspace, navigate }: { workspace: Workspace; 
   if (loading) return <main className="access-screen" id="main-content" role="status"><h1>Preparing your demo…</h1><p>Simulation only. No provider request.</p></main>;
   return <>
     {session?.active_run ? <DemoWorkspace key={`${session.active_run}-${workspace}`} session={session} workspace={workspace} navigate={navigate}
-      register={value => { active.current = value; }} resume={() => void change('start')} restart={() => void change('restart')} end={() => void change('end')} />
+      register={value => { active.current = value; }} resume={() => void change('start')} restart={() => void change('restart')} offline={() => void change('restart-offline')} end={() => void change('end')} />
       : <DemoEntry live={session?.inference_enabled} error={error} start={() => void change('start')} />}
     {session?.active_run && error && <p role="alert" className="connection-warning">{error}</p>}
   </>;
@@ -50,9 +50,9 @@ export function DemoEntry({ error, start, live = false }: { error: string; start
   </section></main>;
 }
 
-function DemoWorkspace({ session, workspace, navigate, register, resume, restart, end }: {
+function DemoWorkspace({ session, workspace, navigate, register, resume, restart, offline, end }: {
   session: DemoSession; workspace: Workspace; navigate: (href: string) => void;
-  register: (access: AccessSession) => void; resume: () => void; restart: () => void; end: () => void;
+  register: (access: AccessSession) => void; resume: () => void; restart: () => void; offline: () => void; end: () => void;
 }) {
   const [access] = useState(() => new AccessSession('demo', { demo: {
     workspace, run: session.active_run!, csrf: session.csrf_token } }));
@@ -72,6 +72,7 @@ function DemoWorkspace({ session, workspace, navigate, register, resume, restart
     <strong>Demo visitor · both workspaces</strong><span>{session.inference_enabled ? 'Live inference · bounded explicit actions' : 'Inference disabled'}</span>
     <a href="/operator" target="_blank" rel="noopener">Operator in second tab</a>
     <button className="button secondary" onClick={restart}>Restart demo</button>
+    {session.inference_enabled && <button className="button secondary" onClick={offline}>Start new offline demo</button>}
     <button className="button quiet" onClick={end}>End demo</button>
     <details><summary>Session limits</summary><p>Expires {new Date(session.expires_at * 1000).toLocaleString()}. One visitor controls both views. Restart retains previous investigations.</p></details>
   </div><ConnectedWorkspace access={access} workspace={workspace} navigate={navigate} /></>;
