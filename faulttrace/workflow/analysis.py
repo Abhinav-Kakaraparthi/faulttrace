@@ -5,7 +5,7 @@ import json
 import os
 import subprocess
 
-from faulttrace.accounting import VISION_MODEL, new_receipt, sanitized_receipt
+from faulttrace.accounting import VISION_MODEL, new_receipt, sanitized_receipt, valid_revision
 from faulttrace.image_evidence import validate_image_evidence
 from faulttrace.ledger import DEFAULT_LEDGER, LedgerError, load, record
 from faulttrace.provider import run_probe, transport
@@ -19,7 +19,8 @@ def source_revision():
             return None
         return subprocess.check_output(["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL).decode().strip()
     except Exception:
-        return None
+        value = os.environ.get('FAULTTRACE_BUILD_REVISION')
+        return value if valid_revision(value) else None
 
 
 def request_image(data, evidence_ref):

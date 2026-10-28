@@ -4,6 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 import uuid
+from unittest.mock import patch
 
 from faulttrace.workflow.spending import Spending, ALLOWANCE
 from faulttrace.workflow.storage import WorkflowError
@@ -74,3 +75,12 @@ class SpendingTests(unittest.TestCase):
             budget.settle('one', aid, {'usage_status':'missing'})
         with self.assertRaises(WorkflowError):
             budget.reserve('other', 'planning', str(uuid.uuid4()))
+
+    def test_container_revision_fallback_is_strict_and_does_not_hide_dirty_git(self):
+        from faulttrace.workflow.analysis import source_revision
+        with patch('faulttrace.workflow.analysis.subprocess.check_output', side_effect=FileNotFoundError()), patch.dict('os.environ', {'FAULTTRACE_BUILD_REVISION':'a'*40}):
+            self.assertEqual(source_revision(),'a'*40)
+        with patch('faulttrace.workflow.analysis.subprocess.check_output', side_effect=FileNotFoundError()), patch.dict('os.environ', {'FAULTTRACE_BUILD_REVISION':'PRIVATE_SENTINEL'}):
+            self.assertIsNone(source_revision())
+        with patch('faulttrace.workflow.analysis.subprocess.check_output', return_value=b'dirty'), patch.dict('os.environ', {'FAULTTRACE_BUILD_REVISION':'a'*40}):
+            self.assertIsNone(source_revision())
