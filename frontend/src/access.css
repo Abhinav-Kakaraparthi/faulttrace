@@ -1,0 +1,10 @@
+.access-screen { max-width: 680px; margin: 6vh auto; padding: 20px; color: var(--text, #e3e9e8); }
+.access-screen h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+.access-screen p { line-height: 1.6; overflow-wrap: anywhere; }
+.access-screen form { display: grid; gap: 18px; margin: 24px 0; }
+.access-screen label { display: grid; gap: 10px; }
+.access-screen input { width: 100%; min-width: 0; box-sizing: border-box; padding: 12px; color: #e3e9e8; background: #151d21; border: 1px solid #5b7073; border-radius: 6px; }
+.access-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; padding: 12px 20px; background: #182226; color: #e3e9e8; }
+.access-toolbar span { margin-right: auto; overflow-wrap: anywhere; min-width: 0; }
+.access-screen :focus-visible, .access-toolbar :focus-visible { outline: 3px solid #52d1bd; outline-offset: 3px; }
+@media (max-width: 520px) { .access-screen { margin: 16px auto; padding: 12px; } .access-toolbar { padding: 12px; } .access-toolbar span { flex-basis: 100%; } }

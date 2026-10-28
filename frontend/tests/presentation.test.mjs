@@ -18,6 +18,8 @@ const entry = output.output.find(item => item.type === 'chunk' && item.isEntry);
 const file = join(temporary, 'render.mjs');
 writeFileSync(file, entry.code);
 const { renderJourney, renderEvidence, renderPlanningHistory, renderAudit, renderCommander, renderOperator, renderPhotoCapture, renderPhotoDraft, renderEvidenceDetails, renderConnected } = await import(pathToFileURL(file));
+const { registerAuthenticationTests } = await import('./authentication-contract.mjs');
+registerAuthenticationTests({ ...await import(pathToFileURL(file)), snapshot, imageTaskState });
 
 function snapshot() {
   const observations = [
@@ -190,7 +192,7 @@ function imageTaskState() {
   return state;
 }
 
-test('assigned image/report/refusal and opt-in analysis controls are in Operator; Commander only reviews', () => {
+test('assigned uploads/reports/refusal remain Operator controls; both roles can explicitly analyze', () => {
   const state = imageTaskState();
   const operator = renderOperator(state);
   assert.match(operator, /Read the assigned local indicator only/);
@@ -204,7 +206,8 @@ test('assigned image/report/refusal and opt-in analysis controls are in Operator
   assert.doesNotMatch(operator, /Choose next observation|Start .*incident|Approve simulated correction/);
   const commander = renderCommander(state);
   assert.match(commander, /Choose next observation/);
-  assert.doesNotMatch(commander, /Submit image|>Analyze image</);
+  assert.doesNotMatch(commander, /Submit image/);
+  assert.match(commander, />Analyze image</);
   assert.match(commander, /No timestamped simulator measurements/);
   assert.match(commander, /Pressure unavailable/);
   assert.doesNotMatch(commander, /184 kPa|62 kPa|>86 /);
@@ -293,7 +296,7 @@ test('photo analysis is explicit, capability/opt-in gated and separate from fixt
   let html=renderOperator(state);
   assert.match(html,/>Analyze photographic observation</);
   assert.doesNotMatch(html,/>Analyze image</);
-  assert.doesNotMatch(renderCommander(state),/>Analyze photographic observation</);
+  assert.match(renderCommander(state),/>Analyze photographic observation</);
   state.inference_enabled=false;
   assert.match(renderOperator(state),/<button[^>]*disabled[^>]*>Analyze photographic observation</);
   state.inference_enabled=true;delete state.photo_analysis;

@@ -48,6 +48,9 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  authentication_required: 'Access ended. Enter your token again. Pending writes may have reached the server; none will be replayed.',
+  access_denied: 'Access denied. Your role or incident grant does not permit this request. Refresh access after administrator changes.',
+  storage_or_internal_failure: 'Server storage or internal failure. State may have changed; refresh before another action.',
   task_observation_required: 'Record evidence on the assigned Operator task; untasked reports cannot support this investigation.',
   task_investigation_required: 'This historical run uses the legacy journey. Start a fresh isolated investigation to use task-linked reports.',
   invalid_human_observation: 'Choose an observed identity/type and valid reading/unit or position. No model value is substituted.',
@@ -81,10 +84,18 @@ const errors: Record<string, string> = {
   task_not_accepting_evidence: 'This task already has a submission. Request another observation first.',
   analysis_in_progress: 'Analysis is already pending. It will not be automatically repeated.',
 };
+export class APIError extends Error {
+  status: number;
+  code: string;
+  constructor(status: number, code: string) {
+    super(errors[code] ?? 'Request failed. Refresh the current task; no automatic write retry occurred.');
+    this.status = status; this.code = code;
+  }
+}
 export async function apiResponse(response: Response) {
   if (!response.ok) {
     const value = await response.json().catch(() => ({}));
-    throw new Error(errors[value.error] ?? 'Request failed. Refresh the current task; no automatic write retry occurred.');
+    throw new APIError(response.status, Object.hasOwn(errors, value.error) ? value.error : 'request_failed');
   }
   try { return await response.json(); }
   catch { throw new Error('Server response could not be read. State may have changed; refresh before another action.'); }

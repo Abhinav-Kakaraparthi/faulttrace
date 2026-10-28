@@ -79,7 +79,7 @@ test('reset removes the sample journey; repeat observation preserves earlier evi
 
 // Policy examples use independently stated expected outcomes; no provider or backend.
 const { canApprove, canExecute, recoveryLabel } = await import('../src/journeyState.ts');
-const readyJourney = { maintenance_status: 'not_completed', approval_current: false,
+const readyJourney = { maintenance_status: 'not_completed', approval_id: 'assigned-approval', approval_current: false,
   assessment: { eligible: true }, recovery: { status: 'not_started' } };
 test('simulated correction requires explicit consent for the exact displayed revision', () => {
   assert.equal(canApprove(readyJourney, 7, null), false);
@@ -92,6 +92,7 @@ test('simulated correction requires explicit consent for the exact displayed rev
 test('operator execution requires current approval and corroborated evidence; completion cannot imply recovery', () => {
   assert.equal(canExecute(readyJourney), false);
   assert.equal(canExecute({ ...readyJourney, approval_current: true }), true);
+  assert.equal(canExecute({ ...readyJourney, approval_current: true, approval_id: undefined }), false);
   assert.equal(canExecute({ ...readyJourney, approval_current: true, assessment: { eligible: false } }), false);
   assert.equal(canExecute({ ...readyJourney, approval_current: true, maintenance_status: 'simulated_replacement_completed' }), false);
   assert.equal(recoveryLabel('observing'), 'Observing post-correction samples');
