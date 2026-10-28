@@ -104,6 +104,7 @@ def verify(image, revision):
             '--env','FAULTTRACE_PERSISTENT_STORAGE_CONFIRMED=1',
             '--env','FAULTTRACE_DEMO_LIVE=0','--env','FAULTTRACE_ALLOW_INFERENCE=0',
             '--env','NEBIUS_API_KEY=','--env','TAVILY_API_KEY=','--env','LANGSMITH_API_KEY=',image)
+        phase = 'published_port'
         ports = json.loads(docker('inspect',container,'--format','{{json .NetworkSettings.Ports}}'))
         bindings = ports['10000/tcp']
         assert len(bindings)==1 and bindings[0]['HostIp']=='127.0.0.1'
@@ -174,7 +175,19 @@ def verify(image, revision):
             assert secret not in logs
         success = True
     except Exception:
-        print('public_package_verification_failed: '+phase)
+        # Inspect only bounded status/code and one known launcher marker. Never
+        # expose raw Docker/app output, even when startup failed before HTTP.
+        detail = ''
+        try:
+            state = json.loads(docker('inspect',container,'--format','{{json .State}}'))
+            status, code = state.get('Status'), state.get('ExitCode')
+            if status in ('created','running','paused','restarting','removing','exited','dead') and type(code) is int:
+                detail = f' container_{status}_exit_{code}'
+            if 'public_startup_failed:' in docker('logs',container,include_stderr=True):
+                detail += ' launcher_preflight_failed'
+        except Exception:
+            pass
+        print('public_package_verification_failed: '+phase+detail)
     finally:
         try:
             # Names are unique to this invocation; no unrelated container/volume is touched.
