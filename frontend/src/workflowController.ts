@@ -2,9 +2,9 @@ import { APIError, type ServerState } from './api';
 import type { AccessSession } from './access';
 import type { UploadProgress } from './photoUpload';
 
-type Snapshot = { state: ServerState | null; connection: 'loading' | 'online' | 'paused'; error: string; denied: boolean; busy: boolean };
+type Snapshot = { state: ServerState | null; connection: 'loading' | 'online' | 'paused'; error: string; denied: boolean; busy: boolean; inspectionId: string | null };
 export class WorkflowController {
-  #value: Snapshot = { state: null, connection: 'loading', error: '', denied: false, busy: false };
+  #value: Snapshot = { state: null, connection: 'loading', error: '', denied: false, busy: false, inspectionId: null };
   #listeners = new Set<() => void>();
   #active = false;
   #life = 0;
@@ -18,7 +18,14 @@ export class WorkflowController {
   snapshot = () => this.#value;
   subscribe = (listener: () => void) => { this.#listeners.add(listener); return () => { this.#listeners.delete(listener); }; };
   #current(life = this.#life) { return this.#active && life === this.#life && this.access.current(this.#epoch); }
-  #set(value: Partial<Snapshot>) { this.#value = { ...this.#value, ...value }; this.#listeners.forEach(listener => listener()); }
+  #set(value: Partial<Snapshot>) {
+    const next = { ...this.#value, ...value };
+    if (next.denied || !next.state?.evidence.some(item => item.id === next.inspectionId)) next.inspectionId = null;
+    this.#value = next; this.#listeners.forEach(listener => listener());
+  }
+  inspect = (id: string | null) => {
+    if (this.#current()) this.#set({ inspectionId: id });
+  };
   start = () => {
     this.#active = true;
     this.#unsubscribe?.();

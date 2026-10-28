@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import type { ServerEvidence } from './api';
 import type { Workspace } from './routing';
 import { useWorkflow } from './useWorkflow';
@@ -9,6 +9,7 @@ import { Icon } from './Icon';
 import { AccessGate } from './AccessGate';
 import type { AccessSession } from './access';
 import { canCreate } from './identity';
+import { synchronizeInspectionDialog } from './inspectionDialog';
 import './workspaces.css';
 import './photo-workflow.css';
 
@@ -20,13 +21,13 @@ export function ConnectedWorkspace({ access, workspace, navigate }: { access: Ac
   // One controller per mounted connected app. Pages never maintain a second incident/task store.
   const server = useWorkflow(access);
   const identity = access.snapshot().identity!;
-  const [inspected, inspect] = useState<ServerEvidence | null>(null);
+  const inspected = !server.denied ? server.state?.evidence.find(item => item.id === server.inspectionId) : null;
   const dialog = useRef<HTMLDialogElement>(null);
   const focusReturn = useRef<HTMLElement | null>(null);
-  useEffect(() => { if (inspected) dialog.current?.showModal(); }, [inspected]);
-  useEffect(() => { dialog.current?.close(); inspect(null); }, [workspace]);
-  function open(item: ServerEvidence) { focusReturn.current = document.activeElement as HTMLElement; inspect(item); }
-  function close() { dialog.current?.close(); inspect(null); focusReturn.current?.focus(); }
+  useEffect(() => { synchronizeInspectionDialog(dialog.current, !!inspected); }, [inspected]);
+  useEffect(() => { dialog.current?.close(); server.inspect(null); }, [workspace, server.inspect]);
+  function open(item: ServerEvidence) { focusReturn.current = document.activeElement as HTMLElement; server.inspect(item.id); }
+  function close() { dialog.current?.close(); server.inspect(null); focusReturn.current?.focus(); }
   const state = server.state;
   if (!identity) return null;
   const props = { state, connection: server.connection, disabled: server.busy || server.connection !== 'online',
@@ -52,6 +53,6 @@ export function ConnectedWorkspace({ access, workspace, navigate }: { access: Ac
       {server.denied && <section className="section-surface" role="status"><h2>Incident access denied</h2><p>Ask your administrator to review incident grants and task assignments, then choose Refresh access. No private state is displayed.</p></section>}
       {workspace === 'commander' ? <CommanderPage {...props} /> : <OperatorPage {...props} />}
     </div>
-    <dialog ref={dialog} className="evidence-dialog" aria-label="Evidence inspection" onCancel={e => { e.preventDefault(); close(); }} onClose={() => { inspect(null); if (focusReturn.current?.isConnected) focusReturn.current.focus(); }}><div className="dialog-heading"><h2>Inspect evidence</h2><button autoFocus className="icon-button" aria-label="Close evidence inspection" onClick={close}><Icon name="close" /></button></div><div className="dialog-content">{inspected && <ServerEvidenceDetails key={inspected.id} evidence={state?.evidence.find(e => e.id === inspected.id) ?? inspected} />}</div></dialog>
+    <dialog ref={dialog} className="evidence-dialog" aria-label="Evidence inspection" onCancel={e => { e.preventDefault(); close(); }} onClose={() => { server.inspect(null); if (focusReturn.current?.isConnected) focusReturn.current.focus(); }}><div className="dialog-heading"><h2>Inspect evidence</h2><button autoFocus className="icon-button" aria-label="Close evidence inspection" onClick={close}><Icon name="close" /></button></div><div className="dialog-content">{inspected && <ServerEvidenceDetails key={inspected.id} evidence={inspected} />}</div></dialog>
   </div>;
 }

@@ -19,7 +19,10 @@ const file = join(temporary, 'render.mjs');
 writeFileSync(file, entry.code);
 const { renderJourney, renderEvidence, renderPlanningHistory, renderAudit, renderCommander, renderOperator, renderPhotoCapture, renderPhotoDraft, renderEvidenceDetails, renderConnected } = await import(pathToFileURL(file));
 const { registerAuthenticationTests } = await import('./authentication-contract.mjs');
-registerAuthenticationTests({ ...await import(pathToFileURL(file)), snapshot, imageTaskState });
+const harness = await import(pathToFileURL(file));
+const { registerInspectionTests } = await import('./inspection-transitions.mjs');
+await registerInspectionTests();
+registerAuthenticationTests({ ...harness, snapshot, imageTaskState });
 
 function snapshot() {
   const observations = [

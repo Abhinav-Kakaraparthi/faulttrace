@@ -8,6 +8,7 @@ export { AccessSession } from '../src/access';
 export { configuredProfile, validateIdentity, canCreate, workspaceAllowed } from '../src/identity';
 export { APIError } from '../src/api';
 export { WorkflowController } from '../src/workflowController';
+export { synchronizeInspectionDialog } from '../src/inspectionDialog';
 import { ServerEvidenceDetails } from '../src/ServerEvidence';
 import { CommanderPage } from '../src/CommanderPage';
 import { OperatorPage } from '../src/OperatorPage';
