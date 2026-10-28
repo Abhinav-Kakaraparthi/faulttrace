@@ -1,4 +1,86 @@
-# Worker A frontend authentication follow-up
+# Worker A evidence-inspection correction
+
+Current checkpoint: coordinator-confirmed rendering defect fixed; offline
+transition/render checks pass. Browser and combined-backend acceptance remain
+unverified. Earlier checkpoints below are historical.
+
+Started clean on `feat/finish-visual` at
+`450c31a20e4bfc51bf38a0b7f3991babec0213ba` in this worktree only.
+Corrected implementation and clean tested SHA:
+`4d8aa048f0de0f28edaf8df35a323b262f39abc1`.
+The following handoff commit changes only this document; final SHA, verified
+remote and exact-SHA CI are reported in the delivery message.
+
+## Confirmed failure and correction
+
+Coordinator review record: `8a4ac28c85b69c2c03b0415e6b347539478421f6`.
+Read `.local/reviews/a-denied-dialog.mjs` in the coordinator tree without
+modifying or executing it there. Its offline render probe showed a reachable
+denied state displaying the previous report's ID and provenance via
+`state?.evidence.find(...) ?? inspected`.
+
+Before: a local adaptation read the original Connected source from immutable
+`450c31a`, injected the denied state and selected report, and rendered the actual
+connected component. Result: `denial_visible=true`,
+`retained_record_visible=true`, `browser_test=false`. All generated artifacts
+were confined to this worktree's ignored folders; no runtime data was read.
+
+After: the workflow stores only an inspection ID. Each state transition clears
+it when denied, state is absent or the ID is absent from the authorized evidence
+snapshot. Connected resolves details exclusively from that current snapshot;
+there is no cached-record fallback. Rendering drops details immediately, before
+the effect synchronizes the native dialog closed. Restored access/evidence does
+not reopen inspection. Updating the same authorized record shows its new details.
+
+Changed paths and reasons:
+
+- `frontend/src/Connected.tsx`: current-snapshot lookup, ID-only selection and
+  dialog closing; no retained report/image object.
+- `frontend/src/workflowController.ts`, `useWorkflow.ts`: atomic selection
+  reconciliation with state/denial/removal and existing identity cleanup.
+- `frontend/src/inspectionDialog.ts`: idempotent native-dialog synchronization,
+  keeping an already-open refreshed inspection open and closing invalid selection.
+- `frontend/tests/inspection-transitions.mjs`: six new lifecycle/render cases
+  using the actual workflow/access classes and actual Connected rendering. The
+  hook snapshot is injected; native open/close uses a deterministic double.
+- `frontend/tests/presentation-entry.tsx`, `presentation.test.mjs`: exports and
+  registration through the existing test command, without manifest changes.
+
+## Verification and handoff
+
+Clean implementation checks from frontend (Node 22.14.0 / npm 10.9.2):
+
+- `npm.cmd test`: 76 passed, zero failed/skipped/cancelled; previous 70 retained.
+- `npm.cmd run typecheck`: exit 0.
+- `npm.cmd run build`: exit 0; TypeScript and Vite production build pass.
+- Scoped diff/whitespace and credential review pass; source files below 500 lines.
+
+Regressions cover: opening then denying both report/image inspection; state
+clearing and blob revocation; selected-record removal while unrelated authorized
+evidence remains; restoration/reintroduction without automatic reselection;
+current-record refresh; logout, identity replacement, unmount, 401 and late
+responses. Application inference-disabled 403 preserves authorized inspection
+and identity; access-denied 403 clears denied state/selection without logout.
+Existing authenticated fetching, blob cleanup, generation isolation, request
+headers, no-write-replay and inference/recovery assertions continue to pass.
+
+Sanitized results: `.local/visual/inspection-correction/verification.json` and
+`{tests,typecheck,build}.txt`. No screenshots exist. Unavailable browser/native
+attempts were not repeated, as requested. Tests establish offline rendering and
+transitions, not actual native-dialog/focus/CSS behavior or combined backend
+acceptance. The backend/auth contract and frontend profile configuration remain
+unchanged. No backend/shared records/dependencies/CI changes, merges, cherry-picks,
+provider/partner work, spending, deployment or existing-server/data changes.
+
+Next: coordinator sequential integration with independently reviewed backend
+`625c3e6be620b7dd21b5be951637cbba09901ade`, then combined checks. Manually open
+report/image inspection at 1440x900 and 390x844, deny/revoke grants and refresh,
+remove the selected record, restore access, refresh an authorized record and
+logout during a pending response. Confirm content clears, dialog closes, focus
+returns appropriately and nothing reopens until explicitly selected. Save
+sanitized evidence against the combined SHA. No submission gate is newly met.
+
+# Previous frontend authentication follow-up (historical)
 
 Current status: implementation and offline contract checks pass; combined
 backend and browser acceptance remain unverified. This authorized follow-up
