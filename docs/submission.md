@@ -9,6 +9,18 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+Worker B's backend handoff `85d65c8` and tested application `e956bd4` each have
+passing exact-SHA CI (195 backend / 51 frontend, zero forbidden external attempts,
+dependency/type/build checks). Auth, server assignments/scoping and fail-closed
+local release startup are implemented on B's unintegrated branch. Coordinator's
+focused review reproduced a same-creator concurrent creation replay returning
+200/403 instead of one reused result; B correction is required before integration.
+No credential/API-contract change is requested; A's memory-only frontend follow-up
+continues against B's relayed contract. No worker code was edited or integrated.
+Backend checks do not close combined auth/browser, TLS, hosting, Windows ACL or
+Linux PNG-byte portability gates. No submission checkbox changed; see state.md
+for the exact finding and sequential integration prerequisites.
+
 Worker C's four drafts at `b0de010addad04c72923d2feac59e7f7e5a42b18` were
 reviewed without integration. [Exact-SHA CI passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40587796095)
 (175 backend / 51 frontend, dependency/type/build checks; zero forbidden attempts).

@@ -1,5 +1,60 @@
 # Checkpoint state
 
+## Worker B backend review — correction required before integration
+
+Reviewed the complete 14-path diff from `f2da0085` to
+`85d65c821d909783a09f87d4f360fe27e44002c5`: backend auth/access/startup,
+five new test modules and B's handoff only. No frontend, dependency, fixture,
+CI, shared-status or policy changes. B worktree is clean at the remote SHA.
+[Application CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40592354394)
+passed at `e956bd423f8fce453491f8d1f15c2148db2cde4f` and
+[final documentation CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40600700227)
+passed at `85d65c8`: each 195 backend / 51 frontend tests, zero forbidden external
+attempts, dependency/type/build checks. Only handoff prose differs between them.
+Coordinator pre-review `4eb35f1` also has passing CI.
+
+Verified source and focused ASGI tests cover bearer expiry/revocation, role and
+resource denial, no-store scoped state/images, persisted insertion-time assignees,
+denial-preserving audit failures, separate creators and existing policy guards.
+Coordinator ran B's 13 auth/resource/journey tests plus three independent cases:
+15 PASS, one FAIL; zero forbidden external attempts. Authorized cross-identity
+planning replays reuse one reservation; unauthorized replay is denied. A pending
+fake plan assigned its new task to the administrator-selected Operator at insertion,
+without exposing it to the previous Operator. An additional delayed fixture-analysis
+probe PASS confirms shared authorized replay uses one fake call and unassigned
+Operators cannot see pending/final results. Its harness initially expected the
+photo status; corrected to the existing fixture status `accepted` and asserted the
+exact interpretation/validated receipt. No application assertions were weakened.
+All data/ledgers were fresh temporary synthetic records; no listener/provider or
+existing history was touched. Ignored harness: `.local/reviews/worker-b-review.py`.
+
+**Concrete blocker (creation idempotency):** same principal, same initial
+`/api/investigations` key, two concurrent requests produce 200/403, one incident.
+Both authenticate before creation with empty incident grants; `start_authorized`
+later checks the second request's stale principal snapshot after the first request
+adds the creator grant. This is a false access denial, not a reproduced cross-user
+grant leak. Existing different-creator exclusion passes. B must correct the locked
+authorization/replay path without granting by key or bypassing authorization, add
+same-creator concurrent replay and different-creator/removed-access regressions,
+then return a corrected tested SHA, full guarded checks and CI. Coordinator has
+not edited B-owned code or sent a cross-chat message; founder relay is required.
+
+Contract matches the relayed API: release bearer on JSON/XHR/image requests,
+local-only mutation header still required in local profile, distinct 401 auth /
+403 access versus inference-disabled errors, no HTTP login/logout/revoke endpoint.
+Browser logout clears access only. No contract change is requested for the race;
+A already has the exact contract and can continue its memory-only auth work.
+Do not suppress 403 or add write retries in A to mask the backend defect.
+Linux/Windows retained diagnostic reports corroborate equal pixels/decompressed
+IDAT but unequal Linux compressed bytes; fixtures/assertions remain unchanged and
+Linux byte readiness stays blocked. Windows ACL isolation is also unverified.
+
+Next: relay the bounded race correction to B; review B's fix and A's auth handoff,
+then integrate B followed by A only with explicit authorization, full combined CI
+and founder manual review. Reconcile C's drafts afterward. Backend progress is
+unintegrated; combined frontend/browser, TLS, hosting and Linux gates stay open.
+No merge/cherry-pick, new planning document, inference, spending or server restart.
+
 ## Worker C draft review — static PASS, final video NOT RECORDED
 
 Reviewed immutable `b0de010addad04c72923d2feac59e7f7e5a42b18` against
