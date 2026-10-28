@@ -155,7 +155,16 @@ def verify(image, revision):
         assert second.request(image_path)[0]==403
         phase = 'restart_persistence'
         docker('restart',container,timeout=60)
+        # Docker may allocate a different ephemeral host port on restart. Resume
+        # the same visitors/cookies against the new loopback-only binding.
+        phase = 'restart_port_binding'
+        ports = json.loads(docker('inspect',container,'--format','{{json .NetworkSettings.Ports}}'))
+        bindings = ports['10000/tcp']
+        assert len(bindings)==1 and bindings[0]['HostIp']=='127.0.0.1'
+        first.port = second.port = int(bindings[0]['HostPort'])
+        phase = 'restart_readiness'
         ready(first)
+        phase = 'restart_persistence'
         resumed, _ = first.json('/api/demo/session')
         assert resumed['active_run']==first.run
         after, _ = first.json('/api/state')
