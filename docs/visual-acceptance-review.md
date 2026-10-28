@@ -1,4 +1,188 @@
-# Worker A visual acceptance review
+# Worker A frontend authentication follow-up
+
+Current status: implementation and offline contract checks pass; combined
+backend and browser acceptance remain unverified. This authorized follow-up
+supersedes the earlier no-implementation checkpoint retained below.
+
+## Revisions and boundary
+
+Workspace: `C:\Users\surya\Projects\faulttrace-visual`; branch:
+`feat/finish-visual`. Started clean at the previous final SHA
+`e9efbb61db4b13b78d314ee0d562fa74f2366f0b`.
+
+Implementation and clean local tested SHA:
+`bbc032908eb3cc64ebe60ead6bd897740a44f92a`.
+The subsequent handoff commit changes only this document. Final SHA, remote
+comparison and actual CI URL/result are supplied in the delivery message.
+
+Read the immutable `docs/release-preparation.md` and relevant backend access/API
+source using read-only `git show` at
+`85d65c821d909783a09f87d4f360fe27e44002c5`. Worker B's tested application is
+`e956bd423f8fce453491f8d1f15c2148db2cde4f`; its reported
+[application CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40592354394)
+is backend evidence, not a combined-branch result. No backend implementation
+was merged, cherry-picked or copied into this branch.
+
+## Behavior and changed paths
+
+- `frontend/src/identity.ts`: strict validation of the approved identity shape,
+  explicit profile match, server role, incident UUIDs and sole create capability.
+  Operator cannot acquire create permission. No expiry or assignments invented.
+- `frontend/src/AccessGate.tsx`, `access.css`: labeled masked token entry,
+  verification/loading/error states, wrong-workspace navigation, Refresh access
+  and browser logout. Input clears before awaiting authentication. Credentials
+  live only in memory; reload and return from sample mode require re-entry.
+- `frontend/src/access.ts`: one bearer layer for identity, state/JSON requests,
+  fetch uploads, measured XHR uploads and protected image bytes. No tokens in
+  URLs, persistence, diagnostics, analytics or frontend environment variables.
+  Same-origin API paths only; fetch uses no-store and rejects redirects.
+- `frontend/src/workflowController.ts`, `useWorkflow.ts`: bounded polling,
+  preserved mutation bodies/UUID keys, no write replay, pending-request aborts,
+  identity-generation checks and immediate private-state clearing. Old unmount
+  cleanup cannot abort a newer identity's requests or revoke its image URLs.
+- `frontend/src/api.ts`: safe typed errors distinguish 401 from application 403,
+  access denial, stale/idempotency conflicts and sanitized internal failures.
+  Every API 401 clears access. Inference-disabled 403 does not log the user out.
+- `frontend/src/Connected.tsx`, `workspace.ts`: verify identity before mounting
+  private workflow, restrict navigation to server role, retain explicit local
+  role switching and show incident denial without private state.
+- `frontend/src/CommanderPage.tsx`: preserve planning/approval/clock controls;
+  creation requires the server capability in release. A permitted Commander can
+  explicitly create after state access is denied, without a fabricated empty
+  snapshot. Successful creation refreshes identity for the new creator grant.
+- `frontend/src/OperatorPage.tsx`, `JourneyPanel.tsx`, `JourneyOutcome.tsx`,
+  `journeyState.ts`: preserve assigned evidence/report/refusal/completion,
+  telemetry and recovery. Release hides untasked simulation reports; missing
+  correction approval IDs cannot enable execution. No history is invented.
+- `frontend/src/EvidenceWorkspace.tsx`: both roles retain explicit authorized
+  evidence analysis, with existing inference/capability/current-task gates.
+- `frontend/src/photoUpload.ts`: typed object-URL dependency for cleanup tests;
+  existing raw bytes, 2 MiB limit, purpose/fixture/revision headers and measured
+  XHR behavior remain. Reference photos do not acquire fixture provenance.
+- `frontend/tests/authentication-contract.mjs`, `presentation-entry.tsx`,
+  `presentation.test.mjs`, `demo.test.mjs`: 19 new mock contract cases, existing
+  assertions retained except explicit contract changes: Commander may analyze
+  and executable corrections require an approval ID. The approved fixture now
+  includes its ID and a missing-ID rejection is added. No manifest changes;
+  the existing presentation test entry registers the new suite.
+
+State ingestion ignores server-provided image URLs, fetches canonical protected
+image endpoints with authentication, and supplies temporary blob URLs to both
+thumbnails and inspection. Images are cached only within the current identity,
+revoked when removed/replaced, on access refresh/logout/401 and on workspace
+unmount. Existing photo draft effects release local selections on replacement,
+cancel and unmount; auth transitions unmount the entire private workspace.
+Aborting browser requests does not establish cancellation of server mutations.
+
+## Exact nonsecret frontend configuration
+
+`VITE_FAULTTRACE_PROFILE` is a **build/dev configuration**, never a credential:
+
+- Unset, empty or `release`: release behavior; masked entry and valid release
+  identity are mandatory before private state loads.
+- Exactly `local`: user explicitly chooses local mode, then clicks Verify local
+  server. `/api/identity` must return profile local, null principal/role, false
+  create capability and no incident grants. No failure triggers local fallback.
+- Any other value: configuration error; no private requests.
+
+Example commands from this worktree's frontend directory:
+
+```powershell
+$env:VITE_FAULTTRACE_PROFILE = 'release'
+npm.cmd run build
+```
+
+For explicit local rehearsal, set the same variable to `local` before starting
+Vite or building. Never put a token into a VITE variable, shell command, URL,
+configuration file or tracked artifact. Enter it only in the masked form.
+
+The frontend still uses same-origin `/api` proxying. Its committed default is
+127.0.0.1:5173 -> 127.0.0.1:8765; backend integration must supply an identity-aware
+server. Existing frozen scenario backends lacking `/api/identity` are intentionally
+incompatible, even with explicit local configuration. No server was restarted.
+
+For a later coordinator-owned fresh combined rehearsal, use a separate ignored
+Vite config with host 127.0.0.1, strict frontend port 5210, existing filesystem
+denies and `/api` proxy to the coordinator's fresh release backend (for example
+8830, in Worker B's launcher range). Set the backend's allowed preview origin to
+`http://127.0.0.1:5210`; preserve browser Origin checks. Proposed frontend command:
+`npm.cmd run dev -- --config ../.local/visual/combined-preview.config.mjs --port 5210`.
+Proposed URLs: `http://127.0.0.1:5210/commander` and `/operator`.
+No such config/server/data directory was created or run here. Administrator
+credentials, grants and task assignments remain backend/coordinator work.
+
+## Verification and remaining acceptance
+
+At clean implementation `bbc032908eb3cc64ebe60ead6bd897740a44f92a`, Node
+22.14.0 / npm 10.9.2, from frontend:
+
+- `npm.cmd test`: 70 passed, zero failed/skipped/cancelled.
+- `npm.cmd run typecheck`: exit 0.
+- `npm.cmd run build`: exit 0; TypeScript and Vite production build passed.
+- Scoped diff/whitespace and credential review passed; source/test files remain
+  below 500 lines. Installed dependencies/lockfile were reused, unchanged.
+
+Sanitized offline check output is ignored under
+`.local/visual/worker-a-auth/{tests,typecheck,build}.txt`; summary in
+`.local/visual/worker-a-auth/verification.json`. Synthetic sentinels only; no real
+credential or private upload was used. Backend tests were not rerun locally.
+
+Mocks exercise strict identity/local mode, all API header paths, raw uploads,
+401 versus application errors, scoped controls, protected image failures and URL
+revocation, logout/unmount during pending work, late identity/image/state/write
+results, non-disclosure, no write replay and explicit creation/grant refresh.
+Review found and fixed a race where delayed old-component cleanup could abort a
+new identity request; a dedicated regression verifies owner-scoped cleanup.
+
+Browser/native attempts were deliberately **not repeated**, per the user request.
+The prior empty browser inventory/unavailable helper remains the browser blocker.
+No screenshots, DOM interactions, camera, upload-progress, visual or focus pass
+is claimed for this implementation. Mock/static checks do not prove combined
+backend compatibility, live inference or photographic accuracy.
+
+Manual review after sequential coordinator integration (fresh synthetic data,
+inference disabled; label any seeded output OFFLINE TEST OUTPUT):
+
+1. At 1440x900 and 390x844, exercise masked entry, keyboard labels/focus,
+   checking/error states, wrong-workspace navigation and reload re-entry.
+2. Verify Commander create true/false and Operator controls in separate sessions.
+   Test an ungranted Commander with create permission, then creation, grant
+   refresh, assigned-task visibility and missing correction approval IDs.
+3. Select/preview/replace/cancel a photo; upload under throttling and inspect
+   stored images/thumbnail/full-image scrolling. Verify requests carry bearer
+   headers, not URL credentials; preserve purpose/revision/UUID headers.
+4. Logout during polling/upload/analysis, with a draft and an open dialog. Confirm
+   private data clears, object URLs release, late results remain absent and
+   login never resubmits a write. Do not infer server cancellation from abort.
+5. Change administrator grants/revoke a credential; use Refresh access. Check
+   401 clears the session, access-denied 403 clears denied state without treating
+   inference-disabled 403 as logout, and malformed/network failures stay closed.
+6. Recheck disputes, independent blank answers, planning budgets, approval/stale
+   approval, recovery progress/success/failure/relapse and empty histories.
+   Save sanitized screenshots/results against the actual combined tested SHA.
+
+Main failure mode: stale asynchronous responses or delayed cleanup crossing an
+identity boundary. Offline generation/abort/cleanup tests pass; actual browser
+lifecycle and combined backend enforcement remain integration gates. This branch
+does not contain Worker B's backend and cannot itself claim release acceptance.
+
+Ownership overlap was explicitly authorized by this follow-up. No backend,
+dependency manifests, shared state/submission documents, CI, fixtures or other
+worktrees changed. No provider calls, partner integrations, spending, deployment,
+existing-server operations or historical-data changes occurred.
+
+Proposed coordinator-owned state/submission text (not applied):
+
+> Worker A adds memory-only bearer entry, strict identity/profile verification,
+> server-role navigation, authenticated JSON/uploads/images and generation-safe
+> logout cleanup. Clean implementation bbc032908eb3cc64ebe60ead6bd897740a44f92a
+> passes 70 frontend tests, typecheck and build. Final handoff records remote/CI.
+> Combined Worker B backend and browser acceptance are not established; no
+> submission checkbox is newly satisfied. Next: integrate sequentially, configure
+> same-origin fresh release rehearsal, then verify both roles, images, grant
+> refresh and logout races at desktop/mobile sizes with inference disabled.
+
+# Previous visual-only checkpoint (historical)
 
 Status: **BLOCKED; no demonstrated visual defect and no visual pass.**
 Review date: October 27, 2026 (America/New_York).
