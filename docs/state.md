@@ -1,6 +1,44 @@
 # Checkpoint state
 
-## Integration review — B correction PASS, A inspection blocker
+## Sequential integration — offline PASS; founder preview pending
+
+Started clean at `8a4ac28c85b69c2c03b0415e6b347539478421f6`. A final
+`5cbd2191afeeb56c0a92a30416e4b7a83f515c57` has passing exact-SHA
+[CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40613661308).
+Independent adapted reproduction passes for reports/images: denial drops details,
+restoration leaves selection empty, explicit reopen works, image blobs release.
+Ignored `.local/reviews/a-corrected-dialog.mjs` uses actual controller transitions
+and Connected SSR, not browser interaction. Original failure probe is preserved.
+
+Created `feat/finish-integrated` from that coordinator commit. Reviewed no-ff
+merges preserve both histories: B `625c3e6` -> merge `95a3d1e4`; then corrected
+A -> merge `cd3beb1d`. No conflicts, C drafts or partner work. After B: 205 guarded
+backend tests, zero forbidden attempts, pip/diff checks PASS. After A: 205 backend,
+76 frontend tests, pip check, TypeScript and production build PASS. Worker branches
+remain unchanged; main was not merged. Previous two review blockers are resolved.
+
+Added `tools/combined_contract_peer.py`, `frontend/tests/combined-contract.mjs`
+and its tiny TS entry: real AccessSession/WorkflowController against the release
+FastAPI app via private ASGI/stdin IPC, fresh synthetic registry/data/images/ledger.
+PASS: identity without prior grants, initial creation and creator-grant refresh,
+Operator grant refresh, test-created assignment, actual upload normalization,
+protected images in both roles, refusal, inference-disabled 403 versus access
+denial, inspection clearing/restoration and logout with a late real API response.
+No provider calls, analyses or planning reservations; zero forbidden external
+attempts. Tokens travel only through the private test pipe, never test output.
+New Windows combined CI job uses existing dependency specifications and pinned
+runtime actions; no dependencies or existing assertions were changed.
+
+Next: push this tested integration, verify exact-SHA CI, then activate a fresh
+localhost authenticated manual review with inference disabled, privately delivered
+synthetic tokens and a labeled test-created task. Ports 5210/8830 were free;
+old 5180..5182/8780..8782 listeners remain running. Final activation/URL evidence
+will be recorded separately. No browser/helper retries: founder checks are next.
+Registry/database crash durability, Linux compression portability, Windows ACLs,
+TLS/hosting, live adaptive acceptance, photographic accuracy and final submission
+remain open. No provider request, historical migration or old-server restart.
+
+## Earlier integration review — both blockers subsequently resolved
 
 Started clean at coordinator `d3c2dc734365d8d6414049b49382d5494123706d`.
 Reviewed B correction `625c3e6be620b7dd21b5be951637cbba09901ade` and A final

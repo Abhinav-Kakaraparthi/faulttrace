@@ -8,6 +8,13 @@ investigate equipment anomalies.
 
 ## Status
 
+The `feat/finish-integrated` branch combines the reviewed server authorization and
+memory-only frontend authentication. Release uses privately delivered opaque
+bearer tokens; Commander/Operator permissions and incident/task/image access are
+checked by the server. Browser logout does not revoke a token. Combined offline
+contract checks pass; founder browser acceptance, hosting/TLS, Windows ACL review
+and Linux fixture byte portability remain open. See [review plan](docs/combined-auth-manual-review.md).
+
 FT-012 adds a unified, simulation-only task-evidence-to-recovery journey for new
 incidents. Planner-created tasks, independent human reports, photo-claim disputes,
 approval and recovery share evidence references. Model readings are never
@@ -122,6 +129,8 @@ Set-Location 'C:\Users\surya\Projects\faulttrace'
 & 'C:\Users\surya\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m venv .venv
 & .venv\Scripts\python.exe -m pip install -r requirements-backend.txt
 $env:FAULTTRACE_ALLOW_INFERENCE = '0'
+$env:FAULTTRACE_PROFILE = 'local'
+$env:FAULTTRACE_DATA_DIR = Join-Path (Get-Location) ('.local/local-review-' + [guid]::NewGuid().ToString('N') + '/data')
 & .venv\Scripts\python.exe -m uvicorn faulttrace.workflow.main:app --host 127.0.0.1 --port 8765 --workers 1 --no-access-log --log-level warning
 ```
 
@@ -136,6 +145,23 @@ Full offline checks after backend setup:
 & .venv\Scripts\python.exe tools/run_offline_tests.py
 & .venv\Scripts\python.exe -m pip check
 ```
+
+Combined frontend/backend authentication regression (existing dependencies only;
+real frontend classes against isolated ASGI, no listener or provider):
+
+```powershell
+$env:FAULTTRACE_TEST_PYTHON = (Resolve-Path .venv\Scripts\python.exe).Path
+Push-Location frontend
+node tests/combined-contract.mjs
+Pop-Location
+```
+
+For fresh authenticated startup, use [release preparation](docs/release-preparation.md)
+with a new private registry and inference-disabled launcher. Frontend defaults to
+release authentication; set `VITE_FAULTTRACE_PROFILE=local` explicitly only for an
+intentionally unauthenticated local backend. Direct `workflow.main` now requires
+both `FAULTTRACE_PROFILE` and `FAULTTRACE_DATA_DIR`; no default historical run is
+selected. The local example above creates a new directory and preserves old runs.
 
 ## Continuous integration
 

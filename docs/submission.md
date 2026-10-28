@@ -9,7 +9,16 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
-Integration review: corrected B `625c3e6` has passing exact-SHA CI (205 backend /
+Sequential feature integration now includes B `625c3e6` then corrected A
+`5cbd219`, with both earlier review blockers resolved. Local combined checks PASS:
+205 guarded backend / 76 frontend, dependency/type/build checks, and real frontend
+classes against the authenticated ASGI API (no provider/listener; test-created
+assignment). Combined CI and fresh founder manual review are recorded separately;
+static/API tests do not satisfy browser acceptance. No broad checkbox is newly
+closed. Linux portability, Windows ACLs, TLS/hosting, live acceptance, photographic
+accuracy, final release/submission and C draft integration remain open.
+
+Earlier integration review: B `625c3e6` has passing exact-SHA CI (205 backend /
 51 frontend); A `450c31a` passes separate CI (175 backend / 70 frontend), plus
 dependency/type/build checks and zero forbidden attempts. Original concurrent
 creation reproduction now passes independently. Integration is blocked by A's
