@@ -1,6 +1,6 @@
 # Checkpoint state
 
-## Sequential integration — offline PASS; founder preview pending
+## Sequential integration — offline/CI PASS; authenticated preview ready
 
 Started clean at `8a4ac28c85b69c2c03b0415e6b347539478421f6`. A final
 `5cbd2191afeeb56c0a92a30416e4b7a83f515c57` has passing exact-SHA
@@ -29,11 +29,23 @@ attempts. Tokens travel only through the private test pipe, never test output.
 New Windows combined CI job uses existing dependency specifications and pinned
 runtime actions; no dependencies or existing assertions were changed.
 
-Next: push this tested integration, verify exact-SHA CI, then activate a fresh
-localhost authenticated manual review with inference disabled, privately delivered
-synthetic tokens and a labeled test-created task. Ports 5210/8830 were free;
-old 5180..5182/8780..8782 listeners remain running. Final activation/URL evidence
-will be recorded separately. No browser/helper retries: founder checks are next.
+Tested implementation `a5f7cb837d47fa2875a08a62fcdcaad46f0e3575` passed
+[all three exact-SHA CI jobs](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40614907584).
+Later documentation changes only record activation/manual instructions.
+Fresh authenticated Commander/Operator are running at
+http://127.0.0.1:5210/commander and http://127.0.0.1:5210/operator, proxying
+localhost backend 8830 (listener PIDs frontend 78448/backend 74016; Python launcher
+78504). New registry, data/images
+and empty ledger are in ignored `.local/visual/integrated-auth-c3fddb7041c845c2be57f861786758d2/`.
+Scenario: test-created F-17 assignment; simulated telemetry, no model output.
+Inference is disabled with absent key source/forbidden transport. Both routes and
+authenticated role/shared-task API checks pass; anonymous state is 401. Review
+ledger has no attempts; original provider ledger hash is unchanged and tokens
+are absent from the new logs. Old 5180..5182/8780..8782 listener PIDs are preserved.
+No browser/helper retries or screenshots: founder manual review is next, starting
+with entry/navigation, matching assignment, 1440x900/390x844 and logout.
+Private token-copy steps and exact URLs: [manual guide](combined-auth-manual-review.md).
+Browser interaction/camera/progress/dialog/focus acceptance remains NOT RUN.
 Registry/database crash durability, Linux compression portability, Windows ACLs,
 TLS/hosting, live adaptive acceptance, photographic accuracy and final submission
 remain open. No provider request, historical migration or old-server restart.

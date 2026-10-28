@@ -13,8 +13,11 @@ Sequential feature integration now includes B `625c3e6` then corrected A
 `5cbd219`, with both earlier review blockers resolved. Local combined checks PASS:
 205 guarded backend / 76 frontend, dependency/type/build checks, and real frontend
 classes against the authenticated ASGI API (no provider/listener; test-created
-assignment). Combined CI and fresh founder manual review are recorded separately;
-static/API tests do not satisfy browser acceptance. No broad checkbox is newly
+assignment). [Exact implementation CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40614907584)
+passes at `a5f7cb837d47fa2875a08a62fcdcaad46f0e3575`. A fresh localhost
+authenticated review runs on 5210/8830, inference disabled, isolated synthetic
+registry/storage/empty ledger and a test-created task. Founder manual review is
+next; static/API tests do not satisfy browser acceptance. No broad checkbox is newly
 closed. Linux portability, Windows ACLs, TLS/hosting, live acceptance, photographic
 accuracy, final release/submission and C draft integration remain open.
 
