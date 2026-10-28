@@ -8,7 +8,7 @@ export function nextJourneyAction(j: JourneyState, view: 'commander' | 'operator
     : 'Review the verified recovery and its evidence. Real diagnosis and maintenance sign-off remain outside this simulation.';
   if (j.recovery.status === 'failed') return 'Review the failed verification and escalate for human investigation. No automatic correction or retry.';
   if (j.maintenance_status !== 'not_completed') return view === 'operator' ? 'Completion acknowledged. Commander will collect the post-correction verification samples.' : 'Advance the simulation to collect the next post-correction sample. Completion alone does not prove recovery.';
-  if (j.approval_current) return view === 'operator' ? 'Complete the approved simulated filter replacement.' : 'Approval is recorded. Operator must complete the simulated correction before recovery can be assessed.';
+  if (j.approval_current && (view === 'commander' || j.approval_id)) return view === 'operator' ? 'Complete the approved simulated filter replacement.' : 'Approval is recorded. Operator must complete the simulated correction before recovery can be assessed.';
   if (j.assessment.eligible) return view === 'commander' ? 'Review the working diagnosis and approve or decline the simulated correction.' : 'Required evidence is recorded. Commander must review and approve the current revision.';
   return view === 'operator' ? 'Record the required F-17 pressure and V-08 position observations, or report a genuine evidence gap.' : 'Review the evidence gaps. Operator observations are required before correction approval.';
 }

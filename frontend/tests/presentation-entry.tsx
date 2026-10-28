@@ -1,7 +1,14 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { PhotoCapture, PhotoDraft } from '../src/PhotoCapture';
-import { Connected } from '../src/Connected';
+import { Connected, ConnectedWorkspace } from '../src/Connected';
+import { AccessSession } from '../src/access';
+import { TokenEntry, WrongWorkspace } from '../src/AccessGate';
+export { AccessSession } from '../src/access';
+export { configuredProfile, validateIdentity, canCreate, workspaceAllowed } from '../src/identity';
+export { APIError } from '../src/api';
+export { WorkflowController } from '../src/workflowController';
+export { synchronizeInspectionDialog } from '../src/inspectionDialog';
 import { ServerEvidenceDetails } from '../src/ServerEvidence';
 import { CommanderPage } from '../src/CommanderPage';
 import { OperatorPage } from '../src/OperatorPage';
@@ -34,4 +41,13 @@ export const renderPhotoDraft = (overrides = {}) => renderToStaticMarkup(createE
   onReplace: () => {}, onCancel: () => {}, onSubmit: () => {}, ...overrides }));
 export const renderEvidenceDetails = (evidence: ServerState['evidence'][number]) =>
   renderToStaticMarkup(createElement(ServerEvidenceDetails, { evidence }));
-export const renderConnected = () => renderToStaticMarkup(createElement(Connected, { workspace: 'operator', navigate: () => {} }));
+// Existing workspace assertions exercise the explicit-local shell; the locked
+// release entry is covered separately. No live server or provider is involved.
+export const renderConnected = () => {
+  const access = new AccessSession('local');
+  access.snapshot = () => ({ epoch: 1, status: 'ready', message: '', identity: { profile: 'local', principal_id: null, role: null, capabilities: { create_incident: false }, incident_ids: [] } });
+  return renderToStaticMarkup(createElement(ConnectedWorkspace, { access, workspace: 'operator', navigate: () => {} }));
+};
+export const renderLocked = () => renderToStaticMarkup(createElement(Connected, { workspace: 'commander', navigate: () => {} }));
+export const renderTokenEntry = (checking = false) => renderToStaticMarkup(createElement(TokenEntry, { checking, message: '', local: false, authenticate: async () => false }));
+export const renderWrongWorkspace = (role: 'commander' | 'operator') => renderToStaticMarkup(createElement(WrongWorkspace, { role, navigate: () => {} }));

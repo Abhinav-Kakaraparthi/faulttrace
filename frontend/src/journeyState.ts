@@ -5,7 +5,7 @@ export type JourneyState = {
   label: string; clock: string; tick: number; samples: Sample[]; observations: SimObservation[];
   assessment: { source: string; working_diagnosis: string | null; evidence_refs: string[]; blockers: string[]; eligible: boolean; alternatives: string[] };
   policy: { freshness_seconds: number; pressure_agreement_kpa: number; restriction_pressure_kpa: number[]; restricted_flow_m3h: number[]; recovery_pressure_kpa: number[]; recovery_flow_m3h: number[]; valve_feedback_percent: number[]; window_seconds: number; minimum_samples: number };
-  action_id: string; approval_id: string | null; approval_current: boolean; approved_evidence_refs: string[];
+  action_id: string; approval_id?: string | null; approval_current: boolean; approved_evidence_refs: string[];
   maintenance_status: string;
   recovery: { status: 'not_started' | 'observing' | 'verified' | 'failed'; sample_count: number; window_seconds: number; sample_refs: string[] };
 };
@@ -27,5 +27,5 @@ export function canApprove(journey: JourneyState, revision: number, consentRevis
 }
 
 export function canExecute(journey: JourneyState): boolean {
-  return journey.maintenance_status === 'not_completed' && journey.approval_current && journey.assessment.eligible;
+  return journey.maintenance_status === 'not_completed' && !!journey.approval_id && journey.approval_current && journey.assessment.eligible;
 }

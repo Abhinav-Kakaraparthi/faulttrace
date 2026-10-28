@@ -19,13 +19,13 @@ export function CommanderPage(props: WorkspaceProps) {
     <header className="page-heading"><div><span className="eyebrow">COMMANDER / INVESTIGATION & DECISIONS</span><h1>{state?.incident ? 'Investigation workspace' : 'Commander workspace'}</h1>
       <p>Review sources, choose observations, approve only a registered simulated correction and inspect independent recovery.</p>
       {state?.incident && <p className="caption">Shared incident {state.incident.id} / evidence revision {state.incident.revision}</p>}</div>
-      {state && !state.incident && <div className="incident-actions"><button className="button primary" disabled={disabled} onClick={() => void mutate('/api/investigations', {}, 'start-synthetic-journey')}>Start restriction-to-recovery simulation</button><button className="button secondary" disabled={disabled} onClick={() => void mutate('/api/incidents', {}, 'start-incident')}>Start observation-only incident</button></div>}
-      <a className="button secondary" href="/operator" onClick={e => { if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) { e.preventDefault(); navigate('/operator'); } }}>Open Operator workspace</a>
+      {(props.canCreate ?? !props.release) && !state?.incident && <div className="incident-actions"><button className="button primary" disabled={!(props.creationReady ?? !disabled)} onClick={() => void mutate('/api/investigations', {}, 'start-synthetic-journey')}>Start restriction-to-recovery simulation</button><button className="button secondary" disabled={!(props.creationReady ?? !disabled)} onClick={() => void mutate('/api/incidents', {}, 'start-incident')}>Start observation-only incident</button></div>}
+      {!props.release && <a className="button secondary" href="/operator" onClick={e => { if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && e.button === 0) { e.preventDefault(); navigate('/operator'); } }}>Open Operator workspace</a>}
     </header>
     {j?.test_output && <p className="notice">OFFLINE TEST OUTPUT / provider doubles, no live AI or real token consumption.</p>}
     <WorkspaceState state={state} connection={connection} workspace="commander" />
     {state?.incident && <>
-      {j && <JourneyPanel state={state} view="commander" presentation="commander" includeRecord={false} mutate={mutate} disabled={disabled} />}
+      {j && <JourneyPanel release={props.release} state={state} view="commander" presentation="commander" includeRecord={false} mutate={mutate} disabled={disabled} />}
       {!j && <section className="section-surface workspace-decision"><h2>Current decision: obtain an observation</h2><p>{state.task ? 'An observation is assigned. Review its state and wait for Operator evidence before requesting another.' : 'No task is assigned automatically. Choose a permitted observation or escalate for human investigation.'}</p></section>}
       <div className="commander-process-grid"><Process active selected={equipment} onSelect={select} readings={{ pressure: sample?.pressure ?? null, valve: sample?.valve ?? null }} /><ServerTelemetry samples={j?.samples ?? []} /></div>
       <section className="section-surface model-workflow"><h2>NVIDIA observation planning</h2><p>Text proposals choose registered observations or human escalation. Image analysis produces interpretations, not diagnosis, correction approval or recovery declarations.</p>

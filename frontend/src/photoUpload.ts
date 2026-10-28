@@ -12,7 +12,7 @@ export function photoDimensionsError(width: number, height: number): string | nu
 }
 
 // The object URL is local-only; replacing, cancelling or unmounting must release it.
-export function localPhotoURL(blob: Blob, urls = URL): { url: string; release: () => void } {
+export function localPhotoURL(blob: Blob, urls: Pick<typeof URL, 'createObjectURL' | 'revokeObjectURL'> = URL): { url: string; release: () => void } {
   const url = urls.createObjectURL(blob);
   let released = false;
   return { url, release: () => { if (!released) { urls.revokeObjectURL(url); released = true; } } };
