@@ -1,6 +1,6 @@
 # Checkpoint state
 
-## Approved Render release preparation — private access pending
+## Approved Render release preparation — billing blocked
 
 Verified clean starting HEAD `92e1b187d9cac7ab09edd60796706fbeb6736103` on
 `feat/finish-integrated`; its [exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40939235595)
@@ -10,11 +10,18 @@ $7.25/month before tax. This supersedes the earlier paid-hosting deferral below.
 Public official pricing still supports $7 compute + $0.25 disk; verify the private
 account quote before creating anything and report any changed baseline.
 
-No Render service or charge has been created. No API credential was available in
-the process or Windows user environment when checked; the user will save it
-privately. Browser access host was unavailable and one native Chrome access
-request timed out. No repeated browser/helper attempt, hosted URL, TLS/security
-acceptance or restart persistence is claimed. All existing local runs are intact.
+Private Render API access is verified; release-preparation `e3f5ca9` has
+[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40948244608).
+The approved $7 / 512 MB tier is currently named `0.5c-512mb`; disk remains
+$0.25/GB/month. One explicit creation request returned **HTTP 402**, documented as
+payment information required. No retry occurred. Read-only discovery afterward
+confirms zero target services and the same four existing service IDs. No service,
+disk, deployed SHA, public URL or hosting charge is established. The user is
+updating payment privately in My Workspace → Billing without a plan upgrade.
+Sanitized reservation/rejection/check records remain ignored under
+`.local/render-deployment/`, with no key. The HTTPS acceptance script is prepared
+and syntax-checked, not executed. Browser access remains unavailable; no repeat
+attempt, hosted TLS/security or restart acceptance is claimed. Local runs remain intact.
 
 The reviewed release configuration explicitly disables inference, Tavily and
 LangSmith. No provider key or inherited secret group is required. The final video
@@ -29,8 +36,8 @@ exact-SHA full CI remains the application/build evidence; these HTTP/ASGI tests
 are not hosted TLS or browser acceptance. Release-only configuration/documentation
 changes do not change application policy, prompts or live-verification history.
 
-Next action: obtain private Render API access, verify the unused service name and
-actual selected compute/disk quote, then deploy the latest reviewed passing-CI SHA.
+Next action: await explicit billing readiness, recheck the unused service name and
+unchanged quote, then deploy the latest reviewed passing-CI SHA.
 Verify real HTTPS, both workspaces, isolation, protected images, Origin/CSRF, upload
 bounds and same-session/state/image persistence across restart of that service
 only. Nonempty synthetic reservation persistence requires private shell read-back;

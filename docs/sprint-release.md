@@ -1,10 +1,13 @@
-# Sprint release package — approved scope, private access pending
+# Sprint release package — approved scope, billing blocked
 
 **Decision, October 29:** the user approved one **new** `faulttrace-judge-demo`
 Starter service and one 1 GiB persistent disk, quoted baseline **$7.25/month before
 tax**. Manual deploys only; no other paid resources, upgrades or unrelated service
 changes. Verify the account quote before creation and report any changed baseline.
-Nothing is provisioned yet: private Render access is pending. No external-storage
+Nothing is provisioned yet: private API access works, but one creation request
+returned HTTP 402 (payment information required). Read-only checks confirm no new
+service and unchanged prior service IDs. Await billing readiness; no automatic retry.
+No external-storage
 migration has begun. The earlier free-hosting assessment below is historical.
 
 Prepared from `f1d7434eee50660cb0bfac15f6483d94c0fa960c` on
@@ -101,8 +104,9 @@ groups for this offline acceptance deployment. No existing service is restarted.
 
 Private access: sign in at `https://dashboard.render.com`, avatar → Account
 Settings → API Keys. Save a key privately as the Windows user environment variable
-`RENDER_API_KEY`; never send it in chat or commit it. Payment entry, if required,
-belongs to the user in Render's private Billing screen. Until access is available,
+`RENDER_API_KEY`; never send it in chat or commit it. Payment entry is now required
+in My Workspace → Billing; the user handles it privately without a plan upgrade.
+Until billing readiness and successful creation,
 no hosted URL, billing configuration, TLS or restart acceptance is claimed.
 
 Hosted acceptance must resume the same secure sessions, incident/task records and

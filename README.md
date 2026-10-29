@@ -18,7 +18,8 @@ metadata delivery are narrowly verified; photo accuracy, the complete browser-dr
 live recovery journey and public hosting remain unverified. Provider allowances
 are spent; do not rerun verification commands. See [current evidence](docs/state.md).
 The user approved one new Render Starter service and 1 GiB disk at the quoted
-$7.25/month baseline; private access and actual hosted checks remain pending.
+$7.25/month baseline. Private API access works; Render rejected creation with HTTP
+402, so billing readiness and actual hosted checks remain pending. No service exists.
 No external-storage migration has begun. Credentials remain server-only; provider
 calls must not be replayed for retakes.
 Last recorded offline preview: **http://127.0.0.1:8850/**. Availability and loaded
