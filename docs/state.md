@@ -1,5 +1,36 @@
 # Checkpoint state
 
+## Remaining Tavily reference verification - prepared, not executed
+
+Started clean at `73a29e9`. Founder screenshots confirm the existing photo-analysis
+trace and its attributes are browser-visible. This is user-reported browser evidence,
+not agent-operated testing or acceptance of other traces/agent environments. No
+LangSmith resend is needed. Read-only sprint inventory remains 2 planning / 1 photo /
+0 documentation searches; one authorized Tavily search remains unused.
+
+Verified public reference example: WIKA A-10 pressure transmitter, official domain
+wika.com. WIKA's product page and data sheet PE81.60 explicitly identify that model.
+This example does not identify the MAXIMATOR photograph, F-17 or installed equipment.
+The manufacturer's documents are reference material, never observed evidence or
+correction authority. See the source links in partner-integration.md.
+
+`tools/verify_tavily_reference.py` is prepared for one pinned terminal command.
+It uses the real authenticated production documentation route through in-process
+ASGI, a fresh isolated simulated investigation, and the existing shared persistent
+one-search reservation. No TCP server starts/restarts; existing runs and real ledger
+are preserved. NVIDIA key-source, transport and budget are blocked; LangSmith
+exports are explicitly disabled. No mocks are used by the live command.
+
+It reports actual citations, receipt/available credits and retrieval time. Official
+domain/model-mention checks and exact preverified document-path comparisons are
+separate; unfamiliar citations require independent review. Preverified source links
+are labeled as preparation context and never substituted into actual search results.
+Failures, unknown consumption and interruption remain recorded; no automatic retry.
+Seven focused offline-double tests and all 301 guarded backend tests pass, zero
+forbidden external network attempts. Exact-SHA CI is in the delivery handoff.
+Next: run only the pinned Tavily command, then inspect its actual returned citations.
+Tavily live retrieval remains unverified until that output; no new search executed here.
+
 ## LangSmith projection defect resolved - existing runs located
 
 Started clean at `d2d95a5` on feat/finish-integrated. The user's preserved wider
@@ -27,7 +58,8 @@ run IDs. Original remote IDs were discarded locally, so these are strong receipt
 fingerprint matches, not proof through a historical ID mapping. Runs have end_time
 and root trace IDs. They reside in named Local, not agent faulttrace/local.
 Direct private dashboard links and checks are in
-`.local/langsmith-followup/located.json`. No dashboard browser acceptance is claimed.
+`.local/langsmith-followup/located.json`. The founder subsequently confirmed the
+photo trace/attributes through screenshots; other browser acceptance remains open.
 
 Original search results, SQLite acknowledgments and per-run ledger receipts are
 preserved. No trace repair/export, NVIDIA/Tavily calls, server changes or ledger
@@ -35,8 +67,8 @@ imports. The main ledger hash remains unchanged. Earlier repair instructions are
 superseded for this run: **do not execute repair or rerun model verification**.
 28 focused offline tracing/projection tests and all 294 guarded backend tests
 pass, zero forbidden external network attempts. Exact-SHA CI is in the handoff.
-Next action: open the three delivered direct links in named Local. Agent-environment
-routing acceptance, Tavily and broader evaluation/hosting gates remain separate.
+Photo trace browser visibility is now narrowly user-confirmed; remaining agent
+routing, Tavily and broader evaluation/hosting gates remain separate.
 
 ## Bounded integration verification runner — awaiting terminal output
 

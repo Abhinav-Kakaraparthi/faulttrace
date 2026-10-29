@@ -14,9 +14,16 @@ runs in named Local. The diagnostic had discarded valid timezone-free UTC API
 timestamps; the projection is corrected. All three match saved receipt fingerprints
 (operation/model/usage/latency/contract status); historical IDs were discarded, so
 this is not direct original-ID proof. Private links are retained locally. Remote
-readability is verified; browser visibility and agent-environment routing are not.
+readability is verified. Founder screenshots now confirm the photo trace and its
+attributes are browser-visible; other trace/agent-environment acceptance remains open.
 No repair/export occurred, and no NVIDIA/Tavily call was repeated. Photo contract
 validity remains separate from accuracy; Tavily/evaluation/hosting gates stay open.
+
+Remaining Tavily verification is prepared as one production-route command for the
+publicly verified WIKA A-10 reference example. It consumes the existing one-search
+allowance, blocks NVIDIA and disables tracing. The example does not identify the
+MAXIMATOR photo or F-17; returned citations remain outside correction evidence.
+No Tavily call or live-result claim during preparation.
 
 Live evidence handoff now has a reviewed repository runner with persistent 2/1/1
 verification caps, prior-attempt inventory and real production API paths. Its
@@ -346,12 +353,14 @@ a completed live application, or independent recovery verification.
 [Scope, dependencies and acceptance criteria](architecture.md#partner-integration-roadmap).
 Tavily and metadata-only LangSmith adapters are offline-tested. Three existing
 LangSmith runs are remotely readable with matching receipt fingerprints; actual
-Tavily retrieval, agent-environment/browser visibility and credit entitlement remain unverified. Current orchestration
+Tavily retrieval, other trace/agent-environment browser acceptance and credit entitlement remain unverified. Current orchestration
 is custom Python/SQLite; LangChain/LangGraph are not dependencies, and migration
 is not required. Existing NVIDIA/Nebius runtime remains in place.
 
 - [ ] **Nebius — conditional:** verify credited balance and restrictions before approving an evaluation/hosted-demo budget; no balance or redemption assumed.
-- [ ] **LangSmith — implemented/offline-tested metadata tracing:** verify actual sanitized trace visibility; reviewed-reference numeric/abstention evaluation remains planned. No credentials, images or raw reasoning export.
+- [x] **LangSmith metadata delivery:** three existing named-project runs remotely readable with matching receipt fingerprints; no credentials, images or raw reasoning exported.
+- [x] **LangSmith photo trace UI:** existing photo-analysis trace and attributes browser-visible, confirmed by founder screenshots; no resend.
+- [ ] **LangSmith broader acceptance:** other trace/agent-environment browser visibility and reviewed-reference numeric/abstention evaluation remain open.
 - [ ] **Tavily — implemented/offline-tested lookup:** verify a useful actual official citation for a confirmed model. Reference context never becomes observed evidence or correction authority; no bonus claim yet.
 - [ ] **Toloka — conditional assessment:** confirm eligibility, reviewer suitability, cost/credit coverage and turnaround before use; approve labeling quality and data-permission/privacy controls.
 - [ ] **Tandem — deferred/not selected:** establish concrete project benefit and a bounded acceptance test before reconsideration.

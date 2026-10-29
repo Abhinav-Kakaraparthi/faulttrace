@@ -59,7 +59,18 @@ official domain. Documents stay untrusted references, outside measurement policy
 LangSmith uses explicit `FAULTTRACE_LANGSMITH_TRACING=1`, server-only key/project,
 and allowlisted metadata only. See [partner boundaries](partner-integration.md).
 
-## Bounded terminal verification - prepared, not executed
+## Remaining Tavily-only terminal action
+
+The two planning and one photo calls have already run. Do not rerun the combined
+verification command below. For the unused one-search allowance, use only the
+pinned `tools/verify_tavily_reference.py` command from the latest handoff. It tests
+the public WIKA A-10 reference example through the production documentation route;
+it neither identifies the photograph/F-17 nor supplies correction evidence. NVIDIA
+calls and LangSmith exports are blocked. [Exact scope and sources](partner-integration.md).
+Founder screenshots narrowly confirm the existing photo trace/attributes are visible;
+that is user-reported browser evidence, with no resend or broader UI acceptance.
+
+## Earlier combined terminal verification - historical procedure
 
 Use the single pinned-SHA command in the delivery handoff:
 ` .venv/Scripts/python.exe tools/verify_sprint_live.py --expected-head <reviewed SHA> `.

@@ -42,6 +42,35 @@ usage credits remain separate from NVIDIA tokens; missing credits remain unknown
 Server-only configuration: `TAVILY_API_KEY`, explicit enabled registration and
 the shared budget. Browser forms never accept or receive the provider key.
 
+### One remaining live search - reference-equipment example
+
+The verified example is **WIKA / A-10 / wika.com**, a pressure transmitter. Official
+sources checked October29: [product page](https://www.wika.com/en-us/a_10.WIKA),
+[data sheet PE81.60](https://www.wika.com/media/Data-sheets/Pressure/Pressure-sensors/ds_pe8160_en_co.pdf),
+[operating instructions](https://www.wika.com/media/Operating-instructions/Operating-instructions/Pressure/Pressure-sensors/oi_a_10_en_de_fr_es.pdf).
+This does not identify any uploaded MAXIMATOR photograph, F-17 or actual installed
+instrument. It is a labeled reference-equipment lookup, outside evidence policy.
+
+Run the single pinned command from delivery:
+`.venv/Scripts/python.exe tools/verify_tavily_reference.py --expected-head <reviewed SHA>`.
+It privately inherits TAVILY_API_KEY or its named Windows user value, checks the
+clean reviewed checkout and unchanged runtime, and uses real production demo/session
+and documentation API routes through ASGI. No server or browser is started. A fresh
+ignored `.local/tavily-verification/<id>/` investigation preserves old runs/ledgers.
+The existing `.local/sprint-verification/limits.sqlite3` and accounting audit enforce
+one cumulative Tavily call. The key is not printed; there are no automatic retries.
+NVIDIA transport/key/budget are blocked, and LangSmith export is disabled.
+
+The private result prints actual sources/receipt/retrieval time; usage credits remain
+null when unknown. Domain/model mentions are not independent applicability proof.
+Exact URLs matching the already-reviewed official resources are marked separately;
+other returned citations remain unverified until independently reviewed. Empty or
+failed searches never receive canned citations. The reference does not create an
+observation, diagnosis, task completion or correction authorization. Exit0 requires
+completed search plus a model-mentioning preverified-resource citation, tracing
+disabled and unchanged real ledger; exit1 is partial/failed and exit2 local preflight.
+Do not rerun to improve results. Preparation tests are offline doubles, not live search.
+
 ## LangSmith metadata-only traces
 
 Set `FAULTTRACE_LANGSMITH_TRACING=1` and server-only `LANGSMITH_API_KEY`.
