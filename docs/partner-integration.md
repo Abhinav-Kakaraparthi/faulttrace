@@ -86,6 +86,30 @@ Official references: [agent environments](https://docs.langchain.com/langsmith/a
 [workspace discovery](https://docs.langchain.com/langsmith/smith-api/workspaces/list-workspaces),
 [run query](https://docs.langchain.com/langsmith/smith-api/run/query-runs).
 
+Follow-up after the saved narrow search returned HTTP200 but no matches:
+run only the delivered pinned `tools/followup_langsmith.py` command. It uses a
+48-hour explicit start_time filter plus one unfiltered recent named-Local query
+(max100 rows each); it neither clips the latter to the old window nor exports
+traces. A durable marker prevents automatic repeated searches. Results and any
+prepared plan live in `.local/langsmith-followup/`, outside Git.
+
+Only a complete empty search prepares a plan, labeled **not executed**. Review
+its exact faulttrace/local address, resolved-project expectation, three stable
+run IDs, reconstructed timestamps, metadata-only bodies and SHA256 first. A
+later separate `--execute-reviewed-plan <private plan.json>` plus
+`--reviewed-plan-sha256 <reviewed hash>` invocation is required for writes; do
+not execute this while reviewing. It allows at most three POST /runs calls and
+one selected-field GET read-back per posted run, no retries. HTTP acknowledgment
+and verified read-back stay separate. It persists reservations/status before
+continuing; interrupted/started plans cannot be replayed. Address resolution
+must match the privately saved agent-Local project before contact with /runs.
+Original random UUIDs were lost, so duplicate historical traces are possible
+even with deterministic repair IDs. Read-back verifies remote records, not UI
+acceptance. Historical workflow/ledger/trace acknowledgments remain unchanged.
+Sources: [query ordering/fields](https://docs.langchain.com/langsmith/smith-api/run/query-runs),
+[address resolution](https://docs.langchain.com/langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta),
+[selected-field read-back](https://docs.langchain.com/langsmith/smith-api/runs/get-a-single-run).
+
 The export is a fresh allowlisted projection: operation (`planning`,
 `photo_analysis`, `documentation`), measured latency, one supported NVIDIA model,
 available valid integer token counts/reasoning-token count, contract outcome and

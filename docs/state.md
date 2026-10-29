@@ -1,42 +1,46 @@
 # Checkpoint state
 
-## LangSmith agent routing and read-only diagnosis - prepared
+## LangSmith wider search and reviewable repair - not executed
 
-Started clean at `a3d7904`. The three saved attempts in investigation
-`d60ae1a28d7a47e58a73759237130cce` each match SQLite receipt, per-run ledger and
-one local trace-export row read-only. Planning accepted/escalated and photo
-contract interpreted; this does not establish photo accuracy. Tavily was not
-called in this run. The founder reports Local/Production still waiting for traces.
+Started clean at `01ad56a`. Privately saved diagnostic `c8b3c5c3393e4b4cab806e290b8175c9`
+confirms three HTTP200 discovery/query responses, no coverage limits and no runs
+in the narrow October29 00:24-00:26 UTC search. Named Local and faulttrace-local
+are distinct projects in the same discovered workspace; current configuration
+is session_name=Local. This does not recover historical exporter configuration.
+Original SQLite acknowledgments and all three receipt/ledger entries are intact.
 
-Confirmed routing mismatch: the original exporter names a project with
-`session_name`; it ignores `LANGSMITH_AGENT_ID`/`LANGSMITH_AGENT_ENVIRONMENT`.
-A project named Local is not the agent's Local environment. This explains why
-the request did not explicitly target the displayed resource; it does not prove
-where the historical runs landed. Original random remote IDs, project/workspace
-values and HTTP status/body were not retained. `recorded` only means the local
-transport returned; it is not remote read-back or dashboard acceptance.
+Timestamp audit: the exporter used datetime.now(timezone.utc) at export, then
+subtracted measured latency for start_time. It did not copy the receipt timestamp.
+Receipt-based request spans are approximately 00:24:06-00:25:00; exact original
+trace timestamps/UUIDs/HTTP responses were discarded and cannot be reconstructed.
+No timezone/ingestion defect is proven. The earlier diagnostic clipped results both
+server-side and locally; absence outside that window was not established.
 
-Scoped offline correction supports either validated project routing or the
-maintained SDK's agent-address wire field, explicit workspace header and an
-allowlisted regional endpoint. Conflicting project/agent configuration fails
-closed. No inference/prompt/policy change, trace resend or historical mutation.
-The agent-address API is beta and enabled per workspace; live acceptance remains
-open. Basic REST does not require manual dotted_order/trace_id; no speculative
-completion repair was added.
+`tools/followup_langsmith.py` is prepared for the credential-bearing terminal.
+One durable invocation makes at most two read-only queries: explicit start_time
+bounds October28-30 across discovered projects, then latest100 unfiltered named
+Local runs with no time/name filter. Original two-minute clipping is removed for
+that second query. Safe fingerprint matches and direct project/run links are
+reported; failures, pagination or unprojectable FaultTrace rows block preparation.
+The coding agent has no accessible key; no authenticated wider search is claimed
+here. This says nothing about credentials in the user's existing terminal.
 
-`tools/diagnose_langsmith.py` checks the clean pinned checkout and saved records,
-reads the caller's key privately, discovers key-visible workspaces/projects and
-queries only faulttrace runs during 00:24-00:26 UTC October 29. Its only POST is a
-read-only runs query: no trace-create endpoint is allowed. Bounded diagnostics,
-project/run destinations and receipt-fingerprint candidates go to ignored local
-storage. Lost original IDs prevent direct historical identity proof. Ten new
-offline tests and all 276 guarded backend tests pass, zero forbidden external
-network attempts. Real-ledger hash is unchanged.
+If both queries complete empty without limits, the command prepares an ignored
+reviewable plan; it does not execute it. A separate explicitly reviewed plan/hash
+allows at most three metadata-only POSTs to faulttrace/local, with no project-name
+fallback. It first resolves that agent environment to the saved project. Stable
+IDs and reservations precede POSTs; numeric HTTP status precedes one selected-field
+read-back per run. Exact ID/project/timestamps/metadata must match. Any failure or
+uncertainty stops; started plans never resend automatically. Repair times are
+receipt-derived and labeled reconstructed, not original captured trace times.
+Unknown original UUIDs mean duplicates remain possible. No historical status is
+rewritten as remote success, no ledger imports, inference or server operations.
 
-Next: run the pinned read-only command in the credential-bearing terminal; inspect
-returned remote run destinations before considering any bounded metadata-only
-repair. Do not rerun the inference runner, resend, reset caps or claim dashboard
-success. All previews, records and real ledger are preserved.
+21 focused offline tracing/repair tests and all 287 guarded backend tests pass,
+zero forbidden external network attempts. CI is reported in the handoff. Next: run only the pinned search/preparation command,
+then review its saved result/plan before any trace-write authorization. Existing
+previews/runs and the real ledger remain unchanged. LangSmith remote/dashboard
+acceptance remains open.
 
 ## Bounded integration verification runner — awaiting terminal output
 

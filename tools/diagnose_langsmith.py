@@ -82,8 +82,9 @@ class Reader:
     def request(self,endpoint,path,*,workspace=None,body=None):
         # Fail closed on any mutation endpoint, including trace create/update.
         route = path.split('?')[0]
-        if endpoint not in ENDPOINTS or (body is not None and route != '/runs/query') or (
-                body is None and route not in ('/api/v1/workspaces','/sessions')):
+        safe_get = route in ('/api/v1/workspaces','/sessions','/api/v1/sessions/resolutions') or (
+            route.startswith('/api/v2/runs/') and identity(route.removeprefix('/api/v2/runs/')) is not None)
+        if endpoint not in ENDPOINTS or (body is not None and route != '/runs/query') or (body is None and not safe_get):
             raise DiagnosticError('non_readonly_route_rejected')
         if workspace and not identity(workspace):
             raise DiagnosticError('invalid_workspace')
@@ -141,7 +142,7 @@ class Reader:
             self.events.append(event)
 
 
-def candidates(rows,receipts,workspace,projects,endpoint):
+def candidates(rows,receipts,workspace,projects,endpoint,*,window=(START,END)):
     found = []
     host = endpoint.replace('api.smith.', 'smith.').replace('eu.api.smith.','eu.smith.')
     for row in rows:
@@ -152,7 +153,7 @@ def candidates(rows,receipts,workspace,projects,endpoint):
             continue
         try:
             stamp = datetime.fromisoformat(row['start_time'].replace('Z','+00:00'))
-            if stamp.tzinfo is None or not datetime.fromisoformat(START)<=stamp<=datetime.fromisoformat(END):
+            if stamp.tzinfo is None or (window and not datetime.fromisoformat(window[0])<=stamp<=datetime.fromisoformat(window[1])):
                 continue
         except (ValueError,KeyError,TypeError,AttributeError):
             continue

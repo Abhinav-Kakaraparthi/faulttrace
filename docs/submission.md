@@ -9,12 +9,13 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
-LangSmith follow-up: the founder reports both agent environments waiting. The
-original named-project exporter did not address those environments. Agent routing
-is corrected offline; existing remote traces must be located by the read-only
-diagnostic before claiming delivery/dashboard success. Three actual NVIDIA
-operations have matched local receipts; photo contract validity is not accuracy.
-Tavily and hosted/browser acceptance remain open. No gate is newly closed.
+LangSmith: the saved read-only diagnostic confirms HTTP200 queries but no runs
+in its two-minute window. Named Local and agent Local are different resources.
+A bounded wider/unfiltered search and conditional metadata-only repair plan are
+prepared, not executed. Historical acknowledgments do not establish remote trace
+creation; original IDs/timestamps were discarded. Duplicate risks remain. No
+trace/dashboard gate is closed. Three actual NVIDIA operations retain matched
+local receipts; photo contract validity is not accuracy. Tavily remains open.
 
 Live evidence handoff now has a reviewed repository runner with persistent 2/1/1
 verification caps, prior-attempt inventory and real production API paths. Its
