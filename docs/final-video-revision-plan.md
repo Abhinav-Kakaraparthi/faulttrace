@@ -5,7 +5,8 @@ Deployed revision: **1206161f139f1c63fb21c67d2fff6e9ecc62e737**
 
 Render reports this exact passing-CI revision live. HTTPS routes, role/session
 isolation, upload boundaries and session/state/image restart passed HTTP checks;
-private reservation read-back and founder browser review are still pending. This script establishes no visual
+the user verified synthetic reservation persistence through private Shell read-back.
+Founder browser review remains pending. This script establishes no visual
 acceptance. Keep **SIMULATED EQUIPMENT / TELEMETRY** visible.
 All provider authorizations are spent. Use existing results; no model/search calls
 or trace resends for recording, timing practice or retakes.

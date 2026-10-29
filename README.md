@@ -21,7 +21,8 @@ The approved offline judge demo is live at
 **https://faulttrace-judge-demo.onrender.com/** on `1206161`. One 512 MB compute
 instance plus a 1 GiB disk has a $7.25/month baseline before tax/bandwidth. HTTPS,
 session/isolation, upload and same-session/state/image restart checks pass.
-Private reservation read-back and founder browser acceptance remain pending.
+The user verified the unchanged synthetic spending reservation after restart;
+founder browser acceptance remains pending.
 NVIDIA, Tavily and LangSmith are disabled.
 No external-storage migration has begun. Credentials remain server-only; provider
 calls must not be replayed for retakes.

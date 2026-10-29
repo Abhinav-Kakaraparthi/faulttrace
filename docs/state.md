@@ -1,6 +1,6 @@
 # Checkpoint state
 
-## Render judge demo live — restart passed, reservation read-back pending
+## Render offline judge demo — hosted persistence verified
 
 Public entry: **https://faulttrace-judge-demo.onrender.com/**; workspaces at
 `/commander` and `/operator`. Render reports deployment
@@ -33,9 +33,14 @@ restart of only the new service changed its Render instance. The agent's held
 session resumed the same run with identical incident, task, evidence and planning
 records; exact stored image bytes survived and the second visitor remained denied.
 Render still reports the reviewed `1206161` deployment, not later docs commits.
-The private after-restart reservation row comparison is awaiting user execution;
-it must confirm unchanged=true/count=1. This is a synthetic admission test, not
-provider token usage or billing. Empty offline accounting is not sufficient.
+The user confirmed the private after-restart Shell comparison passed:
+unchanged=true/count=1. This is user-performed remote SQL verification, not
+agent-operated Shell inspection. The one reservation retains 67,584 conservative
+admission units; these are synthetic test allowances, not actual provider token
+usage or billing. No provider receipt was created/imported and no allowance reset.
+The user attestation and final read-only health/configuration verification are
+retained under ignored `.local/render-deployment/`. Final checks still show the
+same single instance/disk, manual deploys, reviewed revision and external calls off.
 Browser access was previously unavailable; no repeat attempt, screenshot, camera,
 keyboard, desktop/mobile visual acceptance or fresh-browser pass is claimed.
 
@@ -45,9 +50,10 @@ Photo numeric accuracy and public-media permission remain open; no video was
 recorded/published and Devpost was not finalized. Reuse exact-SHA CI and the prior
 22 focused guarded tests (zero external attempts); no provider calls were made.
 
-Next action: finish the private after-restart reservation read-back,
-then founder browser review of Try demo and both workspaces. Public inference stays
-disabled; no provider allowance is renewed or replayed.
+Next action: founder browser review of Try demo and both workspaces at desktop
+and mobile sizes: account-free entry, shared assignment and clear offline labels.
+No fresh-browser or visual acceptance is inferred from HTTP/Shell checks. Public
+inference stays disabled; no provider allowance is renewed or replayed.
 
 ## Final authorized Tavily diagnostic completed - search cycle closed
 

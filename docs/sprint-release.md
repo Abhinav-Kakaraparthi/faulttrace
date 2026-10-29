@@ -110,11 +110,13 @@ boundaries pass HTTP checks. Desktop/mobile/keyboard/camera acceptance is not cl
 One restart changed only the new service's instance. Held sessions, the incident,
 task, evidence/planning records and exact stored image survived; visitor isolation
 remained enforced. The deployed revision remains `1206161`. The user confirmed
-private-shell creation of a synthetic spending reservation before restart; its
-read-only after-restart row comparison is still pending. No provider contact.
-Empty offline accounting alone
-does not prove reservation persistence. No test endpoint or temporary public
-inference enablement is permitted to manufacture that check. Actual browser
+private-shell creation of a synthetic spending reservation before restart and its
+unchanged=true/count=1 after-restart comparison. Attribute remote SQL verification
+to the user; agent HTTP checks separately verified session/state/image persistence.
+The 67,584 conservative admission units are synthetic test allowances, not actual
+provider tokens or billing. No provider contact, ledger import or allowance reset.
+No test endpoint or temporary public inference enablement is permitted to
+manufacture that check. Actual browser
 acceptance remains separate from HTTP/security checks.
 
 Set non-secret `FAULTTRACE_BUILD_REVISION` to the exact selected 40-character SHA
