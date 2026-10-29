@@ -1,6 +1,6 @@
 # Checkpoint state
 
-## Render judge demo live — persistence acceptance in progress
+## Render judge demo live — restart passed, reservation read-back pending
 
 Public entry: **https://faulttrace-judge-demo.onrender.com/**; workspaces at
 `/commander` and `/operator`. Render reports deployment
@@ -28,11 +28,14 @@ received 409; fixing that checker request required no application change. Reject
 test runs and original deployment diagnostics are retained under ignored
 `.local/render-deployment/`; no raw credential is saved there.
 
-The checker holds two sessions in memory before restart. Await the user's private
-Shell confirmation that a clearly labeled synthetic reservation exists, then restart
-only the new service and compare the same sessions/state/image. Private read-back
-must also confirm the reservation persists once; empty offline accounting is not
-sufficient. These restart/reservation checks remain unverified until completed.
+The user confirmed the private before-restart synthetic reservation check. One
+restart of only the new service changed its Render instance. The agent's held
+session resumed the same run with identical incident, task, evidence and planning
+records; exact stored image bytes survived and the second visitor remained denied.
+Render still reports the reviewed `1206161` deployment, not later docs commits.
+The private after-restart reservation row comparison is awaiting user execution;
+it must confirm unchanged=true/count=1. This is a synthetic admission test, not
+provider token usage or billing. Empty offline accounting is not sufficient.
 Browser access was previously unavailable; no repeat attempt, screenshot, camera,
 keyboard, desktop/mobile visual acceptance or fresh-browser pass is claimed.
 
@@ -42,7 +45,7 @@ Photo numeric accuracy and public-media permission remain open; no video was
 recorded/published and Devpost was not finalized. Reuse exact-SHA CI and the prior
 22 focused guarded tests (zero external attempts); no provider calls were made.
 
-Next action: finish the private before/after reservation and hosted restart checks,
+Next action: finish the private after-restart reservation read-back,
 then founder browser review of Try demo and both workspaces. Public inference stays
 disabled; no provider allowance is renewed or replayed.
 

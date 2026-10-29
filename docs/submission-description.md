@@ -7,8 +7,9 @@ Repository: https://github.com/Abhinav-Kakaraparthi/faulttrace
 
 Render reports this exact passing-CI revision live on the approved single compute
 instance and 1 GiB disk. HTTPS routes, role/session isolation and upload boundaries
-passed HTTP checks. Restart/reservation acceptance and founder browser review
-remain pending. No external calls are enabled. Do not publish or finalize Devpost
+passed HTTP checks, including same-session/state/image persistence across restart.
+Private reservation read-back and founder browser review remain pending. No external
+calls are enabled. Do not publish or finalize Devpost
 from this draft.
 
 ## Short description

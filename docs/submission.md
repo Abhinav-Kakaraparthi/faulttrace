@@ -8,8 +8,9 @@ Recommended track: Best Apps and Agents
 Hosting update: https://faulttrace-judge-demo.onrender.com/ is live at `1206161`
 with passing exact-SHA CI. Exactly one approved 512 MB instance and 1 GiB disk,
 $7.25/month baseline before tax/bandwidth, manual deploys and external calls off.
-HTTPS, session/isolation and upload HTTP checks pass. Restart/reservation and fresh
-browser acceptance remain pending; HTTP checks do not establish visual acceptance.
+HTTPS, session/isolation, upload and held-session/state/image restart checks pass.
+Private reservation read-back and fresh browser acceptance remain pending; HTTP
+checks do not establish visual acceptance.
 [Final video plan](final-video-revision-plan.md) and
 [submission copy](submission-description.md) are prepared, not published/submitted;
 public-photo rights and numeric accuracy remain unverified.

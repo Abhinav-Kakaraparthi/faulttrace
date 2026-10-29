@@ -107,10 +107,12 @@ payment step privately. Neither that key nor provider keys were put on the servi
 Hosted TLS/routes, both roles, isolation, Origin/CSRF, image access and upload
 boundaries pass HTTP checks. Desktop/mobile/keyboard/camera acceptance is not claimed.
 
-Remaining restart acceptance must resume the same secure sessions, incident/task records and
-stored synthetic image after restarting only the new service. A nonempty,
-explicitly synthetic spending reservation also needs private-shell creation and
-read-back across restart without provider contact. Empty offline accounting alone
+One restart changed only the new service's instance. Held sessions, the incident,
+task, evidence/planning records and exact stored image survived; visitor isolation
+remained enforced. The deployed revision remains `1206161`. The user confirmed
+private-shell creation of a synthetic spending reservation before restart; its
+read-only after-restart row comparison is still pending. No provider contact.
+Empty offline accounting alone
 does not prove reservation persistence. No test endpoint or temporary public
 inference enablement is permitted to manufacture that check. Actual browser
 acceptance remains separate from HTTP/security checks.
