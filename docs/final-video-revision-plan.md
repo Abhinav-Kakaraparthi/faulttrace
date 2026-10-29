@@ -1,25 +1,31 @@
 # Final video outline — NOT RECORDED OR PUBLISHED
 
-Current integrated implementation is `26521a7`; its five CI jobs pass. This
-outline uses the real shared application and replaces old authentication/setup
-prerequisites. Worker C's separate drafts remain unmerged. No footage or provider
-result was created by this outline, and runtime wait times are not guaranteed.
+The final diagnostic ran on `c9ea6bd`; current checked-in evidence is in
+[state](state.md). This is a preparation outline, not recorded/published footage.
+Use the existing live NVIDIA planning/photo receipts and separately verified
+Tavily A-10 citation. LangSmith photo trace/attributes are user-confirmed through
+screenshots. No new model/search calls are authorized for recording or retakes.
 
-Keep **SIMULATED EQUIPMENT / TELEMETRY** visible. Clips labeled live NVIDIA must
-come from actual authorized requests in the integrated application, with their
-receipts and incident/evidence chain retained. Current new live acceptance is
-blocked by absent credentials. Follow the [bounded procedure](sprint-verification.md):
-at most two text calls, one photo call and one Tavily search, with metadata-only
-LangSmith tracing. Do not replay calls for a cleaner take or send expected answers.
+Keep **SIMULATED EQUIPMENT / TELEMETRY** visible. Label previously recorded live
+results with their provenance/time; displaying stored results is not an on-camera
+new inference. The integrated application paths were exercised by actual service
+calls, but this does not establish a browser-driven live diagnosis-to-recovery
+journey. Never seed offline UI state and label it a model result. Two planning
+calls/one photo and both Tavily grants are spent. No new trace exports are needed.
+
+Capture only authorized current-code UI; the old port8850 offline preview is not
+proof that its backend loaded later changes. Current-code activation and founder
+visual acceptance remain separate readiness work; do not restart existing servers
+or expose old runs while preparing this outline. Worker C drafts remain unmerged.
 
 | Time | Footage and narration target |
 | --- | --- |
 | 0:00–0:15 | Try demo, Commander and Operator. “FaultTrace investigates reduced return flow using simulated equipment. No judge account or copied token.” |
-| 0:15–0:35 | Actual explicit NVIDIA/Nebius plan, citations and resulting task. Show the actual pending/result state, including escalation if returned. |
-| 0:35–1:00 | Actual image/structured interpretation and uncertainty, separately from an independently entered human observation. “A model claim is not a verified measurement or asset identity.” |
-| 1:00–1:20 | Second explicit planning call using updated evidence; actual assignment or escalation, independent valve report only if assigned. |
-| 1:20–1:55 | Evidence-linked deterministic assessment, Commander consent, Operator simulated completion, explicit accelerated monitoring and actual sample-derived outcome. No action completion shortcut. |
-| 1:55–2:15 | Actual useful Tavily manufacturer citation/time and sanitized LangSmith metadata trace, only after those integrations pass live verification. Documents are reference material, not correction authority. |
+| 0:15–0:35 | Existing real NVIDIA/Nebius proposal, evidence citations and recorded task/result. Label stored output; show the actual escalation rather than forcing success. |
+| 0:35–1:00 | Existing actual image/structured interpretation and uncertainty, separately from its independent human report. Label pre-recorded results. “A model claim is not a verified measurement or asset identity.” |
+| 1:00–1:20 | Previously recorded second planning result using updated evidence; actual escalation/assignment. No new call or fabricated valve report. |
+| 1:20–1:55 | Switch explicitly to a separate OFFLINE SIMULATION run: deterministic assessment, Commander approval, Operator simulated completion and sample-derived recovery. Do not claim live NVIDIA completed this recovery. |
+| 1:55–2:15 | Existing useful WIKA A-10 Tavily citation/time and user-confirmed LangSmith photo trace. Exclude S-20/PSD-4 as applicable A-10 instructions. Documents are reference material, not correction authority. |
 | 2:15–2:30 | Clearly separate **OFFLINE TEST OUTPUT** blocked-dispute/ineffective-action/relapse case. Never label a double as live NVIDIA. |
 | 2:30–2:50 | Architecture and limit: NVIDIA proposes, policy validates, humans approve, independent measurements verify. Photo numeric accuracy remains unverified. Actual source/demo links and simulation disclosure. |
 
@@ -38,6 +44,7 @@ Use original/permissioned media and independently reviewed references.
 Before publication: match each live clip to actual receipts/citations/trace and
 stored samples; remove secrets/cookies/private account screens and raw reasoning;
 check desktop/mobile footage, rights, English narration, final duration strictly
-under three minutes and working public links. Hosted availability, live partner
-visibility, founder acceptance and final Devpost submission remain open. No video
+under three minutes and working public links. Hosted availability, remaining partner/browser
+acceptance, final video and Devpost submission remain open. One A-10 citation and
+the photo trace browser view are narrow verified results, not broad acceptance. No video
 is published or submitted without explicit instruction.

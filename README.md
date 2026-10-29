@@ -12,11 +12,15 @@ The final integration sprint adds an explicitly enabled, globally/session-budget
 live-demo configuration, restricted Tavily references, metadata-only LangSmith
 tracing, paused simulated-observation time, observation renewal and automatic
 independent recovery monitoring. Default remains offline. Current implementation
-`26521a7` passes Linux/Windows/backend/frontend/container CI; new live calls and
-public hosting remain unverified. Paid hosting was declined; free external durable
-storage is assessed, not migrated. Live verification uses the caller's credential-bearing
-terminal; this agent environment does not establish whether that terminal has keys.
-Local compiled review: **http://127.0.0.1:8850/** — Try demo; no tokens required.
+`26521a7` passes Linux/Windows/backend/frontend/container CI. Subsequent real
+NVIDIA planning/photo contracts, one useful Tavily reference citation and LangSmith
+metadata delivery are narrowly verified; photo accuracy, the complete browser-driven
+live recovery journey and public hosting remain unverified. Provider allowances
+are spent; do not rerun verification commands. See [current evidence](docs/state.md). Paid hosting was declined; free external durable
+storage is assessed, not migrated. Credentials remain server-only; provider calls must not be replayed for retakes.
+Last recorded offline preview: **http://127.0.0.1:8850/**. Availability and loaded
+revision have not been reverified after the laptop restart; current-code activation
+is separate readiness work. Existing runs must be preserved.
 [Integrated acceptance and bounded later live procedure](docs/sprint-verification.md),
 [deployment proposal](docs/sprint-release.md). Existing previews/runs are preserved.
 

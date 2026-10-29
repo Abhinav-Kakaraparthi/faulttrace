@@ -19,21 +19,25 @@ attributes are browser-visible; other trace/agent-environment acceptance remains
 No repair/export occurred, and no NVIDIA/Tavily call was repeated. Photo contract
 validity remains separate from accuracy; Tavily/evaluation/hosting gates stay open.
 
-Tavily attempt `c4e1a86b` reached the service and recorded 1 credit, but retained
-zero citations. **Useful documentation retrieval is NOT verified.** Raw response
-and original result/filter counts were not retained, so provider-empty versus
-application-filtered results is unknown. The receipt remains unchanged. Future
-safe aggregate diagnostics are added offline; no query/filter relaxation or new
-request. The one-search allowance is spent; any additional diagnostic call requires
-separate authorization. No reference becomes correction evidence.
+Tavily's final separately authorized diagnostic ran once on implementation
+`c9ea6bd`: attempt `de27f94f` returned 3, retained 3, filtered 0, no rejection
+reasons, 1 reported credit. One useful WIKA A-10 product citation is independently
+verified; S-20 (A-10 cross-reference) and PSD-4 citations are other models, not
+applicable A-10 instructions. This is a reference-equipment example, not identity
+or correction evidence for the MAXIMATOR image/F-17. Original empty attempt and
+consumed limit remain intact. Both one-call grants are spent (2 reported credits);
+no further exploratory search or model call is authorized. No LangSmith export.
 
-Live evidence handoff now has a reviewed repository runner with persistent 2/1/1
-verification caps, prior-attempt inventory and real production API paths. Its
-17 offline-double tests pass; no live result is claimed from those tests. Await
-terminal output separately for planning, photographic contract, real cited search
-and trace API delivery; photo accuracy/dashboard visibility remain separate.
-Use actual matched receipts for video/description updates, never seeded output.
-No submission gate is newly closed. See [one terminal procedure](sprint-verification.md).
+Deployment/video readiness is now the next focus. Public durable storage/hosting
+remains undecided; no Supabase migration or paid infrastructure is authorized.
+Final video must distinguish existing real provider results, simulated equipment,
+and offline recovery doubles, with no new inference for retakes. Public URL,
+hosted security/persistence acceptance, final <3-minute video and submission stay open.
+
+The earlier combined runner used persistent 2/1/1 caps and production application
+paths; subsequent verified results are recorded above. Offline doubles were not
+counted as live evidence. Original limits and the separate final-search grant are
+spent. No further provider call or unsupported video/eligibility claim is authorized.
 
 Current sprint: `26521a7` passes five exact-SHA jobs, 249 guarded backend/93 frontend,
 Linux/Windows, builds/contracts and actual Docker restart smoke. Live configuration,
@@ -363,7 +367,7 @@ is not required. Existing NVIDIA/Nebius runtime remains in place.
 - [x] **LangSmith metadata delivery:** three existing named-project runs remotely readable with matching receipt fingerprints; no credentials, images or raw reasoning exported.
 - [x] **LangSmith photo trace UI:** existing photo-analysis trace and attributes browser-visible, confirmed by founder screenshots; no resend.
 - [ ] **LangSmith broader acceptance:** other trace/agent-environment browser visibility and reviewed-reference numeric/abstention evaluation remain open.
-- [ ] **Tavily useful retrieval:** 1-credit connectivity/accounting verified, zero retained citations; provider-empty versus filtering unknown. A useful official citation remains unverified. No correction authority or bonus claim.
+- [x] **Tavily reference-example retrieval:** one additional authorized call retained a useful official WIKA A-10 product citation; 3 results/3 retained/0 filtered/1 credit. Two other-model citations are not applicable A-10 instructions. References never authorize correction; no broader bonus/eligibility claim.
 - [ ] **Toloka — conditional assessment:** confirm eligibility, reviewer suitability, cost/credit coverage and turnaround before use; approve labeling quality and data-permission/privacy controls.
 - [ ] **Tandem — deferred/not selected:** establish concrete project benefit and a bounded acceptance test before reconsideration.
 

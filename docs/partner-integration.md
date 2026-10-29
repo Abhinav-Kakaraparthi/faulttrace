@@ -1,7 +1,8 @@
 # Manufacturer references and sanitized observability
 
 Custom Python/SQLite remains the workflow; no LangChain/LangGraph or new runtime
-dependency is added. Actual Tavily retrieval remains unverified. Three existing
+dependency is added. One useful WIKA A-10 reference citation is now verified from
+a live Tavily call; two other-model results do not establish applicability. Three existing
 metadata-only LangSmith runs are remotely readable in named Local with matching
 receipt fingerprints; agent-environment/browser visibility remains open. Offline
 doubles do not establish live service results.
@@ -72,11 +73,30 @@ legacy source diagnostics remain unknown, not zero.
 documents include_domains_mode=restrict as a hard domain filter. Our request is
 `WIKA "A-10" manufacturer manual datasheet`, basic/general, three results,
 restricted wika.com, usage enabled; no concrete request defect is established.
-The smallest next experiment would be one separately authorized identical search
-with new count diagnostics. The original shared one-search allowance is already
-consumed: do not reset it, rerun the old command or make an automatic retry.
+That proposed diagnostic was subsequently authorized and executed once, as
+recorded below. Both grants are now consumed: do not reset limits, rerun either
+command or make an automatic retry.
 Search references remain untrusted and cannot authorize simulated correction.
 No Tavily/NVIDIA requests or LangSmith exports during this diagnosis.
+
+### Final separately authorized diagnostic - consumed, do not rerun
+
+The user authorized exactly one additional identical request. Implementation
+`c9ea6bd` used the production documentation route with an independent persistent
+one-request grant, preserving the original consumed limit. Attempt `de27f94f`
+returned 3 results, retained 3, filtered 0, no fixed rejection reasons; 1 credit,
+2391ms. The exact A-10 product page is a useful independently checked citation.
+The other results are the S-20 data sheet (A-10 is only a related-product mention)
+and PSD-4 data sheet, not applicable A-10 instructions. All remain untrusted
+reference material. No observed evidence/identity/correction policy changed.
+
+The new receipt is unique and settled once. Original empty receipt/shared cap and
+NVIDIA ledger are unchanged. Combined reported Tavily usage is 2 credits across
+two distinct one-call authorizations; no dollar estimate. Original raw result
+count remains unknown; the new response does not resolve that history. The new
+fixed authorization has no remaining requests. No automatic retry/refund or new
+search cycle is permitted. No NVIDIA or LangSmith call accompanied the diagnostic.
+Private evidence: `.local/2026-10-29-one-additional-wika-a10-diagnostic/result.json`.
 
 ## LangSmith metadata-only traces
 

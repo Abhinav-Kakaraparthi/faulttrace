@@ -59,17 +59,20 @@ official domain. Documents stay untrusted references, outside measurement policy
 LangSmith uses explicit `FAULTTRACE_LANGSMITH_TRACING=1`, server-only key/project,
 and allowlisted metadata only. See [partner boundaries](partner-integration.md).
 
-## Tavily-only result - allowance spent; do not rerun
+## Verification closed - no remaining provider authorization
 
-Two planning and one photo calls have already run. The one remaining Tavily call
-also ran: attempt `c4e1a86b` recorded 1 credit but retained zero sources. The
-connectivity/parsed-contract/accounting path passed; useful citations did not.
-Raw response/counts were not retained, so empty-provider versus URL filtering is
-unknown. [Findings and prospective diagnostics](partner-integration.md).
-Do not rerun either verification command or reset the persistent 2/1/1 admission.
-A further call needs separate authorization; none occurred during this offline audit.
-Founder screenshots narrowly confirm the existing photo trace/attributes are visible;
-that is user-reported browser evidence, with no resend or broader UI acceptance.
+Two planning and one photo calls ran under the original sprint authorization.
+Original Tavily attempt `c4e1a86b` used 1 credit with zero retained sources and
+unknown raw result count. The user separately authorized one final identical
+diagnostic: `de27f94f` returned/retained 3, filtered 0, 1 credit. The original
+limit/receipt remain unchanged, with a separate one-request persistent reservation.
+A-10 product citation is useful; S-20/PSD-4 documents are other-model references.
+No source proves installed-asset identity or permits correction. [Evidence](state.md).
+No NVIDIA call or trace export accompanied the final search. Both search grants
+are spent: do not rerun any verification command, refund limits or launch another
+exploratory search. Return to durable-hosting decision and truthful <3-minute video
+readiness using existing results. No provider calls for retakes are authorized.
+Founder screenshots confirm only the existing photo trace/attributes in browser.
 
 ## Earlier combined terminal verification - historical procedure
 

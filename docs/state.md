@@ -1,50 +1,52 @@
 # Checkpoint state
 
-## Tavily connectivity/accounting verified; useful cited retrieval NOT verified
+## Final authorized Tavily diagnostic completed - search cycle closed
 
-Started clean at `0f4c20f`. Preserved attempt
-`c4e1a86b-b23b-4073-a153-c584ada8d3e2` has one matching SQLite documentation receipt
-and one settled spending reservation: transport_invoked=true, parsed contract
-passed, 8031ms, usage=1 credit, zero retained sources. Historical status=completed
-means the operation/parse completed, not useful documentation retrieval. The CLI
-reported citation_verification=not_verified_requires_review. Trace export was
-disabled, evidence count remained zero, and the main NVIDIA ledger is unchanged.
-Sprint inventory is 2 planning / 1 photo / 1 documentation: the allowance is spent.
+Started clean at `d6cc252`. Tested implementation
+`c9ea6bd82ae734d2813a057d7e634246deed5c6f` ran exactly one additional production
+POST /api/documentation through authenticated ASGI, with the identical WIKA A-10
+payload. Credentials came from existing environment storage without disclosure.
+No NVIDIA call, LangSmith export, server restart or runtime feature change.
 
-Only parsed/filtered results were retained. The scoped directory has no raw
-response, returned-results count, rejected URL list or filter counts. Therefore
-we cannot establish whether Tavily returned an empty results array or every URL
-was filtered. No original response is reconstructed and no cause is assumed.
-The historical receipt/result are unchanged; missing diagnostics remain unknown.
+The separately authorized grant `2026-10-29-one-additional-wika-a10-diagnostic`
+has its own durable requests=1/session_requests=1 spending database and exclusive
+marker. It does not reset/extend the original sprint limit. One reservation was
+persisted before provider contact and settled once. Restart/uncertainty never
+refunds or creates another call. The command refuses a second invocation.
 
-Reconstructed production request from committed source/saved context:
-`WIKA "A-10" manufacturer manual datasheet`, general/basic, max_results=3,
-include_domains=[wika.com], include_domains_mode=restrict, include_usage=true,
-answer/raw-content/images/auto-parameters disabled. Tavily documents restrict as
-hard domain filtering; no confirmed request-parameter incompatibility. Offline
-cases retain valid apex/www/subdomain URLs. Off-domain, HTTP, embedded credentials,
-wrong ports, oversized/control-containing or credential-bearing URLs are filtered.
-Model-text mismatch only labels a retained source; it does not drop it. Invalid
-envelopes fail parsing, which differs from this attempt's passed parse.
+New attempt `de27f94f-7a46-4427-8c78-06ceb4a4d5b7`, timestamp
+2026-10-29T17:16:53.062426+00:00: parsed contract passed, 2391ms, 1 reported credit.
+Provider results=3, examined=3, retained=3, filtered=0, not examined=0,
+filter_reasons={}. One exact useful manufacturer/model citation was retrieved:
+[WIKA A-10 product](https://www.wika.com/en-us/a_10.WIKA). Other actual citations
+are [S-20 data sheet](https://www.wika.com/media/Data-sheets/Pressure/Pressure-sensors/ds_pe8161_en_co.pdf)
+(which merely cross-references A-10) and [PSD-4 data sheet](https://www.wika.com/media/Data-sheets/Pressure/Pressure-switches/ds_pe8186_en_co.pdf).
+Direct manufacturer review confirms these are other models, not A-10 instructions.
+Snippet model mention does not establish applicability. No source was promoted to
+observed evidence, MAXIMATOR/F-17 identity, diagnosis or correction authority.
 
-The demonstrated diagnostic gap is fixed prospectively: bounded returned/examined/
-retained/filtered/not-examined counts and fixed filter reasons are persisted in new
-results, without rejected URLs or raw bodies. Query/restrictions/validation/retries
-are unchanged. CLI connectivity-contract and retrieval outcomes are now separate;
-legacy results are not backfilled. Eight new cases / 15 focused Tavily tests and
-all 309 guarded backend tests pass, zero forbidden external network attempts.
-Exact-SHA CI is reported in the handoff. No new Tavily/NVIDIA call or LangSmith export.
+Private authorization, receipt/result, counts and application outbox remain under
+`.local/2026-10-29-one-additional-wika-a10-diagnostic/`. Original attempt
+`c4e1a86b-b23b-4073-a153-c584ada8d3e2` still has its unique unchanged 1-credit,
+zero-source receipt; its discarded raw results remain unknown. The successful new
+search does not reconstruct/explain that historical response. Original result,
+receipt, shared limit state and main NVIDIA ledger hashes are unchanged. Two
+separate one-call grants are consumed, 2 total reported Tavily credits. No cost
+estimate and no remaining search authorization; no more exploratory searches.
 
-Next smallest verification, only after separately authorizing another search and
-reviewing admission: one identical production request with the new safe counts,
-no retry or query experiment. This would distinguish provider-empty from filtered
-results. Do not rerun the exhausted command, refund/reset limits or enable inference.
-References remain outside observed evidence and correction authorization. The WIKA
-example still does not identify the MAXIMATOR photograph or F-17.
+Five focused separate-grant tests and all 314 guarded backend tests passed, zero
+forbidden external network attempts. Later documentation is separate from the
+live-tested implementation commit. Exact final-SHA CI is in the handoff.
 
-Founder screenshot evidence remains narrow: the existing photo-analysis trace and
-attributes are browser-visible; this is user-reported, not agent browser testing.
-No trace resend is needed and other trace/agent-environment UI gates remain open.
+Next priority is deployment/video/submission readiness. Zero-cost durable external
+storage remains assessed, not authorized/migrated; paid infrastructure remains
+unapproved. Do not enable public inference with ephemeral reservations. Prepare
+<3-minute footage using existing real results, clearly labeled simulated equipment
+and separate offline recovery output. No new provider calls for cleaner takes.
+No public deployment, hosted HTTPS acceptance, final video or submission is claimed.
+
+Founder screenshots narrowly confirm the existing photo-analysis trace and
+attributes are browser-visible; other trace/agent-environment UI gates stay open.
 
 ## LangSmith projection defect resolved - existing runs located
 
