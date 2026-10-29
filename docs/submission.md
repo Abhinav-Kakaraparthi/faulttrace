@@ -19,11 +19,13 @@ attributes are browser-visible; other trace/agent-environment acceptance remains
 No repair/export occurred, and no NVIDIA/Tavily call was repeated. Photo contract
 validity remains separate from accuracy; Tavily/evaluation/hosting gates stay open.
 
-Remaining Tavily verification is prepared as one production-route command for the
-publicly verified WIKA A-10 reference example. It consumes the existing one-search
-allowance, blocks NVIDIA and disables tracing. The example does not identify the
-MAXIMATOR photo or F-17; returned citations remain outside correction evidence.
-No Tavily call or live-result claim during preparation.
+Tavily attempt `c4e1a86b` reached the service and recorded 1 credit, but retained
+zero citations. **Useful documentation retrieval is NOT verified.** Raw response
+and original result/filter counts were not retained, so provider-empty versus
+application-filtered results is unknown. The receipt remains unchanged. Future
+safe aggregate diagnostics are added offline; no query/filter relaxation or new
+request. The one-search allowance is spent; any additional diagnostic call requires
+separate authorization. No reference becomes correction evidence.
 
 Live evidence handoff now has a reviewed repository runner with persistent 2/1/1
 verification caps, prior-attempt inventory and real production API paths. Its
@@ -353,7 +355,7 @@ a completed live application, or independent recovery verification.
 [Scope, dependencies and acceptance criteria](architecture.md#partner-integration-roadmap).
 Tavily and metadata-only LangSmith adapters are offline-tested. Three existing
 LangSmith runs are remotely readable with matching receipt fingerprints; actual
-Tavily retrieval, other trace/agent-environment browser acceptance and credit entitlement remain unverified. Current orchestration
+Useful Tavily retrieval, other trace/agent-environment browser acceptance and credit entitlement remain unverified; Tavily connectivity/accounting alone passed. Current orchestration
 is custom Python/SQLite; LangChain/LangGraph are not dependencies, and migration
 is not required. Existing NVIDIA/Nebius runtime remains in place.
 
@@ -361,7 +363,7 @@ is not required. Existing NVIDIA/Nebius runtime remains in place.
 - [x] **LangSmith metadata delivery:** three existing named-project runs remotely readable with matching receipt fingerprints; no credentials, images or raw reasoning exported.
 - [x] **LangSmith photo trace UI:** existing photo-analysis trace and attributes browser-visible, confirmed by founder screenshots; no resend.
 - [ ] **LangSmith broader acceptance:** other trace/agent-environment browser visibility and reviewed-reference numeric/abstention evaluation remain open.
-- [ ] **Tavily — implemented/offline-tested lookup:** verify a useful actual official citation for a confirmed model. Reference context never becomes observed evidence or correction authority; no bonus claim yet.
+- [ ] **Tavily useful retrieval:** 1-credit connectivity/accounting verified, zero retained citations; provider-empty versus filtering unknown. A useful official citation remains unverified. No correction authority or bonus claim.
 - [ ] **Toloka — conditional assessment:** confirm eligibility, reviewer suitability, cost/credit coverage and turnaround before use; approve labeling quality and data-permission/privacy controls.
 - [ ] **Tandem — deferred/not selected:** establish concrete project benefit and a bounded acceptance test before reconsideration.
 

@@ -49,17 +49,25 @@ def parse(body, value, secret):
         envelope = parse_json(body.decode('utf-8'))
         if type(envelope) is not dict or type(envelope.get('results')) is not list or len(envelope['results']) > 20:
             raise ValueError()
-        sources = []
+        sources, examined, rejected = [], 0, {}
         for item in envelope['results']:
+            examined += 1
             if type(item) is not dict or type(item.get('url')) is not str:
                 raise ValueError()
             address = item['url']
             url = urlsplit(address)
             host = url.hostname or ''
-            if (len(address) > 512 or any(ord(c) < 32 for c in address)
-                    or secret and secret in address or url.scheme != 'https'
-                    or url.username or url.password or url.port not in (None, 443)
-                    or not (host == value['domain'] or host.endswith('.' + value['domain']))):
+            # Same restrictions/short-circuit order as before; retain counts and
+            # fixed reasons only, never rejected URLs or remote field values.
+            reason = ('url_too_long' if len(address) > 512 else
+                'url_control_characters' if any(ord(c) < 32 for c in address) else
+                'credential_in_url' if secret and secret in address else
+                'non_https' if url.scheme != 'https' else
+                'url_credentials' if url.username or url.password else
+                'unsupported_port' if url.port not in (None,443) else
+                'outside_official_domain' if not (host==value['domain'] or host.endswith('.'+value['domain'])) else None)
+            if reason:
+                rejected[reason] = rejected.get(reason,0)+1
                 continue
             # Never request URLs ourselves; citations are links, not a fetch capability.
             title = safe_text(item.get('title'), 200, secret)
@@ -72,7 +80,12 @@ def parse(body, value, secret):
         credits = usage.get('credits') if type(usage) is dict else None
         if type(credits) not in (int, float) or not 0 <= credits <= 1000:
             credits = None
-        return {'sources': sources, 'usage_credits': credits}
+        return {'sources': sources, 'usage_credits': credits,
+            'source_diagnostics': {'returned_count':len(envelope['results']), 'examined_count':examined,
+                'retained_count':len(sources), 'filtered_count':sum(rejected.values()),
+                'not_examined_count':len(envelope['results'])-examined, 'filter_reasons':rejected,
+                'outcome':'provider_results_empty' if not envelope['results'] else
+                          'all_examined_results_filtered' if not sources else 'sources_retained'}}
     except PartnerError:
         raise
     except Exception:

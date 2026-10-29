@@ -1,35 +1,50 @@
 # Checkpoint state
 
-## Remaining Tavily reference verification - prepared, not executed
+## Tavily connectivity/accounting verified; useful cited retrieval NOT verified
 
-Started clean at `73a29e9`. Founder screenshots confirm the existing photo-analysis
-trace and its attributes are browser-visible. This is user-reported browser evidence,
-not agent-operated testing or acceptance of other traces/agent environments. No
-LangSmith resend is needed. Read-only sprint inventory remains 2 planning / 1 photo /
-0 documentation searches; one authorized Tavily search remains unused.
+Started clean at `0f4c20f`. Preserved attempt
+`c4e1a86b-b23b-4073-a153-c584ada8d3e2` has one matching SQLite documentation receipt
+and one settled spending reservation: transport_invoked=true, parsed contract
+passed, 8031ms, usage=1 credit, zero retained sources. Historical status=completed
+means the operation/parse completed, not useful documentation retrieval. The CLI
+reported citation_verification=not_verified_requires_review. Trace export was
+disabled, evidence count remained zero, and the main NVIDIA ledger is unchanged.
+Sprint inventory is 2 planning / 1 photo / 1 documentation: the allowance is spent.
 
-Verified public reference example: WIKA A-10 pressure transmitter, official domain
-wika.com. WIKA's product page and data sheet PE81.60 explicitly identify that model.
-This example does not identify the MAXIMATOR photograph, F-17 or installed equipment.
-The manufacturer's documents are reference material, never observed evidence or
-correction authority. See the source links in partner-integration.md.
+Only parsed/filtered results were retained. The scoped directory has no raw
+response, returned-results count, rejected URL list or filter counts. Therefore
+we cannot establish whether Tavily returned an empty results array or every URL
+was filtered. No original response is reconstructed and no cause is assumed.
+The historical receipt/result are unchanged; missing diagnostics remain unknown.
 
-`tools/verify_tavily_reference.py` is prepared for one pinned terminal command.
-It uses the real authenticated production documentation route through in-process
-ASGI, a fresh isolated simulated investigation, and the existing shared persistent
-one-search reservation. No TCP server starts/restarts; existing runs and real ledger
-are preserved. NVIDIA key-source, transport and budget are blocked; LangSmith
-exports are explicitly disabled. No mocks are used by the live command.
+Reconstructed production request from committed source/saved context:
+`WIKA "A-10" manufacturer manual datasheet`, general/basic, max_results=3,
+include_domains=[wika.com], include_domains_mode=restrict, include_usage=true,
+answer/raw-content/images/auto-parameters disabled. Tavily documents restrict as
+hard domain filtering; no confirmed request-parameter incompatibility. Offline
+cases retain valid apex/www/subdomain URLs. Off-domain, HTTP, embedded credentials,
+wrong ports, oversized/control-containing or credential-bearing URLs are filtered.
+Model-text mismatch only labels a retained source; it does not drop it. Invalid
+envelopes fail parsing, which differs from this attempt's passed parse.
 
-It reports actual citations, receipt/available credits and retrieval time. Official
-domain/model-mention checks and exact preverified document-path comparisons are
-separate; unfamiliar citations require independent review. Preverified source links
-are labeled as preparation context and never substituted into actual search results.
-Failures, unknown consumption and interruption remain recorded; no automatic retry.
-Seven focused offline-double tests and all 301 guarded backend tests pass, zero
-forbidden external network attempts. Exact-SHA CI is in the delivery handoff.
-Next: run only the pinned Tavily command, then inspect its actual returned citations.
-Tavily live retrieval remains unverified until that output; no new search executed here.
+The demonstrated diagnostic gap is fixed prospectively: bounded returned/examined/
+retained/filtered/not-examined counts and fixed filter reasons are persisted in new
+results, without rejected URLs or raw bodies. Query/restrictions/validation/retries
+are unchanged. CLI connectivity-contract and retrieval outcomes are now separate;
+legacy results are not backfilled. Eight new cases / 15 focused Tavily tests and
+all 309 guarded backend tests pass, zero forbidden external network attempts.
+Exact-SHA CI is reported in the handoff. No new Tavily/NVIDIA call or LangSmith export.
+
+Next smallest verification, only after separately authorizing another search and
+reviewing admission: one identical production request with the new safe counts,
+no retry or query experiment. This would distinguish provider-empty from filtered
+results. Do not rerun the exhausted command, refund/reset limits or enable inference.
+References remain outside observed evidence and correction authorization. The WIKA
+example still does not identify the MAXIMATOR photograph or F-17.
+
+Founder screenshot evidence remains narrow: the existing photo-analysis trace and
+attributes are browser-visible; this is user-reported, not agent browser testing.
+No trace resend is needed and other trace/agent-environment UI gates remain open.
 
 ## LangSmith projection defect resolved - existing runs located
 

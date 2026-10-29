@@ -87,7 +87,11 @@ class TavilyVerificationTests(unittest.TestCase):
             with self.subTest(kind=kind),self.session(kind) as (result,client,control,calls):
                 self.assertEqual(len(calls),1)
                 self.assertEqual(result['citation_verification'],'not_verified_requires_review')
-                if kind=='empty':self.assertEqual(result['sources'],[])
+                self.assertEqual(result['connectivity_contract_result'],'passed')
+                if kind=='empty':
+                    self.assertEqual(result['sources'],[])
+                    self.assertEqual(result['retrieval_outcome'],'no_retained_sources')
+                    self.assertEqual(result['source_diagnostics']['outcome'],'provider_results_empty')
                 else:self.assertEqual(result['sources'][0]['url'],'https://www.wika.com/other-resource')
 
     def test_budget_forbids_all_nvidia_operations_before_any_reservation(self):

@@ -59,14 +59,15 @@ official domain. Documents stay untrusted references, outside measurement policy
 LangSmith uses explicit `FAULTTRACE_LANGSMITH_TRACING=1`, server-only key/project,
 and allowlisted metadata only. See [partner boundaries](partner-integration.md).
 
-## Remaining Tavily-only terminal action
+## Tavily-only result - allowance spent; do not rerun
 
-The two planning and one photo calls have already run. Do not rerun the combined
-verification command below. For the unused one-search allowance, use only the
-pinned `tools/verify_tavily_reference.py` command from the latest handoff. It tests
-the public WIKA A-10 reference example through the production documentation route;
-it neither identifies the photograph/F-17 nor supplies correction evidence. NVIDIA
-calls and LangSmith exports are blocked. [Exact scope and sources](partner-integration.md).
+Two planning and one photo calls have already run. The one remaining Tavily call
+also ran: attempt `c4e1a86b` recorded 1 credit but retained zero sources. The
+connectivity/parsed-contract/accounting path passed; useful citations did not.
+Raw response/counts were not retained, so empty-provider versus URL filtering is
+unknown. [Findings and prospective diagnostics](partner-integration.md).
+Do not rerun either verification command or reset the persistent 2/1/1 admission.
+A further call needs separate authorization; none occurred during this offline audit.
 Founder screenshots narrowly confirm the existing photo trace/attributes are visible;
 that is user-reported browser evidence, with no resend or broader UI acceptance.
 

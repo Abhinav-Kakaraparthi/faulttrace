@@ -42,34 +42,41 @@ usage credits remain separate from NVIDIA tokens; missing credits remain unknown
 Server-only configuration: `TAVILY_API_KEY`, explicit enabled registration and
 the shared budget. Browser forms never accept or receive the provider key.
 
-### One remaining live search - reference-equipment example
+### Reference-example result and diagnostic limitation
 
-The verified example is **WIKA / A-10 / wika.com**, a pressure transmitter. Official
-sources checked October29: [product page](https://www.wika.com/en-us/a_10.WIKA),
-[data sheet PE81.60](https://www.wika.com/media/Data-sheets/Pressure/Pressure-sensors/ds_pe8160_en_co.pdf),
+Reference only: WIKA A-10 pressure transmitter / wika.com; independently checked
+[product](https://www.wika.com/en-us/a_10.WIKA),
+[data sheet](https://www.wika.com/media/Data-sheets/Pressure/Pressure-sensors/ds_pe8160_en_co.pdf),
 [operating instructions](https://www.wika.com/media/Operating-instructions/Operating-instructions/Pressure/Pressure-sensors/oi_a_10_en_de_fr_es.pdf).
-This does not identify any uploaded MAXIMATOR photograph, F-17 or actual installed
-instrument. It is a labeled reference-equipment lookup, outside evidence policy.
+It does not identify the MAXIMATOR photograph, F-17 or installed equipment.
 
-Run the single pinned command from delivery:
-`.venv/Scripts/python.exe tools/verify_tavily_reference.py --expected-head <reviewed SHA>`.
-It privately inherits TAVILY_API_KEY or its named Windows user value, checks the
-clean reviewed checkout and unchanged runtime, and uses real production demo/session
-and documentation API routes through ASGI. No server or browser is started. A fresh
-ignored `.local/tavily-verification/<id>/` investigation preserves old runs/ledgers.
-The existing `.local/sprint-verification/limits.sqlite3` and accounting audit enforce
-one cumulative Tavily call. The key is not printed; there are no automatic retries.
-NVIDIA transport/key/budget are blocked, and LangSmith export is disabled.
+The one authorized search ran: `c4e1a86b` recorded 1 credit and zero retained
+sources. Connectivity, parsing and accounting passed; useful cited retrieval did
+not. Historical status=completed is operation completion, not citation usefulness.
+Raw response/counts were discarded; its cause cannot be resolved retrospectively.
+A valid empty array and a nonempty array of entirely rejected URLs both produce
+sources=[] in that historical implementation. Model mention/exact preverified-path
+checks run after filtering and never remove sources from production parse output.
+No historical data is reconstructed or backfilled.
 
-The private result prints actual sources/receipt/retrieval time; usage credits remain
-null when unknown. Domain/model mentions are not independent applicability proof.
-Exact URLs matching the already-reviewed official resources are marked separately;
-other returned citations remain unverified until independently reviewed. Empty or
-failed searches never receive canned citations. The reference does not create an
-observation, diagnosis, task completion or correction authorization. Exit0 requires
-completed search plus a model-mentioning preverified-resource citation, tracing
-disabled and unchanged real ledger; exit1 is partial/failed and exit2 local preflight.
-Do not rerun to improve results. Preparation tests are offline doubles, not live search.
+Future parse results add only safe aggregate source_diagnostics: returned_count,
+examined_count, retained_count, filtered_count, not_examined_count, fixed
+filter_reasons and provider-empty/all-filtered/sources-retained outcome. Rejected
+URLs/bodies/headers are not persisted. Malformed envelopes still fail closed;
+the three-citation cap is counted separately from filtering. The exact query,
+registered domain, HTTPS protections, payload and no-retry policy are unchanged.
+The CLI separately reports connectivity_contract_result and retrieval_outcome;
+legacy source diagnostics remain unknown, not zero.
+
+[Tavily's current Search contract](https://docs.tavily.com/documentation/api-reference/endpoint/search)
+documents include_domains_mode=restrict as a hard domain filter. Our request is
+`WIKA "A-10" manufacturer manual datasheet`, basic/general, three results,
+restricted wika.com, usage enabled; no concrete request defect is established.
+The smallest next experiment would be one separately authorized identical search
+with new count diagnostics. The original shared one-search allowance is already
+consumed: do not reset it, rerun the old command or make an automatic retry.
+Search references remain untrusted and cannot authorize simulated correction.
+No Tavily/NVIDIA requests or LangSmith exports during this diagnosis.
 
 ## LangSmith metadata-only traces
 
