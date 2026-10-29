@@ -45,6 +45,9 @@ def wider_search(reader,receipts,prior):
             result['coverage_limits'].append('query_failed_stop_no_retry')
             break
         rows=value['runs'];summary['returned_count']=len(rows)
+        if any(not isinstance(r,dict) or not identity(r.get('id')) or not identity(r.get('session_id'))
+               or not isinstance(r.get('name'),str) or not isinstance(r.get('start_time'),str) for r in rows):
+            result['coverage_limits'].append(name+'_incomplete_run_rows')
         # The request is unfiltered; only faulttrace records are projected to the report.
         selected=candidates(rows,receipts,workspace,projects,ENDPOINT,window=window)
         result['remote_runs'].extend(selected)

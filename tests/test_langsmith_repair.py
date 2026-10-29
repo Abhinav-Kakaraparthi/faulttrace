@@ -79,6 +79,12 @@ class LangSmithRepairTests(unittest.TestCase):
             self.assertFalse(result['repair_preparation_permitted'])
             self.assertTrue(result['coverage_limits'])
 
+    def test_malformed_unfiltered_rows_cannot_establish_absence(self):
+        for row in ('malformed',{'id':'b841fa8f-599b-401d-a481-fabbbfbb9b02'}):
+            result=wider_search(FakeReader([row]),receipts(),prior())
+            self.assertFalse(result['repair_preparation_permitted'])
+            self.assertTrue(any('incomplete_run_rows' in c for c in result['coverage_limits']))
+
     def test_plan_has_persisted_stable_ids_no_raw_content_and_explicit_routing(self):
         with tempfile.TemporaryDirectory() as temporary:
             folder=Path(temporary);path,digest=self.plan(folder)

@@ -36,8 +36,8 @@ receipt-derived and labeled reconstructed, not original captured trace times.
 Unknown original UUIDs mean duplicates remain possible. No historical status is
 rewritten as remote success, no ledger imports, inference or server operations.
 
-21 focused offline tracing/repair tests and all 287 guarded backend tests pass,
-zero forbidden external network attempts. CI is reported in the handoff. Next: run only the pinned search/preparation command,
+22 focused offline tracing/repair tests and all 288 guarded backend tests pass,
+zero forbidden external network attempts. Exact-SHA CI is reported in the handoff. Next: run only the pinned search/preparation command,
 then review its saved result/plan before any trace-write authorization. Existing
 previews/runs and the real ledger remain unchanged. LangSmith remote/dashboard
 acceptance remains open.
