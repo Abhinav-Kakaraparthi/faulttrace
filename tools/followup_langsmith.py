@@ -49,7 +49,9 @@ def wider_search(reader,receipts,prior):
                or not isinstance(r.get('name'),str) or not isinstance(r.get('start_time'),str) for r in rows):
             result['coverage_limits'].append(name+'_incomplete_run_rows')
         # The request is unfiltered; only faulttrace records are projected to the report.
-        selected=candidates(rows,receipts,workspace,projects,ENDPOINT,window=window)
+        summary['projection_diagnostics']=[]
+        selected=candidates(rows,receipts,workspace,projects,ENDPOINT,window=window,
+                            diagnostics=summary['projection_diagnostics'])
         result['remote_runs'].extend(selected)
         if sum(isinstance(r,dict) and r.get('name') in ('faulttrace.planning','faulttrace.photo_analysis') for r in rows)!=len(selected):
             result['coverage_limits'].append(name+'_faulttrace_rows_not_fully_projectable')

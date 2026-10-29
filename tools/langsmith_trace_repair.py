@@ -11,7 +11,7 @@ import uuid
 
 from faulttrace.partners.http import NoRedirect
 from faulttrace.partners.tracing import metadata
-from tools.diagnose_langsmith import ATTEMPTS, DiagnosticError, identity
+from tools.diagnose_langsmith import ATTEMPTS, DiagnosticError, identity, api_timestamp
 from tools.verify_sprint_live import safe_json
 
 ENDPOINT='https://api.smith.langchain.com'
@@ -105,7 +105,7 @@ def matches(value,entry,project):
             and identity(value.get('trace_id'))==entry['run_id']):
         return False
     try:
-        return all(datetime.fromisoformat(value[k].replace('Z','+00:00'))==datetime.fromisoformat(body[k])
+        return all(api_timestamp(value[k])==api_timestamp(body[k])
                    for k in ('start_time','end_time'))
     except (KeyError,ValueError,TypeError,AttributeError):
         return False

@@ -1,9 +1,10 @@
 # Manufacturer references and sanitized observability
 
 Custom Python/SQLite remains the workflow; no LangChain/LangGraph or new runtime
-dependency is added. This implementation is offline-tested. Actual Tavily source
-retrieval and LangSmith trace visibility require later bounded verification;
-mocked test output does not establish a live integration result.
+dependency is added. Actual Tavily retrieval remains unverified. Three existing
+metadata-only LangSmith runs are remotely readable in named Local with matching
+receipt fingerprints; agent-environment/browser visibility remains open. Offline
+doubles do not establish live service results.
 
 ## Tavily reference lookup
 
@@ -86,29 +87,32 @@ Official references: [agent environments](https://docs.langchain.com/langsmith/a
 [workspace discovery](https://docs.langchain.com/langsmith/smith-api/workspaces/list-workspaces),
 [run query](https://docs.langchain.com/langsmith/smith-api/run/query-runs).
 
-Follow-up after the saved narrow search returned HTTP200 but no matches:
-run only the delivered pinned `tools/followup_langsmith.py` command. It uses a
-48-hour explicit start_time filter plus one unfiltered recent named-Local query
-(max100 rows each); it neither clips the latter to the old window nor exports
-traces. A durable marker prevents automatic repeated searches. Results and any
-prepared plan live in `.local/langsmith-followup/`, outside Git.
+### Resolved projection failure; no repair for this run
 
-Only a complete empty search prepares a plan, labeled **not executed**. Review
-its exact faulttrace/local address, resolved-project expectation, three stable
-run IDs, reconstructed timestamps, metadata-only bodies and SHA256 first. A
-later separate `--execute-reviewed-plan <private plan.json>` plus
-`--reviewed-plan-sha256 <reviewed hash>` invocation is required for writes; do
-not execute this while reviewing. It allows at most three POST /runs calls and
-one selected-field GET read-back per posted run, no retries. HTTP acknowledgment
-and verified read-back stay separate. It persists reservations/status before
-continuing; interrupted/started plans cannot be replayed. Address resolution
-must match the privately saved agent-Local project before contact with /runs.
-Original random UUIDs were lost, so duplicate historical traces are possible
-even with deterministic repair IDs. Read-back verifies remote records, not UI
-acceptance. Historical workflow/ledger/trace acknowledgments remain unchanged.
-Sources: [query ordering/fields](https://docs.langchain.com/langsmith/smith-api/run/query-runs),
-[address resolution](https://docs.langchain.com/langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta),
-[selected-field read-back](https://docs.langchain.com/langsmith/smith-api/runs/get-a-single-run).
+The preserved wider search returned three rows in each query. The parser rejected
+all of them because start_time had no timezone suffix. One subsequent bounded
+read-only query established the actual structure: valid UUIDs/project scope,
+ISO timestamps such as `2026-10-29T00:24:06.134321`, and allowlisted metadata.
+Trace diagnostics now interpret this observed UTC API representation as UTC;
+explicit offsets normalize to UTC. Invalid timestamps, scope and time bounds
+remain strict, with fixed rejection codes instead of silent projection loss.
+This normalization never applies to equipment evidence/freshness policy.
+
+Safe snapshot/reprojection evidence is in ignored
+`.local/langsmith-followup/projection-safe.json` and `located.json`. Three remote
+named-Local records match each receipt's operation/model/tokens/latency/contract
+status, with returned correlation_id equal to run ID. Historical run-ID mappings
+were discarded, so matches are fingerprints rather than direct ID proof. Direct
+links are generated from remotely returned IDs; no browser acceptance is claimed.
+Original search/acknowledgment/ledger records are not rewritten as success.
+
+**Do not execute the prior repair procedure or repeat the model runner.** Existing
+traces have been located; repairing would risk duplicates. The dormant reviewed-
+plan implementation remains for history, but no plan was prepared for this run.
+Future exports should choose project OR agent/environment explicitly; named Local
+is not agent Local. Agent-based routing still needs its own bounded acceptance.
+Sources: [query fields](https://docs.langchain.com/langsmith/smith-api/run/query-runs),
+[run data format](https://docs.langchain.com/langsmith/run-data-format).
 
 The export is a fresh allowlisted projection: operation (`planning`,
 `photo_analysis`, `documentation`), measured latency, one supported NVIDIA model,

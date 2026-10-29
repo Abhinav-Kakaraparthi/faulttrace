@@ -3,7 +3,7 @@
 Never calls models, exports traces, reads images, or modifies workflow/ledger data.
 """
 import argparse
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -50,6 +50,21 @@ def identity(value):
 def label(value):
     # Remote names are data; no markup/control characters/arbitrary strings.
     return value if isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9 _./:-]{1,128}', value) else '[not displayed]'
+
+
+def api_timestamp(value):
+    """LangSmith query timestamps: timezone-free UTC or explicit ISO offset.
+
+    The observed API omits the UTC suffix from our UTC exports. This normalization
+    is specific to trace diagnostics, never provider/evidence-policy timestamps.
+    """
+    if not isinstance(value,str) or not re.fullmatch(
+            r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})?',value):
+        raise ValueError('invalid_trace_timestamp')
+    stamp=datetime.fromisoformat(value.replace('Z','+00:00'))
+    if stamp.tzinfo is None:
+        stamp=stamp.replace(tzinfo=timezone.utc)
+    return stamp.astimezone(timezone.utc)
 
 
 def environment():
@@ -142,20 +157,27 @@ class Reader:
             self.events.append(event)
 
 
-def candidates(rows,receipts,workspace,projects,endpoint,*,window=(START,END)):
+def candidates(rows,receipts,workspace,projects,endpoint,*,window=(START,END),diagnostics=None):
     found = []
     host = endpoint.replace('api.smith.', 'smith.').replace('eu.api.smith.','eu.smith.')
-    for row in rows:
+    def reject(index,code):
+        if diagnostics is not None:
+            diagnostics.append({'row_index':index,'diagnostic':code})
+    for index,row in enumerate(rows):
         if not isinstance(row,dict) or row.get('name') not in ('faulttrace.planning','faulttrace.photo_analysis'):
+            reject(index,'unexpected_row_shape_or_name')
             continue
         rid, pid = identity(row.get('id')), identity(row.get('session_id'))
         if not rid or pid not in projects:
+            reject(index,'invalid_run_id' if not rid else 'project_not_in_scope')
             continue
         try:
-            stamp = datetime.fromisoformat(row['start_time'].replace('Z','+00:00'))
-            if stamp.tzinfo is None or (window and not datetime.fromisoformat(window[0])<=stamp<=datetime.fromisoformat(window[1])):
+            stamp = api_timestamp(row['start_time'])
+            if window and not api_timestamp(window[0])<=stamp<=api_timestamp(window[1]):
+                reject(index,'outside_query_window')
                 continue
         except (ValueError,KeyError,TypeError,AttributeError):
+            reject(index,'invalid_start_timestamp')
             continue
         meta = row.get('extra',{}).get('metadata',{}) if isinstance(row.get('extra'),dict) else {}
         matches = []
@@ -168,6 +190,7 @@ def candidates(rows,receipts,workspace,projects,endpoint,*,window=(START,END)):
                 matches.append(aid)
         found.append({'run_id':rid,'project_id':pid,'project':projects[pid],
             'workspace_id':workspace,'name':row['name'],'start_time':stamp.isoformat(),
+            'timestamp_normalization':'timezone_free_API_value_as_UTC' if datetime.fromisoformat(row['start_time'].replace('Z','+00:00')).tzinfo is None else 'explicit_offset_to_UTC',
             'remote_readable':True,
             'remote_end_time_present':bool(row.get('end_time')),
             'remote_trace_id_present':bool(identity(row.get('trace_id'))),

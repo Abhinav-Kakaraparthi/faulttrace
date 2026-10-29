@@ -1,46 +1,42 @@
 # Checkpoint state
 
-## LangSmith wider search and reviewable repair - not executed
+## LangSmith projection defect resolved - existing runs located
 
-Started clean at `01ad56a`. Privately saved diagnostic `c8b3c5c3393e4b4cab806e290b8175c9`
-confirms three HTTP200 discovery/query responses, no coverage limits and no runs
-in the narrow October29 00:24-00:26 UTC search. Named Local and faulttrace-local
-are distinct projects in the same discovered workspace; current configuration
-is session_name=Local. This does not recover historical exporter configuration.
-Original SQLite acknowledgments and all three receipt/ledger entries are intact.
+Started clean at `d2d95a5` on feat/finish-integrated. The user's preserved wider
+search returned HTTP200 and three rows for both queries, but the diagnostic
+reported zero projected runs. That was a projection failure, not absence. Its
+incomplete-projection guard correctly prevented repair preparation; no plan exists.
 
-Timestamp audit: the exporter used datetime.now(timezone.utc) at export, then
-subtracted measured latency for start_time. It did not copy the receipt timestamp.
-Receipt-based request spans are approximately 00:24:06-00:25:00; exact original
-trace timestamps/UUIDs/HTTP responses were discarded and cannot be reconstructed.
-No timezone/ingestion defect is proven. The earlier diagnostic clipped results both
-server-side and locally; absence outside that window was not established.
+One newly authorized read-only /runs/query call returned HTTP200 and three rows.
+Only bounded field structure, safe timestamps/IDs and allowlisted correlation
+metadata were retained in ignored `projection-safe.json`. All rows have valid IDs,
+matching named-Local project IDs and parseable ISO start_time values **without
+UTC suffixes**. The old candidates condition `stamp.tzinfo is None` discarded
+all three. The concrete failure was in our diagnostic, not provider ingestion.
 
-`tools/followup_langsmith.py` is prepared for the credential-bearing terminal.
-One durable invocation makes at most two read-only queries: explicit start_time
-bounds October28-30 across discovered projects, then latest100 unfiltered named
-Local runs with no time/name filter. Original two-minute clipping is removed for
-that second query. Safe fingerprint matches and direct project/run links are
-reported; failures, pagination or unprojectable FaultTrace rows block preparation.
-The coding agent has no accessible key; no authenticated wider search is claimed
-here. This says nothing about credentials in the user's existing terminal.
+Trace-specific ISO parsing now normalizes the observed timezone-free UTC API
+values and explicit offsets to aware UTC. Malformed/date-only values, unknown
+projects, invalid IDs and out-of-window records remain rejected with fixed row
+codes. The change also applies to trace-only read-back comparisons; no evidence
+freshness/authorization, model contracts or recovery policy changed.
 
-If both queries complete empty without limits, the command prepares an ignored
-reviewable plan; it does not execute it. A separate explicitly reviewed plan/hash
-allows at most three metadata-only POSTs to faulttrace/local, with no project-name
-fallback. It first resolves that agent environment to the saved project. Stable
-IDs and reservations precede POSTs; numeric HTTP status precedes one selected-field
-read-back per run. Exact ID/project/timestamps/metadata must match. Any failure or
-uncertainty stops; started plans never resend automatically. Repair times are
-receipt-derived and labeled reconstructed, not original captured trace times.
-Unknown original UUIDs mean duplicates remain possible. No historical status is
-rewritten as remote success, no ledger imports, inference or server operations.
+Offline reprojection of the retained safe response locates all three existing
+named-Local runs. Operation, supported model, exact token counts, latency and
+validation_result match each saved receipt; returned correlation IDs equal remote
+run IDs. Original remote IDs were discarded locally, so these are strong receipt
+fingerprint matches, not proof through a historical ID mapping. Runs have end_time
+and root trace IDs. They reside in named Local, not agent faulttrace/local.
+Direct private dashboard links and checks are in
+`.local/langsmith-followup/located.json`. No dashboard browser acceptance is claimed.
 
-22 focused offline tracing/repair tests and all 288 guarded backend tests pass,
-zero forbidden external network attempts. Exact-SHA CI is reported in the handoff. Next: run only the pinned search/preparation command,
-then review its saved result/plan before any trace-write authorization. Existing
-previews/runs and the real ledger remain unchanged. LangSmith remote/dashboard
-acceptance remains open.
+Original search results, SQLite acknowledgments and per-run ledger receipts are
+preserved. No trace repair/export, NVIDIA/Tavily calls, server changes or ledger
+imports. The main ledger hash remains unchanged. Earlier repair instructions are
+superseded for this run: **do not execute repair or rerun model verification**.
+28 focused offline tracing/projection tests and all 294 guarded backend tests
+pass, zero forbidden external network attempts. Exact-SHA CI is in the handoff.
+Next action: open the three delivered direct links in named Local. Agent-environment
+routing acceptance, Tavily and broader evaluation/hosting gates remain separate.
 
 ## Bounded integration verification runner — awaiting terminal output
 

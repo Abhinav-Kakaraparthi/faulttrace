@@ -9,13 +9,14 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
-LangSmith: the saved read-only diagnostic confirms HTTP200 queries but no runs
-in its two-minute window. Named Local and agent Local are different resources.
-A bounded wider/unfiltered search and conditional metadata-only repair plan are
-prepared, not executed. Historical acknowledgments do not establish remote trace
-creation; original IDs/timestamps were discarded. Duplicate risks remain. No
-trace/dashboard gate is closed. Three actual NVIDIA operations retain matched
-local receipts; photo contract validity is not accuracy. Tavily remains open.
+LangSmith: one bounded read-only query now locates three existing metadata-only
+runs in named Local. The diagnostic had discarded valid timezone-free UTC API
+timestamps; the projection is corrected. All three match saved receipt fingerprints
+(operation/model/usage/latency/contract status); historical IDs were discarded, so
+this is not direct original-ID proof. Private links are retained locally. Remote
+readability is verified; browser visibility and agent-environment routing are not.
+No repair/export occurred, and no NVIDIA/Tavily call was repeated. Photo contract
+validity remains separate from accuracy; Tavily/evaluation/hosting gates stay open.
 
 Live evidence handoff now has a reviewed repository runner with persistent 2/1/1
 verification caps, prior-attempt inventory and real production API paths. Its
@@ -343,8 +344,9 @@ a completed live application, or independent recovery verification.
 ## Partner roadmap gates (implementation versus acceptance)
 
 [Scope, dependencies and acceptance criteria](architecture.md#partner-integration-roadmap).
-Tavily and metadata-only LangSmith adapters are now offline-tested; actual source
-retrieval/trace visibility and any credit entitlement remain unverified. Current orchestration
+Tavily and metadata-only LangSmith adapters are offline-tested. Three existing
+LangSmith runs are remotely readable with matching receipt fingerprints; actual
+Tavily retrieval, agent-environment/browser visibility and credit entitlement remain unverified. Current orchestration
 is custom Python/SQLite; LangChain/LangGraph are not dependencies, and migration
 is not required. Existing NVIDIA/Nebius runtime remains in place.
 
