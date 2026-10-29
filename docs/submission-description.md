@@ -1,15 +1,15 @@
 # FaultTrace submission copy - draft, not submitted
 
-Public demo: **[COORDINATOR: verified HTTPS URL]**
-Deployed revision: **[COORDINATOR: verified deployed SHA]**
+Public demo: **https://faulttrace-judge-demo.onrender.com/**
+Deployed revision: **1206161f139f1c63fb21c67d2fff6e9ecc62e737**
 Video: **[FOUNDER: final reviewed video URL, under three minutes]**
 Repository: https://github.com/Abhinav-Kakaraparthi/faulttrace
 
-Replace placeholders only after the destination and exact revision are verified.
-The user approved a new Render Starter service and one 1 GiB persistent disk,
-subject to the current quoted baseline. Approval is not evidence of deployment,
-HTTPS acceptance, restart persistence or public availability. Do not publish or
-finalize Devpost from this draft.
+Render reports this exact passing-CI revision live on the approved single compute
+instance and 1 GiB disk. HTTPS routes, role/session isolation and upload boundaries
+passed HTTP checks. Restart/reservation acceptance and founder browser review
+remain pending. No external calls are enabled. Do not publish or finalize Devpost
+from this draft.
 
 ## Short description
 

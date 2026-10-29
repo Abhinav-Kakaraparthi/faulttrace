@@ -15,11 +15,13 @@ independent recovery monitoring. Default remains offline. Current implementation
 `26521a7` passes Linux/Windows/backend/frontend/container CI. Subsequent real
 NVIDIA planning/photo contracts, one useful Tavily reference citation and LangSmith
 metadata delivery are narrowly verified; photo accuracy, the complete browser-driven
-live recovery journey and public hosting remain unverified. Provider allowances
+live recovery journey remain unverified. Provider allowances
 are spent; do not rerun verification commands. See [current evidence](docs/state.md).
-The user approved one new Render Starter service and 1 GiB disk at the quoted
-$7.25/month baseline. Private API access works; Render rejected creation with HTTP
-402, so billing readiness and actual hosted checks remain pending. No service exists.
+The approved offline judge demo is live at
+**https://faulttrace-judge-demo.onrender.com/** on `1206161`. One 512 MB compute
+instance plus a 1 GiB disk has a $7.25/month baseline before tax/bandwidth. HTTPS,
+session/isolation and upload HTTP checks pass; restart/reservation and founder
+browser acceptance remain pending. NVIDIA, Tavily and LangSmith are disabled.
 No external-storage migration has begun. Credentials remain server-only; provider
 calls must not be replayed for retakes.
 Last recorded offline preview: **http://127.0.0.1:8850/**. Availability and loaded

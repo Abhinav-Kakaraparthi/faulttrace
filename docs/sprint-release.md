@@ -1,18 +1,17 @@
-# Sprint release package — approved scope, billing blocked
+# Sprint release package — offline Render deployment
 
 **Decision, October 29:** the user approved one **new** `faulttrace-judge-demo`
 Starter service and one 1 GiB persistent disk, quoted baseline **$7.25/month before
 tax**. Manual deploys only; no other paid resources, upgrades or unrelated service
-changes. Verify the account quote before creation and report any changed baseline.
-Nothing is provisioned yet: private API access works, but one creation request
-returned HTTP 402 (payment information required). Read-only checks confirm no new
-service and unchanged prior service IDs. Await billing readiness; no automatic retry.
-No external-storage
+changes. Published pricing is unchanged. After the preserved HTTP 402 rejection
+and explicit billing-readiness confirmation, one follow-up creation succeeded.
+Public URL: **https://faulttrace-judge-demo.onrender.com/**. No external-storage
 migration has begun. The earlier free-hosting assessment below is historical.
 
-Prepared from `f1d7434eee50660cb0bfac15f6483d94c0fa960c` on
-`feat/sprint-release`; final integrated SHA must be selected after coordinator
-integration and CI. This is a deployable package, not a deployment or visual pass.
+Package originated on `feat/sprint-release`; integrated deployment is
+`1206161f139f1c63fb21c67d2fff6e9ecc62e737`, live according to Render and matching
+[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40950476913).
+Later documentation is separate. Hosted HTTP checks are not browser acceptance.
 
 ## Package and data boundary
 
@@ -77,15 +76,15 @@ Secure-cookie/role/image/CSRF controls and exact post-upload records/images afte
 restart. It is a loopback HTTP harness with HTTPS Host/Origin, not actual TLS,
 browser or Render acceptance. No provider keys/requests/ledger were present.
 
-## Exact approved hosting scope (not executed)
+## Actual approved hosting configuration
 
-Candidate: **new** Render web service `faulttrace-judge-demo`, Docker runtime,
-Oregon, one Starter instance, one 1 GiB disk mounted `/var/lib/faulttrace`, manual
-deploys only. `render.yaml` records the approved configuration; applying a same-name
-Blueprint can modify a service, so first verify that this is a new unused name.
-Select the reviewed integrated commit explicitly, not stale `main` or an arbitrary
-latest branch revision. Configure the actual HTTPS origin privately. No custom
-domain, managed database, extra service or unrelated Render change is proposed.
+Created: **new** Render web service `faulttrace-judge-demo`, Docker runtime,
+Oregon, one `0.5c-512mb` instance (approved Starter capacity), one 1 GiB disk mounted
+`/var/lib/faulttrace`, manual deploys/previews off, Starter build pipeline. API
+discovery confirmed the name unused before creation and exactly one added service
+afterward; all four prior service IDs remain. The build and actual HTTPS origin
+match the reviewed revision/assigned URL. No custom domain, managed database,
+extra service, plan upgrade or unrelated Render change was made.
 
 Public official pricing rechecked October 29, 2026: Starter compute **$7/month** and disk
 **$0.25/GB/month**, baseline **$7.25/month**, prorated under Render's billing terms,
@@ -93,9 +92,8 @@ before tax, excess bandwidth or provider charges. Starter is 512 MiB; memory/loa
 capacity is not yet established. Free compute cannot attach durable disks, so it
 does not meet this workflow's persistence requirement. Disk-backed deploys can
 interrupt availability and cannot scale to multiple instances. The user has
-approved this exact paid service/disk creation. The final account quote and payment
-availability are still unverified; no billing details, accounts, infrastructure
-or public URL were created here.
+approved this exact paid service/disk creation and privately completed billing.
+The API confirms the configured capacity/disk, not an accrued invoice amount.
 
 Initial environment explicitly sets `FAULTTRACE_DEMO_LIVE=0`,
 `FAULTTRACE_ALLOW_INFERENCE=0`, `FAULTTRACE_TAVILY_ENABLED=0` and
@@ -104,12 +102,12 @@ groups for this offline acceptance deployment. No existing service is restarted.
 
 Private access: sign in at `https://dashboard.render.com`, avatar → Account
 Settings → API Keys. Save a key privately as the Windows user environment variable
-`RENDER_API_KEY`; never send it in chat or commit it. Payment entry is now required
-in My Workspace → Billing; the user handles it privately without a plan upgrade.
-Until billing readiness and successful creation,
-no hosted URL, billing configuration, TLS or restart acceptance is claimed.
+`RENDER_API_KEY`; never send it in chat or commit it. The user completed the required
+payment step privately. Neither that key nor provider keys were put on the service.
+Hosted TLS/routes, both roles, isolation, Origin/CSRF, image access and upload
+boundaries pass HTTP checks. Desktop/mobile/keyboard/camera acceptance is not claimed.
 
-Hosted acceptance must resume the same secure sessions, incident/task records and
+Remaining restart acceptance must resume the same secure sessions, incident/task records and
 stored synthetic image after restarting only the new service. A nonempty,
 explicitly synthetic spending reservation also needs private-shell creation and
 read-back across restart without provider contact. Empty offline accounting alone

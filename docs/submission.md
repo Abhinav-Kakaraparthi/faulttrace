@@ -5,12 +5,12 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
-Hosting update: the user approved one new Render Starter service and 1 GiB disk
-at the quoted $7.25/month baseline, manual deploys only. Private API access works;
-one creation request returned HTTP 402 (payment required). No retry or new service;
-actual hosted checks remain pending and no public URL exists yet.
-Initial inference/Tavily/LangSmith are explicitly disabled. Approval is not hosted
-acceptance. [Final video plan](final-video-revision-plan.md) and
+Hosting update: https://faulttrace-judge-demo.onrender.com/ is live at `1206161`
+with passing exact-SHA CI. Exactly one approved 512 MB instance and 1 GiB disk,
+$7.25/month baseline before tax/bandwidth, manual deploys and external calls off.
+HTTPS, session/isolation and upload HTTP checks pass. Restart/reservation and fresh
+browser acceptance remain pending; HTTP checks do not establish visual acceptance.
+[Final video plan](final-video-revision-plan.md) and
 [submission copy](submission-description.md) are prepared, not published/submitted;
 public-photo rights and numeric accuracy remain unverified.
 

@@ -1,11 +1,12 @@
 # Final demo script - 170-second edit, not recorded or published
 
-Public demo URL: **[COORDINATOR: verified HTTPS URL]**
-Deployed revision: **[COORDINATOR: verified deployed SHA]**
+Public demo URL: **https://faulttrace-judge-demo.onrender.com/**
+Deployed revision: **1206161f139f1c63fb21c67d2fff6e9ecc62e737**
 
-Do not fill these fields from a proposed URL or a deployment still building.
-The approved Render deployment is being handled separately; this script does not
-establish hosted acceptance. Keep **SIMULATED EQUIPMENT / TELEMETRY** visible.
+Render reports this exact passing-CI revision live. HTTPS routes, role/session
+isolation and upload boundaries passed HTTP checks; restart/reservation acceptance
+and founder browser review are still pending. This script establishes no visual
+acceptance. Keep **SIMULATED EQUIPMENT / TELEMETRY** visible.
 All provider authorizations are spent. Use existing results; no model/search calls
 or trace resends for recording, timing practice or retakes.
 

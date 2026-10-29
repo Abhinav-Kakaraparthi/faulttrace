@@ -1,47 +1,50 @@
 # Checkpoint state
 
-## Approved Render release preparation — billing blocked
+## Render judge demo live — persistence acceptance in progress
 
-Verified clean starting HEAD `92e1b187d9cac7ab09edd60796706fbeb6736103` on
-`feat/finish-integrated`; its [exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40939235595)
-is completed/success. The user now approves only one new `faulttrace-judge-demo`
-Starter service, one 1 GiB persistent disk and manual deploys, quoted baseline
-$7.25/month before tax. This supersedes the earlier paid-hosting deferral below.
-Public official pricing still supports $7 compute + $0.25 disk; verify the private
-account quote before creating anything and report any changed baseline.
+Public entry: **https://faulttrace-judge-demo.onrender.com/**; workspaces at
+`/commander` and `/operator`. Render reports deployment
+`1206161f139f1c63fb21c67d2fff6e9ecc62e737` live, matching
+[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40950476913).
+Later documentation is not a new application deployment. Application code, prompts
+and recovery policy are unchanged in this hosting checkpoint.
 
-Private Render API access is verified; release-preparation `e3f5ca9` has
-[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40948244608).
-The approved $7 / 512 MB tier is currently named `0.5c-512mb`; disk remains
-$0.25/GB/month. One explicit creation request returned **HTTP 402**, documented as
-payment information required. No retry occurred. Read-only discovery afterward
-confirms zero target services and the same four existing service IDs. No service,
-disk, deployed SHA, public URL or hosting charge is established. The user is
-updating payment privately in My Workspace → Billing without a plan upgrade.
-Sanitized reservation/rejection/check records remain ignored under
-`.local/render-deployment/`, with no key. The HTTPS acceptance script is prepared
-and syntax-checked, not executed. Browser access remains unavailable; no repeat
-attempt, hosted TLS/security or restart acceptance is claimed. Local runs remain intact.
+After the preserved HTTP 402 rejection, the user confirmed billing readiness.
+One explicit follow-up creation returned HTTP 201: exactly one new service, one
+`0.5c-512mb` instance (approved Starter-equivalent $7/month), one 1 GiB disk
+($0.25/month) at `/var/lib/faulttrace`, Oregon, Starter build pipeline, manual
+deploys and previews off. Baseline $7.25/month before tax/excess bandwidth; actual
+invoice/accrual is not measured here. All four prior service IDs remain present;
+no unrelated service, existing preview, local run or historical receipt was changed.
 
-The reviewed release configuration explicitly disables inference, Tavily and
-LangSmith. No provider key or inherited secret group is required. The final video
-script is a 170-second edit plan; submission copy remains a draft with verified-URL
-placeholders. Both distinguish recorded real service results from separate offline
-simulated recovery and retain the unverified photographic numeric accuracy and
-public-image permission limitations. Nothing was recorded, published or submitted.
+NVIDIA inference, Tavily and LangSmith flags are explicitly off, with no provider
+or Render API keys configured on the new service. Actual HTTPS/certificate/header
+checks pass for root, health, both workspace routes and favicon. Hosted HTTP checks
+pass for cookie security, shared role state, isolated visitor incidents/tasks,
+foreign report/image denial, Origin/CSRF rejection, exact duplicate operations,
+protected images and upload boundaries (2 MiB, pixel/MIME checks, four-image quota).
+The first duplicate-start harness mistakenly changed its run header and correctly
+received 409; fixing that checker request required no application change. Rejected
+test runs and original deployment diagnostics are retained under ignored
+`.local/render-deployment/`; no raw credential is saved there.
 
-Checks: 22 focused public-package, demo-session and spending tests passed under
-the external-network guard, with zero forbidden connection attempts. Existing
-exact-SHA full CI remains the application/build evidence; these HTTP/ASGI tests
-are not hosted TLS or browser acceptance. Release-only configuration/documentation
-changes do not change application policy, prompts or live-verification history.
+The checker holds two sessions in memory before restart. Await the user's private
+Shell confirmation that a clearly labeled synthetic reservation exists, then restart
+only the new service and compare the same sessions/state/image. Private read-back
+must also confirm the reservation persists once; empty offline accounting is not
+sufficient. These restart/reservation checks remain unverified until completed.
+Browser access was previously unavailable; no repeat attempt, screenshot, camera,
+keyboard, desktop/mobile visual acceptance or fresh-browser pass is claimed.
 
-Next action: await explicit billing readiness, recheck the unused service name and
-unchanged quote, then deploy the latest reviewed passing-CI SHA.
-Verify real HTTPS, both workspaces, isolation, protected images, Origin/CSRF, upload
-bounds and same-session/state/image persistence across restart of that service
-only. Nonempty synthetic reservation persistence requires private shell read-back;
-an empty offline ledger is insufficient. Do not enable inference or replay calls.
+The 170-second video script and submission draft now use the actual URL/SHA and
+separate recorded real NVIDIA/service results from offline simulated recovery.
+Photo numeric accuracy and public-media permission remain open; no video was
+recorded/published and Devpost was not finalized. Reuse exact-SHA CI and the prior
+22 focused guarded tests (zero external attempts); no provider calls were made.
+
+Next action: finish the private before/after reservation and hosted restart checks,
+then founder browser review of Try demo and both workspaces. Public inference stays
+disabled; no provider allowance is renewed or replayed.
 
 ## Final authorized Tavily diagnostic completed - search cycle closed
 
