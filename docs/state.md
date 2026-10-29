@@ -1,5 +1,43 @@
 # Checkpoint state
 
+## LangSmith agent routing and read-only diagnosis - prepared
+
+Started clean at `a3d7904`. The three saved attempts in investigation
+`d60ae1a28d7a47e58a73759237130cce` each match SQLite receipt, per-run ledger and
+one local trace-export row read-only. Planning accepted/escalated and photo
+contract interpreted; this does not establish photo accuracy. Tavily was not
+called in this run. The founder reports Local/Production still waiting for traces.
+
+Confirmed routing mismatch: the original exporter names a project with
+`session_name`; it ignores `LANGSMITH_AGENT_ID`/`LANGSMITH_AGENT_ENVIRONMENT`.
+A project named Local is not the agent's Local environment. This explains why
+the request did not explicitly target the displayed resource; it does not prove
+where the historical runs landed. Original random remote IDs, project/workspace
+values and HTTP status/body were not retained. `recorded` only means the local
+transport returned; it is not remote read-back or dashboard acceptance.
+
+Scoped offline correction supports either validated project routing or the
+maintained SDK's agent-address wire field, explicit workspace header and an
+allowlisted regional endpoint. Conflicting project/agent configuration fails
+closed. No inference/prompt/policy change, trace resend or historical mutation.
+The agent-address API is beta and enabled per workspace; live acceptance remains
+open. Basic REST does not require manual dotted_order/trace_id; no speculative
+completion repair was added.
+
+`tools/diagnose_langsmith.py` checks the clean pinned checkout and saved records,
+reads the caller's key privately, discovers key-visible workspaces/projects and
+queries only faulttrace runs during 00:24-00:26 UTC October 29. Its only POST is a
+read-only runs query: no trace-create endpoint is allowed. Bounded diagnostics,
+project/run destinations and receipt-fingerprint candidates go to ignored local
+storage. Lost original IDs prevent direct historical identity proof. Ten new
+offline tests and all 276 guarded backend tests pass, zero forbidden external
+network attempts. Real-ledger hash is unchanged.
+
+Next: run the pinned read-only command in the credential-bearing terminal; inspect
+returned remote run destinations before considering any bounded metadata-only
+repair. Do not rerun the inference runner, resend, reset caps or claim dashboard
+success. All previews, records and real ledger are preserved.
+
 ## Bounded integration verification runner — awaiting terminal output
 
 Started clean at `68634ad0c754252ebb03e182f765e70874a51f3d`. Production code is

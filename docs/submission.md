@@ -9,6 +9,13 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+LangSmith follow-up: the founder reports both agent environments waiting. The
+original named-project exporter did not address those environments. Agent routing
+is corrected offline; existing remote traces must be located by the read-only
+diagnostic before claiming delivery/dashboard success. Three actual NVIDIA
+operations have matched local receipts; photo contract validity is not accuracy.
+Tavily and hosted/browser acceptance remain open. No gate is newly closed.
+
 Live evidence handoff now has a reviewed repository runner with persistent 2/1/1
 verification caps, prior-attempt inventory and real production API paths. Its
 17 offline-double tests pass; no live result is claimed from those tests. Await

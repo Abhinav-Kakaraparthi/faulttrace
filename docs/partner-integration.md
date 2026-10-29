@@ -43,14 +43,48 @@ the shared budget. Browser forms never accept or receive the provider key.
 
 ## LangSmith metadata-only traces
 
-Set `FAULTTRACE_LANGSMITH_TRACING=1`, server-only `LANGSMITH_API_KEY` and a
-`LANGSMITH_PROJECT` containing only letters, digits, hyphen/underscore (1–64).
-There is no automatic environment-triggered SDK instrumentation. The helper sends
-one bounded REST trace to the fixed US endpoint, with a three-second timeout,
-no retry, no redirect and no arbitrary endpoint parameter. A missing project/key
-or failed export produces a fixed local result; it cannot retry inference or fail
-the investigation. Multi-workspace routing is not configured; do not add tenant
-identifiers to metadata to work around an account configuration error.
+Set `FAULTTRACE_LANGSMITH_TRACING=1` and server-only `LANGSMITH_API_KEY`.
+Choose exactly one destination: validated `LANGSMITH_PROJECT`, **or** both
+`LANGSMITH_AGENT_ID` (DNS-label identifier) and `LANGSMITH_AGENT_ENVIRONMENT`
+(local/development/staging/production). A project named Local is not an agent's
+Local environment. Agent mode sends `address=lrn:agents/<id>/environments/<env>`;
+it never also sends session_name. Conflicting/partial configuration stops export.
+Agent addressing is beta and requires workspace support; no project fallback.
+
+Optional `LANGSMITH_WORKSPACE_ID` is a UUID sent only as `x-tenant-id`, not trace
+metadata. `LANGSMITH_ENDPOINT` accepts only documented US/EU/APAC/AWS cloud API
+hosts; default remains US. No arbitrary host, redirect, retry or SDK installation.
+The three-second/4096-byte export bounds and empty inputs/outputs remain unchanged.
+`recorded` preserves the historical local acknowledgment convention: no exception,
+not verified remote creation. It never establishes dashboard visibility.
+
+For the existing October 29 run, use the single pinned command from the delivery:
+`.venv/Scripts/python.exe tools/diagnose_langsmith.py --expected-head <reviewed SHA>`.
+It uses inherited credentials first, named Windows user settings second, never
+prints keys, and performs only workspace/project discovery and read-only queries.
+It checks the three receipts against SQLite and the isolated ledger without
+changing them. Search is bounded to the current organization's key-visible scope,
+10 workspaces, 200 projects/workspace, three query pages and 80 total HTTP calls,
+8 seconds/request, 256 KiB success/8 KiB error bodies, no retries or redirects.
+Only the historical US endpoint and explicitly configured allowlisted region are
+queried. Scope limits/401/403/404/422/429 and malformed/oversized results remain
+visible diagnostics, never evidence of absent runs across all accounts.
+
+Reports under `.local/langsmith-diagnostics/` contain safe project/run IDs and
+SDK-constructed dashboard URLs, never raw bodies/headers/images/prompts/reasoning.
+Exit 0 locates all three receipt fingerprints in remotely readable runs; exit 1
+is partial/not found; exit 2 is local preflight failure. Original run UUIDs were
+not retained, so fingerprint matches are candidates, not direct ID correlation.
+Dashboard navigation still needs human confirmation. No resending is implemented.
+If absent, review diagnostics before a separately bounded metadata-only repair:
+persist deterministic repair IDs first and acknowledge that unknown historical
+IDs make duplicates possible. Never replay inference to repair tracing.
+
+Official references: [agent environments](https://docs.langchain.com/langsmith/agent-environments),
+[SDK addressing](https://github.com/langchain-ai/langsmith-sdk/blob/main/python/langsmith/_internal/_addressing.py),
+[wire format and validation](https://github.com/langchain-ai/langsmith-sdk/blob/main/python/langsmith/address.py),
+[workspace discovery](https://docs.langchain.com/langsmith/smith-api/workspaces/list-workspaces),
+[run query](https://docs.langchain.com/langsmith/smith-api/run/query-runs).
 
 The export is a fresh allowlisted projection: operation (`planning`,
 `photo_analysis`, `documentation`), measured latency, one supported NVIDIA model,

@@ -1,12 +1,11 @@
 """Opt-in, allowlisted LangSmith metadata. No auto instrumentation or body export."""
 from datetime import datetime, timedelta, timezone
 import os
-import re
 import uuid
 
 from .http import post_json
+from .trace_routing import configuration
 
-ENDPOINT = 'https://api.smith.langchain.com/runs'
 OPERATIONS = {'planning', 'photo_analysis', 'documentation'}
 MODELS = {'nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B', 'nvidia/Nemotron-3.5-Super-VL'}
 
@@ -39,7 +38,8 @@ def metadata(operation, receipt):
 
 
 def trace_transport(key, request):
-    post_json(ENDPOINT, {'x-api-key': key}, request, timeout=3, limit=4096)
+    endpoint, headers, _ = configuration()
+    post_json(endpoint+'/runs', dict(headers, **{'x-api-key': key}), request, timeout=3, limit=4096)
 
 
 def emit_trace(operation, receipt, *, enabled=None, send=trace_transport):
@@ -48,14 +48,15 @@ def emit_trace(operation, receipt, *, enabled=None, send=trace_transport):
         active = os.environ.get('FAULTTRACE_LANGSMITH_TRACING') == '1' if enabled is None else enabled
         if not active:
             return 'disabled'
-        key, project = os.environ.get('LANGSMITH_API_KEY'), os.environ.get('LANGSMITH_PROJECT')
-        if not key or not project or not re.fullmatch(r'[A-Za-z0-9_-]{1,64}', project):
+        key = os.environ.get('LANGSMITH_API_KEY')
+        if not key:
             return 'unavailable'
+        _, _, destination = configuration()
         safe = metadata(operation, receipt)
         end = datetime.now(timezone.utc)
         start = end - timedelta(milliseconds=safe.get('latency_ms', 0))
         request = {'id': safe['correlation_id'], 'name': 'faulttrace.' + operation, 'run_type': 'chain',
-            'session_name': project, 'inputs': {}, 'outputs': {}, 'extra': {'metadata': safe},
+            **destination, 'inputs': {}, 'outputs': {}, 'extra': {'metadata': safe},
             'start_time': start.isoformat(), 'end_time': end.isoformat()}
         if key in str(request):
             return 'failed'
