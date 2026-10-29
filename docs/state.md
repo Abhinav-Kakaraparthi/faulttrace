@@ -1,5 +1,41 @@
 # Checkpoint state
 
+## Approved Render release preparation — private access pending
+
+Verified clean starting HEAD `92e1b187d9cac7ab09edd60796706fbeb6736103` on
+`feat/finish-integrated`; its [exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40939235595)
+is completed/success. The user now approves only one new `faulttrace-judge-demo`
+Starter service, one 1 GiB persistent disk and manual deploys, quoted baseline
+$7.25/month before tax. This supersedes the earlier paid-hosting deferral below.
+Public official pricing still supports $7 compute + $0.25 disk; verify the private
+account quote before creating anything and report any changed baseline.
+
+No Render service or charge has been created. No API credential was available in
+the process or Windows user environment when checked; the user will save it
+privately. Browser access host was unavailable and one native Chrome access
+request timed out. No repeated browser/helper attempt, hosted URL, TLS/security
+acceptance or restart persistence is claimed. All existing local runs are intact.
+
+The reviewed release configuration explicitly disables inference, Tavily and
+LangSmith. No provider key or inherited secret group is required. The final video
+script is a 170-second edit plan; submission copy remains a draft with verified-URL
+placeholders. Both distinguish recorded real service results from separate offline
+simulated recovery and retain the unverified photographic numeric accuracy and
+public-image permission limitations. Nothing was recorded, published or submitted.
+
+Checks: 22 focused public-package, demo-session and spending tests passed under
+the external-network guard, with zero forbidden connection attempts. Existing
+exact-SHA full CI remains the application/build evidence; these HTTP/ASGI tests
+are not hosted TLS or browser acceptance. Release-only configuration/documentation
+changes do not change application policy, prompts or live-verification history.
+
+Next action: obtain private Render API access, verify the unused service name and
+actual selected compute/disk quote, then deploy the latest reviewed passing-CI SHA.
+Verify real HTTPS, both workspaces, isolation, protected images, Origin/CSRF, upload
+bounds and same-session/state/image persistence across restart of that service
+only. Nonempty synthetic reservation persistence requires private shell read-back;
+an empty offline ledger is insufficient. Do not enable inference or replay calls.
+
 ## Final authorized Tavily diagnostic completed - search cycle closed
 
 Started clean at `d6cc252`. Tested implementation

@@ -1,8 +1,11 @@
-# Sprint release package — approval required before hosting
+# Sprint release package — approved scope, private access pending
 
-**Decision:** user declined paid infrastructure for now and prefers zero-cost
-hosting. Nothing is provisioned. `render.yaml` remains an unapproved paid proposal,
-not the selected deployment. No external-storage migration has begun.
+**Decision, October 29:** the user approved one **new** `faulttrace-judge-demo`
+Starter service and one 1 GiB persistent disk, quoted baseline **$7.25/month before
+tax**. Manual deploys only; no other paid resources, upgrades or unrelated service
+changes. Verify the account quote before creation and report any changed baseline.
+Nothing is provisioned yet: private Render access is pending. No external-storage
+migration has begun. The earlier free-hosting assessment below is historical.
 
 Prepared from `f1d7434eee50660cb0bfac15f6483d94c0fa960c` on
 `feat/sprint-release`; final integrated SHA must be selected after coordinator
@@ -71,24 +74,44 @@ Secure-cookie/role/image/CSRF controls and exact post-upload records/images afte
 restart. It is a loopback HTTP harness with HTTPS Host/Origin, not actual TLS,
 browser or Render acceptance. No provider keys/requests/ledger were present.
 
-## Exact hosting proposal (not executed)
+## Exact approved hosting scope (not executed)
 
 Candidate: **new** Render web service `faulttrace-judge-demo`, Docker runtime,
 Oregon, one Starter instance, one 1 GiB disk mounted `/var/lib/faulttrace`, manual
-deploys only. `render.yaml` is an approval-required proposal; applying a same-name
+deploys only. `render.yaml` records the approved configuration; applying a same-name
 Blueprint can modify a service, so first verify that this is a new unused name.
 Select the reviewed integrated commit explicitly, not stale `main` or an arbitrary
 latest branch revision. Configure the actual HTTPS origin privately. No custom
 domain, managed database, extra service or unrelated Render change is proposed.
 
-Pricing checked October 28, 2026: Starter compute **$7/month** and disk
+Public official pricing rechecked October 29, 2026: Starter compute **$7/month** and disk
 **$0.25/GB/month**, baseline **$7.25/month**, prorated under Render's billing terms,
 before tax, excess bandwidth or provider charges. Starter is 512 MiB; memory/load
 capacity is not yet established. Free compute cannot attach durable disks, so it
 does not meet this workflow's persistence requirement. Disk-backed deploys can
-interrupt availability and cannot scale to multiple instances. The user must
-approve this exact paid service/disk creation before it is provisioned; no billing
-details, accounts, infrastructure or public URL were created here.
+interrupt availability and cannot scale to multiple instances. The user has
+approved this exact paid service/disk creation. The final account quote and payment
+availability are still unverified; no billing details, accounts, infrastructure
+or public URL were created here.
+
+Initial environment explicitly sets `FAULTTRACE_DEMO_LIVE=0`,
+`FAULTTRACE_ALLOW_INFERENCE=0`, `FAULTTRACE_TAVILY_ENABLED=0` and
+`FAULTTRACE_LANGSMITH_TRACING=0`. Do not attach provider keys or inherited secret
+groups for this offline acceptance deployment. No existing service is restarted.
+
+Private access: sign in at `https://dashboard.render.com`, avatar → Account
+Settings → API Keys. Save a key privately as the Windows user environment variable
+`RENDER_API_KEY`; never send it in chat or commit it. Payment entry, if required,
+belongs to the user in Render's private Billing screen. Until access is available,
+no hosted URL, billing configuration, TLS or restart acceptance is claimed.
+
+Hosted acceptance must resume the same secure sessions, incident/task records and
+stored synthetic image after restarting only the new service. A nonempty,
+explicitly synthetic spending reservation also needs private-shell creation and
+read-back across restart without provider contact. Empty offline accounting alone
+does not prove reservation persistence. No test endpoint or temporary public
+inference enablement is permitted to manufacture that check. Actual browser
+acceptance remains separate from HTTP/security checks.
 
 Set non-secret `FAULTTRACE_BUILD_REVISION` to the exact selected 40-character SHA
 for the build and runtime; Render exposes configured environment values as Docker
@@ -137,7 +160,7 @@ the image objects. [Backup scope](https://supabase.com/docs/guides/platform/back
 | Sessions/budgets/receipts | Remote authoritative atomic reservations, idempotency and outbox; fail closed when database is unavailable, including across restarts | Existing persistent SQLite/ledger implementation tested in Docker |
 | Images | Private object adapter, bounded authenticated proxy and crash/orphan handling | Existing private filesystem/image checks tested |
 | Startup/availability | Cold-start UX, connection pool, paused-project/quotas and genuine availability monitoring | No free idle spin-down; actual hosted setup still unverified |
-| Delivery risk | New cross-cutting storage checkpoint and repeat full policy/security/concurrency/restart acceptance; not an environment-only change | Lower code-change risk; paid plan explicitly **not approved** |
+| Delivery risk | New cross-cutting storage checkpoint and repeat full policy/security/concurrency/restart acceptance; not an environment-only change | Lower code-change risk; this exact compute/disk scope is now approved, private access pending |
 
 The paid baseline remains $7/month compute + $0.25/month for 1 GB disk before
 tax/bandwidth/providers. [Current pricing](https://render.com/pricing).

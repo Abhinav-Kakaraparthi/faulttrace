@@ -5,6 +5,14 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+Hosting update: the user approved one new Render Starter service and 1 GiB disk
+at the quoted $7.25/month baseline, manual deploys only. Private access/account
+quote and actual hosted checks remain pending; no service/public URL exists yet.
+Initial inference/Tavily/LangSmith are explicitly disabled. Approval is not hosted
+acceptance. [Final video plan](final-video-revision-plan.md) and
+[submission copy](submission-description.md) are prepared, not published/submitted;
+public-photo rights and numeric accuracy remain unverified.
+
 Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs

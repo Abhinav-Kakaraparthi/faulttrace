@@ -16,8 +16,11 @@ independent recovery monitoring. Default remains offline. Current implementation
 NVIDIA planning/photo contracts, one useful Tavily reference citation and LangSmith
 metadata delivery are narrowly verified; photo accuracy, the complete browser-driven
 live recovery journey and public hosting remain unverified. Provider allowances
-are spent; do not rerun verification commands. See [current evidence](docs/state.md). Paid hosting was declined; free external durable
-storage is assessed, not migrated. Credentials remain server-only; provider calls must not be replayed for retakes.
+are spent; do not rerun verification commands. See [current evidence](docs/state.md).
+The user approved one new Render Starter service and 1 GiB disk at the quoted
+$7.25/month baseline; private access and actual hosted checks remain pending.
+No external-storage migration has begun. Credentials remain server-only; provider
+calls must not be replayed for retakes.
 Last recorded offline preview: **http://127.0.0.1:8850/**. Availability and loaded
 revision have not been reverified after the laptop restart; current-code activation
 is separate readiness work. Existing runs must be preserved.

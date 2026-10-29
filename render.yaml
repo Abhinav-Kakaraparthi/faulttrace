@@ -1,4 +1,5 @@
-# Approval-required proposal. Do not apply this Blueprint before cost approval.
+# User-approved: one NEW Starter service + 1 GiB disk, $7.25/month baseline.
+# Verify current account quote and unused service name before provisioning.
 services:
   - type: web
     name: faulttrace-judge-demo
@@ -25,6 +26,10 @@ services:
       - key: FAULTTRACE_DEMO_LIVE
         value: '0'
       - key: FAULTTRACE_ALLOW_INFERENCE
+        value: '0'
+      - key: FAULTTRACE_TAVILY_ENABLED
+        value: '0'
+      - key: FAULTTRACE_LANGSMITH_TRACING
         value: '0'
       - key: WEB_CONCURRENCY
         value: '1'
