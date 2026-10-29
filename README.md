@@ -14,7 +14,8 @@ tracing, paused simulated-observation time, observation renewal and automatic
 independent recovery monitoring. Default remains offline. Current implementation
 `26521a7` passes Linux/Windows/backend/frontend/container CI; new live calls and
 public hosting remain unverified. Paid hosting was declined; free external durable
-storage is assessed, not migrated. Provider credentials remain unavailable here.
+storage is assessed, not migrated. Live verification uses the caller's credential-bearing
+terminal; this agent environment does not establish whether that terminal has keys.
 Local compiled review: **http://127.0.0.1:8850/** — Try demo; no tokens required.
 [Integrated acceptance and bounded later live procedure](docs/sprint-verification.md),
 [deployment proposal](docs/sprint-release.md). Existing previews/runs are preserved.

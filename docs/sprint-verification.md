@@ -59,58 +59,74 @@ official domain. Documents stay untrusted references, outside measurement policy
 LangSmith uses explicit `FAULTTRACE_LANGSMITH_TRACING=1`, server-only key/project,
 and allowlisted metadata only. See [partner boundaries](partner-integration.md).
 
-## One later bounded live walkthrough — not executed
+## Bounded terminal verification - prepared, not executed
 
-Credentials were unavailable in process and Windows user environment. No NVIDIA,
-Tavily or LangSmith requests were executed in this sprint. First privately verify
-credited balance and configure existing keys; never paste them into chat or URLs.
-Use a **new** isolated persistent root and unused localhost port; do not restart
-the old previews. Build the demo frontend and run the production wrapper factory
-with the explicit loopback exception. The exact launch command accompanies delivery.
+Use the single pinned-SHA command in the delivery handoff:
+` .venv/Scripts/python.exe tools/verify_sprint_live.py --expected-head <reviewed SHA> `.
+Do not replace the reviewed SHA with an unreviewed current HEAD. The runner inherits
+**your PowerShell process environment first**, then reads the four named Windows
+user environment values if necessary: `NEBIUS_API_KEY`, `TAVILY_API_KEY`,
+`LANGSMITH_API_KEY`, `LANGSMITH_PROJECT`. Nothing about the coding agent's environment
+establishes whether your terminal has those values. No keys are accepted in arguments,
+printed, written to reports or requested in chat. Presence is not an authentication
+probe; validity is established only by each actual authorized service operation.
 
-Developer-only procedure, from the clean project root, **after** privately setting
-`NEBIUS_API_KEY`, `TAVILY_API_KEY`, `LANGSMITH_API_KEY`, `LANGSMITH_PROJECT` in that
-terminal and confirming balance. This starts a new instance, not the old previews:
+The runner uses the **real production demo/session, planning, photo, independent
+report and documentation API routes through an in-process ASGI client**. It starts
+no TCP server, restarts no preview, creates no workflow task from a mock/template,
+and makes real outbound calls only after local preflight. It does not exercise a
+browser or authorize correction/recovery. All preparation tests use explicit doubles.
 
-```powershell
-$faulttraceRequired = 'NEBIUS_API_KEY','TAVILY_API_KEY','LANGSMITH_API_KEY','LANGSMITH_PROJECT'
-foreach ($name in $faulttraceRequired) { if ([string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($name))) { throw 'Configure required provider credentials privately first' } }
-if (git status --porcelain) { throw 'Use the reviewed clean checkout' }
-if (Get-NetTCPConnection -State Listen -LocalPort 8851 -ErrorAction SilentlyContinue) { throw 'Port occupied; preserve its listener' }
-$env:FAULTTRACE_DEMO_ROOT = Join-Path (Get-Location) ('.local/sprint-live-' + [guid]::NewGuid().ToString('N'))
-$env:FAULTTRACE_DEMO_ORIGIN = 'http://127.0.0.1:8851'
-$env:FAULTTRACE_FRONTEND_DIST = (Resolve-Path '.local/visual/final-sprint-b4a2fb3c1d3248fe95a0b599a27fabe1/frontend').Path
-$env:FAULTTRACE_DEMO_LOCAL_HTTP = '1'
-$env:FAULTTRACE_DEMO_LIVE = '1'
-$env:FAULTTRACE_ALLOW_INFERENCE = '1'
-$env:FAULTTRACE_TAVILY_ENABLED = '1'
-$env:FAULTTRACE_LANGSMITH_TRACING = '1'
-.venv/Scripts/python.exe -m uvicorn faulttrace.workflow.public_app:create_public_app --factory --host 127.0.0.1 --port 8851 --workers 1 --no-access-log --log-level critical
-```
+Before contact it checks Python 3.12, exact clean branch/HEAD and unchanged production
+code relative to `68634ad`, credentials, the real ledger, prior sprint artifacts and
+the image. Default image is the retained hash-verified 960x960 submitted copy; optional
+`--photo <path>` selects another original/permissioned compliant photograph. Production
+upload validation/metadata removal runs first. Source/submitted hashes and dimensions
+are stored privately; originals remain untouched. No filename, expected reading,
+reviewer estimate or incident telemetry enters the photo request. Prompt, model,
+2048-token cap, reasoning_effort=none, timeout/body bounds and validator are unchanged.
 
-Open http://127.0.0.1:8851/ and follow these bounds once. Do not run another
-verification if a prior sprint request was already made; reconcile its records first.
+Read-only inventory covers project `.local` workflow/spending databases and known
+receipt/ledger artifacts, excluding labeled provider doubles/worktrees. It counts
+all relevant records since the conservative pre-sprint baseline `f1d7434` timestamp,
+deduplicates attempt IDs and reserves pending/unknown attempts conservatively.
+It never imports receipts or changes histories. If calls exist outside these audited
+locations or were not saved, stop for reconciliation; do not confirm that there
+were none. Do not run manual/other verification calls concurrently.
 
-1. Open Commander, **Try demo**. Make at most two explicit **Choose next
-   observation** calls, separated by an independent Operator report/refusal.
-   Inspect the accepted citations, human/model distinction and remaining budget.
-2. On an assigned observation, optionally upload one original/permissioned compliant
-   photograph and make **one** explicit photographic-analysis call. Supply no
-   expected answer, filename hint or incident telemetry to the model. Inspect its
-   actual structured claim, uncertainty, finish reason, receipt and image in both
-   workspaces. Wrong/incompatible/unreviewed photographs must block correction.
-   An ordinary pressure gauge is not F-17 differential-pressure evidence.
-3. Perform at most **one** Tavily search after independently identifying a real
-   manufacturer/model; inspect the actual official citation and retrieval time.
-   Verify corresponding metadata-only LangSmith traces privately, not from a
-   fabricated screenshot. Failure must not replay inference.
-4. If compatible fresh evidence is sufficient, explicitly approve, acknowledge
-   completion in Operator, then start monitoring in Commander. Otherwise show the
-   clarification/escalation honestly; do not force a successful journey. Stop an
-   affected live path after failure. Preserve every receipt once, including unknowns.
+A shared ignored `.local/sprint-verification/limits.sqlite3` holds the verification
+caps across reruns: **two planning / one photo / one Tavily search**. Existing attempts
+reduce remaining slots; failures/uncertainties stop their affected path. No reset,
+refund, automatic generation retry or fallback is offered. The unchanged production
+spending reservations remain underneath this stricter verification gate. Checkout
+is rechecked at admission. Do not edit/checkout the repository during execution.
 
-This is a maximum of two NVIDIA text calls, one NVIDIA photo call and one Tavily
-search, with tracing for those operations. Do not repeat previous successes.
+Console flow: confirm balance and completeness of prior-call records, confirm a
+known manufacturer/model (or skip search if unknown), inspect the actual first
+proposal/photo claim, then enter an **independent** observation/refusal or skip it.
+Human answers are blank; never copy the AI reading or fabricate a simulated report.
+A valid escalation with no task blocks the photo branch rather than inventing an
+assignment. The second planning call requires the genuinely updated context.
+A failed photo is not repaired/retried; other permitted independent paths can continue.
+Trace failure stops subsequent exports without retrying or failing inference.
+
+The private `result.json` reports separately:
+
+| Result | What a pass establishes | What it does not establish |
+| --- | --- | --- |
+| NVIDIA planning | Validated accepted/escalated production proposal, receipt/accounting | General reasoning reliability or successful recovery |
+| Photographic contract | Stop, validated structured interpretation and receipt | Numeric accuracy, compatible measurement or asset identity; accuracy stays not_evaluated |
+| Tavily retrieval | Completed bounded search with at least one allowlisted citation/time | Correct model applicability or observed evidence |
+| LangSmith delivery | Per-operation `recorded` means the trace API acknowledged the metadata request | Dashboard visibility; verify that privately. No images, reasoning or account IDs are exported |
+
+Exit 0 requires all four components; exit 1 means partial/failed results, exit 2 means
+preflight/interruption. Status polling is read-only, never a generation retry.
+Artifacts live under `.local/sprint-verification/investigations/<id>/`: image
+provenance, result and application databases/images/per-run usage ledger. Available
+receipts remain in production outboxes even on interruption; unknown usage stays
+unknown. `.local/nebius-usage.json` is read-only and its hash is checked afterwards.
+Review/share only sanitized result JSON or component summaries, not keys/images/raw
+responses. Do not rerun after failure to obtain cleaner results; retain diagnostics.
 
 ## Consolidated founder browser acceptance
 

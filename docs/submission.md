@@ -9,6 +9,14 @@ Official sources:
 - https://nebiusglobalaihackathon.devpost.com/rules
 - https://nebiusglobalaihackathon.devpost.com/details/faqs
 
+Live evidence handoff now has a reviewed repository runner with persistent 2/1/1
+verification caps, prior-attempt inventory and real production API paths. Its
+17 offline-double tests pass; no live result is claimed from those tests. Await
+terminal output separately for planning, photographic contract, real cited search
+and trace API delivery; photo accuracy/dashboard visibility remain separate.
+Use actual matched receipts for video/description updates, never seeded output.
+No submission gate is newly closed. See [one terminal procedure](sprint-verification.md).
+
 Current sprint: `26521a7` passes five exact-SHA jobs, 249 guarded backend/93 frontend,
 Linux/Windows, builds/contracts and actual Docker restart smoke. Live configuration,
 bounded global/session allowances, reference search/tracing and automatic simulated

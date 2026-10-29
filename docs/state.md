@@ -1,5 +1,34 @@
 # Checkpoint state
 
+## Bounded integration verification runner — awaiting terminal output
+
+Started clean at `68634ad0c754252ebb03e182f765e70874a51f3d`. Production code is
+unchanged. Reviewed repository runner uses actual production ASGI routes and
+transports with the caller's inherited PowerShell credentials; no conclusion about
+that terminal's keys follows from the coding agent's environment. No server starts/
+restarts, database migration, infrastructure or service call during preparation.
+
+Read-only project audit found 0 planning/0 photo/0 Tavily sprint attempts since
+the conservative baseline. The runner rescans and conservatively holds unknowns,
+deduplicates IDs and shares a persistent 2/1/1 cap across invocations. It requires
+factual confirmation of no unrecorded/outside/concurrent calls; otherwise stop for
+reconciliation. Original histories and real ledger are not imported or rewritten.
+Retained 960x960 photograph passed production validation/hash check; expected
+readings/filenames/telemetry never enter its unchanged production request.
+
+17 focused tests pass with independent doubles: all four routes, whole console
+flow, persisted/concurrent caps, prior records, secret-safe output, truncation
+accounting and trace failure stopping. Guarded regression: 266 tests, 0 external
+attempts. No frontend/runtime source changed; no browser/live claim. Runtime
+NVIDIA proposals, photo contract completion, Tavily citations and LangSmith API
+delivery remain independently unverified until the caller returns results.
+Numeric photographic accuracy and trace dashboard visibility are separate gates.
+
+Next: run the single pinned command from delivery in the credential-bearing
+terminal, then review its private result JSON against [acceptance definitions](sprint-verification.md).
+Independent release/submission work: evidence-to-video mapping and claim gates
+are prepared below; no unsupported live claim, Supabase migration or paid hosting.
+
 ## Final integration sprint — implemented; live/public acceptance open
 
 Started clean at `f1d7434` on `feat/finish-integrated`; isolated standard worktrees
