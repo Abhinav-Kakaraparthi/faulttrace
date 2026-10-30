@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-export function registerWorkspacePresentation({ investigationStage, renderCommander, renderOperator, renderSignals, snapshot, imageTaskState }) {
+export function registerWorkspacePresentation({ investigationStage, renderCommander, renderOperator, renderSignals, renderMasthead, renderDemoControls, snapshot, imageTaskState }) {
   function ready() {
     const state = snapshot();
     Object.assign(state, { task: null, tasks: [], evidence: [], planning: [], planning_remaining: 4, inference_enabled: true });
@@ -18,11 +18,40 @@ export function registerWorkspacePresentation({ investigationStage, renderComman
     assert.equal(investigationStage(state, 'commander').key, 'awaiting_planning');
     assert.ok(html.indexOf('Awaiting the next observation') < html.indexOf('Choose next observation'));
     assert.ok(html.indexOf('Choose next observation') < html.indexOf('Process overview'));
-    assert.ok(html.indexOf('Process overview') < html.indexOf('Stored simulated telemetry'));
+    // The reference groups compact stored readings immediately above the schematic.
+    assert.ok(html.indexOf('Choose next observation') < html.indexOf('Stored simulated telemetry'));
+    assert.ok(html.indexOf('Stored simulated telemetry') < html.indexOf('Process overview'));
     assert.match(html, /Scrollable P-04 F-17 V-08 process schematic/);
     assert.match(html, /Deterministic assessment and correction conditions/);
     assert.doesNotMatch(html, /vibration|collaborative memory|AI diagnosis complete|continuous telemetry/i);
     assert.equal(JSON.stringify(state), before);
+  });
+  test('compact masthead retains separate working routes and server-role visibility without a sidebar', () => {
+    const demo = renderMasthead();
+    assert.match(demo, /<header class="workspace-masthead"/);
+    assert.match(demo, /FaultTrace/); assert.match(demo, /Trace the cause\. Verify the recovery\./);
+    assert.match(demo, /href="\/commander" aria-current="page"/); assert.match(demo, /href="\/operator"/);
+    assert.match(demo, /Log out/); assert.doesNotMatch(demo, /sidebar|mobile-switch/);
+    const operator = renderMasthead('release', 'operator');
+    assert.match(operator, /href="\/operator" aria-current="page"/);
+    assert.doesNotMatch(operator, /href="\/commander"/);
+  });
+  test('session menu retains second-tab, expiry and explicit restart actions without disclosing session credentials', () => {
+    const live = renderDemoControls();
+    assert.match(live, /<details class="session-menu"><summary>Demo session/);
+    assert.match(live, /href="\/operator" target="_blank" rel="noopener"/);
+    for (const text of ['both workspaces', 'One visitor controls both views', 'Restart demo', 'Start new offline demo', 'End demo', 'Restart retains previous investigations', 'Expires']) assert.ok(live.includes(text));
+    assert.doesNotMatch(live, /NEVER_RENDER_SYNTHETIC_CSRF|review-run|<input/);
+    assert.doesNotMatch(renderDemoControls(false), /Start new offline demo|Live inference/);
+  });
+  test('activity context uses actual evidence, assignment and saved audit metadata without invented progress', () => {
+    const state = ready(); state.events = [{ kind: 'incident_created', created_at: '2026-10-29T20:00:00Z' }];
+    const html = renderCommander(state);
+    assert.match(html, /Revision 9.*0 evidence records/);
+    assert.match(html, /No observation assigned/); assert.match(html, /Last saved activity/);
+    assert.match(html, /<time dateTime="2026-10-29T20:00:00Z"/);
+    assert.match(html, /Wall-clock audit time.*not a simulated measurement/);
+    assert.doesNotMatch(html, /[0-9]+% complete|AI diagnosis complete|learned site knowledge/i);
   });
   test('planning has no invented completion percentage or ready observation', () => {
     const state = ready(); state.planning = [attempt(state, 'pending')];

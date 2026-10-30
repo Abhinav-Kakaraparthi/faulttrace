@@ -35,7 +35,7 @@ export function WrongWorkspace({ role, navigate }: { role: 'commander' | 'operat
 }
 
 export function AccessGate({ workspace, navigate, children }: {
-  workspace: Workspace; navigate: (href: string) => void; children: (access: AccessSession) => ReactNode;
+  workspace: Workspace; navigate: (href: string) => void; children: (access: AccessSession, controls: ReactNode) => ReactNode;
 }) {
   const [configuration] = useState(() => {
     try { return { access: new AccessSession(configuredProfile(import.meta.env.VITE_FAULTTRACE_PROFILE)), error: '' }; }
@@ -46,7 +46,7 @@ export function AccessGate({ workspace, navigate, children }: {
 }
 
 function AccessBoundary({ access, workspace, navigate, children }: {
-  access: AccessSession; workspace: Workspace; navigate: (href: string) => void; children: (access: AccessSession) => ReactNode;
+  access: AccessSession; workspace: Workspace; navigate: (href: string) => void; children: (access: AccessSession, controls: ReactNode) => ReactNode;
 }) {
   const snapshot = useSyncExternalStore(access.subscribe, access.snapshot, access.snapshot);
   useEffect(() => () => access.logout(''), [access]);
@@ -54,14 +54,15 @@ function AccessBoundary({ access, workspace, navigate, children }: {
     if (snapshot.status !== 'checking') document.getElementById('main-content')?.focus();
   }, [snapshot.epoch, snapshot.status, workspace]);
   const identity = snapshot.identity;
+  const aligned = snapshot.status === 'ready' && !!identity && workspaceAllowed(identity, workspace);
+  const controls = <SessionToolbar identity={identity} aligned={false}
+    refresh={() => void access.refreshIdentity()} logout={() => access.logout()} />;
   return <>
-    {snapshot.status !== 'locked' && <SessionToolbar identity={identity}
-      aligned={snapshot.status === 'ready' && !!identity && workspaceAllowed(identity, workspace)}
-      refresh={() => void access.refreshIdentity()} logout={() => access.logout()} />}
+    {snapshot.status !== 'locked' && !aligned && controls}
     {snapshot.status !== 'ready' || !identity
       ? <TokenEntry key={snapshot.epoch} local={access.profile === 'local'} checking={snapshot.status === 'checking'} message={snapshot.message} authenticate={token => access.authenticate(token)} />
       : !workspaceAllowed(identity, workspace)
         ? <WrongWorkspace role={identity.role!} navigate={navigate} />
-        : <div key={snapshot.epoch}>{children(access)}</div>}
+        : <div key={snapshot.epoch}>{children(access, controls)}</div>}
   </>;
 }

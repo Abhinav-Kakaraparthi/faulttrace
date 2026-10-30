@@ -1,0 +1,77 @@
+/* Composition from user-supplied reference captures; no simulated data styling. */
+.connected-shell { display:block; --line:#263e50; --surface:#112230; background:#091723; }
+.connected-shell .workspace { margin:0; background:#091723; }
+.workspace-masthead { display:flex; align-items:center; gap:24px; padding:16px 32px; min-height:84px; border-bottom:1px solid #263e50; background:#0a1823; }
+.masthead-brand { display:flex; align-items:center; gap:12px; margin-right:auto; flex-shrink:0; }
+.masthead-brand .brand-mark { width:42px; height:42px; border:0; border-radius:10px; background:#44d1bc; color:#092c30; }
+.masthead-brand strong { display:block; font-size:21px; font-weight:750; letter-spacing:-.6px; line-height:1.2; }
+.masthead-brand strong>span { color:#44d1bc; }.masthead-brand small { display:block; margin-top:5px; font-size:11px; letter-spacing:.5px; color:#94acbf; }
+.workspace-masthead nav { display:flex; align-items:center; gap:4px; padding:4px; background:#102230; border:1px solid #293f51; border-radius:8px; }
+.workspace-masthead nav a { display:flex; align-items:center; justify-content:center; gap:8px; min-height:42px; padding:8px 16px; color:#b8ccdc; font-weight:600; font-size:14px; text-decoration:none; border-radius:5px; }
+.workspace-masthead nav a[aria-current=page] { color:#8ff1df; background:#1b3c45; }
+.workspace-masthead nav a:hover { color:#eff7ff; background:#1b3446; }
+.masthead-session { min-width:0; }.masthead-session .access-toolbar { margin:0; padding:0; background:transparent; flex-wrap:nowrap; gap:10px; }
+.masthead-session .session-principal { display:none; }.masthead-session .session-identity { flex:initial; }.masthead-session .session-identity summary { min-height:44px; }
+.masthead-session .session-identity-body { left:auto; right:0; }
+.demo-session-controls { display:flex; align-items:center; }.session-menu { position:relative; }
+.session-menu>summary { display:list-item; list-style-position:inside; min-height:44px; padding:10px 14px; border:1px solid #355269; border-radius:6px; color:#c9deeb; font-size:14px; font-weight:600; }
+.session-menu-body { position:absolute; top:calc(100% + 12px); right:0; z-index:20; width:min(320px,calc(100vw - 32px)); display:grid; gap:12px; padding:20px; background:#112b3b; border:1px solid #426278; border-radius:8px; box-shadow:0 16px 36px #0006; font-size:14px; }
+.session-menu-body a { color:#76e5d1; padding-block:8px; }.session-menu-body p { color:#b6cddd; }.session-menu-body strong { color:#f1f7ff; }
+.connected-shell .connected-topbar { padding:4px 32px; min-height:44px; font-size:12px; background:#0a1823; }
+.connected-shell .workspace-status { font-size:12px; gap:6px 18px; }.connected-shell .workspace-status strong { font-size:12px; font-weight:600; color:#ecc591; }
+.connected-shell .workspace-status [role=status] { color:#8bdfcc; }.connected-shell .workspace-tools .button { min-height:36px; font-size:12px; }
+.connected-shell .workspace-info>summary { min-height:36px; padding-block:7px; font-size:12px; }
+.connected-shell .commander-page { max-width:1640px; padding:28px 32px 40px; }
+.connected-shell .page-heading { margin-bottom:24px; }.connected-shell .page-heading .eyebrow { font:600 11px/1.5 Consolas,monospace; letter-spacing:1.3px; color:#8dadc2; margin:0 0 7px; }
+.connected-shell .page-heading h1 { font-size:30px; font-weight:650; letter-spacing:-1px; }
+.connected-shell .incident-context summary { font-size:13px; min-height:34px; padding:5px 0; color:#91bbcc; }
+.investigation-activity { position:relative; display:block; padding:0; margin-bottom:24px; border:1px solid #2a465b; border-radius:12px; background:#122634; overflow:hidden; }
+.activity-now { position:absolute; left:0; top:0; bottom:0; width:48px; display:flex; align-items:center; justify-content:center; writing-mode:vertical-rl; transform:rotate(180deg); color:#53d4c0; font:700 12px/1 Consolas,monospace; letter-spacing:2px; background:#163440; }
+.activity-copy { padding:26px 28px 24px 78px; }
+.activity-stage { display:flex; font:600 11px/1.5 Consolas,monospace; letter-spacing:1.4px; text-transform:uppercase; margin-bottom:12px; color:#6dcdbf; gap:10px; }
+.stage-indicator { width:6px; height:6px; }.activity-stage .quiet-label { font:inherit; color:#a1b7c7; }
+.investigation-activity h2 { font-size:28px; line-height:1.3; letter-spacing:-.8px; font-weight:600; margin-bottom:10px; }
+.activity-next { max-width:100ch; font-size:15px; color:#adcadc; line-height:1.7; }.activity-next>span { display:none; }
+.activity-gaps { margin-top:12px; }.activity-gaps summary { min-height:32px; }
+.activity-facts { display:grid; grid-template-columns:1fr 1fr 1.2fr; margin:0; padding-left:48px; background:#10212f; border-top:1px solid #2a465b; }
+.activity-facts>div { min-width:0; padding:14px 24px; }.activity-facts>div+div { border-left:1px solid #2a465b; }
+.activity-facts dt { font:600 10px/1.6 Consolas,monospace; letter-spacing:1px; text-transform:uppercase; color:#8daabf; margin-bottom:6px; }
+.activity-facts dd { margin:0; color:#d1e2ee; font-size:13px; overflow-wrap:anywhere; }.activity-facts summary { color:#d1e2ee; min-height:30px; }.activity-facts time { display:block; margin-block:8px; }
+.commander-overview-grid { grid-template-columns:minmax(0,2fr) minmax(300px,1fr); gap:24px; }
+.connected-shell .process-and-signals { gap:0; border:1px solid #2a465b; border-radius:12px; overflow:hidden; background:#10212f; }
+.connected-shell .process-and-signals>.section-surface { border:0; border-radius:0; background:transparent; }
+.connected-shell .process-and-signals>.process { border-top:1px solid #2a465b; }
+.connected-shell .telemetry-compact { padding:18px 22px 10px; }.telemetry-compact h2 { font:600 11px/1.6 Consolas,monospace; color:#9bb9cc; letter-spacing:1px; text-transform:uppercase; }
+.connected-shell .telemetry-compact .journey-metrics { padding:16px 0; gap:14px; }.telemetry-compact .journey-metrics strong { font-size:30px; letter-spacing:-1px; }.telemetry-compact .journey-metrics small { font-size:13px; letter-spacing:0; }
+.telemetry-compact .journey-metrics span { font:600 11px/1.6 Consolas,monospace; color:#9bb9cc; letter-spacing:.3px; }.telemetry-compact .journey-metrics .journey-alarm { font-size:15px; letter-spacing:0; }
+.telemetry-history { padding-top:0; }.telemetry-history summary { font-size:12px; min-height:32px; padding:5px 0; }
+.connected-shell .process .section-heading { padding:18px 22px 8px; }.connected-shell .process h2 { font-size:20px; }.connected-shell .schematic-wrap { margin:12px; border:1px solid #213b50; border-radius:0; background-color:#0b1b29; background-image:linear-gradient(#20374966 1px,transparent 1px),linear-gradient(90deg,#20374966 1px,transparent 1px); background-size:28px 28px; }
+.connected-shell .schematic { min-height:230px; }.connected-shell .equipment-selector { padding:10px 20px; }.connected-shell .equipment-detail { padding:16px 20px; }
+.connected-shell .current-action { padding:24px; border-radius:12px; border-color:#2a465b; background:#10212f; }.current-action>.eyebrow { font:600 11px/1.6 Consolas,monospace; color:#e6bb80; letter-spacing:1px; margin-bottom:16px; }
+.current-action .planner-panel>.eyebrow { display:none; }.current-action .planner-panel h2 { font-size:24px; letter-spacing:-.7px; }.current-action .planner-panel>p { font-size:14px; }
+.current-action .planner-panel .button.primary { margin-top:8px; background:#44d1bc; }.connected-shell .section-surface { border-radius:10px; }
+.connected-shell .operator-page { max-width:1000px; padding:26px 28px 36px; }.connected-shell .operator-intro { margin-bottom:14px; }.connected-shell .operator-intro>.eyebrow { font:600 11px/1.5 Consolas,monospace; letter-spacing:1.2px; }
+.operator-activity { border-radius:8px; margin-bottom:16px; }.operator-activity .activity-copy { padding:12px 16px; }.operator-activity .activity-stage { margin:0 0 4px; font-size:13px; font-weight:600; line-height:1.5; letter-spacing:0; text-transform:none; }.operator-activity .activity-next { font-size:14px; }
+.connected-shell .operator-task { border-radius:12px; padding:24px; }.connected-shell .task-topline { border-bottom:1px solid #2a465b; padding-bottom:12px; margin-bottom:18px; }.connected-shell .task-equipment { margin-bottom:16px; }
+.connected-shell .task-equipment h2 { font-size:25px; letter-spacing:-.7px; }.connected-shell .equipment-tag.large { background:#153d46; border-color:#39796e; }
+@media(max-width:1100px) {
+  .workspace-masthead { gap:16px; padding:14px 24px; }.masthead-brand small { display:none; }.workspace-masthead nav a { padding-inline:12px; }
+  .masthead-session .access-toolbar { gap:4px; }.masthead-session .access-toolbar .button { padding-inline:8px; }
+  .commander-overview-grid { grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr); gap:18px; }
+}
+@media(max-width:900px) { .commander-overview-grid { grid-template-columns:minmax(0,1fr); }.activity-copy { padding:22px 24px 22px 70px; }.activity-facts>div { padding:12px 16px; } }
+@media(max-width:760px) {
+  .workspace-masthead { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; padding:12px 16px; min-height:0; }
+  .masthead-brand { margin:0; gap:8px; }.masthead-brand strong { font-size:20px; }.masthead-brand .brand-mark { width:34px; height:34px; border-radius:8px; }
+  .workspace-masthead nav { grid-row:2; grid-column:1 / -1; width:100%; }.workspace-masthead nav a { flex:1; min-height:42px; font-size:14px; }.masthead-session { grid-row:1; grid-column:2; }
+  .masthead-session .access-toolbar { flex-wrap:wrap; justify-content:flex-end; max-width:185px; gap:2px 6px; }.masthead-session .session-identity summary { min-height:32px; }.masthead-session .access-toolbar .button { font-size:12px; min-height:36px; padding:6px; }
+  .session-menu>summary { padding:8px 10px; font-size:13px; min-height:40px; }.session-menu-body { top:calc(100% + 8px); }.masthead-brand small { display:none; }
+  .connected-shell .connected-topbar { display:flex; padding:4px 16px; gap:2px 10px; }.connected-shell .workspace-status { font-size:11px; gap:2px 10px; min-width:0; flex:1; }.connected-shell .workspace-status strong { font-size:11px; }.connected-shell .workspace-tools { gap:2px; }.connected-shell .workspace-tools .button { padding:6px; }
+  .connected-shell .commander-page,.connected-shell .connected-operator.operator-page { padding:20px 16px 28px; }.connected-shell .page-heading { margin-bottom:16px; }.connected-shell .page-heading h1 { font-size:26px; }
+  .investigation-activity { margin-bottom:18px; border-radius:10px; }.activity-now { width:28px; font-size:10px; }.activity-copy { padding:20px 18px 18px 44px; }.activity-stage { font-size:10px; margin-bottom:8px; letter-spacing:1px; }
+  .investigation-activity h2 { font-size:24px; }.activity-next { font-size:14px; line-height:1.6; }.activity-facts { padding-left:28px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }.activity-facts>div { padding:10px 16px; }.activity-facts>div+div { border-left:1px solid #243f51; }.activity-facts>div:last-child { grid-column:1 / -1; border-left:0; border-top:1px solid #243f51; }.activity-facts dt { margin-bottom:2px; }.activity-facts dd { font-size:12px; }
+  .connected-shell .current-action { padding:20px; }.connected-shell .telemetry-compact { padding:18px; }.connected-shell .telemetry-compact .journey-metrics { gap:18px 12px; }.telemetry-compact .journey-metrics strong { font-size:29px; }
+  .connected-shell .process .section-heading { padding:18px; }.connected-shell .schematic-wrap { margin:0 10px 10px; }.connected-shell .schematic { min-width:620px; }
+  .operator-activity .activity-copy { padding:10px 14px; }.operator-activity .activity-stage { font-size:13px; }.operator-activity .activity-next { font-size:13px; }
+  .connected-shell .operator-task { padding:18px; }.connected-shell .task-equipment h2 { font-size:22px; }.connected-shell .task-equipment { gap:10px; margin-bottom:10px; }.connected-shell .photo-pickers { grid-template-columns:minmax(0,1fr); }
+}

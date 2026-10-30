@@ -68,12 +68,21 @@ function DemoWorkspace({ session, workspace, navigate, register, resume, restart
   if (!attempted || snapshot.status === 'checking') return <main className="access-screen" id="main-content" role="status"><h1>Opening your demo workspace…</h1><p>Simulation only; inference disabled.</p></main>;
   if (snapshot.status !== 'ready') return <DemoEntry live={session.inference_enabled} error={snapshot.message}
     start={resume} />;
-  return <><div className="access-toolbar workspace-access-toolbar demo-toolbar">
-    <strong>Demo visitor · both workspaces</strong><span>{session.inference_enabled ? 'Live inference · bounded explicit actions' : 'Inference disabled'}</span>
-    <a href="/operator" target="_blank" rel="noopener">Operator in second tab</a>
-    <button className="button secondary" onClick={restart}>Restart demo</button>
-    {session.inference_enabled && <button className="button secondary" onClick={offline}>Start new offline demo</button>}
-    <button className="button quiet" onClick={end}>End demo</button>
-    <details><summary>Session limits</summary><p>Expires {new Date(session.expires_at * 1000).toLocaleString()}. One visitor controls both views. Restart retains previous investigations.</p></details>
-  </div><ConnectedWorkspace access={access} workspace={workspace} navigate={navigate} /></>;
+  return <ConnectedWorkspace access={access} workspace={workspace} navigate={navigate} sessionControls={
+    <DemoControls session={session} restart={restart} offline={offline} end={end} />} />;
+}
+
+export function DemoControls({ session, restart, offline, end }: {
+  session: DemoSession; restart: () => void; offline: () => void; end: () => void;
+}) {
+  return <div className="demo-session-controls">
+    <details className="session-menu"><summary>Demo session</summary><div className="session-menu-body">
+      <strong>Demo visitor · both workspaces</strong><p>One visitor controls both views. This is not separation between employees.</p>
+      <a className="second-workspace" href="/operator" target="_blank" rel="noopener">Operator in second tab ↗</a>
+      <p>{session.inference_enabled ? 'Live inference · bounded explicit actions' : 'Inference disabled'}</p>
+      <p>Expires {new Date(session.expires_at * 1000).toLocaleString()}. Restart retains previous investigations.</p>
+      <button className="button secondary" onClick={restart}>Restart demo</button>
+      {session.inference_enabled && <button className="button secondary" onClick={offline}>Start new offline demo</button>}
+      <button className="button quiet" onClick={end}>End demo</button>
+    </div></details></div>;
 }

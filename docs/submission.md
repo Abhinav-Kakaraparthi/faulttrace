@@ -5,6 +5,12 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+Screenshot-based composition follow-up replaces the fixed rail with compact
+workspace/session navigation and groups real telemetry with the existing schematic.
+105 frontend tests, typecheck, both builds and combined contracts pass. No provider
+calls or policy changes. Deployment awaits private Render API access/exact-SHA CI;
+desktop/mobile/keyboard visual acceptance stays open. See current state.md.
+
 Presentation refinement prioritizes actual activity/action, existing topology and
 stored telemetry in Commander, and assigned photo/report work in Operator.
 Rules/provenance/history remain expandable. 102 frontend tests, typecheck/builds

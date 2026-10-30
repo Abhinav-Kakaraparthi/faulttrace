@@ -5,7 +5,8 @@ import { Connected, ConnectedWorkspace } from '../src/Connected';
 import { AccessSession } from '../src/access';
 import { TokenEntry, WrongWorkspace } from '../src/AccessGate';
 import { SessionToolbar } from '../src/SessionToolbar';
-import { DemoEntry } from '../src/DemoExperience';
+import { DemoEntry, DemoControls } from '../src/DemoExperience';
+import { WorkspaceMasthead } from '../src/WorkspaceMasthead';
 export { demoSessionRequest } from '../src/demoSession';
 export { AccessSession } from '../src/access';
 export { configuredProfile, validateIdentity, canCreate, workspaceAllowed } from '../src/identity';
@@ -64,3 +65,8 @@ export const renderSessionToolbar = () => renderToStaticMarkup(createElement(Ses
   identity: { profile: 'release', principal_id: 'field-review', role: 'operator', capabilities: { create_incident: false }, incident_ids: [] },
   aligned: true, refresh: () => {}, logout: () => {} }));
 export const renderDemoEntry = (live = false) => renderToStaticMarkup(createElement(DemoEntry, { error: '', start: () => {}, live }));
+export const renderMasthead = (profile: 'demo' | 'release' = 'demo', role: 'commander' | 'operator' = 'commander') =>
+  renderToStaticMarkup(createElement(WorkspaceMasthead, { identity: { profile, role, principal_id: 'review', capabilities: { create_incident: false }, incident_ids: [] }, workspace: role, navigate: () => {}, controls: createElement('button', null, 'Log out') }));
+export const renderDemoControls = (live = true) => renderToStaticMarkup(createElement(DemoControls, {
+  session: { active_run: 'review-run', csrf_token: 'NEVER_RENDER_SYNTHETIC_CSRF', expires_at: 2000000000, inference_enabled: live, privileges: 'both' },
+  restart: () => {}, offline: () => {}, end: () => {} }));

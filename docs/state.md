@@ -1,5 +1,32 @@
 # Checkpoint state
 
+## Screenshot-based composition pass — checked, deployment pending
+
+Resumed the existing nine-file diff at clean committed base `87afd06` on
+`feat/finish-integrated`; no redesign restart or unrelated edits. User-supplied
+Plant Debugger captures guide composition: compact horizontal brand/workspace
+navigation replaces the fixed rail, session actions are in the masthead/menu,
+the activity lead shows saved context/assignment/audit metadata, and actual
+telemetry is grouped above the P-04/F-17/V-08 schematic. Operator assignments,
+blank independent answers, photo controls and inspection remain intact. No
+backend, authentication-policy, provider, budget or historical-data changes.
+
+105 frontend tests, TypeScript, normal/demo production builds and both combined
+authenticated/demo contracts passed on resume; zero provider/external attempts.
+Role visibility, second-tab URLs, retained session controls, credential exclusion,
+evidence inspection/denial/clearing, logout and session isolation are covered.
+Responsive breakpoints, scroll containers and focus rules were reviewed in source;
+browser host remains unavailable, so no visual/keyboard/mobile acceptance claimed.
+Reference captures are user-provided evidence, not agent-operated browser tests.
+Source files remain below 500 lines. Ignored logs:
+`.local/visual/presentation-reference/resumed-tests.txt`.
+
+Render API access is blocked: `RENDER_API_KEY` is unavailable in the current
+process and Windows User environment. No hosted setting/record was changed.
+Next: after exact-SHA CI passes and private access is restored, deploy only this
+revision to the existing service/disk, compare live configuration fingerprints
+and GET-check health/routes/assets. Do not create an incident or invoke a model.
+
 ## Focused investigation presentation — deployed, visual acceptance open
 
 Implementation `2bec6fd96c47cdb41ba4479f77790f37472669a4` is live on the existing
