@@ -17,6 +17,35 @@ ESCALATE = 'ESCALATE_HUMAN_INVESTIGATION'
 
 
 class ActionSelectionTests(unittest.TestCase):
+    def test_catalog_supplies_scope_and_information_purpose_without_forcing_an_action(self):
+        context = {'context_revision': 1, 'observations': [], 'task_history': [],
+            'unresolved_conflicts': [], 'unavailable_assets': [], 'remaining_planning_calls': 4,
+            'telemetry': {'evidence_ref': 'sample-existing'}}
+        before = deepcopy(context)
+        payload = planner_payload(context)
+        instructions = payload['messages'][0]['content']
+        catalog = json.loads(instructions.split('Permitted action catalog: ', 1)[1])
+        self.assertEqual(set(catalog), {F17, V08, ESCALATE})
+        self.assertEqual(catalog[F17]['observation_scope'], TEMPLATES[('F-17', 'READ_LOCAL_DP')])
+        self.assertEqual(catalog[V08]['observation_scope'], TEMPLATES[('V-08', 'OBSERVE_POSITION')])
+        self.assertIn('differential-pressure', catalog[F17]['purpose'])
+        self.assertIn('unverified valve feedback', catalog[V08]['purpose'])
+        self.assertIn('No Operator observation task', catalog[ESCALATE]['purpose'])
+        self.assertIn('does not by itself prove that observation options are exhausted', instructions)
+        self.assertIn('Escalation remains legitimate', instructions)
+        self.assertIn('Do not assume unreported observations were performed', instructions)
+        self.assertEqual(context, before)
+        self.assertEqual(json.loads(payload['messages'][1]['content']), before)
+        self.assertEqual(payload['max_tokens'], 2048)
+        # All three independently expected policy outcomes remain valid initially.
+        for action in (F17, V08, ESCALATE):
+            wire = {'action_id': action, 'context_revision': 1,
+                'evidence_refs': ['sample-existing'], 'explanation_code': 'human_review' if action == ESCALATE else 'evidence_gap'}
+            result = validate_action_plan(self.envelope(wire), context)
+            self.assertEqual((result['kind'], result['asset_id'], result['capability']), registered_actions()[action])
+        for forbidden in ('expected_reading', 'private_outcome', 'corrected_tick', '180 kPa'):
+            self.assertNotIn(forbidden, json.dumps(payload))
+
     def setUp(self):
         self.context = {'context_revision': 7, 'observations': [], 'unresolved_conflicts': []}
         self.wire = {'action_id': F17, 'context_revision': 7,

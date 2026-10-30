@@ -27,6 +27,8 @@ export const renderEvidence = (state: ServerState) =>
   renderToStaticMarkup(createElement(ServerEvidenceList, { state, disabled: false, inspect: () => {}, analyze: () => {} }));
 export const renderPlanningHistory = (state: ServerState) =>
   renderToStaticMarkup(createElement(PlannerPanel, { state, disabled: false, choose: () => {}, open: () => {}, historyOnly: true }));
+export const renderPlanner = (state: ServerState) =>
+  renderToStaticMarkup(createElement(PlannerPanel, { state, disabled: false, choose: () => {}, open: () => {} }));
 export const renderAudit = (state: ServerState) =>
   renderToStaticMarkup(createElement(AuditHistory, { state }));
 

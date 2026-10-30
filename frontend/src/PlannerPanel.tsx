@@ -1,12 +1,13 @@
 import { useId } from 'react';
 import { type ServerState } from './api';
-import { planningBlocker } from './planningPolicy';
+import { escalatedWithoutTask, planningBlocker } from './planningPolicy';
 import { HTTPDiagnostics } from './HTTPDiagnostics';
 
 export function PlannerPanel({ state, disabled, choose, open, inspect, historyOnly = false }: {
   state: ServerState; disabled: boolean; choose: () => void; open: () => void; inspect?: (item: ServerState['evidence'][number]) => void; historyOnly?: boolean;
 }) {
   const task = state.task;
+  const escalated = escalatedWithoutTask(state);
   const accepted = state.planning.filter(p => ['accepted', 'escalated'].includes(p.status) && p.proposal).at(-1);
   const reasonId = useId();
   const pending = state.planning.some(item => item.status === 'pending');
@@ -15,12 +16,12 @@ export function PlannerPanel({ state, disabled, choose, open, inspect, historyOn
   return <section className="observation-task section-surface planner-panel">
     {historyOnly ? <h2>Observation planning history</h2> : <>
     <span className="eyebrow">OBSERVATION PLANNING · SIMULATED INCIDENT</span>
-    <h2>{task ? `${task.asset_id} · Observation` : 'Choose the next observation'}</h2>
+    <h2>{escalated ? 'Human investigation requested' : task ? `${task.asset_id} · Observation` : 'Choose the next observation'}</h2>
     {task ? <><p>{task.instruction}</p><span className="pill amber">{task.status} · revision {task.revision}</span>
       <p className="caption">Source: {task.creation_source}</p>
       <details className="rationale"><summary>Why this task?</summary><p>{task.explanation}</p><p>No equipment action or recovery is authorized.</p></details>
-      <button className="button secondary wide" onClick={open}>Open operator task</button></> : <p>No task is assigned automatically. NVIDIA may propose an observation; application policy creates the task.</p>}
-    <button className="button primary wide repeat-observation planner-choose" disabled={unavailable} aria-describedby={reasonId} onClick={choose}>{pending ? 'Planning request pending' : 'Choose next observation'}</button>
+      <button className="button secondary wide" onClick={open}>Open operator task</button></> : escalated ? <p>NVIDIA requested human review, so no Operator observation task was created. Keep this incident for human investigation and review the cited evidence below. This is not a diagnosis or proof that every observation was tried.</p> : <p>No task is assigned automatically. NVIDIA may propose an observation; application policy creates the task.</p>}
+    {!escalated && <button className="button primary wide repeat-observation planner-choose" disabled={unavailable} aria-describedby={reasonId} onClick={choose}>{pending ? 'Planning request pending' : 'Choose next observation'}</button>}
     <p id={reasonId} className="caption" role="status">{blocker ?? (disabled ? 'Server unavailable or another request is in progress.' : state.test_output ? 'One scripted offline provider-double call; no live AI.' : 'One explicit NVIDIA text request. No automatic retry.')} {state.planning_remaining} of 4 planning turns remain.</p>
     </>}
     {accepted?.proposal && <div className="accepted-references"><h3>Latest accepted proposal cites</h3>

@@ -6,13 +6,14 @@ import panelB from '../../fixtures/image-evidence/panel-b.png';
 import type { Mutate } from './workspace';
 import { HumanObservation } from './HumanObservation';
 import { PhotoCapture } from './PhotoCapture';
+import { escalatedWithoutTask } from './planningPolicy';
 
 export function ServerTask({ state, mutate, disabled, inspect }: { state: ServerState; mutate: Mutate; disabled: boolean; inspect?: (item: ServerState['evidence'][number]) => void }) {
   const [selection, setSelection] = useState<'panel-a' | 'panel-b' | null>(null);
   const [error, setError] = useState('');
   const selectionKey = useRef(crypto.randomUUID());
   const task = state.task;
-  if (!task) return <section className="operator-task section-surface"><h2>No server task assigned</h2><p>Waiting for Commander to assign an observation. No task is assigned automatically.</p></section>;
+  if (!task) return <section className="operator-task section-surface"><h2>{escalatedWithoutTask(state) ? 'Human investigation requested' : 'No server task assigned'}</h2><p>{escalatedWithoutTask(state) ? 'No Operator observation is assigned: this incident was escalated for human review. Commander can review the cited evidence and planning history. No equipment action is authorized.' : 'Waiting for Commander to assign an observation. No task is assigned automatically.'}</p></section>;
   const accepts = ['awaiting', 'needs_evidence'].includes(task.status);
   const unified = state.journey?.evidence_mode === 'task-evidence';
   async function upload() {

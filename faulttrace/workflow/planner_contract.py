@@ -9,6 +9,11 @@ TEMPLATES = {
     ('V-08', 'OBSERVE_POSITION'): 'Observe V-08 position only. Report open, intermediate, closed, or cannot determine. Do not move the valve.',
 }
 HUMAN_ESCALATION = ('ESCALATE', 'HUMAN', 'HUMAN_INVESTIGATION')
+ACTION_PURPOSES = {
+    ('F-17', 'READ_LOCAL_DP'): 'Obtain an independent local differential-pressure reading and visible unit to compare with telemetry. Preserve unknown identity and measurement uncertainty.',
+    ('V-08', 'OBSERVE_POSITION'): 'Obtain a human-reported visible position to compare with unverified valve feedback. This does not establish internal valve condition.',
+    ('HUMAN', 'HUMAN_INVESTIGATION'): 'Request human judgment when safe available observations cannot address the next evidence gap, access is unavailable, or ambiguity needs human review. No Operator observation task is created.',
+}
 EXPLANATIONS = {
     'evidence_gap': 'An independent observation is needed to compare with simulated telemetry.',
     'unreadable_evidence': 'The existing observation could not establish a readable value; another observation or human review is needed.',
@@ -179,6 +184,12 @@ def response_format(context):
 
 def planner_payload(context):
     contract = (
+        'Your objective is to choose a safe, informative next observation for this unresolved simulated incident, '
+        'or request human investigation when appropriate. Missing evidence is an opportunity to collect a '
+        'relevant permitted observation; it does not by itself prove that observation options are exhausted. '
+        'Compare each available action purpose with the current evidence gaps. Escalation remains legitimate '
+        'for safety concerns, unavailable access, gaps these observations cannot address, or uncertainty needing '
+        'human judgment. Do not assume unreported observations were performed or force a particular asset choice. '
         'Choose one action_id from the application-defined permitted action catalog below. '
         'Return only JSON with exactly action_id, context_revision, evidence_refs, explanation_code. '
         'Do not return kind, asset_id or capability; application code maps the selected ID. '
@@ -201,6 +212,11 @@ def planner_payload(context):
     )
     catalog = {action_id: dict(zip(('kind', 'asset_id', 'capability'), action))
                for action_id, action in permitted_actions(context).items()}
+    for entry in catalog.values():
+        combination = (entry['asset_id'], entry['capability'])
+        entry['observation_scope'] = TEMPLATES.get(combination,
+            'Human investigation only; no equipment action, diagnosis or recovery declaration.')
+        entry['purpose'] = ACTION_PURPOSES[combination]
     contract += ' Permitted action catalog: ' + json.dumps(catalog, separators=(',', ':'))
     return {'model': MODEL, 'max_tokens': 2048, 'stream': False, 'response_format': response_format(context),
             'messages': [{'role': 'system', 'content': contract},

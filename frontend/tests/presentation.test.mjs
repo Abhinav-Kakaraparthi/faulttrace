@@ -24,6 +24,8 @@ const harness = await import(pathToFileURL(file));
 const { registerInspectionTests } = await import('./inspection-transitions.mjs');
 await registerInspectionTests();
 registerAuthenticationTests({ ...harness, snapshot, imageTaskState });
+const { registerEscalationPresentation } = await import('./escalation-presentation.mjs');
+registerEscalationPresentation({ ...harness, imageTaskState });
 const { registerJudgeDemoTests } = await import('./judge-demo.mjs');
 registerJudgeDemoTests({ ...harness, imageTaskState });
 const { registerSprintPresentation } = await import('./sprint-presentation.mjs');

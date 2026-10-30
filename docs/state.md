@@ -1,5 +1,37 @@
 # Checkpoint state
 
+## Initial escalation review — offline fix ready, not deployed
+
+Started clean at `e1cfc96`. User-performed read-only Render inspection of attempt
+`4d4523b0-271f-4db8-ad24-e2c01598bced` on deployed `4796656` confirms revision 1,
+simulated flow 85 m3/h / DP 182 kPa / feedback 72%, return_flow_low alarm, no
+tasks/observations/conflicts/unavailable assets, and all three actions permitted.
+ESCALATE/HUMAN with human_review passed validation/stop; usage 674/751/1425, one
+settled reservation charged 67,584 admission units, no task/evidence created.
+The displayed explanation is an application mapping, not retained model reasoning.
+Escalation was permitted; this record does not establish necessity or its causal
+reason. No discarded output was reconstructed and no historical record was changed.
+
+Confirmed input gap: catalog supplied IDs/triples but omitted registered scope,
+purpose and an explicit information-gathering objective. The narrow fix supplies
+those descriptions and neutral observation-versus-escalation guidance. Both
+observations and legitimate initial escalation remain valid; refusal/reference/
+revision/budget/schema guards and hidden simulator boundaries are unchanged.
+Commander/Operator now explain the no-task human-review state rather than implying
+an observation assignment is pending; unchanged-context retry remains unavailable.
+320 guarded backend tests passed, zero external attempts; 95 frontend tests,
+typecheck/build passed. Presentation checks are static; browser helpers were not
+repeated. No provider calls, deployment or server restart in this review.
+
+Shortest current-visitor continuation: retain/review this incident's cited telemetry
+and escalation history for human investigation. To exercise Operator without another
+model call, use existing **Start new offline demo**: a separate explicitly labeled
+template investigation preserves this decision and does not reset global allowances.
+Do not restart live planning to chase a preferred result. The earlier seven-request
+global balance is historical; this visitor consumed another reservation, and current
+global remaining was not re-queried. Next deployment can ship the reviewed fix after
+exact-SHA CI; no new live verification is authorized here.
+
 ## Hosted AI activation — live and bounded verification passed
 
 https://faulttrace-judge-demo.onrender.com/ now runs

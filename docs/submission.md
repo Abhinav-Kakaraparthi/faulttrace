@@ -5,6 +5,13 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+User browser review found a valid initial human escalation with no Operator task.
+Read-only context inspection confirms both observations remained available; model
+reasoning was not retained. An offline-tested input/presentation fix adds action
+purpose/scope and an honest escalation state without forcing an observation or
+retrying the incident. It is not yet deployed/live-verified; general planning and
+full browser-journey acceptance remain open. See state.md for the narrow findings.
+
 Hosting update: https://faulttrace-judge-demo.onrender.com/ is live at `4796656`
 with passing exact-SHA CI. Exactly one approved 512 MB instance and 1 GiB disk,
 $7.25/month baseline before tax/bandwidth, manual deploys. Explicit NVIDIA,

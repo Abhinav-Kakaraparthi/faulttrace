@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { initial, reduceDemo } from '../src/demo.ts';
-import { planningBlocker } from '../src/planningPolicy.ts';
+import { escalatedWithoutTask, planningBlocker } from '../src/planningPolicy.ts';
 import { httpDiagnosticSummary } from '../src/api.ts';
 
 test('HTTP diagnostics display safe status categories and retain historical unknowns', () => {
@@ -12,6 +12,17 @@ test('HTTP diagnostics display safe status categories and retain historical unkn
 });
 
 const planningReady = { task: null, planning: [], incident: { revision: 2 }, planning_remaining: 4, inference_enabled: true };
+
+test('initial human escalation explains no assignment without reopening an unchanged context', () => {
+  const state = { ...planningReady, planning_remaining: 3,
+    planning: [{ status: 'escalated', context_revision: 2 }] };
+  assert.equal(escalatedWithoutTask(state), true);
+  assert.match(planningBlocker(state), /Human review requested.*No Operator task.*will not be retried/);
+  assert.equal(escalatedWithoutTask({ ...state, incident: { revision: 3 } }), false);
+  assert.equal(planningBlocker({ ...state, incident: { revision: 3 } }), null);
+  assert.equal(escalatedWithoutTask({ ...state, task: { status: 'awaiting' } }), false);
+  assert.match(planningBlocker({ ...state, task: { status: 'awaiting' } }), /Finish or report/);
+});
 test('connected planner is available only after explicit incident creation and no blocking task', () => {
   assert.equal(planningBlocker(planningReady), null);
   for (const status of ['awaiting', 'submitted', 'analyzing']) {
