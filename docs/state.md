@@ -1,5 +1,43 @@
 # Checkpoint state
 
+## PR #2 integration — reviewed; final checks and deployment pending
+
+Started clean at `3411784` on `feat/finish-integrated`. Fetched and verified the
+requested PR head `9284f92c7ad933bd4066556efe85e61f802f36aa`, based directly on that
+revision; merged with history preserved (`d7d229a`). Guided continuation requires
+explicit Commander consent, expires within 30 minutes, rechecks authorization and
+session/run validity, and uses the existing planning/context/journal/budget paths.
+It never approves or executes a correction, silently analyzes a photograph, resets
+allowances or retries an interrupted request. Existing incidents have no consent
+row; deployment does not opt them in or retry their decisions. Two additive SQLite
+tables store only the new consent/journal; old incident/evidence/accounting rows
+are not rewritten.
+
+Integration exposed a Windows shutdown race: a cancelled async continuation task
+could leave its threadpool SQLite tick active after app teardown. Replaced task
+cancellation with a stop event and awaited tick drainage before releasing storage.
+A deterministic regression holds a tick open and proves shutdown waits for it;
+no assertions, authorization, recovery policy or provider settings were weakened.
+The initial 334-test run's single cleanup error is preserved locally. Full rerun
+with the new regression reports 335 tests OK / zero forbidden external attempts;
+an additional full run confirms backend_runner_exit_code=0.
+
+114 frontend tests, typecheck, normal/demo builds and both combined contracts pass.
+Actual Chromium exercised the real localhost API/SQLite with scripted doubles:
+Commander closed, Operator reports caused automatic cited replanning, Commander
+reopened for approval, Operator acknowledged completion, and independent monitoring
+started without browser planning/monitor POSTs and verified recovery. Desktop and
+390x844 screenshots were inspected. The PR #1 photo flow and eight responsive
+layout/keyboard/dialog regressions also pass. All are offline test evidence, not
+live model reasoning or accuracy. No existing hosted incident or real ledger changed.
+
+Ignored evidence: `.local/continuation-browser/71a19d263f604e6894ba05ba587b6446/`,
+`.local/visual/pr2-integration/` and `.local/connected-browser/pr2-*.txt`.
+Next: exact-SHA CI, deploy only the existing service/disk with live settings and
+secrets preserved, then GET-check routes/assets and render served assets using
+intercepted offline API state. No provider call, consent activation on a hosted
+incident, budget reset or live replay is authorized for deployment verification.
+
 ## PR #1 integration — merged, checked and deployed
 
 GitHub marks PR #1 merged. Final tested/deployed integration SHA:

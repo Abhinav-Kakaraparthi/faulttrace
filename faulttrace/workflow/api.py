@@ -104,20 +104,22 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
                     task = asyncio.create_task(monitor())
             loop = asyncio.get_running_loop()
             app.state.start_monitor = lambda: loop.call_soon_threadsafe(start_monitor)
+            continuation_stop = asyncio.Event()
             async def continue_investigation():
-                while True:
-                    await asyncio.sleep(.5)
-                    await run_in_threadpool(app.state.continuation.step)
+                while not continuation_stop.is_set():
+                    try:
+                        await asyncio.wait_for(continuation_stop.wait(), timeout=.5)
+                    except TimeoutError:
+                        await run_in_threadpool(app.state.continuation.step)
             continuation_task = asyncio.create_task(continue_investigation())
             start_monitor()  # Resume only an explicitly started durable schedule.
             try:
                 yield
             finally:
-                continuation_task.cancel()
-                try:
-                    await continuation_task
-                except asyncio.CancelledError:
-                    pass
+                # Cancellation can abandon an active worker thread. Drain its SQLite
+                # tick before closing the engine/storage and releasing instance locks.
+                continuation_stop.set()
+                await continuation_task
                 if task:
                     task.cancel()
                     try:

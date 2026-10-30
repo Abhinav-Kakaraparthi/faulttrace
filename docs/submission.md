@@ -5,6 +5,14 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+PR #2 is integrated locally: explicit, expiring Commander consent permits durable
+observation continuation within unchanged budgets; approval, Operator action and
+photo analysis remain explicit. Real localhost Chromium/double tests show cited
+replanning with Commander closed and independent recovery after human approval/
+completion. A demonstrated shutdown race is fixed with a drain regression test.
+This is offline continuation evidence, not a new hosted/live AI success. Final
+CI/deployment is tracked in state.md; no provider call or old-incident retry.
+
 PR #1 real-photo collection/review is merged and deployed at `359aa80`, with
 all five exact-SHA CI jobs passing, 113 frontend tests,
 both builds/combined contracts and actual desktop/mobile Chromium checks passing.
