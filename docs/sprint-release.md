@@ -1,4 +1,4 @@
-# Sprint release package — offline Render deployment
+# Sprint release package — bounded live Render deployment
 
 **Decision, October 29:** the user approved one **new** `faulttrace-judge-demo`
 Starter service and one 1 GiB persistent disk, quoted baseline **$7.25/month before
@@ -9,11 +9,17 @@ Public URL: **https://faulttrace-judge-demo.onrender.com/**. No external-storage
 migration has begun. The earlier free-hosting assessment below is historical.
 
 Package originated on `feat/sprint-release`; integrated deployment is
-`1206161f139f1c63fb21c67d2fff6e9ecc62e737`, live according to Render and matching
-[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40950476913).
+`4796656734d8ddce7aeea0c356016b92844b7c46`, live according to Render and matching
+[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40981733156).
 Later documentation is separate. Hosted HTTP checks are not browser acceptance.
 
 ## Package and data boundary
+
+The user separately authorized live activation. All four opt-in flags are now 1
+on this service, with named Local tracing explicitly verified. Existing durable
+limits/reservations remain; repository Blueprint defaults stay offline. New live
+visitors have no template task. Existing offline runs retain their mode. Hosted
+verification consumed its 2 planning/1 photo/1 search grant; no retake calls.
 
 For explicitly authorized hosted live mode, keep API keys out of Render env vars
 (which become Docker build arguments). Upload only the three provider keys as the
@@ -103,21 +109,23 @@ interrupt availability and cannot scale to multiple instances. The user has
 approved this exact paid service/disk creation and privately completed billing.
 The API confirms the configured capacity/disk, not an accrued invoice amount.
 
-Initial environment explicitly sets `FAULTTRACE_DEMO_LIVE=0`,
+The initial offline phase explicitly set `FAULTTRACE_DEMO_LIVE=0`,
 `FAULTTRACE_ALLOW_INFERENCE=0`, `FAULTTRACE_TAVILY_ENABLED=0` and
 `FAULTTRACE_LANGSMITH_TRACING=0`. Do not attach provider keys or inherited secret
-groups for this offline acceptance deployment. No existing service is restarted.
+groups for offline acceptance. Subsequent authorized live activation uses only the
+runtime secret file and explicit flags described above, on this same service.
 
 Private access: sign in at `https://dashboard.render.com`, avatar → Account
 Settings → API Keys. Save a key privately as the Windows user environment variable
 `RENDER_API_KEY`; never send it in chat or commit it. The user completed the required
-payment step privately. Neither that key nor provider keys were put on the service.
+payment step privately. The Render API key was never put on the service; provider
+keys are in the runtime secret file only, not env/build arguments.
 Hosted TLS/routes, both roles, isolation, Origin/CSRF, image access and upload
 boundaries pass HTTP checks. Desktop/mobile/keyboard/camera acceptance is not claimed.
 
 One restart changed only the new service's instance. Held sessions, the incident,
 task, evidence/planning records and exact stored image survived; visitor isolation
-remained enforced. The deployed revision remains `1206161`. The user confirmed
+remained enforced. That initial offline revision was `1206161`. The user confirmed
 private-shell creation of a synthetic spending reservation before restart and its
 unchanged=true/count=1 after-restart comparison. Attribute remote SQL verification
 to the user; agent HTTP checks separately verified session/state/image persistence.

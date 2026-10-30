@@ -1,7 +1,7 @@
 # FaultTrace submission copy - draft, not submitted
 
 Public demo: **https://faulttrace-judge-demo.onrender.com/**
-Deployed revision: **1206161f139f1c63fb21c67d2fff6e9ecc62e737**
+Deployed revision: **4796656734d8ddce7aeea0c356016b92844b7c46**
 Video: **[FOUNDER: final reviewed video URL, under three minutes]**
 Repository: https://github.com/Abhinav-Kakaraparthi/faulttrace
 
@@ -9,7 +9,11 @@ Render reports this exact passing-CI revision live on the approved single comput
 instance and 1 GiB disk. HTTPS routes, role/session isolation and upload boundaries
 passed HTTP checks, including same-session/state/image persistence across restart.
 The user verified synthetic reservation persistence via private Shell read-back;
-founder browser review remains pending. No external calls are enabled.
+founder browser review remains pending. Explicit NVIDIA, restricted Tavily and
+metadata-only LangSmith are enabled with durable limits. Hosted task creation,
+synthetic-panel photo contract, refusal-context escalation, official references and
+remote metadata trace read-back passed. This is not real-photo accuracy or one
+completed live recovery journey. The agent verification grant is consumed.
 Do not publish or finalize Devpost
 from this draft.
 
@@ -50,9 +54,9 @@ also handles ineffective correction and relapse.
 The judge demo intentionally lets one visitor switch between both workspaces
 without account creation or copied tokens. This is a demonstration privilege,
 not a claim of production separation between two employees. Equipment, telemetry
-and correction are explicitly simulated. The initial hosted preview must keep
-inference and external partner calls disabled; offline templates are not NVIDIA
-output, and previously recorded service evidence must be labeled separately.
+and correction are explicitly simulated. Hosted inference and partners are explicit
+and durably budgeted; offline templates are not NVIDIA output, and recorded service
+evidence must be labeled separately.
 
 ## How we built it
 
@@ -113,15 +117,14 @@ to one answer.
 FaultTrace currently demonstrates one bounded simulated restriction scenario.
 There are no real equipment-control connections, verified industrial diagnosis or
 production-readiness claims. The complete browser-driven live AI recovery journey,
-broader image evaluation, hosting security/persistence acceptance and operational
+broader image evaluation, browser acceptance and operational
 capacity remain separate gates. Existing provider authorizations are spent; no new
 inference or search is needed to manufacture a more convenient video result.
 
 ## What's next
 
-Complete hosted HTTPS, session/isolation, protected-image, upload-limit and restart
-persistence acceptance with all external calls disabled. Then record the truthful
-under-three-minute demo using existing provider evidence and a separately labeled
+Complete founder browser acceptance, then record the truthful under-three-minute
+demo using existing provider evidence and a separately labeled
 offline simulated recovery. Broader independently labeled photo evaluation and
 carefully budgeted live walkthroughs would need separate approval. Public inference
 must never run with ephemeral spending-limit records.

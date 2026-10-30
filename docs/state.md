@@ -1,26 +1,59 @@
 # Checkpoint state
 
-## Hosted AI activation — reviewed implementation, deployment pending
+## Hosted AI activation — live and bounded verification passed
 
-Started clean at `f54e5a9`. Render Docker env values become build arguments, so
-activation uses `/etc/secrets/faulttrace-runtime.json`, excluded from build context
-and loaded only into process memory before privilege drop. Startup fails closed on
-invalid/duplicate fields, unsafe location or conflicting credential sources. No
-model/prompt/budget/policy changes; public connection wording is now “Connected”.
-319 guarded backend tests passed (zero external attempts), as did 93 frontend
-tests, typecheck/build. Browser helpers remain unavailable and were not repeated.
-LangSmith read-only HTTP200 confirms named project Local `97b8d072-0bd6-4357-b680-7a992953ca8b`,
-distinct from agent/local. User Shell preflight reports one pending synthetic
-reservation (67,584 admission units), seven offline runs and no provider ledgers.
-Preserve it and all default limits. New hosted verification authorization is capped
-at 2 planning / 1 photo / 1 Tavily, with metadata-only traces; none consumed yet.
-Next: exact-SHA CI, deploy/configure only the existing service, then bounded hosted
-verification. Synthetic image contract testing does not establish photo accuracy.
+https://faulttrace-judge-demo.onrender.com/ now runs
+`4796656734d8ddce7aeea0c356016b92844b7c46`, matching
+[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40981733156).
+Only the existing service was deployed, with the same disk/plan and manual deploys.
+Keys use a validated runtime secret file excluded from Docker build context, never
+env/build arguments or browser bundles. No prompt/model/limits/recovery-policy
+changes. Public connection wording is “Connected”. Local checks: 319 guarded backend
+tests, zero external attempts; 93 frontend tests, typecheck/build. Browser helpers
+remain unavailable and were not repeated. Later evidence docs are not a deployment.
 
-## Render offline judge demo — hosted persistence verified
+The new live visitor had no template task. Real hosted production calls:
+
+- Planning `51817b19`: validated F-17 local-DP task; 677/1098/1775 tokens, 5176ms.
+- Photo `5bc26997`: contract passed, stop, reasoning tokens 0; 1050/102/1152,
+  1590ms. Original project synthetic panel only; returned 180 kPa/differential
+  pressure, identity unestablished. Not real-photo accuracy evidence; MAXIMATOR unused.
+- After an explicitly test-created cannot-access report for simulated equipment,
+  planning `426c3bae` validated human escalation; 1328/866/2194 tokens, 4470ms.
+  No independent human measurement, correction or recovery was fabricated.
+- Tavily `75fb925b`: one reported credit, 2060ms, returned/retained 3, filtered 0.
+  Official WIKA A-10 operating instructions and US/UAE product pages were directly
+  checked. This reference example establishes neither photograph/F-17 identity nor
+  correction authority.
+
+All three NVIDIA receipts have valid complete usage: **3055 input / 2066 output /
+5121 total**. All agent grant slots are consumed: 2 planning, 1 photo, 1 Tavily;
+no retries/fallbacks or further calls authorized for retakes. Local historical ledger
+hash is unchanged. Four completed LangSmith runs are remotely readable in **named
+Local**, project `97b8d072-0bd6-4357-b680-7a992953ca8b`, not agent/local. Each has one
+matching receipt metadata fingerprint. Original exporter run IDs are not persisted;
+do not describe fingerprint association as direct original-ID proof or browser
+acceptance. No raw images/prompts/reasoning exported and no trace resend occurred.
+
+User-performed read-only Shell postflight confirms each expected SQLite receipt
+once, all three NVIDIA ledger entries once with matching hashes, and Tavily's
+separate outbox. Existing synthetic reservation remains charged 67,584 and became
+uncertain under normal startup recovery. Seven offline runs and one live run remain.
+Global: 5 reserved, 466,944 admission units charged; **7 requests / 733,056 units
+remaining** at postflight, settled=4/uncertain=1. These units are not actual tokens
+or billing. Defaults remain 12 global requests/1,200,000 units, 6 per session/
+600,000 units, concurrency 2; no allowance reset or increase. Artifacts/receipts and
+user attestation remain ignored under `.local/hosted-ai-activation/`.
+
+Next: open a fresh private browser window and Try demo (old offline cookies keep
+their original mode/history). Desktop/mobile/camera/keyboard acceptance, broader
+photo accuracy and the complete browser-driven live recovery journey stay open.
+Video/Devpost remain unpublished. No further agent provider calls.
+
+## Initial offline Render deployment — historical persistence evidence
 
 Public entry: **https://faulttrace-judge-demo.onrender.com/**; workspaces at
-`/commander` and `/operator`. Render reports deployment
+`/commander` and `/operator`. At this initial checkpoint Render reported deployment
 `1206161f139f1c63fb21c67d2fff6e9ecc62e737` live, matching
 [passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40950476913).
 Later documentation is not a new application deployment. Application code, prompts

@@ -1,7 +1,7 @@
 # Final demo script - 170-second edit, not recorded or published
 
 Public demo URL: **https://faulttrace-judge-demo.onrender.com/**
-Deployed revision: **1206161f139f1c63fb21c67d2fff6e9ecc62e737**
+Deployed revision: **4796656734d8ddce7aeea0c356016b92844b7c46**
 
 Render reports this exact passing-CI revision live. HTTPS routes, role/session
 isolation, upload boundaries and session/state/image restart passed HTTP checks;
@@ -10,6 +10,10 @@ Founder browser review remains pending. This script establishes no visual
 acceptance. Keep **SIMULATED EQUIPMENT / TELEMETRY** visible.
 All provider authorizations are spent. Use existing results; no model/search calls
 or trace resends for recording, timing practice or retakes.
+Hosted integrations are now explicitly enabled under durable limits. The separate
+hosted verification also produced real task creation, synthetic-panel photo contract
+completion and refusal-context escalation; it did not verify real-photo accuracy
+or complete recovery. Label any use of these saved results by their actual scope.
 
 ## Record these eight shots
 

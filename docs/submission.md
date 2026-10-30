@@ -5,9 +5,15 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
-Hosting update: https://faulttrace-judge-demo.onrender.com/ is live at `1206161`
+Hosting update: https://faulttrace-judge-demo.onrender.com/ is live at `4796656`
 with passing exact-SHA CI. Exactly one approved 512 MB instance and 1 GiB disk,
-$7.25/month baseline before tax/bandwidth, manual deploys and external calls off.
+$7.25/month baseline before tax/bandwidth, manual deploys. Explicit NVIDIA,
+restricted Tavily and metadata-only LangSmith are now enabled with unchanged durable
+limits. Hosted verification passed: task creation, synthetic-panel photo contract,
+refusal-context escalation, 3 official A-10 citations and 4 remotely readable trace
+fingerprint matches in named Local (not agent/local). Agent caps are spent; global
+postflight remaining 7 requests/733,056 admission units. No real-photo accuracy or
+complete live recovery/browser acceptance is inferred; see state.md for receipts.
 HTTPS, session/isolation, upload and held-session/state/image restart checks pass.
 The user verified unchanged=true/count=1 for a synthetic spending reservation via
 private Shell read-back after restart. Fresh browser acceptance remains open;
