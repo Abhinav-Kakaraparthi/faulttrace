@@ -1,6 +1,16 @@
 # Checkpoint state
 
-## Focused investigation presentation — ready for deployment
+## Focused investigation presentation — deployed, visual acceptance open
+
+Implementation `2bec6fd96c47cdb41ba4479f77790f37472669a4` is live on the existing
+Render service after [all five exact-SHA CI jobs passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40990677325).
+Health, home and both workspace routes return HTTPS 200; new activity/stage assets
+are served. Disk ID/size/mount, instance/plan, manual deploy mode and the complete
+environment fingerprint excluding build revision are unchanged. Secret files
+were not modified. No provider calls, incident retries or budget/data mutations
+were requested. Ignored deployment evidence is in
+`.local/visual/presentation-reference/`. This later documentation is not the
+deployed implementation; manual auto-deploy remains off.
 
 Started clean on `feat/finish-integrated` at `91c6459`. Commander now leads with
 the actual stored stage, next permitted workflow and evidence gaps, beside the
@@ -19,9 +29,8 @@ with the existing venv on PATH. No dependencies changed. Source files stay below
 
 The supplied reference URL returned HTTP 401; browser inventory reported no
 browser host. No screenshot, desktop/mobile, dialog or keyboard visual pass is
-claimed. Prior screenshots remain user-captured evidence. Next: deploy the
-passing exact revision to the existing service/disk with configuration unchanged,
-then manually review the existing incident in both routes at 1440x900/390x844,
+claimed. Prior screenshots remain user-captured evidence. Next: refresh and
+manually review the existing incident in both routes at 1440x900/390x844,
 without repeating its model call. Local check records: ignored
 `.local/visual/presentation-reference/`.
 
