@@ -6,6 +6,8 @@ PR #1 has been reviewed and merged into feat/finish-integrated. Final integratio
 CI/deployment evidence is tracked in state.md. The Windows browser-test path
 containment check was corrected and desktop/mobile checks rerun successfully.
 
+Server continuation is implemented in the follow-up: [Durable guided investigation](durable-continuation.md).
+
 ## Changes
 
 - One explicit upload-and-analyze action, using the confirmed image identifier and fresh context.
@@ -29,8 +31,8 @@ No hosted records, budgets, service settings or historical reports were changed.
 These checks do not establish hosted acceptance, live image accuracy, camera hardware support
 or autonomous equivalence with the reference implementation.
 
-A full reference-equivalent runner still needs durable authorized continuation and a coherent
-catalog of additional interventions. The detailed review specifies those gaps and boundaries.
+Durable authorized continuation is implemented in the linked follow-up. A broader catalog
+of additional interventions still requires coherent simulator, capability and policy changes.
 
 The existing state-history and submission files are deliberately unchanged in this branch.
 Automatic approval review blocked retransmitting the state-history artifact because it includes

@@ -34,6 +34,7 @@ export type ServerEvidence = {
   analysis: { contract?: string; id: string; status: string; interpretation: Interpretation | null; receipt: Receipt | null; error: string | null; accounting: string } | null;
 };
 export type ServerState = {
+  continuation?: {version: number; enabled: boolean | number; expires: number | null; phase: string; error: string | null};
   demo?: { template_actions: string[]; assignment_remaining: number; live?: boolean;
     spending?: { requests_reserved: number; request_limit: number; token_allowance_consumed: number; token_allowance_limit: number; uncertain_or_pending: number; label: string } | null };
   test_output?: boolean;
@@ -52,6 +53,8 @@ export type ServerState = {
   inference_enabled: boolean;
 };
 const errors: Record<string, string> = {
+  continuation_access_ended: 'Guided investigation paused because its authorization or consent expired.',
+  continuation_interrupted: 'Guided investigation was interrupted. Saved evidence is retained; no inference was replayed.',
   spending_budget_exhausted: 'The server or visitor inference allowance is exhausted. No provider request was made; prior records are retained.',
   spending_concurrency_limit: 'The server inference slots are occupied. No request was queued or retried. Try an explicit action later.',
   offline_template_only: 'Application templates are available only in the separately labeled offline demo.',

@@ -83,6 +83,8 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
             from .walkthrough import RecoveryMonitor
             app.state.monitor = RecoveryMonitor(app.state.journey)
             app.state.access = Access(store, registry) if registry else None
+            from .continuation import Continuation
+            app.state.continuation = Continuation(app, registry, profile)
             async def monitor():
                 while True:
                     try:
@@ -100,11 +102,22 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
                 status = app.state.monitor.snapshot()
                 if status and status['status'] == 'running' and (task is None or task.done()):
                     task = asyncio.create_task(monitor())
-            app.state.start_monitor = start_monitor
+            loop = asyncio.get_running_loop()
+            app.state.start_monitor = lambda: loop.call_soon_threadsafe(start_monitor)
+            async def continue_investigation():
+                while True:
+                    await asyncio.sleep(.5)
+                    await run_in_threadpool(app.state.continuation.step)
+            continuation_task = asyncio.create_task(continue_investigation())
             start_monitor()  # Resume only an explicitly started durable schedule.
             try:
                 yield
             finally:
+                continuation_task.cancel()
+                try:
+                    await continuation_task
+                except asyncio.CancelledError:
+                    pass
                 if task:
                     task.cancel()
                     try:
@@ -166,7 +179,7 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     def state(request: Request):
         with app.state.workflow.write_lock:
             snapshot = app.state.workflow.store.snapshot()
-            result = dict(snapshot, test_output=test_output, photo_planning={'version': 1}, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
+            result = dict(snapshot, continuation=app.state.continuation.snapshot(), test_output=test_output, photo_planning={'version': 1}, photo_analysis={'version': 1, 'contract': 'photo-observation-v1'}, photo_collection={'version': 1, 'assets': ['F-17', 'V-08']}, journey=app.state.journey.snapshot(), inference_enabled=inference_enabled,
                         mode="local server / simulated incident / real inference only on explicit action")
             if result['journey']:
                 result['journey']['monitoring'] = app.state.monitor.snapshot()
@@ -338,4 +351,6 @@ def create_app(directory=DEFAULT_DATA, ledger_path=DEFAULT_LEDGER, send=transpor
     if documentation_options is not None:
         from .documentation import register
         register(app, **documentation_options)
+    from .continuation import register as register_continuation
+    register_continuation(app, fields, key)
     return app
