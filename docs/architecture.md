@@ -5,10 +5,12 @@ one server-backed workflow snapshot; the pages do not own separate incident,
 task, evidence, approval or recovery stores. Each tab polls the same API. Route
 identity alone is not authorization: the integrated release now has server roles,
 grants and assignments; the judge service has isolated HttpOnly visitor sessions.
-One demo visitor may use both roles. Neither is a public deployment claim.
+One demo visitor may use both roles. The current public Render service and
+persistent disk are verified in state.md; this does not establish production readiness.
 The current package adds explicit budgeted live-demo mode, metadata-only tracing,
 restricted documentation references and simulated monitoring; live/public acceptance
-remains open. [Current checks and free-hosting assessment](sprint-release.md).
+remains bounded: founder-reported real planning/image results are distinct from
+the completed isolated Chromium journey with doubles. [Connected evidence](unified-investigation.md).
 
 ## Target boundaries
 

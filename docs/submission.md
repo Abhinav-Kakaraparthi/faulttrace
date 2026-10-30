@@ -5,6 +5,19 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+- [x] Complete isolated synthetic connected journey exercised in Chromium through
+  real API/SQLite: task, upload/analysis, independent review, cited replanning,
+  approval, completion, monitoring and persisted sample-derived recovery.
+  **Offline doubles and synthetic human inputs; not live AI recovery.**
+
+Founder-reported live incident `9f470d1b-53c5-4ddc-8cfe-8f323bceff10` selected
+V-08 then F-17 (citing the intermediate report) and fixture analysis returned
+180 kPa. Unknown identity remains unresolved and blocks approval. No live record,
+receipt or allowance was changed. The updated 2:50 script explicitly separates
+these real NVIDIA results from the successful offline recovery recording.
+Publication, measured video duration, broad image accuracy and completed hosted
+live recovery remain open. No new provider/search/export call or spending.
+
 Current repair addresses a user-demonstrated shell cascade regression. Production
 assets now pass eight actual headless Chromium viewport/route cases with offline
 doubles, including menu and evidence-dialog/keyboard checks; screenshots inspected.

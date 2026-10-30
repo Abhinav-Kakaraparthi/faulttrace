@@ -1,116 +1,40 @@
-# Final demo script - 170-second edit, not recorded or published
+# Final video: 2:50 target - not published
 
-Public demo URL: **https://faulttrace-judge-demo.onrender.com/**
-Deployed revision: **5e35e6cd27212f1423824b775a4ab98349b1a1c7**
+Use existing records and the completed offline browser recording. No new inference,
+Tavily search or trace export for footage/retakes. Measure the exported duration;
+word count alone does not prove the under-three-minute requirement.
 
-Render reports this exact passing-CI revision live. Recorded AI results below
-remain attributed to `4796656`; the correction deployed without another model call.
-HTTPS routes, role/session isolation, upload boundaries and session/state/image
-restart passed HTTP checks;
-the user verified synthetic reservation persistence through private Shell read-back.
-Founder browser review remains pending. This script establishes no visual
-acceptance. Keep **SIMULATED EQUIPMENT / TELEMETRY** visible.
-All provider authorizations are spent. Use existing results; no model/search calls
-or trace resends for recording, timing practice or retakes.
-Hosted integrations are now explicitly enabled under durable limits. The separate
-hosted verification also produced real task creation, synthetic-panel photo contract
-completion and refusal-context escalation; it did not verify real-photo accuracy
-or complete recovery. Label any use of these saved results by their actual scope.
+## Shot list and narration
 
-## Record these eight shots
+| Time | Actual footage and persistent label | Narration |
+| --- | --- | --- |
+| 0:00-0:15 | Current hosted Commander/Operator. **SIMULATED EQUIPMENT / TELEMETRY**. | "FaultTrace connects an incident to the next useful observation, operator evidence, human approval and independently verified simulated recovery. Commander and Operator share one durable investigation." |
+| 0:15-0:40 | Saved incident `9f470d1b-53c5-4ddc-8cfe-8f323bceff10`, first V-08 proposal/task and its receipt. **EXISTING REAL NVIDIA RESULT VIA NEBIUS**. | "In this founder-operated live run, NVIDIA Nemotron selected a V-08 position observation. Application policy validated the action and evidence references before creating the task. The founder entered a clearly scripted simulated intermediate-position report; no valve movement occurred." |
+| 0:40-1:05 | Existing second proposal citing that report, F-17 task, panel-a upload and saved fixture-analysis result. **REAL NVIDIA INFERENCE / SYNTHETIC FIXTURE**. | "The updated evidence informed the next real NVIDIA decision: request F-17 local differential pressure and cite the operator report. The founder submitted our synthetic indicator. NVIDIA extracted 180 kilopascals through the separate fixture-analysis contract. These are saved results, not replayed calls." |
+| 1:05-1:20 | Existing unknown-identity review/blockers. Keep this incident unchanged. | "A reading is not proof of asset identity. Identity remains unknown in this review, so the claim stays unresolved and correction is blocked. We preserve that outcome rather than force a successful recovery." |
+| 1:20-2:15 | Explicit title card: **SEPARATE OFFLINE CONNECTED REHEARSAL - SCRIPTED PROVIDER DOUBLES / SYNTHETIC HUMAN INPUTS**. Use successful local browser recording: reviewed photo, second cited task, approval, completion, monitoring and recovery. | "Now we switch to a separate, browser-tested offline rehearsal using the same application routes and persistent workflow. Its fixture provenance and independently scripted human observations are documented. Image interpretation remains a claim; compatible human pressure and valve reports support deterministic assessment. Commander explicitly approves the registered simulated replacement. Operator acknowledges completion. Completion alone is not recovery: fresh independent samples must satisfy pressure, flow, valve and alarm rules across the minimum observation window. The verifier establishes recovery from those samples. Both views retain the evidence and outcome after reload." |
+| 2:15-2:35 | Existing official WIKA A-10 citation and sanitized LangSmith trace, if readily available; otherwise architecture diagram. **REFERENCE EXAMPLE / EXISTING METADATA TRACE**. | "NVIDIA inference runs through Nebius. Tavily provides cited manufacturer references, separate from observed evidence or correction authority. LangSmith retains sanitized operation metadata, without private images, prompts or raw reasoning. No new service calls were needed for this recording." |
+| 2:35-2:50 | Repository/demo URLs, simulation disclosure. | "FaultTrace is a bounded prototype, not a plant control system. Arbitrary photographic measurement accuracy remains unverified. Models propose, deterministic policy validates, people approve, and independent telemetry verifies. Trace the cause. Verify the recovery." |
 
-The quoted paragraphs below are the complete spoken script. Timeboxes include
-screen transitions and short pauses. Aim for a natural 130 words/minute and a
-final exported duration of **2:50 or less**, leaving margin below three minutes.
-Actual timing must be measured from the recorded edit, not inferred from word count.
+## Evidence and edit boundaries
 
-### 0:00-0:15 - Entry and shared workspaces
-
-Show the verified current-code entry, Try demo, then Commander and Operator.
-Use two tabs sharing one isolated visitor session. Never show another visitor's
-records. On-screen: **Interactive demo - sample data**.
-
-> When return flow falls, a team needs the next useful observation, not a confident guess. FaultTrace connects investigation, operator evidence and independently verified simulated recovery.
-
-### 0:15-0:35 - Recorded real NVIDIA planning
-
-Show the real saved first planning result and resulting F-17 task, with its
-sanitized receipt. On-screen: **Previously recorded NVIDIA inference via Nebius**.
-If these records cannot be displayed in the current UI without changing history,
-use a clearly separate evidence insert; do not seed a mock response into the UI.
-
-> Commander sees the incident, process and evidence gaps. In this saved run, NVIDIA Nemotron through Nebius proposed a local observation. Application policy checked the action, references and context revision before creating the task. The model cannot authorize equipment changes.
-
-### 0:35-1:00 - Collection, interpretation and independent human input
-
-Show actual photo controls using a permission-cleared image or a synthetic
-collection-only example. Show the existing real photographic receipt separately
-unless reuse permission for its image is documented. Never put an interpretation
-over a different image. Show blank independent answer fields and source labels.
-
-> Operator collects evidence against an assignment. Assignment does not prove photographed identity. NVIDIA interpretations remain unverified claims, separate from independent human reports. A valid output contract does not prove a correct reading: our real-photo evaluation failed preliminary reviewer comparison, and those estimates are not calibrated ground truth.
-
-### 1:00-1:20 - Updated context and actual escalation
-
-Show the saved operator report and actual second planning result. On-screen:
-**Previously recorded NVIDIA result - human escalation**. Do not substitute a
-more convenient task or imply that a refusal was bypassed.
-
-> The operator report changes the evidence available to planning. Our recorded second result escalated to a human. We show that outcome rather than force success. Inaccessible assets, stale evidence and conflicts must remain visible, and planning budgets do not reset for another take.
-
-### 1:20-1:55 - Separate offline simulated correction and recovery
-
-Make an explicit title-card transition: **SEPARATE OFFLINE SIMULATION - no live AI**.
-Show an existing compatible-evidence run, current-revision approval, the approved
-simulated assignment, Operator completion, progress and its actual stored samples.
-Keep simulation measurement times distinct from wall-clock audit times.
-
-> Now we switch to a separate offline simulation. Compatible, fresh and undisputed observations permit a registered simulated filter replacement. Commander approves the current evidence revision; Operator completes the assignment. That completion does not establish recovery. Independent post-action samples must satisfy the declared bands, observation window and alarm checks. Recovery is derived from those samples, never declared by the model. There is no real equipment connection.
-
-### 1:55-2:15 - Actual references and sanitized observability
-
-Show the actual Tavily A-10 result, retrieval time and official link. Do not
-present S-20 or PSD-4 documents as A-10 instructions. Show the user-confirmed
-existing LangSmith photo trace/attributes with private account details hidden.
-On-screen: **Existing real service results - reference example, not F-17 identity**.
-
-> Tavily retrieved this useful official WIKA A-10 product reference. It does not identify our photograph or F-17, and documents cannot authorize correction. LangSmith shows sanitized metadata from an existing photo-analysis call, without exporting private images, prompts or raw reasoning.
-
-### 2:15-2:30 - Failure evidence
-
-Show retained offline test output for a disputed or stale observation, ineffective
-correction and relapse. On-screen: **OFFLINE TEST OUTPUT - provider doubles**.
-Do not imply these choices were made by live NVIDIA inference.
-
-> Offline tests also cover refusal, disputed or stale observations, ineffective correction and relapse. These are labeled test results, not live AI successes. Unresolved evidence blocks progress instead of becoming forced recovery.
-
-### 2:30-2:50 - Architecture and close
-
-Show a compact architecture graphic or existing architecture view, then the
-verified repository/demo links. Never show credentials, cookies or account IDs.
-If deployment acceptance is still open, omit the public-demo claim and disclose it.
-
-> React workspaces share a Python API and durable investigation records. NVIDIA proposes; deterministic policy validates; people approve; independent telemetry verifies. FaultTrace is a bounded industrial investigation prototype with simulated equipment, not a production control system. Trace the cause. Verify the recovery.
-
-## Evidence and edit rules
-
-- First/second planning and photo: existing real production-route results, not new
-  on-camera requests. The second planning result was escalation. A cut between
-  stored results and another incident does not establish one live recovery journey.
-- Tavily: one useful official A-10 product citation was verified. Other returned
-  documents concern S-20/PSD-4; a model-name mention does not prove applicability.
-- LangSmith: three records were remotely readable with receipt-fingerprint matches;
-  the founder confirmed the photo trace and attributes through browser screenshots.
-  Do not claim agent-operated browser testing or acceptance of all trace views.
-- Recovery: use the existing completed simulated run or clearly labeled offline
-  doubles. Never manufacture human observations, silently fill answers from AI,
-  alter the run history or copy hidden simulator truth into model context.
-- Photograph rights: the MAXIMATOR image is not automatically cleared for public
-  reuse. Use original/permissioned media or synthetic fixtures, and do not relabel
-  synthetic collection footage as real photographic inference.
-- Before publication, measure final duration, check narration/captions and readable
-  desktop/mobile footage, verify public links and deployed SHA, and review every
-  frame for private images, tokens, cookies, workspace IDs and raw reasoning.
-
-The script is ready for recording after the required footage/rights and hosted
-checks are resolved. No video has been recorded, published or submitted here.
+- Live steps are **founder-reported**, not agent-operated browser verification.
+  First planning attempt `96b9fcdb-a63a-40bd-90d2-332c2853cf7e`: 940 input /
+  1105 output / 2045 total tokens. Reported fixture analysis: 441 / 345 / 786.
+  The second planning attempt ID/usage was not supplied here; do not invent it.
+- Live review retains `observed_identity_unresolved` / `photo_claim_unresolved`.
+  Do not change identity, hide blockers, retry inference or splice the offline
+  recovered outcome into that incident. Never call the rehearsal a live AI success.
+- Offline successful footage is under ignored
+  `.local/connected-browser/5f00c24d612544ccae16807395f377e2/browser/`:
+  eight numbered screenshots, two WebM recordings and `result.json`. Runtime uses
+  current application code; only transport/results and human inputs are scripted.
+  Synthetic fixture identity is creator-declared scenario provenance, not AI proof.
+- The earlier real-photo 5000 psi result failed preliminary reviewer comparison;
+  reviewer estimates were not calibrated ground truth. No photographic accuracy
+  claim follows from contract completion or the synthetic indicator result.
+- Never show keys, cookies, private account/workspace details or raw reasoning.
+  Use only project synthetic media or permission-cleared images. MAXIMATOR reuse
+  rights remain unverified. Do not overlay an interpretation on a different image.
+- Founder must review the final edit, measure <=2:50, and approve publication.
+  No final video has been edited, published or submitted by this checkpoint.

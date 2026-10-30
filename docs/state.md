@@ -1,5 +1,59 @@
 # Checkpoint state
 
+## Connected demonstration — completed offline browser journey
+
+Started clean at `871778a` on `feat/finish-integrated`. Compared the architecture,
+shared-investigation contract and current routes; every required transition worked
+through the existing application. **No production frontend/backend/policy fix was
+needed.** Runtime source remains the deployed `69e5fe9`; the new harness is test-only
+and excluded from the runtime Docker stage. No needless hosted restart/deployment
+or historical-data change is required for test/documentation additions.
+
+Actual Playwright/Chromium drove a new isolated localhost backend and its SQLite,
+image store and separate test ledger: incident, validated scripted proposal, F-17
+assignment, file selection/upload, explicit photographic analysis, independently
+entered identity/type/reading/unit, cited V-08 replanning, independent position
+report, current-revision Commander approval, Operator acknowledgment, explicit
+monitoring and sample-derived recovery. Claim-only and partial evidence blocked
+approval; maintenance completion did not declare recovery. All independent fields
+started blank. >=5 qualifying samples spanning >=40 simulated seconds verified
+recovery; the monitor completed with six samples/50 seconds. Both views retained
+the outcome after reload, including 390x844 Operator. Screenshots were inspected.
+
+Read-only SQLite audit: one incident, two tasks, three evidence records, two planning
+attempts, one analysis, one approval and seven samples. Second saved context includes
+the reviewed evidence; the accepted proposal cites the canonical human-report ref.
+Hidden outcome/answer-key fields were absent from saved planner contexts. Double
+usage is unknown, not fabricated tokens. 320 guarded backend tests (zero forbidden
+external attempts), 105 frontend tests, typecheck, normal/demo builds and both
+combined contracts passed. Initial test CSP/label-locator failures were fixed in
+the test runner only; the earlier incomplete run remains intact.
+
+Successful data/footage: ignored
+`.local/connected-browser/5f00c24d612544ccae16807395f377e2/`, eight numbered full-page
+screenshots, two WebM recordings, browser result and read-only persistence summary.
+Local retained completed preview: http://127.0.0.1:8893/commander and /operator;
+choose Verify local server. This explicit-local profile is not employee role
+isolation; existing release/demo security checks remain separate. No camera-hardware
+or full hosted/live-recovery acceptance is inferred from this offline rehearsal.
+
+Founder-reported **live** incident `9f470d1b-53c5-4ddc-8cfe-8f323bceff10` remains
+untouched: real V-08 proposal (`96b9fcdb-a63a-40bd-90d2-332c2853cf7e`, 940/1105/2045),
+scripted simulated intermediate report, real F-17 proposal citing it, and real
+fixture analysis returning 180 kPa (441/345/786). Unknown-identity review retains
+observed_identity_unresolved/photo_claim_unresolved and blocks correction. Second
+planning ID/usage was not provided; nothing was reconstructed. These observations
+are attributed to the founder, not agent-operated live browser testing.
+
+Updated submission copy and 2:50 shot/narration script use that live branch followed
+by an explicit **separate offline rehearsal** cut. Narration is 295 words; final
+edited duration must still be measured. Remaining gaps: complete hosted live
+recovery, arbitrary photographic accuracy, camera hardware, final edited video and
+publication/submission approval. Cosmetic work remains frozen. Next: record/review
+the final video from existing live records plus the saved offline footage; no new
+NVIDIA/Tavily calls, trace resends or retakes via inference. No real ledger, budget,
+secret, hosted record or existing user preview was changed.
+
 ## Shell-layout repair — rendered offline and deployed; cosmetics frozen
 
 Tested/deployed revision `69e5fe9e79bd7b9f0d7e383f893fa39c389ed78b` passed

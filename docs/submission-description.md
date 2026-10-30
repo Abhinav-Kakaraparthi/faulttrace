@@ -1,23 +1,31 @@
 # FaultTrace submission copy - draft, not submitted
 
 Public demo: **https://faulttrace-judge-demo.onrender.com/**
-Deployed revision: **5e35e6cd27212f1423824b775a4ab98349b1a1c7**
-Video: **[FOUNDER: final reviewed video URL, under three minutes]**
+Current deployed application: **69e5fe9e79bd7b9f0d7e383f893fa39c389ed78b**
+Video: **[FOUNDER: reviewed final video URL, under three minutes]**
 Repository: https://github.com/Abhinav-Kakaraparthi/faulttrace
 
-Render reports this exact passing-CI revision live on the same approved compute
-instance and 1 GiB disk. This correction was deployed without provider calls;
-recorded live AI results below remain attributed to `4796656`. HTTPS routes,
-role/session isolation and upload boundaries
-passed HTTP checks, including same-session/state/image persistence across restart.
-The user verified synthetic reservation persistence via private Shell read-back;
-founder browser review remains pending. Explicit NVIDIA, restricted Tavily and
-metadata-only LangSmith are enabled with durable limits. Hosted task creation,
-synthetic-panel photo contract, refusal-context escalation, official references and
-remote metadata trace read-back passed. This is not real-photo accuracy or one
-completed live recovery journey. The agent verification grant is consumed.
-Do not publish or finalize Devpost
-from this draft.
+The founder's current live incident `9f470d1b-53c5-4ddc-8cfe-8f323bceff10`
+contains reported real NVIDIA V-08 planning, a scripted simulated intermediate
+report, real F-17 replanning citing that report, and real fixture analysis returning
+180 kPa. Its unknown-identity review correctly remains blocked. It was not retried,
+reidentified or converted into a successful recovery.
+
+Separately, actual Chromium drove the complete connected application through an
+isolated local backend/SQLite with labeled provider doubles and scripted synthetic
+human evidence: upload, analysis, review, cited next task, human approval, Operator
+completion, independent monitoring and sample-derived recovery. Both views retained
+the result after reload. This demonstrates application transitions, not live AI
+reasoning/accuracy or one completed hosted live recovery journey. See
+[connected evidence](unified-investigation.md) and [2:50 video script](final-video-revision-plan.md).
+
+HTTPS/session/isolation/upload/restart hosting evidence remains valid. This
+checkpoint made zero provider/search/export calls, used no new spending and did
+not change the hosted incident or limits. Do not publish or finalize Devpost from
+this draft. Camera hardware, arbitrary-photo accuracy and full live recovery remain
+open. MAXIMATOR public-image rights and calibrated numeric ground truth are not
+established. The real-photo 5000 psi output failed preliminary reviewer comparison;
+reviewer estimates were not calibrated ground truth.
 
 ## Short description
 
@@ -87,10 +95,11 @@ the actual deployed revision before it is described as accepted.
 ## What we verified
 
 - Real NVIDIA calls exercised the integrated production application paths for
-  planning and photographic output contracts. In a saved run, the first proposal
-  created an observation task and the second result escalated to a human. This is
-  narrow evidence, not general planning reliability or a live browser-driven
-  diagnosis-to-recovery success.
+  planning and image-output contracts. Earlier saved runs include human escalation;
+  the current founder-reported run instead selected V-08 then F-17, citing the
+  simulated human report, and extracted 180 kPa from the synthetic fixture. Unknown
+  identity still blocks approval. This is narrow evidence, not general planning
+  reliability or a complete live recovery success.
 - A separately authorized Tavily call returned three results and retained all
   three for one reported credit. The WIKA A-10 product page is a useful exact-model
   reference example. The S-20 and PSD-4 documents concern other models and are not
@@ -98,13 +107,16 @@ the actual deployed revision before it is described as accepted.
 - Three existing LangSmith records were remotely readable with matching receipt
   fingerprints. The founder confirmed the photo trace and its attributes in
   browser screenshots; this is separate from automated checks.
-- The founder previously completed the simulated recovery journey in both views.
+- Chromium now completed a separate connected journey through real local API and
+  SQLite, using labeled provider doubles and synthetic human inputs, with upload,
+  analysis, review, cited replanning, approval, completion, monitoring, recovery
+  and desktop/mobile persistence screenshots/recording. No provider call occurred.
+  The founder also previously completed the simulated recovery journey in both views.
   Offline integration tests cover rejection, stale evidence/approval, disputes,
   duplicate operations, persistence, ineffective correction and relapse. Provider
   doubles are labeled offline tests, not live AI behavior.
-- The latest recorded guarded backend suite passed 314 tests with zero forbidden
-  external network attempts. Exact-SHA CI and any new hosted checks belong in the
-  coordinator's current release evidence; static tests are not browser acceptance.
+- Guarded backend, frontend/build, combined-contract and exact-SHA CI evidence is
+  recorded in state.md. Actual browser evidence is separate from static assertions.
 
 ## Challenges and limitations
 
@@ -119,15 +131,15 @@ to one answer.
 FaultTrace currently demonstrates one bounded simulated restriction scenario.
 There are no real equipment-control connections, verified industrial diagnosis or
 production-readiness claims. The complete browser-driven live AI recovery journey,
-broader image evaluation, browser acceptance and operational
+broader image evaluation, hosted live-journey acceptance and operational
 capacity remain separate gates. Existing provider authorizations are spent; no new
 inference or search is needed to manufacture a more convenient video result.
 
 ## What's next
 
-Complete founder browser acceptance, then record the truthful under-three-minute
-demo using existing provider evidence and a separately labeled
-offline simulated recovery. Broader independently labeled photo evaluation and
+Record the truthful under-three-minute demo using the existing founder-operated
+live evidence and the separately labeled completed offline browser recording.
+Review the final edit and publish only with founder approval. Broader photo evaluation and
 carefully budgeted live walkthroughs would need separate approval. Public inference
 must never run with ephemeral spending-limit records.
 
