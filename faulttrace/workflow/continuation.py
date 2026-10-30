@@ -145,13 +145,13 @@ class Continuation:
                 return
             photos = [e for e in snapshot['evidence'] if e['task_id'] == task['id'] and e['kind'] == 'image']
             latest = photos[-1] if photos else None
+            if latest and latest.get('analysis') and latest['analysis']['status'] in ('failed', 'uncertain', 'rejected', 'stale'):
+                self.phase('escalated', 'photo_result_requires_review', True)
+                return
             if task['status'] == 'awaiting' and latest:
                 analysis = latest.get('analysis')
                 if not analysis:
                     self.phase('awaiting_photo_analysis')
-                    return
-                if analysis['status'] in ('uncertain', 'rejected', 'stale'):
-                    self.phase('escalated', 'photo_result_requires_review', True)
                     return
                 assessment = latest.get('photo_assessment')
                 if analysis['status'] == 'interpreted' and assessment:

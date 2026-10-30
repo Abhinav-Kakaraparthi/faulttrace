@@ -62,7 +62,7 @@ Set `FAULTTRACE_PLAYWRIGHT_MODULE` and `FAULTTRACE_CHROMIUM_PATH` (or the existi
 `FAULTTRACE_CHROMIUM_EXECUTABLE`) when the browser runtime lives outside the project.
 The launcher compiles local assets, creates a fresh ignored directory and loopback
 service, runs the browser journey, retains its evidence and stops only its own service.
-Local verification: 333 guarded backend tests, 114 frontend tests, typecheck,
+Local verification: 334 guarded backend tests, 114 frontend tests, typecheck,
 normal/demo builds and both combined API contracts pass. The browser journey uses
 zero external provider calls and no manual planning/monitoring requests.
 

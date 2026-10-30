@@ -89,6 +89,19 @@ class ContinuationTests(UnifiedInvestigationTests):
         self.assertFalse(self.state(client)['continuation']['enabled'])
         self.assertIsNone(self.state(client)['task'])
 
+    def test_failed_or_interrupted_photo_stops_even_on_a_clarification_task(self):
+        client = self.client(); self.consent(client); self.tick(); photo = self.photograph(client)
+        for task_status in ('awaiting', 'needs_evidence'):
+            for status in ('failed', 'uncertain', 'stale'):
+                with self.app.state.workflow.store.connection(write=True) as db:
+                    db.execute('UPDATE analyses SET status=? WHERE evidence_id=?', (status, photo))
+                    db.execute('UPDATE tasks SET status=?', (task_status,))
+                self.consent(client); self.tick()
+                current = self.state(client)['continuation']
+                self.assertFalse(current['enabled'])
+                self.assertEqual(current['error'], 'photo_result_requires_review')
+                self.assertEqual(len(self.calls), 2)
+
     def test_crash_dispatch_journal_is_not_replayed(self):
         client = self.client(); self.consent(client)
         runner = self.app.state.continuation
