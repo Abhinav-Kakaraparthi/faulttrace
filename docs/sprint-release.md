@@ -9,8 +9,10 @@ Public URL: **https://faulttrace-judge-demo.onrender.com/**. No external-storage
 migration has begun. The earlier free-hosting assessment below is historical.
 
 Package originated on `feat/sprint-release`; integrated deployment is
-`4796656734d8ddce7aeea0c356016b92844b7c46`, live according to Render and matching
-[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40981733156).
+`5e35e6cd27212f1423824b775a4ab98349b1a1c7`, live according to Render and matching
+[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40986357894).
+The prompt/presentation correction was deployed without provider calls; the saved
+escalation was not retried. Earlier live verification remains attributed to `4796656`.
 Later documentation is separate. Hosted HTTP checks are not browser acceptance.
 
 ## Package and data boundary

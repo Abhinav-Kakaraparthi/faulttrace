@@ -9,10 +9,11 @@ User browser review found a valid initial human escalation with no Operator task
 Read-only context inspection confirms both observations remained available; model
 reasoning was not retained. An offline-tested input/presentation fix adds action
 purpose/scope and an honest escalation state without forcing an observation or
-retrying the incident. It is not yet deployed/live-verified; general planning and
+retrying the incident. It is deployed at `5e35e6c`; revised model behavior is not
+live-verified. No provider calls or incident mutations during deployment; general planning and
 full browser-journey acceptance remain open. See state.md for the narrow findings.
 
-Hosting update: https://faulttrace-judge-demo.onrender.com/ is live at `4796656`
+Hosting update: https://faulttrace-judge-demo.onrender.com/ is live at `5e35e6c`
 with passing exact-SHA CI. Exactly one approved 512 MB instance and 1 GiB disk,
 $7.25/month baseline before tax/bandwidth, manual deploys. Explicit NVIDIA,
 restricted Tavily and metadata-only LangSmith are now enabled with unchanged durable

@@ -12,19 +12,19 @@ The final integration sprint adds an explicitly enabled, globally/session-budget
 live-demo configuration, restricted Tavily references, metadata-only LangSmith
 tracing, paused simulated-observation time, observation renewal and automatic
 independent recovery monitoring. Default remains offline. Current implementation
-`4796656` passes Linux/Windows/backend/frontend/container CI. Subsequent real
+`5e35e6c` passes Linux/Windows/backend/frontend/container CI. Subsequent real
 NVIDIA planning/photo contracts, one useful Tavily reference citation and LangSmith
 metadata delivery are narrowly verified; photo accuracy, the complete browser-driven
 live recovery journey remain unverified. Provider allowances
 are spent; do not rerun verification commands. See [current evidence](docs/state.md).
 The judge demo is live at
-**https://faulttrace-judge-demo.onrender.com/** on `4796656`. One 512 MB compute
+**https://faulttrace-judge-demo.onrender.com/** on `5e35e6c`. One 512 MB compute
 instance plus a 1 GiB disk has a $7.25/month baseline before tax/bandwidth. HTTPS,
 session/isolation, upload and same-session/state/image restart checks pass.
 The user verified the unchanged synthetic spending reservation after restart;
 founder browser acceptance remains pending. Explicit NVIDIA planning/photo analysis,
 restricted Tavily references and metadata-only LangSmith tracing are enabled behind
-the existing durable limits. Hosted verification passed (photo used a synthetic
+the existing durable limits. Hosted verification on `4796656` passed (photo used a synthetic
 panel, not a real-photo accuracy evaluation). Its agent grant is spent; global
 postflight remaining: 7 requests/733,056 admission units, not actual token usage.
 Open a new private window for a fresh live demo; existing offline runs stay offline.

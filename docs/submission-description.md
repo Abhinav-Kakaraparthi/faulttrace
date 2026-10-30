@@ -1,12 +1,14 @@
 # FaultTrace submission copy - draft, not submitted
 
 Public demo: **https://faulttrace-judge-demo.onrender.com/**
-Deployed revision: **4796656734d8ddce7aeea0c356016b92844b7c46**
+Deployed revision: **5e35e6cd27212f1423824b775a4ab98349b1a1c7**
 Video: **[FOUNDER: final reviewed video URL, under three minutes]**
 Repository: https://github.com/Abhinav-Kakaraparthi/faulttrace
 
-Render reports this exact passing-CI revision live on the approved single compute
-instance and 1 GiB disk. HTTPS routes, role/session isolation and upload boundaries
+Render reports this exact passing-CI revision live on the same approved compute
+instance and 1 GiB disk. This correction was deployed without provider calls;
+recorded live AI results below remain attributed to `4796656`. HTTPS routes,
+role/session isolation and upload boundaries
 passed HTTP checks, including same-session/state/image persistence across restart.
 The user verified synthetic reservation persistence via private Shell read-back;
 founder browser review remains pending. Explicit NVIDIA, restricted Tavily and

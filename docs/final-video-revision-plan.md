@@ -1,10 +1,12 @@
 # Final demo script - 170-second edit, not recorded or published
 
 Public demo URL: **https://faulttrace-judge-demo.onrender.com/**
-Deployed revision: **4796656734d8ddce7aeea0c356016b92844b7c46**
+Deployed revision: **5e35e6cd27212f1423824b775a4ab98349b1a1c7**
 
-Render reports this exact passing-CI revision live. HTTPS routes, role/session
-isolation, upload boundaries and session/state/image restart passed HTTP checks;
+Render reports this exact passing-CI revision live. Recorded AI results below
+remain attributed to `4796656`; the correction deployed without another model call.
+HTTPS routes, role/session isolation, upload boundaries and session/state/image
+restart passed HTTP checks;
 the user verified synthetic reservation persistence through private Shell read-back.
 Founder browser review remains pending. This script establishes no visual
 acceptance. Keep **SIMULATED EQUIPMENT / TELEMETRY** visible.

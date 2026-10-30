@@ -1,6 +1,17 @@
 # Checkpoint state
 
-## Initial escalation review — offline fix ready, not deployed
+## Initial escalation review — correction deployed
+
+At the user's explicit deployment authorization, `5e35e6cd27212f1423824b775a4ab98349b1a1c7`
+was deployed only to the existing service/disk, following
+[passing exact-SHA CI](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/40986357894).
+Render reports it live. Health, home, Commander and Operator return HTTPS200 and
+the updated escalation UI bundle is served. Environment fingerprint excluding
+build revision is identical before/after; only that revision setting changed.
+No secret-file, budget, session, receipt or incident mutation was requested. No
+provider calls, escalation retry or live evaluation of the revised prompt occurred.
+Actual browser rendering remains unverified. Deployment evidence is ignored under
+`.local/planner-correction-deploy/`; later docs commits do not auto-deploy.
 
 Started clean at `e1cfc96`. User-performed read-only Render inspection of attempt
 `4d4523b0-271f-4db8-ad24-e2c01598bced` on deployed `4796656` confirms revision 1,
@@ -23,14 +34,13 @@ an observation assignment is pending; unchanged-context retry remains unavailabl
 typecheck/build passed. Presentation checks are static; browser helpers were not
 repeated. No provider calls, deployment or server restart in this review.
 
-Shortest current-visitor continuation: retain/review this incident's cited telemetry
-and escalation history for human investigation. To exercise Operator without another
-model call, use existing **Start new offline demo**: a separate explicitly labeled
-template investigation preserves this decision and does not reset global allowances.
-Do not restart live planning to chase a preferred result. The earlier seven-request
-global balance is historical; this visitor consumed another reservation, and current
-global remaining was not re-queried. Next deployment can ship the reviewed fix after
-exact-SHA CI; no new live verification is authorized here.
+Shortest browser check: refresh the existing Commander/Operator tabs. The real
+escalation should show human investigation requested, its existing citations/history
+and no Operator assignment or unchanged-context retry. This is the live investigation,
+not an offline substitute. Keep the saved decision intact; do not reroll it to chase
+a preferred result. A future explicitly requested new live context is needed to
+evaluate the revised instructions; none was called in deployment. The earlier
+seven-request global balance is historical and current remaining was not re-queried.
 
 ## Hosted AI activation — live and bounded verification passed
 
