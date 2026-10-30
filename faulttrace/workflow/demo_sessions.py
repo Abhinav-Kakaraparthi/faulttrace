@@ -94,3 +94,8 @@ class DemoSessions:
     def end(self, row):
         with self.db() as db:
             db.execute('UPDATE sessions SET ended=1 WHERE hash=?', (row['hash'],))
+
+    def continuation_active(self, session, run):
+        with self.db() as db:
+            row = db.execute('SELECT run,ended,expires FROM sessions WHERE hash=?', (session,)).fetchone()
+        return bool(row and row['run'] == run and not row['ended'] and row['expires'] > self.clock())

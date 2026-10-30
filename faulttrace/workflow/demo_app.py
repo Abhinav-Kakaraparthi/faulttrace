@@ -72,6 +72,7 @@ def create_demo_app(directory, origin, *, local_http=False, clock=time.time, ttl
                 child, registry = await open_run(app.state.stack, root / 'runs' / identifier(run), origin,
                     live=run_live, budget=budget.for_session(session) if budget and run_live else None,
                     send=send, key_source=key_source)
+                child.state.continuation.allowed = lambda: app.state.sessions.continuation_active(session, run)
                 client = await app.state.stack.enter_async_context(httpx.AsyncClient(
                     transport=httpx.ASGITransport(app=child), base_url='http://127.0.0.1'))
                 children[run] = child, registry, client

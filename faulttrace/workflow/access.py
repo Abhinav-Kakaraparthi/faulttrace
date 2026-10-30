@@ -4,7 +4,7 @@ import re
 from .storage import WorkflowError, now
 
 STARTS = {'/api/incidents', '/api/investigations', '/api/simulation/start'}
-COMMANDER = {'/api/planning', '/api/simulation/approve', '/api/simulation/advance', '/api/simulation/monitor'}
+COMMANDER = {'/api/planning', '/api/continuation', '/api/simulation/approve', '/api/simulation/advance', '/api/simulation/monitor'}
 OPERATOR_TASK = {'images', 'reports', 'observations', 'photo-follow-up'}
 
 

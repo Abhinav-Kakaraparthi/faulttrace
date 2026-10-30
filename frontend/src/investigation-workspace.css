@@ -1,4 +1,7 @@
 /* Connected workspaces only: navy surfaces, restrained boundaries, real state. */
+.connected-shell .guided-investigation { padding:20px 24px; margin-bottom:18px; }
+.guided-investigation h2 { font-size:22px; line-height:1.35; margin:8px 0; }
+.guided-investigation p { margin:10px 0; }
 .connected-shell { --surface:#102136; --muted:#a7b9ce; --line:#293e55; --teal:#65e2cf; --amber:#f4c780; color:#edf4ff; background:#081321; }
 .connected-shell .workspace { min-width:0; background:#081321; }
 .connected-shell .sidebar { background:#0c1a2b; border-color:var(--line); }

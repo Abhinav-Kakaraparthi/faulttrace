@@ -12,7 +12,7 @@ const output = await build({ configFile: false, logLevel: 'silent',
   build: { ssr: 'tests/presentation-entry.tsx', write: false, rollupOptions: { output: { format: 'es' } } } });
 const file = join(temporary, 'render.mjs');
 writeFileSync(file, output.output.find(item => item.type === 'chunk' && item.isEntry).code);
-const { AccessSession, WorkflowController, renderOperator, renderPhotoDraft } = await import(pathToFileURL(file));
+const { AccessSession, WorkflowController, renderOperator, renderCommander, renderPhotoDraft } = await import(pathToFileURL(file));
 const id = '11111111-2222-4333-8444-555555555555';
 const response = (value, status = 200) => new Response(JSON.stringify(value), { status });
 const settle = async () => { for (let i = 0; i < 8; i++) await new Promise(resolve => setImmediate(resolve)); };
@@ -123,4 +123,20 @@ test('legacy display results cannot be offered as confirmable photographs', () =
   assert.match(html, /Real photograph examples and credits/);
   assert.match(html, /not from this simulated plant/);
   assert.match(renderPhotoDraft({onAnalyze: () => {}}), /Upload and analyze with NVIDIA/);
+});
+
+test('guided continuation consent is a Commander control and disables competing manual planning', () => {
+  const state = fixture();
+  state.journey = {evidence_mode:'task-evidence', maintenance_status:'not_completed', observations:[], samples:[],
+    assessment:{eligible:false,blockers:[],evidence_refs:[],alternatives:[]},policy:{},recovery:{status:'not_started'}};
+  state.continuation = {version:1,enabled:false,phase:'idle',expires:null,error:null};
+  state.journey.policy = {restriction_pressure_kpa:[170,195],restricted_flow_m3h:[80,95],
+    recovery_flow_m3h:[115,125],recovery_pressure_kpa:[25,40],valve_feedback_percent:[65,80]};
+  assert.match(renderCommander(state), /Start guided investigation/);
+  assert.doesNotMatch(renderOperator(state), /Start guided investigation|Pause guided investigation/);
+  state.continuation = {...state.continuation,enabled:true,phase:'awaiting_field_evidence'};
+  assert.match(renderCommander(state), /Pause guided investigation/);
+  assert.match(renderCommander(state), /Waiting for Operator to return field evidence/);
+  assert.match(renderCommander(state), /<button[^>]*disabled[^>]*>Choose next observation/);
+  assert.match(renderCommander(state), /No automatic retries, approvals or equipment actions/);
 });

@@ -12,6 +12,7 @@ import { DemoObservations } from './DemoObservations';
 import { DocumentationLookup } from './DocumentationLookup';
 import { InvestigationActivity } from './InvestigationActivity';
 import { investigationStage } from './investigationStage';
+import { GuidedInvestigation } from './GuidedInvestigation';
 
 export function CommanderPage(props: WorkspaceProps) {
   const { state, connection, disabled, mutate, navigate } = props;
@@ -20,7 +21,7 @@ export function CommanderPage(props: WorkspaceProps) {
   const sample = j?.samples.at(-1);
   const stage = state ? investigationStage(state, 'commander') : null;
   const correctionFocus = stage?.key === 'approval' || stage?.key === 'recovery_verification';
-  const planner = state && <PlannerPanel inspect={props.inspect} state={state} disabled={disabled} historyOnly={correctionFocus} choose={() => void mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => navigate('/operator')} />;
+  const planner = state && <PlannerPanel inspect={props.inspect} state={state} disabled={disabled || !!state.continuation?.enabled} historyOnly={correctionFocus} choose={() => void mutate('/api/planning', { revision: state.incident!.revision }, `plan-${state.incident!.revision}`)} open={() => navigate('/operator')} />;
   const journey = state && j && <JourneyPanel release={props.release} state={state} view="commander" presentation="commander" includeRecord={false} showOutcome={false} mutate={mutate} disabled={disabled} />;
   return <main id="main-content" tabIndex={-1} className="commander commander-page">
     <header className="page-heading"><div><span className="eyebrow">COMMANDER / INVESTIGATION</span><h1>{state?.incident ? 'Return-flow investigation' : 'Commander workspace'}</h1>
@@ -33,6 +34,7 @@ export function CommanderPage(props: WorkspaceProps) {
     </header>
     <WorkspaceState state={state} connection={connection} workspace="commander" />
     {state?.incident && <>
+      <GuidedInvestigation state={state} mutate={mutate} disabled={disabled} />
       <InvestigationActivity state={state} view="commander" />
       <div className="commander-overview-grid"><aside className="current-action section-surface" aria-label="Current investigation action"><span className="eyebrow">{correctionFocus ? 'DETERMINISTIC POLICY / NEXT ACTION' : 'NVIDIA OBSERVATION PLANNING'}</span>
           {correctionFocus ? journey : planner}<DemoObservations {...props} />
