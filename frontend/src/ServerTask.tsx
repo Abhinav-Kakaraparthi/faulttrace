@@ -7,8 +7,11 @@ import type { Mutate } from './workspace';
 import { HumanObservation } from './HumanObservation';
 import { PhotoCapture } from './PhotoCapture';
 import { escalatedWithoutTask } from './planningPolicy';
+import type { SubmitPhoto } from './photoSubmission';
+import { CurrentPhotograph } from './CurrentPhotograph';
+import { ReferencePhotographs } from './ReferencePhotographs';
 
-export function ServerTask({ state, mutate, disabled, inspect }: { state: ServerState; mutate: Mutate; disabled: boolean; inspect?: (item: ServerState['evidence'][number]) => void }) {
+export function ServerTask({ state, mutate, disabled, inspect, submitPhoto, allowFixtures = false }: { state: ServerState; mutate: Mutate; disabled: boolean; inspect?: (item: ServerState['evidence'][number]) => void; submitPhoto?: SubmitPhoto; allowFixtures?: boolean }) {
   const [selection, setSelection] = useState<'panel-a' | 'panel-b' | null>(null);
   const [error, setError] = useState('');
   const selectionKey = useRef(crypto.randomUUID());
@@ -33,14 +36,18 @@ export function ServerTask({ state, mutate, disabled, inspect }: { state: Server
   }
   return <section className="operator-task section-surface"><div className="task-topline"><span className="pill amber">{task.status.replaceAll('_', ' ')} · revision {task.revision}</span><span className="quiet-label">Server task</span></div>
     <div className="task-equipment"><span className="equipment-tag large">{task.asset_id}</span><div><span className="eyebrow">{task.creation_source.startsWith('TEST-CREATED') ? 'Test-created · not AI-generated' : task.creation_source}</span><h2>{task.asset_id === 'V-08' ? 'Observe valve position only' : 'Read local differential pressure'}</h2><p>{task.instruction}</p></div></div>
-    <PhotoCapture asset={task.asset_id} disabled={disabled || !accepts} supported={state.photo_collection?.version === 1 && state.photo_collection.assets.includes(task.asset_id)} upload={(blob, identity, progress) => mutate(`/api/tasks/${task.id}/images`, blob, `photo-${task.id}-${task.revision}-${identity}`, { 'X-Task-Revision': String(task.revision), 'X-Evidence-Purpose': 'reference-photo' }, progress)} />
+    <PhotoCapture asset={task.asset_id} disabled={disabled || !accepts} supported={state.photo_collection?.version === 1 && state.photo_collection.assets.includes(task.asset_id)}
+      analyzeUpload={submitPhoto && state.inference_enabled && state.photo_analysis?.contract === 'photo-observation-v1' ? (blob, identity, progress) => submitPhoto(task, blob, identity, true, progress) : undefined}
+      upload={async (blob, identity, progress) => submitPhoto ? await submitPhoto(task, blob, identity, false, progress) === 'stored' : mutate(`/api/tasks/${task.id}/images`, blob, `photo-${task.id}-${task.revision}-${identity}`, { 'X-Task-Revision': String(task.revision), 'X-Evidence-Purpose': 'reference-photo' }, progress)} />
+    <CurrentPhotograph state={state} disabled={disabled} mutate={mutate} inspect={inspect} />
     <details className="rationale"><summary>Why this task?</summary><p>{task.explanation} No diagnosis or action is authorized.</p><p>Source: {task.creation_source}. Task revision {task.revision}.</p></details>
-    {unified && <HumanObservation state={state} mutate={mutate} disabled={disabled} inspect={inspect} />}
-    {task.asset_id === 'V-08' ? <fieldset disabled={disabled || !accepts} className="fixture-picker"><legend>V-08 position · human report</legend><p>Visible position only; do not move the valve.</p><div className="response-alternatives">{(unified ? ['cannot-access', 'wrong-equipment'] : ['open', 'intermediate', 'closed', 'cannot determine', 'cannot-access', 'wrong-equipment']).map(value => <button className="response-button" key={value} onClick={() => report(value)}>Report {value === 'cannot determine' ? 'cannot determine / unreadable position' : value}</button>)}</div></fieldset> : <><fieldset disabled={disabled || !accepts} className="observation-alternatives"><legend>Cannot supply a photograph?</legend><div className="response-alternatives">{['cannot-access', 'wrong-equipment', 'unreadable'].map(value => <button className="response-button" key={value} onClick={() => report(value)}>Report {value.replaceAll('-', ' ')}</button>)}</div></fieldset><details className="fixture-development"><summary>Development / test: synthetic fixtures</summary><fieldset disabled={disabled || !accepts} className="fixture-picker"><legend>Synthetic DP-display regression fixtures</legend>
+    {unified && <HumanObservation key={`${task.id}-${task.revision}`} state={state} mutate={mutate} disabled={disabled} inspect={inspect} />}
+    <ReferencePhotographs />
+    {task.asset_id === 'V-08' ? <fieldset disabled={disabled || !accepts} className="fixture-picker"><legend>V-08 position · human report</legend><p>Visible position only; do not move the valve.</p><div className="response-alternatives">{(unified ? ['cannot-access', 'wrong-equipment'] : ['open', 'intermediate', 'closed', 'cannot determine', 'cannot-access', 'wrong-equipment']).map(value => <button className="response-button" key={value} onClick={() => report(value)}>Report {value === 'cannot determine' ? 'cannot determine / unreadable position' : value}</button>)}</div></fieldset> : <><fieldset disabled={disabled || !accepts} className="observation-alternatives"><legend>Cannot supply a photograph?</legend><div className="response-alternatives">{['cannot-access', 'wrong-equipment', 'unreadable'].map(value => <button className="response-button" key={value} onClick={() => report(value)}>Report {value.replaceAll('-', ' ')}</button>)}</div></fieldset>{allowFixtures && <details className="fixture-development"><summary>Development / test: synthetic fixtures</summary><fieldset disabled={disabled || !accepts} className="fixture-picker"><legend>Synthetic DP-display regression fixtures</legend>
       <p className="caption">Synthetic regression fixtures only; not photographs or proof of equipment identity. Explicit DP-display analysis remains separate.</p>
       <div className="fixture-options">{(['panel-a', 'panel-b'] as const).map((id, index) => <label key={id} className={`fixture-option ${selection === id ? 'chosen' : ''}`}><input type="radio" name="connected-fixture" checked={selection === id} onChange={() => { setSelection(id); selectionKey.current = crypto.randomUUID(); setError(''); }} /><img src={index === 0 ? panelA : panelB} alt={index === 0 ? 'Committed clear synthetic fixture' : 'Committed obscured synthetic fixture'} /><span>{id} · synthetic fixture</span></label>)}</div>
       <button className="button primary wide" onClick={() => void upload()}>Submit image — no inference yet</button>
-    </fieldset></details></>}
+    </fieldset></details>}</>}
     {!accepts && <p className="caption">Current evidence is on the server. Analyze explicitly below or have Commander request another observation.</p>}
     {error && <p role="alert" className="form-error">{error}</p>}
   </section>;

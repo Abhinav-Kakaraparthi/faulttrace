@@ -14,7 +14,7 @@ export function OperatorPage(props: WorkspaceProps) {
   const actionAssigned = state?.journey?.approval_current && !!state.journey.approval_id && !completed;
   const previousOnly = state && ['human_escalation', 'approval'].includes(investigationStage(state, 'operator').key)
     && state.task && !['awaiting', 'needs_evidence', 'submitted', 'analyzing'].includes(state.task.status);
-  const observation = state?.task && <section aria-label="Assigned observation"><ServerTask key={`${state.task.id}-${state.task.revision}`} state={state} mutate={mutate} disabled={disabled} inspect={props.inspect} />
+  const observation = state?.task && <section aria-label="Assigned observation"><ServerTask key={state.task.id} state={state} mutate={mutate} disabled={disabled} inspect={props.inspect} submitPhoto={props.submitPhoto} allowFixtures={props.release === false} />
     {state.journey && state.journey.evidence_mode !== 'task-evidence' && <p className="notice">This NVIDIA observation task is separate from the simulated correction checklist below. Its evidence is not yet integrated into that deterministic assessment.</p>}</section>;
   return <main id="main-content" tabIndex={-1} className="operator-layout connected-operator operator-page">
     <header className="operator-intro"><span className="eyebrow">OPERATOR / FIELD WORKSPACE</span><h1>{completed ? 'Simulated correction and recovery record' : state?.task ? `${state.task.asset_id} · Observation task` : 'Assigned work'}</h1>

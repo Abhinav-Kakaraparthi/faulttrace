@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { ServerEvidence, ServerState } from './api';
 import type { Mutate } from './workspace';
+import { reviewablePhotos } from './photoSubmission';
 
 export function HumanObservation({ state, mutate, disabled, inspect }: {
   state: ServerState; mutate: Mutate; disabled: boolean; inspect?: (item: ServerEvidence) => void;
@@ -17,7 +18,8 @@ export function HumanObservation({ state, mutate, disabled, inspect }: {
   const [error, setError] = useState('');
   const task = state.task;
   if (!task || state.journey?.evidence_mode !== 'task-evidence') return null;
-  const photos = state.evidence.filter(e => e.task_id === task.id && e.kind === 'image');
+  const photos = reviewablePhotos(state);
+  const legacy = state.evidence.some(e => e.task_id === task.id && e.kind === 'image' && e.analysis?.interpretation && e.analysis.contract !== 'photo-observation-v1');
   const selected = photos.find(e => e.id === photo);
   const numeric = type === 'pressure' || type === 'differential_pressure';
   const closed = state.journey.maintenance_status !== 'not_completed';
@@ -25,6 +27,7 @@ export function HumanObservation({ state, mutate, disabled, inspect }: {
   async function submit(event: React.FormEvent) {
     event.preventDefault(); setError('');
     if (!task || !state.incident) return;
+    if (decision !== 'independent' && !selected) { setError('Choose an analyzed photograph using the photographic observation contract. Legacy test-display results cannot be confirmed here.'); return; }
     if (numeric && (!reading.trim() || !Number.isFinite(Number(reading)))) {
       setError('Enter your own finite reading and visible unit.'); return;
     }
@@ -35,18 +38,19 @@ export function HumanObservation({ state, mutate, disabled, inspect }: {
       photo_id: decision === 'independent' ? null : photo, independent },
       `human-observation-${task.id}-${task.revision}`);
   }
-  return <form className="human-observation" onSubmit={e => void submit(e)}>
+  return <form id="independent-observation" tabIndex={-1} className="human-observation" onSubmit={e => void submit(e)}>
     <h3>Record your independent observation</h3>
     <p>Simulation report, not a real equipment action. Enter what you independently observe or are rehearsing. A photo interpretation is an unverified model claim.</p>
     <fieldset disabled={disabled || closed || !accepting}><legend>Human evidence for assigned {task.asset_id}</legend>
       <label>Observation source<select required value={decision} onChange={e => { setDecision(e.target.value); setPhoto(''); }}>
         <option value="">Choose source</option><option value="independent">Independent field report, without a photograph</option>
-        <option value="confirm">Independently confirm a photographic claim</option><option value="dispute">Dispute a photographic claim</option>
+        <option value="confirm" disabled={!photos.length}>Independently confirm a photographic claim</option><option value="dispute" disabled={!photos.length}>Dispute a photographic claim</option>
       </select></label>
+      {legacy && !photos.length && <p className="notice">The stored test-display result uses a legacy contract and cannot be confirmed as photographic evidence. Its history is preserved. Collect a real photograph or report the unresolved task; do not identify equipment from its assignment.</p>}
       {decision && decision !== 'independent' && <><label>Source photograph<select required value={photo} onChange={e => setPhoto(e.target.value)}>
         <option value="">Choose stored photograph</option>{photos.map(e => <option key={e.id} value={e.id}>Assigned {e.asset_id} / {e.created_at}</option>)}
       </select></label>{selected && inspect && <button type="button" className="button secondary" onClick={() => inspect(selected)}>Inspect source photograph</button>}
-        {!photos.length && <p>No photograph on this task. Upload one above or choose an independent field report.</p>}</>}
+        {!photos.length && <p>No analyzed photographic claim is ready for review. Upload and explicitly analyze a photograph above, or record an independent field report.</p>}</>}
       <label>Equipment identity you independently observed<select required value={asset} onChange={e => setAsset(e.target.value)}>
         <option value="">Choose observed identity</option>{['F-17','V-08','unknown','other'].map(a => <option key={a}>{a}</option>)}
       </select></label>

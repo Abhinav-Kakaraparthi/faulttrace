@@ -1,6 +1,7 @@
 import { APIError, type ServerState } from './api';
 import type { AccessSession } from './access';
 import type { UploadProgress } from './photoUpload';
+import type { SubmitPhoto } from './photoSubmission';
 
 type Snapshot = { state: ServerState | null; connection: 'loading' | 'online' | 'paused'; error: string; denied: boolean; busy: boolean; inspectionId: string | null };
 export class WorkflowController {
@@ -64,6 +65,57 @@ export class WorkflowController {
     if (valid() && failures < 3 && attempts + 1 < 900) this.#timer = setTimeout(() => void this.#load(generation, failures, attempts + 1), this.delay);
     else if (valid()) this.#set({ connection: 'paused' });
   }
+  // One explicit UI action authorizes this upload and, optionally, ONE analysis.
+  // Never infer the evidence ID from array order or replay an interrupted request.
+  submitPhoto: SubmitPhoto = async (task, blob, identity, analyze, progress) => {
+    const life = this.#life, before = this.#value.state;
+    if (!this.#current(life) || this.#value.busy || this.#value.connection !== 'online'
+      || !before?.incident || before.task?.id !== task.id || before.task.revision !== task.revision
+      || !['awaiting', 'needs_evidence'].includes(task.status)) return 'unconfirmed';
+    this.#set({ busy: true, error: '' });
+    clearTimeout(this.#timer); this.#read?.abort(); this.#poll++;
+    let stored = false, error = '';
+    const key = (name: string) => {
+      if (!this.#keys.has(name)) this.#keys.set(name, crypto.randomUUID());
+      return this.#keys.get(name)!;
+    };
+    try {
+      const response = await this.access.mutate(`/api/tasks/${task.id}/images`, blob,
+        key(`photo-${task.id}-${task.revision}-${identity}`),
+        { 'X-Task-Revision': String(task.revision), 'X-Evidence-Purpose': 'reference-photo' }, progress);
+      if (!this.#current(life)) return 'unconfirmed';
+      const id = response?.evidence_id;
+      if (typeof id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) throw new Error('Upload response was not confirmed. Refresh before another submission.');
+      stored = true;
+      const controller = new AbortController(); this.#read = controller;
+      const state = await this.access.state(controller.signal);
+      if (!this.#current(life)) return 'unconfirmed';
+      this.#set({ state, connection: 'online', denied: false });
+      if (!analyze) return 'stored';
+      const evidence = state.evidence.find(item => item.id === id);
+      const latest = state.evidence.filter(item => item.task_id === task.id && item.kind === 'image').at(-1);
+      if (state.incident?.id !== before.incident?.id || state.incident?.revision !== before.incident.revision + 1 || state.task?.id !== task.id
+        || state.task.revision !== task.revision + 1 || !['awaiting', 'needs_evidence'].includes(state.task.status)
+        || evidence?.task_id !== task.id || evidence.status !== 'collected' || evidence.analysis
+        || latest?.id !== id || !state.inference_enabled || state.photo_analysis?.contract !== 'photo-observation-v1') {
+        throw new Error('Photograph stored. Analysis stopped because the task, evidence or inference availability changed. Review the current record.');
+      }
+      await this.access.mutate(`/api/evidence/${id}/analyze-photo`, { revision: state.task.revision },
+        key(`photo-analysis-${id}-${state.task.revision}`));
+      return this.#current(life) ? 'analysis_requested' : 'unconfirmed';
+    } catch (failure) {
+      if (this.#current(life)) {
+        error = failure instanceof Error ? failure.message : 'Submission interrupted; refresh before another action.';
+        this.#set({ error });
+        if (failure instanceof APIError && failure.code === 'access_denied') {
+          this.access.releaseImages(); this.#set({ state: null, connection: 'paused', denied: true });
+        }
+      }
+      return stored ? 'stored_analysis_stopped' : 'unconfirmed';
+    } finally {
+      if (this.#current(life)) { this.#set({ busy: false }); if (!this.#value.denied) this.refresh(); if (error) this.#set({ error }); }
+    }
+  };
   mutate = async (path: string, body: object | Blob, identity: string, extra: Record<string, string> = {}, progress?: UploadProgress): Promise<boolean> => {
     const life = this.#life;
     if (!this.#current(life) || this.#value.busy) return false;

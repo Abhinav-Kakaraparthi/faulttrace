@@ -4,3 +4,11 @@
 .evidence-photo { max-width: 580px; margin: 14px 0; }.evidence-photo img { max-height: 360px; }.evidence-photo figcaption { font-size: 14px; color: #b7cbce; line-height: 1.6; }.evidence-provenance { display: grid; grid-template-columns: minmax(0,1fr); gap: 10px; }.evidence-provenance dd { margin: 5px 0 0; overflow-wrap: anywhere; }.evidence-provenance dt { color: #a8bfca; font-size: 14px; }.interpretation-block { border-left: 3px solid #67bdaf; padding-left: 16px; margin-top: 18px; }
 .photo-capture :focus-visible, .photo-draft :focus-visible { outline: 3px solid #a1f4e4; outline-offset: 4px; }
 @media(max-width:760px) { .photo-pickers { grid-template-columns: minmax(0,1fr); }.photo-actions .button { width: 100%; min-height: 46px; }.photo-draft { padding: 14px; } }
+.current-photograph { border: 1px solid var(--border, #284454); border-radius: 12px; padding: 1.2rem; margin: 1.2rem 0; background: #102635; }
+.current-photograph > .button { margin: .3rem .6rem .3rem 0; }
+.current-photograph .interpretation-block { margin: 1rem 0; }
+.reference-photographs { margin: 1.2rem 0; }
+.photo-reference-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 1rem; }
+.photo-reference-grid figure { margin: 0; padding: 1rem; border: 1px solid #284454; border-radius: 12px; }
+.photo-reference-grid img { display: block; width: 100%; height: 240px; object-fit: contain; background: #e5eaed; }
+.photo-reference-grid figcaption { padding-top: .8rem; }

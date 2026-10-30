@@ -206,7 +206,7 @@ function imageTaskState() {
 
 test('assigned uploads/reports/refusal remain Operator controls; both roles can explicitly analyze', () => {
   const state = imageTaskState();
-  const operator = renderOperator(state);
+  const operator = renderOperator(state, {release: false});
   assert.match(operator, /Read the assigned local indicator only/);
   for (const heading of operator.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)) assert.doesNotMatch(heading[1], /<section|<input|<fieldset/);
   assert.ok(operator.indexOf('Add a photograph') > operator.indexOf('Read the assigned local indicator only'));
@@ -334,9 +334,11 @@ test('both workspaces preserve actual gauge values/units, unknown type, uncertai
     assert.match(html,/src="\/api\/evidence\/photo\/image"/);
     assert.match(html,/Inspect evidence/);
     assert.match(html,/Photographic analysis \/ interpreted/);
-    assert.doesNotMatch(html,/Observed numeric reading/);
+    // Operator now exposes the current model observation next to its review step.
     assert.doesNotMatch(html,/180 kPa|75 kPa/);
   }
+  assert.match(renderOperator(state), /Current photograph[\s\S]*Observed numeric reading/);
+  assert.doesNotMatch(renderCommander(state), /Observed numeric reading/);
   const html=renderEvidenceDetails(state.evidence[0]);
   assert.match(html,/Observed numeric reading/);assert.match(html,/>75</);
   assert.match(html,/>PSI</);assert.match(html,/>indeterminate</);
@@ -404,7 +406,8 @@ test('camera and ordinary file inputs have separate visible labels and associate
 });
 
 test('synthetic fixtures are closed development controls while refusal responses stay outside them', () => {
-  const html=renderOperator(imageTaskState());
+  assert.doesNotMatch(renderOperator(imageTaskState(), {release: true}), /fixture-development|Committed clear synthetic fixture/);
+  const html=renderOperator(imageTaskState(), {release: false});
   const development=html.match(/<details class="fixture-development">([\s\S]*?)<\/details>/)?.[1];
   assert.ok(development);assert.match(development,/Development \/ test: synthetic fixtures/);
   assert.match(development,/panel-a/);assert.match(development,/panel-b/);
