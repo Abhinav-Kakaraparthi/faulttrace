@@ -1,5 +1,30 @@
 # Checkpoint state
 
+## Focused investigation presentation — ready for deployment
+
+Started clean on `feat/finish-integrated` at `91c6459`. Commander now leads with
+the actual stored stage, next permitted workflow and evidence gaps, beside the
+P-04/F-17/V-08 schematic and compact stored telemetry. Operator leads with its
+assignment and existing photo/report controls; inactive assignments, rules,
+provenance and audit remain accessible in expandable sections. Navy surfaces and
+turquoise accents are scoped to connected workspaces. No policy, API, inference,
+budget or historical record changes; no provider calls or local-server restarts.
+
+102 frontend tests, typecheck, normal/demo builds and both authenticated/session
+combined contracts passed (zero provider/external attempts). Seven new static
+presentation tests exercise stages, escalation history, action ordering and zero
+telemetry values. Contract checks initially lacked Python on PATH, then passed
+with the existing venv on PATH. No dependencies changed. Source files stay below
+500 lines. Static checks do not prove CSS layout or browser interaction.
+
+The supplied reference URL returned HTTP 401; browser inventory reported no
+browser host. No screenshot, desktop/mobile, dialog or keyboard visual pass is
+claimed. Prior screenshots remain user-captured evidence. Next: deploy the
+passing exact revision to the existing service/disk with configuration unchanged,
+then manually review the existing incident in both routes at 1440x900/390x844,
+without repeating its model call. Local check records: ignored
+`.local/visual/presentation-reference/`.
+
 ## Initial escalation review — correction deployed
 
 At the user's explicit deployment authorization, `5e35e6cd27212f1423824b775a4ab98349b1a1c7`

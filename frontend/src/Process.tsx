@@ -9,7 +9,7 @@ export function Process({ active, selected, onSelect, readings }: { active: bool
   });
   return <section className="process section-surface" aria-labelledby="process-title">
     <div className="section-heading"><div><h2 id="process-title">Process overview</h2></div><span className="quiet-label">{readings ? 'Illustrative topology / stored measurements' : 'Schematic / sample'}</span></div>
-    <div className="schematic-wrap"><svg className="schematic" viewBox="0 0 750 240" aria-label="Cooling return line from pump P-04 through filter F-17 and valve V-08">
+    <div className="schematic-wrap" tabIndex={0} role="region" aria-label="Scrollable P-04 F-17 V-08 process schematic"><svg className="schematic" viewBox="0 0 750 240" aria-label="Cooling return line from pump P-04 through filter F-17 and valve V-08">
       <defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#293438" /></pattern></defs>
       <rect width="750" height="260" fill="url(#dots)" />
       <path d="M35 126H715 M75 126V205H680V126" fill="none" stroke="#425b5e" strokeWidth="4" />

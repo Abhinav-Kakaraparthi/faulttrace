@@ -19,6 +19,8 @@ import { JourneyPanel } from '../src/JourneyPanel';
 import { PlannerPanel } from '../src/PlannerPanel';
 import { AuditHistory } from '../src/AuditHistory';
 import { ServerEvidenceList } from '../src/ServerEvidence';
+import { ServerTelemetry } from '../src/ServerTelemetry';
+export { investigationStage } from '../src/investigationStage';
 import type { ServerState } from '../src/api';
 
 export const renderJourney = (state: ServerState, view: 'commander' | 'operator') =>
@@ -29,6 +31,8 @@ export const renderPlanningHistory = (state: ServerState) =>
   renderToStaticMarkup(createElement(PlannerPanel, { state, disabled: false, choose: () => {}, open: () => {}, historyOnly: true }));
 export const renderPlanner = (state: ServerState) =>
   renderToStaticMarkup(createElement(PlannerPanel, { state, disabled: false, choose: () => {}, open: () => {} }));
+export const renderSignals = (samples: import('../src/journeyState').Sample[]) =>
+  renderToStaticMarkup(createElement(ServerTelemetry, { samples, compact: true }));
 export const renderAudit = (state: ServerState) =>
   renderToStaticMarkup(createElement(AuditHistory, { state }));
 

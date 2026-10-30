@@ -13,6 +13,7 @@ import { synchronizeInspectionDialog } from './inspectionDialog';
 import './workspaces.css';
 import './photo-workflow.css';
 import './workspace-chrome.css';
+import './investigation-workspace.css';
 
 export function Connected({ workspace, navigate }: { workspace: Workspace; navigate: (href: string) => void }) {
   return <AccessGate workspace={workspace} navigate={navigate}>{access => <ConnectedWorkspace access={access} workspace={workspace} navigate={navigate} />}</AccessGate>;

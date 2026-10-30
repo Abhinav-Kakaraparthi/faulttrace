@@ -5,6 +5,14 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+Presentation refinement prioritizes actual activity/action, existing topology and
+stored telemetry in Commander, and assigned photo/report work in Operator.
+Rules/provenance/history remain expandable. 102 frontend tests, typecheck/builds
+and both combined contracts pass; no provider calls or policy changes. Reference
+access returned 401 and browser host is unavailable: visual acceptance remains
+open. Deployment and exact-SHA CI are tracked in state.md; no new live inference
+or recovery capability is established by this presentation checkpoint.
+
 User browser review found a valid initial human escalation with no Operator task.
 Read-only context inspection confirms both observations remained available; model
 reasoning was not retained. An offline-tested input/presentation fix adds action
