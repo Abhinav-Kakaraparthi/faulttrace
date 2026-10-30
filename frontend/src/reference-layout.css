@@ -1,5 +1,5 @@
 /* Composition from user-supplied reference captures; no simulated data styling. */
-.connected-shell { display:block; --line:#263e50; --surface:#112230; background:#091723; }
+.app-shell.connected-shell { display:block; width:100%; min-width:0; --line:#263e50; --surface:#112230; background:#091723; }
 .connected-shell .workspace { margin:0; background:#091723; }
 .workspace-masthead { display:flex; align-items:center; gap:24px; padding:16px 32px; min-height:84px; border-bottom:1px solid #263e50; background:#0a1823; }
 .masthead-brand { display:flex; align-items:center; gap:12px; margin-right:auto; flex-shrink:0; }
@@ -42,7 +42,7 @@
 .connected-shell .process-and-signals>.section-surface { border:0; border-radius:0; background:transparent; }
 .connected-shell .process-and-signals>.process { border-top:1px solid #2a465b; }
 .connected-shell .telemetry-compact { padding:18px 22px 10px; }.telemetry-compact h2 { font:600 11px/1.6 Consolas,monospace; color:#9bb9cc; letter-spacing:1px; text-transform:uppercase; }
-.connected-shell .telemetry-compact .journey-metrics { padding:16px 0; gap:14px; }.telemetry-compact .journey-metrics strong { font-size:30px; letter-spacing:-1px; }.telemetry-compact .journey-metrics small { font-size:13px; letter-spacing:0; }
+.connected-shell .telemetry-compact .journey-metrics { padding:16px 0; gap:14px; grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr)); }.telemetry-compact .journey-metrics>div { min-width:0; overflow-wrap:break-word; }.telemetry-compact .journey-metrics strong { font-size:30px; letter-spacing:-1px; }.telemetry-compact .journey-metrics small { font-size:13px; letter-spacing:0; }
 .telemetry-compact .journey-metrics span { font:600 11px/1.6 Consolas,monospace; color:#9bb9cc; letter-spacing:.3px; }.telemetry-compact .journey-metrics .journey-alarm { font-size:15px; letter-spacing:0; }
 .telemetry-history { padding-top:0; }.telemetry-history summary { font-size:12px; min-height:32px; padding:5px 0; }
 .connected-shell .process .section-heading { padding:18px 22px 8px; }.connected-shell .process h2 { font-size:20px; }.connected-shell .schematic-wrap { margin:12px; border:1px solid #213b50; border-radius:0; background-color:#0b1b29; background-image:linear-gradient(#20374966 1px,transparent 1px),linear-gradient(90deg,#20374966 1px,transparent 1px); background-size:28px 28px; }
@@ -57,7 +57,8 @@
 @media(max-width:1100px) {
   .workspace-masthead { gap:16px; padding:14px 24px; }.masthead-brand small { display:none; }.workspace-masthead nav a { padding-inline:12px; }
   .masthead-session .access-toolbar { gap:4px; }.masthead-session .access-toolbar .button { padding-inline:8px; }
-  .commander-overview-grid { grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr); gap:18px; }
+  .commander-overview-grid { grid-template-columns:minmax(0,1fr); gap:18px; }
+  .connected-shell .current-action { grid-column:1; grid-row:1; }.process-and-signals { grid-column:1; grid-row:2; }
 }
 @media(max-width:900px) { .commander-overview-grid { grid-template-columns:minmax(0,1fr); }.activity-copy { padding:22px 24px 22px 70px; }.activity-facts>div { padding:12px 16px; } }
 @media(max-width:760px) {

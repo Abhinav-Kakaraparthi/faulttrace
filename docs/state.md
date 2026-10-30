@@ -1,5 +1,41 @@
 # Checkpoint state
 
+## Shell-layout repair — rendered offline, awaiting deployment
+
+User-captured deployed screenshots demonstrate the composition regression at
+`a0f404f`; earlier markup/API checks did not establish layout acceptance. Root
+cause confirmed in built CSS and Chromium: main.tsx imported the component tree
+before base styles, placing equally specific `.app-shell { display:flex }` after
+`.connected-shell { display:block }`. The later rule won. At 1440px the masthead
+stretched to 759px wide and full document height beside a squeezed workspace.
+
+Narrow repair: base styles import first; `.app-shell.connected-shell` explicitly
+stacks the shell at full width; Commander stacks its columns below 1100px;
+telemetry cells adapt to available width. No backend, auth, data, budgets or
+inference changes. No new incident, provider request or existing-server restart.
+
+Existing Playwright/Chromium works independently of the broken Computer Use
+runtime; no package/browser installed. Actual built demo assets rendered against
+fully intercepted, clearly labeled offline doubles at 1440x900, 1024x900, 768x900
+and 390x844 for both routes. All eight checks pass: block shell/full-width header,
+workspace below, centered Operator, no page overflow, telemetry fit, desktop
+schematic fit, action-panel bounds and session-menu bounds. Exercised keyboard
+equipment selection, mobile schematic keyboard scrolling, evidence inspection,
+Escape close and focus return. Desktop/mobile/process/dialog screenshots were
+actually inspected under ignored `.local/visual/layout-repair/`, with before/after
+geometry and CSSOM diagnostics. No hosted authentication/camera/upload/live journey
+acceptance is inferred. Initial interaction locators were corrected to the actual
+registered accessible names; assertions were retained.
+
+105 frontend tests, typecheck, normal/demo production builds and both combined
+contracts pass; zero forbidden external/provider attempts. New optional browser
+regression: build with VITE_FAULTTRACE_PROFILE=demo, then run
+`node tests/layout-browser.mjs` from frontend with FAULTTRACE_PLAYWRIGHT_MODULE and
+FAULTTRACE_CHROMIUM_EXECUTABLE pointing to an existing installation. It blocks all
+real network traffic and every non-GET request. Next: exact-SHA CI and deployment
+to the existing service/disk, HTTPS/assets check, then freeze cosmetic work and
+return to demo-video/submission readiness.
+
 ## Screenshot-based composition pass — deployed, visual acceptance open
 
 Tested/deployed implementation: `a0f404f6183b901eac62d62e3de16d74051f0b76`.

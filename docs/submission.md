@@ -5,6 +5,13 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+Current repair addresses a user-demonstrated shell cascade regression. Production
+assets now pass eight actual headless Chromium viewport/route cases with offline
+doubles, including menu and evidence-dialog/keyboard checks; screenshots inspected.
+105 frontend tests, both builds and combined contracts pass. Exact-SHA CI/deploy
+are tracked in state.md. Full hosted browser/live recovery acceptance stays open;
+no inference or new incident was used. Cosmetic work freezes after this repair.
+
 Screenshot-based composition follow-up replaces the fixed rail with compact
 workspace/session navigation and groups real telemetry with the existing schematic.
 105 frontend tests, typecheck, both builds and combined contracts pass. Deployed
