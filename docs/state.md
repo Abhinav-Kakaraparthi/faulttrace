@@ -1,6 +1,17 @@
 # Checkpoint state
 
-## Shell-layout repair — rendered offline, awaiting deployment
+## Shell-layout repair — rendered offline and deployed; cosmetics frozen
+
+Tested/deployed revision `69e5fe9e79bd7b9f0d7e383f893fa39c389ed78b` passed
+[all five exact-SHA CI jobs](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/41039624738).
+Render reports that exact SHA live on the existing service/disk. HTTPS health,
+home and both routes return 200; served assets contain the repaired selector and
+base-before-connected CSS order. Disk/mount/size, instance/plan, manual deployment
+mode and the full environment fingerprint except build revision are unchanged.
+Secret files were not touched. No provider calls, new incidents, budget resets,
+historical-data edits or infrastructure changes. Later docs are not deployed.
+Screenshot/build hashes and tested revision are in ignored
+`.local/visual/layout-repair/tested-revision.json`. Cosmetic work is now frozen.
 
 User-captured deployed screenshots demonstrate the composition regression at
 `a0f404f`; earlier markup/API checks did not establish layout acceptance. Root
@@ -32,9 +43,10 @@ contracts pass; zero forbidden external/provider attempts. New optional browser
 regression: build with VITE_FAULTTRACE_PROFILE=demo, then run
 `node tests/layout-browser.mjs` from frontend with FAULTTRACE_PLAYWRIGHT_MODULE and
 FAULTTRACE_CHROMIUM_EXECUTABLE pointing to an existing installation. It blocks all
-real network traffic and every non-GET request. Next: exact-SHA CI and deployment
-to the existing service/disk, HTTPS/assets check, then freeze cosmetic work and
-return to demo-video/submission readiness.
+real network traffic and every non-GET request. Next: refresh the existing hosted
+tabs for immediate founder screenshot review without a new incident/model call;
+return to demo-video/submission readiness. Full hosted journey acceptance remains
+separate from these offline browser and hosted GET checks.
 
 ## Screenshot-based composition pass — deployed, visual acceptance open
 

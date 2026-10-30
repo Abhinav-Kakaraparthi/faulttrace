@@ -8,9 +8,10 @@ Recommended track: Best Apps and Agents
 Current repair addresses a user-demonstrated shell cascade regression. Production
 assets now pass eight actual headless Chromium viewport/route cases with offline
 doubles, including menu and evidence-dialog/keyboard checks; screenshots inspected.
-105 frontend tests, both builds and combined contracts pass. Exact-SHA CI/deploy
-are tracked in state.md. Full hosted browser/live recovery acceptance stays open;
-no inference or new incident was used. Cosmetic work freezes after this repair.
+105 frontend tests, both builds and combined contracts pass. `69e5fe9` passed all
+five exact-SHA CI jobs and is deployed with HTTPS route/assets/cascade checks;
+disk/secrets/live settings remain preserved. Full hosted browser/live recovery
+acceptance stays open; no inference or new incident was used. Cosmetic work frozen.
 
 Screenshot-based composition follow-up replaces the fixed rail with compact
 workspace/session navigation and groups real telemetry with the existing schematic.
