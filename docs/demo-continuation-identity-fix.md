@@ -13,7 +13,9 @@ provider retry, budget reset or automatic consent is introduced.
 Regression tests use the actual DemoRegistry adapter. Authenticated Commander
 consent reaches one scripted planning request; Operator consent and a disabled
 session guard cannot dispatch. All 16 continuation tests pass locally using
-offline doubles. Hosted acceptance remains pending deployment.
+offline doubles. Integrated revision `23503a4` is deployed with all five CI jobs
+passing and 337 guarded backend tests. HTTPS and served-asset Chromium checks
+passed; live continuation was deliberately not invoked during verification.
 
 After deployment, the same active demo can explicitly start guided investigation
 again. Do not restart the demo or reset its allowance to work around this bug.

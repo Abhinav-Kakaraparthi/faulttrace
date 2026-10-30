@@ -1,5 +1,32 @@
 # Checkpoint state
 
+## PR #3 integration — deployed
+
+Reviewed requested head `5ba9938ec72548befc5232960ea85b3308283143` and merged
+without rewriting history at `23503a4f4675b15847ed52ce4c5f7bb1787aa063`.
+That exact revision is live on the existing Render service; [all five CI jobs
+passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/41073567844).
+The demo registry is keyed by role, while consent stores the authenticated
+principal ID. The correction resolves an exact, unique ID and retains Commander,
+grant, expiry, revocation and session checks. Existing paused consent is not
+automatically resumed; no prior dispatch is retried.
+
+337 guarded backend tests passed with zero forbidden external connections;
+combined authenticated and demo-session contract checks passed. Exact-SHA CI also
+passed frontend tests/typecheck/build and Linux container persistence checks.
+HTTPS health/home/Commander/Operator returned 200. Eight Chromium cases rendered
+the served assets at 1440/1024/768/390 widths with offline API fixtures; navigation,
+session controls, keyboard equipment access and inspection/Escape focus passed.
+Desktop/mobile screenshots were inspected under ignored
+`.local/visual/pr3-integration/hosted/`. This does not establish live continuation
+success. No provider call, new incident, budget reset or historical evidence edit
+was requested. Disk/plan/manual deployment mode and all environment values except
+build revision matched the prior fingerprint; secret files were untouched.
+
+Next action: in the existing Commander session, explicitly start guided
+investigation if desired and permitted by its remaining allowance. Deployment
+does not perform that action. Later evidence-only documentation is not deployed.
+
 ## PR #2 integration — merged, verified and deployed
 
 Final tested/deployed integration SHA:

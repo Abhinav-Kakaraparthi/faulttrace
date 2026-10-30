@@ -5,6 +5,13 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+PR #3 demo consent identity correction is merged/deployed at `23503a4` with
+[all five exact-SHA CI jobs passing](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/41073567844).
+337 guarded backend tests and combined contracts pass. Eight served-asset
+Chromium cases passed with offline API fixtures; live continuation was not
+invoked. Existing consent, records and budgets were preserved. This correction
+adds no new live-AI or recovery acceptance claim.
+
 PR #2 is merged and deployed at `b09a8af` with all five exact-SHA CI jobs passing:
 explicit, expiring Commander consent permits durable
 observation continuation within unchanged budgets; approval, Operator action and

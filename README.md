@@ -12,7 +12,8 @@ The final integration sprint adds an explicitly enabled, globally/session-budget
 live-demo configuration, restricted Tavily references, metadata-only LangSmith
 tracing, paused simulated-observation time, observation renewal and automatic
 independent recovery monitoring. Default remains offline. Current implementation
-`b09a8af` passes Linux/Windows/backend/frontend/container CI. Existing real
+`23503a4` passes Linux/Windows/backend/frontend/container CI and is deployed;
+the demo consent identity lookup is corrected without automatically resuming it. Existing real
 NVIDIA planning/photo contracts, one useful Tavily reference citation and LangSmith
 metadata delivery are narrowly verified; photo accuracy, the complete browser-driven
 live recovery journey remain unverified. Provider allowances
