@@ -1,5 +1,22 @@
 # Checkpoint state
 
+## Hosted AI activation — reviewed implementation, deployment pending
+
+Started clean at `f54e5a9`. Render Docker env values become build arguments, so
+activation uses `/etc/secrets/faulttrace-runtime.json`, excluded from build context
+and loaded only into process memory before privilege drop. Startup fails closed on
+invalid/duplicate fields, unsafe location or conflicting credential sources. No
+model/prompt/budget/policy changes; public connection wording is now “Connected”.
+319 guarded backend tests passed (zero external attempts), as did 93 frontend
+tests, typecheck/build. Browser helpers remain unavailable and were not repeated.
+LangSmith read-only HTTP200 confirms named project Local `97b8d072-0bd6-4357-b680-7a992953ca8b`,
+distinct from agent/local. User Shell preflight reports one pending synthetic
+reservation (67,584 admission units), seven offline runs and no provider ledgers.
+Preserve it and all default limits. New hosted verification authorization is capped
+at 2 planning / 1 photo / 1 Tavily, with metadata-only traces; none consumed yet.
+Next: exact-SHA CI, deploy/configure only the existing service, then bounded hosted
+verification. Synthetic image contract testing does not establish photo accuracy.
+
 ## Render offline judge demo — hosted persistence verified
 
 Public entry: **https://faulttrace-judge-demo.onrender.com/**; workspaces at

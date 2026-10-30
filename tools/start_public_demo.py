@@ -1,11 +1,48 @@
 """Fail-closed single-process public package launcher; no service provisioning."""
 import os
+import json
 from pathlib import Path
 import sys
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+RUNTIME_SECRET = Path('/etc/secrets/faulttrace-runtime.json')
+
+
+def load_runtime_credentials(environment):
+    """Render secret file -> process memory, before dropping root; never a build ARG."""
+    selected = environment.get('FAULTTRACE_RUNTIME_SECRETS_FILE')
+    if not selected:
+        return
+    if selected != str(RUNTIME_SECRET):
+        raise ValueError('invalid_runtime_secret_location')
+    names = {'NEBIUS_API_KEY', 'TAVILY_API_KEY', 'LANGSMITH_API_KEY'}
+    if any(environment.get(name) for name in names):
+        raise ValueError('ambiguous_runtime_credentials')
+    with RUNTIME_SECRET.open('rb') as source:
+        raw = source.read(16385)
+    if len(raw) > 16384:
+        raise ValueError('invalid_runtime_credentials')
+
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('invalid_runtime_credentials')
+            result[key] = value
+        return result
+
+    try:
+        values = json.loads(raw, object_pairs_hook=unique)
+    except (ValueError, UnicodeError):
+        raise ValueError('invalid_runtime_credentials') from None
+    if (type(values) is not dict or set(values) != names or any(
+            type(value) is not str or not value or len(value) > 4096
+            or value != value.strip() or any(c in value for c in '\r\n\0')
+            for value in values.values())):
+        raise ValueError('invalid_runtime_credentials')
+    environment.update(values)
 
 
 def configuration(environment):
@@ -33,6 +70,7 @@ def configuration(environment):
 def main():
     try:
         port = configuration(os.environ)
+        load_runtime_credentials(os.environ)
         if os.name != 'nt':
             os.umask(0o077)
             if os.geteuid() == 0:

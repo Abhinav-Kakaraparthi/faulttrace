@@ -15,6 +15,14 @@ Later documentation is separate. Hosted HTTP checks are not browser acceptance.
 
 ## Package and data boundary
 
+For explicitly authorized hosted live mode, keep API keys out of Render env vars
+(which become Docker build arguments). Upload only the three provider keys as the
+Render secret file `faulttrace-runtime.json`; `.dockerignore` excludes its build
+context copy. Set non-secret `FAULTTRACE_RUNTIME_SECRETS_FILE` to
+`/etc/secrets/faulttrace-runtime.json`. The launcher validates and loads it in
+memory before dropping privileges. Routing/opt-in flags remain separate non-secret
+environment settings. Defaults remain offline; preserve the mounted spending DB.
+
 The multi-stage Dockerfile builds the existing lockfile with Node 22 and the demo
 profile, then runs Python 3.12 with the pinned backend specification. It copies
 only application code, compiled public assets and synthetic fixtures. No local
