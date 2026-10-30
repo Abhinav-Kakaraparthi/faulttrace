@@ -14,6 +14,49 @@ class SpendingTests(unittest.TestCase):
     def setUp(self):
         self.root = Path(self.enterContext(tempfile.TemporaryDirectory()))
 
+    def test_live_factory_overrides_only_global_admission_cap(self):
+        from faulttrace.workflow.demo_app import create_demo
+        with patch.dict('os.environ', {'FAULTTRACE_DEMO_ROOT':str(self.root),
+                'FAULTTRACE_DEMO_ORIGIN':'https://test.invalid', 'FAULTTRACE_DEMO_LIVE':'1',
+                'FAULTTRACE_ALLOW_INFERENCE':'1', 'NEBIUS_API_KEY':'OFFLINE_TEST_ONLY'}), \
+                patch('faulttrace.workflow.spending.Spending', wraps=Spending) as factory, \
+                patch('faulttrace.workflow.demo_app.create_demo_app') as build:
+            create_demo()
+        factory.assert_called_once_with(str(self.root), tokens=1265664)
+        budget = build.call_args.kwargs['budget']
+        self.assertEqual((budget.requests, budget.tokens, budget.session_requests,
+                          budget.session_tokens, budget.concurrent), (12,1265664,6,600000,2))
+
+    def test_narrow_cap_extension_keeps_history_and_admits_exactly_one_photo(self):
+        original = Spending(self.root)
+        for index in range(10):
+            visitor = 'current' if index == 0 else 'other-' + str(index)
+            operation = 'planning' if index < 7 else ('photo' if index < 9 else 'documentation')
+            aid = str(uuid.uuid4())
+            original.reserve(visitor, operation, aid)
+            if index != 1:
+                original.settle(visitor, aid, {'usage_status':'missing'})
+        original.recover_pending()
+        with original.db() as db:
+            before = [tuple(r) for r in db.execute('SELECT * FROM reservations ORDER BY id')]
+        self.assertEqual(sum(r[4] for r in before), 1001472)
+        aid = str(uuid.uuid4())
+        with self.assertRaises(WorkflowError) as error:
+            original.reserve('current', 'photo', aid)
+        self.assertEqual(error.exception.code, 'spending_budget_exhausted')
+        extended = Spending(self.root, tokens=1265664)
+        extended.reserve('current', 'photo', aid)
+        extended.reserve('current', 'photo', aid)  # Replay consumes no additional slot.
+        with extended.db() as db:
+            after = [tuple(r) for r in db.execute('SELECT * FROM reservations WHERE id!=? ORDER BY id', (aid,))]
+            count, charged = db.execute('SELECT COUNT(*),SUM(charged) FROM reservations').fetchone()
+        self.assertEqual(after, before)
+        self.assertEqual((count, charged), (11,1265664))
+        self.assertEqual(extended.summary('current')['token_allowance_consumed'], 331776)
+        with self.assertRaises(WorkflowError) as error:
+            extended.reserve('another', 'planning', str(uuid.uuid4()))
+        self.assertEqual(error.exception.code, 'spending_budget_exhausted')
+
     def test_concurrent_admission_is_global_across_visitors(self):
         budget = Spending(self.root)
         def attempt(n):

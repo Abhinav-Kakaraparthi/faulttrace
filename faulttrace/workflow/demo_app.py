@@ -188,5 +188,5 @@ def create_demo():
         if os.environ.get('FAULTTRACE_ALLOW_INFERENCE') != '1' or not (os.environ.get('NEBIUS_API_KEY') or '').strip():
             raise ValueError('explicit_live_opt_in_and_credentials_required')
         from .spending import Spending
-        budget = Spending(directory)
+        budget = Spending(directory, tokens=1265664)
     return create_demo_app(directory, origin, local_http=os.environ.get('FAULTTRACE_DEMO_LOCAL_HTTP') == '1', live=live, budget=budget)

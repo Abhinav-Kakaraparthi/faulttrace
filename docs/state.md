@@ -1,5 +1,23 @@
 # Checkpoint state
 
+## Bounded hosted admission extension — approved, deployment pending
+
+User-reported read-only Render inspection at deployed `23503a4` found 10
+reservations (9 settled, 1 uncertain), 1,001,472 charged admission units and no
+pending request. The 1,200,000 global cap leaves 198,528; one photo admission
+requires 264,192, a 65,664 shortfall. Current visitor/run `0899e72d-d4c4-4e39-bde4-2ed57c04bfef`
+has 5 request slots and 532,416 units left. These units are not actual tokens or billing.
+User approved only `Spending(directory, tokens=1265664)` in the live demo factory;
+default policy, global 12 requests, visitor 6 requests/600,000 units and concurrency
+2 remain unchanged. Regression coverage checks exact factory configuration and
+preservation of existing rows/uncertain accounting across the boundary extension.
+User-performed Render Shell pause confirmed incident `eabe3633-79b9-4efa-960e-06121c420412`
+changed from enabled/awaiting_photo_analysis to disabled/paused through the
+production pause/audit method. All continuation is disabled; accounting remained
+10 reservations / 1,001,472 units / 1 uncertain. The existing photograph must
+remain stored and analysis requires the user's click.
+No accounting reset, automatic analysis or new provider verification is authorized.
+
 ## PR #3 integration — deployed
 
 Reviewed requested head `5ba9938ec72548befc5232960ea85b3308283143` and merged
