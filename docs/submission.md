@@ -5,13 +5,16 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
-PR #2 is integrated locally: explicit, expiring Commander consent permits durable
+PR #2 is merged and deployed at `b09a8af` with all five exact-SHA CI jobs passing:
+explicit, expiring Commander consent permits durable
 observation continuation within unchanged budgets; approval, Operator action and
 photo analysis remain explicit. Real localhost Chromium/double tests show cited
 replanning with Commander closed and independent recovery after human approval/
 completion. A demonstrated shutdown race is fixed with a drain regression test.
-This is offline continuation evidence, not a new hosted/live AI success. Final
-CI/deployment is tracked in state.md; no provider call or old-incident retry.
+335 guarded backend / 114 frontend tests, builds and combined contracts pass.
+Hosted HTTPS/assets and eight served-asset browser cases pass using intercepted
+offline API state. This is not a new hosted/live AI success; no provider call,
+old-incident retry, budget reset or historical evidence edit during verification.
 
 PR #1 real-photo collection/review is merged and deployed at `359aa80`, with
 all five exact-SHA CI jobs passing, 113 frontend tests,

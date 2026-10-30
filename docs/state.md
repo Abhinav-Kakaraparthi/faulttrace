@@ -1,6 +1,23 @@
 # Checkpoint state
 
-## PR #2 integration — reviewed; final checks and deployment pending
+## PR #2 integration — merged, verified and deployed
+
+Final tested/deployed integration SHA:
+`b09a8af5d75adf299ecd747d6054d2f76a77d16a`; GitHub marks PR #2 merged and
+[all five exact-SHA CI jobs passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/41062036452).
+Only the existing Render service was deployed. Health/home/Commander/Operator
+return HTTPS 200, and served assets contain the guided controls. Disk ID/mount/
+size, instance/plan, manual deploy mode and all environment values except build
+revision match the pre-deployment fingerprint. Secret files were untouched.
+Verification did not activate consent, retry an incident, invoke a provider,
+reset a budget or request edits to historical evidence/receipts.
+
+Post-deployment Chromium passed eight served-asset desktop/mobile cases with
+API traffic intercepted as labeled offline state; screenshots were inspected.
+Evidence under ignored `.local/visual/pr2-integration/hosted/` is distinct from
+the real-localhost guided double journey below. Neither proves live NVIDIA
+continuation behavior or photographic accuracy. No remaining integration or
+deployment blocker. Later evidence-only documentation does not auto-deploy.
 
 Started clean at `3411784` on `feat/finish-integrated`. Fetched and verified the
 requested PR head `9284f92c7ad933bd4066556efe85e61f802f36aa`, based directly on that
@@ -33,10 +50,9 @@ live model reasoning or accuracy. No existing hosted incident or real ledger cha
 
 Ignored evidence: `.local/continuation-browser/71a19d263f604e6894ba05ba587b6446/`,
 `.local/visual/pr2-integration/` and `.local/connected-browser/pr2-*.txt`.
-Next: exact-SHA CI, deploy only the existing service/disk with live settings and
-secrets preserved, then GET-check routes/assets and render served assets using
-intercepted offline API state. No provider call, consent activation on a hosted
-incident, budget reset or live replay is authorized for deployment verification.
+Next: complete the final video/submission review from retained evidence. Keep the
+existing unresolved live incident intact; no model retake, hosted consent
+activation, budget reset or cosmetic redesign is part of this checkpoint.
 
 ## PR #1 integration — merged, checked and deployed
 
