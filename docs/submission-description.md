@@ -1,7 +1,7 @@
 # FaultTrace submission copy - draft, not submitted
 
 Public demo: **https://faulttrace-judge-demo.onrender.com/**
-Current deployed application: **69e5fe9e79bd7b9f0d7e383f893fa39c389ed78b**
+Current deployed application: **359aa808efc4fd2565d9df680a41990ceb81b62f**
 Video: **[FOUNDER: reviewed final video URL, under three minutes]**
 Repository: https://github.com/Abhinav-Kakaraparthi/faulttrace
 

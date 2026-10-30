@@ -1,6 +1,23 @@
 # Checkpoint state
 
-## PR #1 integration — reviewed and checked, deployment pending
+## PR #1 integration — merged, checked and deployed
+
+GitHub marks PR #1 merged. Final tested/deployed integration SHA:
+`359aa808efc4fd2565d9df680a41990ceb81b62f`, with
+[all five exact-SHA CI jobs passing](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/41049238503).
+Only the existing Render service was deployed. Health, home and both workspaces
+return HTTPS 200; updated photo-workflow assets are served. Disk/mount/size,
+instance/plan, manual deployment mode and the full environment fingerprint except
+build revision are unchanged. Secret files were untouched; no records, allowance
+resets, new workflow incidents or provider calls were requested. Later evidence
+documentation does not auto-deploy.
+
+Post-deployment Chromium rendered the actual served assets in eight desktop/mobile
+cases with API state intercepted as labeled offline fixtures: no hosted workflow
+mutation. Screenshots inspected under `.local/visual/pr1-integration/hosted/`.
+This verifies deployed layouts/navigation/dialogs, not live NVIDIA accuracy or a
+new authenticated hosted investigation. Deployment/browser/hash evidence is ignored
+under `.local/visual/pr1-integration/`. No remaining integration/deployment blocker.
 
 Started clean at `251c2b0` on `feat/finish-integrated`. Reviewed PR head
 `28248b27f95fda071ffa9fca5c98a14e5ef75777`, directly based on that commit, and
@@ -26,9 +43,8 @@ Reference JPEG hashes/dimensions/bytes match their provenance manifest; original
 Wikimedia author/license pages confirm the recorded attribution and CC BY-SA 4.0.
 Photos remain reference examples, not F-17/V-08 identity or correction evidence.
 No unrelated work, existing preview, hosted history or real ledger was changed.
-Next: push final integration, verify exact-SHA CI, deploy only to the existing
-Render service/disk with settings/secrets/limits preserved, then GET-check health,
-routes and assets. No new incident or inference for acceptance.
+Next: record the final video from the retained real results and separate offline
+recovery footage. No new incident, inference retake or cosmetic redesign.
 
 ## Connected demonstration — completed offline browser journey
 
