@@ -36,7 +36,7 @@ export function ConnectedWorkspace({ access, workspace, navigate, sessionControl
   if (!identity) return null;
   const props = { access, state, connection: server.connection, disabled: server.busy || server.connection !== 'online',
     release: identity.profile !== 'local', canCreate: canCreate(identity), creationReady: !server.busy && (server.connection === 'online' || server.denied),
-    mutate: server.mutate, navigate, inspect: open,
+    mutate: server.mutate, submitPhoto: server.submitPhoto, navigate, inspect: open,
     analyze: (item: ServerEvidence) => {
       if (state?.task && state.task.id === item.task_id) {
         const photo = item.status === 'collected';

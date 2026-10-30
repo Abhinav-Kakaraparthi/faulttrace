@@ -40,7 +40,8 @@ const transport = async (path, init) => {
 };
 const revoked = [];
 let urls = 0;
-const session = () => new AccessSession('release', { fetch: transport, urls: {
+const session = () => new AccessSession('release', { fetch: transport,
+  upload: (path, blob, headers, signal) => transport(path, {method: 'POST', body: blob, headers: new Headers(headers), signal}), urls: {
   createObjectURL: () => `blob:combined-${++urls}`, revokeObjectURL: value => revoked.push(value) } });
 const wait = async predicate => {
   const until = Date.now() + 8000;
@@ -67,9 +68,8 @@ try {
   await wait(() => operator.snapshot().state?.task?.id === assignment.task_id);
   assert.equal(operator.snapshot().state.task.creation_source, 'TEST-CREATED / no model request');
   const bytes = readFileSync(resolve('../fixtures/image-evidence/panel-a.png'));
-  assert.equal(await operator.mutate(`/api/tasks/${assignment.task_id}/images`,
-    new Blob([bytes], { type: 'image/png' }), 'upload',
-    { 'X-Task-Revision': '1', 'X-Evidence-Purpose': 'reference-photo' }), true);
+  assert.equal(await operator.submitPhoto(operator.snapshot().state.task,
+    new Blob([bytes], { type: 'image/png' }), 'upload', false, () => {}), 'stored');
   await wait(() => operator.snapshot().state.evidence.length === 1);
   const photo = operator.snapshot().state.evidence[0];
   assert.ok(photo.image_url.startsWith('blob:combined-'));

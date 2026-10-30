@@ -7,5 +7,6 @@ export type WorkspaceProps = {
   release?: boolean; canCreate?: boolean; creationReady?: boolean;
   state: ServerState | null; connection: 'loading' | 'online' | 'paused'; disabled: boolean;
   mutate: Mutate; inspect: (item: ServerEvidence) => void; analyze: (item: ServerEvidence) => void;
+  submitPhoto?: import('./photoSubmission').SubmitPhoto;
   navigate: (href: string) => void;
 };

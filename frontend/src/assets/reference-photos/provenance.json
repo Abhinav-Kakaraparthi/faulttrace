@@ -1,0 +1,32 @@
+{
+  "retrieved": "2026-10-30",
+  "purpose": "Public real-photograph references only; no assigned-asset identity or process evidence implied",
+  "assets": [
+    {
+      "file": "digital-pressure-meter.jpg",
+      "author": "Nick.follows",
+      "source_page": "https://commons.wikimedia.org/wiki/File:C9557_01_1200_RGB_300dpi.jpg",
+      "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/C9557_01_1200_RGB_300dpi.jpg/960px-C9557_01_1200_RGB_300dpi.jpg",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "Wikimedia thumbnail downloaded unchanged; no application edits",
+      "sha256": "4727f734e748284ddedc84f80c9ae421048084322dd736f2408c3b2da42dc90e",
+      "bytes": 53025,
+      "width": 960,
+      "height": 960
+    },
+    {
+      "file": "household-valves.jpg",
+      "author": "NVgt156",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Ball_valve_in_household.jpg",
+      "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Ball_valve_in_household.jpg/500px-Ball_valve_in_household.jpg",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "Wikimedia thumbnail downloaded unchanged; no application edits",
+      "sha256": "9aea8f1fd980c82237825a9f4e83166fc2fdc72117643957aeb506d4dfc10e00",
+      "bytes": 75319,
+      "width": 500,
+      "height": 667
+    }
+  ]
+}

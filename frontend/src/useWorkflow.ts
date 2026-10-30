@@ -9,5 +9,5 @@ export function useWorkflow(access: AccessSession) {
     controller.start();
     return controller.stop;
   }, [controller]);
-  return { ...snapshot, mutate: controller.mutate, refresh: controller.refresh, inspect: controller.inspect };
+  return { ...snapshot, mutate: controller.mutate, submitPhoto: controller.submitPhoto, refresh: controller.refresh, inspect: controller.inspect };
 }
