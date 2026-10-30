@@ -1,5 +1,35 @@
 # Checkpoint state
 
+## PR #1 integration — reviewed and checked, deployment pending
+
+Started clean at `251c2b0` on `feat/finish-integrated`. Reviewed PR head
+`28248b27f95fda071ffa9fca5c98a14e5ef75777`, directly based on that commit, and
+merged with history preserved (`353c57a`). Explicit upload-and-analyze uses the
+confirmed image ID and freshly fetched task/context revisions; drift, denial,
+logout, interruption, unsupported contracts or exhausted allowance stop the chain
+without retries. Current-photo review is prominent; confirmation accepts only the
+photographic contract. Historical fixture records remain visible and unchanged,
+with fixture entry limited to explicit local developer mode. Backend/auth/recovery
+policy, model instructions and budgets are unchanged.
+
+113 frontend tests, TypeScript, normal/demo builds and both combined contracts
+pass. Actual Chromium passes the PR's real JPEG upload-byte/analysis-double flow
+on desktop 1440x900 and mobile 390x844, plus eight layout/keyboard/dialog cases for
+both routes at 1440/1024/768/390. The PR browser server initially returned 404 on
+Windows because its path containment check hardcoded `/`; corrected with native
+relative/isAbsolute checks and reran successfully. Screenshots inspected under
+ignored `.local/plantdebugger-review/` and `.local/visual/pr1-integration/`.
+API state/analysis were explicit offline doubles; no workflow incident or provider
+request was created. These checks are not live NVIDIA/photo-accuracy evidence.
+
+Reference JPEG hashes/dimensions/bytes match their provenance manifest; original
+Wikimedia author/license pages confirm the recorded attribution and CC BY-SA 4.0.
+Photos remain reference examples, not F-17/V-08 identity or correction evidence.
+No unrelated work, existing preview, hosted history or real ledger was changed.
+Next: push final integration, verify exact-SHA CI, deploy only to the existing
+Render service/disk with settings/secrets/limits preserved, then GET-check health,
+routes and assets. No new incident or inference for acceptance.
+
 ## Connected demonstration — completed offline browser journey
 
 Started clean at `871778a` on `feat/finish-integrated`. Compared the architecture,

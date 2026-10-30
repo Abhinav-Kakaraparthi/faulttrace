@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
-import { resolve, extname } from 'node:path';
+import { resolve, extname, relative, isAbsolute } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
 const { chromium } = await import(process.env.FAULTTRACE_PLAYWRIGHT_MODULE || 'playwright');
@@ -18,7 +18,8 @@ const server = createServer(async (req, res) => {
   try {
     const path = new URL(req.url, 'http://local').pathname;
     const file = resolve(root, path.startsWith('/assets/') ? path.slice(1) : 'index.html');
-    if (!file.startsWith(root + '/')) throw new Error('outside root');
+    const local = relative(root, file);
+    if (local.startsWith('..') || isAbsolute(local)) throw new Error('outside root');
     res.setHeader('Content-Type', types[extname(file)] || 'application/octet-stream'); res.end(await readFile(file));
   } catch {res.statusCode=404; res.end();}
 });

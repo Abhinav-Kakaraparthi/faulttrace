@@ -2,7 +2,9 @@
 
 This isolated branch contains a focused adaptation following the
 [PlantDebugger implementation review](plantdebugger-review.md).
-It has not been merged or deployed.
+PR #1 has been reviewed and merged into feat/finish-integrated. Final integration
+CI/deployment evidence is tracked in state.md. The Windows browser-test path
+containment check was corrected and desktop/mobile checks rerun successfully.
 
 ## Changes
 

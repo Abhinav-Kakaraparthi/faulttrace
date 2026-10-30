@@ -5,6 +5,13 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
+PR #1 real-photo collection/review is integrated locally with 113 frontend tests,
+both builds/combined contracts and actual desktop/mobile Chromium checks passing.
+The only integration fix is a Windows path check in the browser test server.
+Licensed photographs are references, not simulated-asset identity or validated
+measurements. Final CI/deployment is tracked in state.md. No new inference,
+workflow incident, accounting reset or live accuracy claim.
+
 - [x] Complete isolated synthetic connected journey exercised in Chromium through
   real API/SQLite: task, upload/analysis, independent review, cited replanning,
   approval, completion, monitoring and persisted sample-derived recovery.
