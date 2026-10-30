@@ -7,9 +7,10 @@ Recommended track: Best Apps and Agents
 
 Screenshot-based composition follow-up replaces the fixed rail with compact
 workspace/session navigation and groups real telemetry with the existing schematic.
-105 frontend tests, typecheck, both builds and combined contracts pass. No provider
-calls or policy changes. Deployment awaits private Render API access/exact-SHA CI;
-desktop/mobile/keyboard visual acceptance stays open. See current state.md.
+105 frontend tests, typecheck, both builds and combined contracts pass. Deployed
+`a0f404f` has all five exact-SHA CI jobs passing plus HTTPS route/asset checks;
+disk, secrets and live settings are preserved. No provider calls or policy changes.
+Desktop/mobile/keyboard visual acceptance stays open. See current state.md.
 
 Presentation refinement prioritizes actual activity/action, existing topology and
 stored telemetry in Commander, and assigned photo/report work in Operator.

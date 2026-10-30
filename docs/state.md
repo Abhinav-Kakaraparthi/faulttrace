@@ -1,6 +1,17 @@
 # Checkpoint state
 
-## Screenshot-based composition pass — checked, deployment pending
+## Screenshot-based composition pass — deployed, visual acceptance open
+
+Tested/deployed implementation: `a0f404f6183b901eac62d62e3de16d74051f0b76`.
+[All five exact-SHA CI jobs passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/41036547513).
+Render reports the exact revision live on the existing service. GET-only HTTPS
+health/home/Commander/Operator checks return 200, and the masthead/session/activity
+assets are served. Disk ID/size/mount, instance/plan, manual deploy mode and all
+environment values except build revision match the pre-deployment fingerprint.
+Secret files were not modified; no provider calls, incident creation/retry,
+budget resets or data edits were requested. Ignored evidence:
+`.local/visual/layout-composition-deploy/`. Later documentation is not deployed;
+manual auto-deploy remains off.
 
 Resumed the existing nine-file diff at clean committed base `87afd06` on
 `feat/finish-integrated`; no redesign restart or unrelated edits. User-supplied
@@ -21,11 +32,12 @@ Reference captures are user-provided evidence, not agent-operated browser tests.
 Source files remain below 500 lines. Ignored logs:
 `.local/visual/presentation-reference/resumed-tests.txt`.
 
-Render API access is blocked: `RENDER_API_KEY` is unavailable in the current
-process and Windows User environment. No hosted setting/record was changed.
-Next: after exact-SHA CI passes and private access is restored, deploy only this
-revision to the existing service/disk, compare live configuration fingerprints
-and GET-check health/routes/assets. Do not create an incident or invoke a model.
+The initial restricted-process credential check could not see the Render key;
+after the user's private restoration, the authorized external process read the
+Windows User key securely and deployed successfully. No key value was printed,
+removed or overwritten. Next: refresh the existing Commander/Operator tabs and
+manually inspect 1440x900/390x844 navigation, session menu, photo/report controls,
+evidence dialog and keyboard focus. Do not create an incident or invoke a model.
 
 ## Focused investigation presentation — deployed, visual acceptance open
 
