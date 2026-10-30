@@ -11,12 +11,21 @@ from test_auth_release import ReleaseCase
 
 
 class ContinuationTests(UnifiedInvestigationTests):
+    def client(self, outcome='effective'):
+        client = super().client(outcome)
+        # Unit tests drive ticks deterministically. The browser test exercises
+        # the real background scheduler with Commander closed.
+        self.app.state.continuation.step = lambda: None
+        return client
+
     def consent(self, client, enabled=True):
         return self.post(client, '/api/continuation', {
             'revision': self.state(client)['incident']['revision'], 'enabled': enabled})
 
     def tick(self):
-        self.app.state.continuation.step()
+        runner = self.app.state.continuation
+        runner.step = lambda: None
+        Continuation.step(runner)
         self.app.state.engine.wait()
 
     def test_without_consent_no_automatic_requests(self):
@@ -59,8 +68,8 @@ class ContinuationTests(UnifiedInvestigationTests):
         client = self.client()
         self.consent(client); self.tick()
         self.photo_result.update(measurement_type='pressure', reading=3.7, visible_unit='bar')
-        photo = self.photograph(client)
         self.choice = 'OBSERVE_V-08_OBSERVE_POSITION'
+        photo = self.photograph(client)
         self.tick(); self.tick()
         self.assertEqual(self.state(client)['task']['asset_id'], 'V-08')
         self.assertTrue(any(o['evidence_ref'] == 'evidence-' + photo for o in self.contexts[-1]['observations']))
