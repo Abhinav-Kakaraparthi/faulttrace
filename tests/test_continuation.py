@@ -157,6 +157,37 @@ class ContinuationTests(UnifiedInvestigationTests):
         self.assertFalse(self.state(client)['continuation']['enabled'])
         self.assertEqual(self.calls, [])
 
+    def test_actual_demo_registry_accepts_authenticated_commander_identity(self):
+        from faulttrace.workflow.demo_runtime import DemoRegistry
+        client = self.client()
+        runner = self.app.state.continuation
+        registry = DemoRegistry(self.data)
+        principal = registry.authenticate('Bearer ' + registry.tokens['commander'])
+        runner.registry = registry
+        runner.configure(self.state(client)['incident']['revision'], True, key(), principal)
+        self.tick()
+        state = self.state(client)
+        self.assertTrue(state['continuation']['enabled'])
+        self.assertIsNone(state['continuation']['error'])
+        self.assertEqual(state['task']['asset_id'], 'F-17')
+        self.assertEqual(len(self.calls), 1)
+        runner.allowed = lambda: False
+        self.tick()
+        self.assertFalse(self.state(client)['continuation']['enabled'])
+        self.assertEqual(len(self.calls), 1)
+
+    def test_actual_demo_registry_operator_cannot_continue(self):
+        from faulttrace.workflow.demo_runtime import DemoRegistry
+        client = self.client()
+        runner = self.app.state.continuation
+        registry = DemoRegistry(self.data)
+        principal = registry.authenticate('Bearer ' + registry.tokens['operator'])
+        runner.registry = registry
+        runner.configure(self.state(client)['incident']['revision'], True, key(), principal)
+        self.tick()
+        self.assertFalse(self.state(client)['continuation']['enabled'])
+        self.assertEqual(self.calls, [])
+
     def test_demo_continuation_ends_with_session_restart_end_and_expiry(self):
         from pathlib import Path
         from faulttrace.workflow.demo_sessions import DemoSessions

@@ -65,7 +65,14 @@ class Continuation:
         if consent['expires'] <= self.clock() or not self.allowed():
             return False
         if self.registry:
-            principal = self.registry.read()['principals'].get(consent['owner'])
+            principals = self.registry.read()['principals']
+            principal = principals.get(consent['owner'])
+            if principal is None:
+                # DemoRegistry keys by workspace role while authentication returns
+                # a stable demo principal_id. Resolve that exact identity only.
+                matches = [p for p in principals.values()
+                           if p.get('principal_id') == consent['owner']]
+                principal = matches[0] if len(matches) == 1 else None
             return bool(principal and principal['role'] == 'commander'
                         and not principal.get('revoked', False)
                         and principal.get('expires', float('inf')) > self.clock()
