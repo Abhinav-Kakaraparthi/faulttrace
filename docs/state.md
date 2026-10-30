@@ -1,6 +1,6 @@
 # Checkpoint state
 
-## Bounded hosted admission extension — approved, deployment pending
+## Bounded hosted admission extension — deployed and capacity verified
 
 User-reported read-only Render inspection at deployed `23503a4` found 10
 reservations (9 settled, 1 uncertain), 1,001,472 charged admission units and no
@@ -17,6 +17,24 @@ production pause/audit method. All continuation is disabled; accounting remained
 10 reservations / 1,001,472 units / 1 uncertain. The existing photograph must
 remain stored and analysis requires the user's click.
 No accounting reset, automatic analysis or new provider verification is authorized.
+Implementation `1838c96ebe60d1ccabb830f2e725acabbfed2986` is deployed on the
+existing service. All 339 guarded backend tests passed (zero forbidden external
+connections); [all five exact-SHA CI jobs passed](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/41079898425).
+HTTPS health/home/Commander/Operator returned 200. Disk and environment values
+except build revision match the pre-deployment fingerprint; secret files were
+untouched. No session, upload, planning or analysis request was made during
+deployment verification. User-performed read-only Render postflight confirmed
+the deployed SHA and exact limits (12 / 1,265,664 global; 6 / 600,000 visitor;
+concurrency 2). All 10 reservations match the pre-deployment fingerprint,
+including the uncertain reservation; 1,001,472 units remain charged, pending 0.
+Remaining: global 2 requests / 264,192 units; current visitor 5 / 532,416.
+No continuation is enabled. Session is active and existing photograph
+`14c25661-0ac0-4f81-bef0-3270a992607c` remains stored/collected with no prior
+analysis and passes the read-only photo preconditions. Capacity permits one
+photo analysis at that check; no capacity was reserved by verification.
+Next action: refresh the existing Operator workspace and explicitly analyze that
+stored photograph. Leave guided continuation paused. No re-upload or new session
+is needed. Later evidence documentation is separate from the deployed revision.
 
 ## PR #3 integration — deployed
 

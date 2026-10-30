@@ -5,9 +5,13 @@ Deadline: October 30, 2026, 1:00 p.m. America/New_York
 Internal submission target: October 29, 2026
 Recommended track: Best Apps and Agents
 
-An approved bounded global admission extension (1,200,000 to 1,265,664 units)
-is pending deployment and private continuation-pause verification. It adds no
-live-model acceptance claim and changes no request/visitor/concurrency limits.
+The approved global admission extension (1,200,000 to 1,265,664 units) is deployed
+at `1838c96`, with all five exact-SHA CI jobs passing. Guided continuation was
+paused through the production audit operation. User-performed read-only postflight
+confirmed unchanged reservations, disabled continuation and capacity for the
+existing collected photograph; analysis remains the user's explicit action.
+This adds no live-model acceptance claim and changes no
+request/visitor/concurrency limits.
 
 PR #3 demo consent identity correction is merged/deployed at `23503a4` with
 [all five exact-SHA CI jobs passing](https://github.com/Abhinav-Kakaraparthi/faulttrace/actions/runs/41073567844).
